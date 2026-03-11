@@ -6,7 +6,7 @@
 
 ## What is OpenFASTER?
 
-OpenFASTER defines an **interoperable protocol and data exchange format** that Central Financial Intermediaries (CFIs) — including Clearstream, Euroclear, and others — can use to exchange the data and events required for **indirect reporting**. The standard is currently in active development and enables data exchange between banks in both **pull and push** modes. Interoperability, even between competitors, is a top priority.
+OpenFASTER defines an **interoperable protocol and data exchange format** that Certified Financial Intermediaries (CFIs) — including Clearstream, Euroclear, and others — can use to exchange the data and events required for **indirect reporting**. The standard is currently in active development and enables data exchange between banks in both **pull and push** modes. Interoperability, even between competitors, is a top priority.
 
 The scope is **purely operational**: building the technical infrastructure that makes indirect reporting and the collection of supplementary data (e.g., eTRCs) efficient and standardized across the EU. OpenFASTER does not address legislative or business-logic questions such as anonymous reporting.
 
