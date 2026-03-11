@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>OpenFASTER Specification</title>
+    <script
+      src="https://www.w3.org/Tools/respec/respec-w3c"
+      class="remove"
+      defer
+    ></script>
+    <script class="remove">
+      var respecConfig = {
+        specStatus: "unofficial",
+        edDraftURI: "https://github.com/openfaster-standard/spec",
+        latestVersion: "https://openfaster.org",
+        editors: [
+          {
+            name: "Julian Nalenz",
+            url: "https://github.com/sigalor",
+          },
+          {
+            name: "Alaa Cherif",
+            url: "https://github.com/AlaaCherif",
+          },
+        ],
+        github: {
+          repoURL: "openfaster-standard/spec",
+          branch: "main",
+        },
+        shortName: "openfaster",
+        subtitle:
+          "Vendor-independent standard for EU withholding tax and dividend reporting data exchange",
+        noRecTrack: true,
+        lint: { "no-unused-dfns": false },
+      };
+    </script>
+  </head>
+  <body>
+    <section id="abstract">
+      <p>
+        OpenFASTER defines an interoperable protocol and data exchange format
+        that Certified Financial Intermediaries (CFIs) use to exchange the data
+        and events required for indirect reporting under MiKaDiv and FASTER. The
+        standard supports both pull and push modes, is based on BIRD (ECB), and
+        specifies end-to-end encryption for all transmissions between CFIs.
+      </p>
+    </section>
+
+    <section id="sotd">
+      <p>
+        This is a working draft. All details marked with TODO are placeholders
+        for future specification work.
+      </p>
+    </section>
+
+    <section class="informative">
+      <h2>Introduction</h2>
+      <p>
+        OpenFASTER is a vendor-independent standard for data exchange in the EU
+        withholding tax and dividend reporting domain. It was developed in
+        cooperation with the financial industry to enable CFIs to interoperate
+        for indirect reporting, including the collection of supplementary data
+        such as (e)TRCs. The scope is purely operational: building technical
+        infrastructure that makes indirect reporting efficient and standardized
+        across the EU.
+      </p>
+    </section>
+
+    <section>
+      <h2>Scope</h2>
+      <p>The OpenFASTER specification covers:</p>
+      <ul>
+        <li>TODO: Protocol for data exchange between CFIs</li>
+        <li>TODO: Pull and push exchange modes</li>
+        <li>TODO: Data formats and message schemas</li>
+        <li>TODO: Event definitions for indirect reporting</li>
+        <li>TODO: End-to-end encryption requirements</li>
+      </ul>
+      <p>
+        OpenFASTER does not address legislative or business-logic aspects such
+        as anonymous reporting.
+      </p>
+    </section>
+
+    <section>
+      <h2>Terminology</h2>
+      <dl>
+        <dt><dfn>CFI</dfn></dt>
+        <dd>
+          TODO: Certified Financial Intermediary — definition to be specified.
+        </dd>
+        <dt><dfn>indirect reporting</dfn></dt>
+        <dd>
+          TODO: Data exchange between banks for withholding tax and dividend
+          reporting.
+        </dd>
+        <dt><dfn>pull mode</dfn></dt>
+        <dd>TODO: Exchange pattern where data is requested and retrieved.</dd>
+        <dt><dfn>push mode</dfn></dt>
+        <dd>TODO: Exchange pattern where data is sent proactively.</dd>
+        <dt><dfn>eTRC</dfn></dt>
+        <dd>
+          TODO: Electronic Tax Residency Certificate (or equivalent) —
+          definition to be specified.
+        </dd>
+      </dl>
+    </section>
+
+    <section>
+      <h2>Technical Foundation</h2>
+      <section>
+        <h3>BIRD Alignment</h3>
+        <p>
+          OpenFASTER is based on the
+          <a href="https://bird.ecb.europa.eu/"
+            >Bank Integrated Reporting Dictionary (BIRD)</a
+          >
+          by the European Central Bank.
+        </p>
+        <p>TODO: Specific BIRD artifacts and mappings to be specified.</p>
+      </section>
+      <section>
+        <h3>Encryption</h3>
+        <p>All data transmitted between CFIs MUST use end-to-end encryption.</p>
+        <p>
+          TODO: Encryption algorithms, key management, and TLS requirements to
+          be specified.
+        </p>
+      </section>
+    </section>
+
+    <section>
+      <h2>Regulatory Context</h2>
+      <p>OpenFASTER aligns with the EU FASTER initiative. Key dates:</p>
+      <table class="simple">
+        <thead>
+          <tr>
+            <th>Milestone</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Standardized dividend reporting (MiKaDiv)</td>
+            <td>January 1, 2027</td>
+          </tr>
+          <tr>
+            <td>Full regulatory reporting under FASTER</td>
+            <td>January 1, 2030</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Protocol</h2>
+      <p>
+        TODO: Protocol specification (transport, authentication, message flow).
+      </p>
+      <section>
+        <h3>Transport</h3>
+        <p>
+          TODO: Supported transports (e.g., REST, messaging) and selection
+          rules.
+        </p>
+      </section>
+      <section>
+        <h3>Authentication</h3>
+        <p>
+          TODO: Mutual authentication and identity verification between CFIs.
+        </p>
+      </section>
+    </section>
+
+    <section>
+      <h2>Data Formats</h2>
+      <p>TODO: Schema formats (e.g., JSON, XML), versioning, and evolution.</p>
+      <section>
+        <h3>Message Structure</h3>
+        <p>TODO: Envelope, payload, metadata, and correlation fields.</p>
+      </section>
+      <section>
+        <h3>Event Definitions</h3>
+        <p>
+          TODO: Event types, schemas, and sequencing for indirect reporting.
+        </p>
+      </section>
+    </section>
+
+    <section>
+      <h2>Universal Reporting Workflow</h2>
+      <p>Implementations of OpenFASTER support the following workflow:</p>
+      <ol>
+        <li>
+          <strong>Data import</strong> — TODO: Sources, formats, ingestion
+          requirements.
+        </li>
+        <li>
+          <strong>Normalization and validation</strong> — TODO: Rules,
+          completeness checks.
+        </li>
+        <li>
+          <strong>Entity chain reconstruction</strong> — TODO: Beneficial owner,
+          intermediaries, jurisdictions.
+        </li>
+        <li>
+          <strong>Report generation</strong> — TODO: Report types, templates,
+          recipients.
+        </li>
+        <li>
+          <strong>Secure transmission and audit</strong> — TODO: Channels, audit
+          trail, traceability.
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Architecture</h2>
+      <section>
+        <h3>Deployment</h3>
+        <p>
+          Implementations MAY operate inside a bank's infrastructure. Each legal
+          entity MAY have a segregated environment for data isolation and
+          compliance.
+        </p>
+      </section>
+      <section>
+        <h3>Integration</h3>
+        <p>TODO: Integration patterns (APIs, batch imports, file formats).</p>
+      </section>
+    </section>
+
+    <section id="conformance">
+      <h2>Conformance</h2>
+      <p>
+        A conforming OpenFASTER implementation MUST implement the protocol, data
+        formats, and encryption requirements specified in this document. TODO:
+        Formal conformance criteria to be specified.
+      </p>
+    </section>
+
+    <section class="appendix">
+      <h2>References</h2>
+      <dl>
+        <dt id="ref-bird">BIRD</dt>
+        <dd>
+          <a href="https://bird.ecb.europa.eu/"
+            >Bank Integrated Reporting Dictionary</a
+          >, European Central Bank.
+        </dd>
+      </dl>
+    </section>
+  </body>
+</html>
