@@ -1,0 +1,1984 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://taxinfotransfer.org/tpd/1.0/ThirdPartyDisclosureRequest.xsd"
+           xmlns="http://taxinfotransfer.org/tpd/1.0/ThirdPartyDisclosureRequest.xsd"
+           xmlns:tpd="http://taxinfotransfer.org/tpd/1.0/ThirdPartyDisclosureRequest.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           version="1.0"
+           elementFormDefault="qualified">
+
+<xs:element name="ThirdPartyDisclosureRequest">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Root element for disclosure of custodian accounts</xs:documentation>
+			<xs:documentation xml:lang="de">Wurzelelement für Offenlegung von Steuerinformationen für B-Depots</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+                <xs:choice minOccurs="1" maxOccurs="unbounded">
+                    <xs:element name="RequestMiKaDivReportingForIncome" type="RequestMiKaDivReportingForIncomeType"/>
+                    <xs:element name="CancelMiKaDivReportingForIncome" type="CancelMiKaDivReportingForIncomeType"/>
+                </xs:choice>                
+			</xs:sequence>	
+		</xs:complexType>		
+	</xs:element>
+
+	<xs:complexType name="RequestDisclosureType" abstract="true">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Base type for the disclosure. Not for direct use.</xs:documentation>
+			<xs:documentation xml:lang="de">Basistyp für die Offenlegung. Nicht für die direkte Verwendung gedacht.</xs:documentation>
+		</xs:annotation>
+        
+		<xs:sequence>
+		</xs:sequence>
+		
+        <xs:attribute name="RequestId" type="UUIDType" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">Unique identifier for the request. Must be unique even over subsequent files. To be defined by the customer institute.</xs:documentation>
+				<xs:documentation xml:lang="de">Eindeutiger Identifier für die Anfrage. Muss auch über folgende Dateien eindeutig sein. Ist vom Kundeninstitut festzulegen.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Timestamp" type="xs:date" use="optional">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">Timestamp of the submission of the request.</xs:documentation>
+				<xs:documentation xml:lang="de">Zeitstempel der Übertragung der Anfrage.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="AccountNumber" type="Name200Type" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">Account number of the requesting custodian.</xs:documentation>
+				<xs:documentation xml:lang="de">Kontonummer der anfragenden Verwahrstelle.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ClientReference" type="Name200Type" use="optional">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">Custom reference data of the client.</xs:documentation>
+				<xs:documentation xml:lang="de">Frei vergebbare Referenz des Kunden.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+        <xs:attribute name="ClientContactpersonName" type="Name200Type" use="optional">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">Name of the responsible foreign bank contact person.</xs:documentation>
+                <xs:documentation xml:lang="de">Name Verantwortlicher Auslandsbank.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="ClientContactpersonPhone" type="Name35Type" use="optional">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">Telephone number of the responsible foreign bank contact person.</xs:documentation>
+                <xs:documentation xml:lang="de">Tel-Nr Verantwortlicher Auslandsbank.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="ClientContactpersonEmail" type="Name200Type" use="optional">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">E-mail address of the responsible foreign bank contact person.</xs:documentation>
+                <xs:documentation xml:lang="de">E-Mail Verantwortlicher Auslandsbank.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        
+	</xs:complexType>
+
+	<xs:complexType name="RequestMiKaDivReportingForIncomeType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Disclosure of a single capital income in Germany according to MiKaDiv §45b.</xs:documentation>
+			<xs:documentation xml:lang="de">Offenlegung eines einzelnen Kapitalertrags in Deutschland gemäß MiKaDiv §45b.</xs:documentation>
+		</xs:annotation>
+        
+		<xs:complexContent>
+			<xs:extension base="RequestDisclosureType">
+                
+				<xs:sequence>
+					<xs:element name="AccountOwnersAndRepresentative" type="AccountOwnersAndRepresentativeType" minOccurs="1"/>
+					<xs:element name="Income" type="CapitalIncomeType" minOccurs="1"/>
+					<xs:element name="CustodyChain" type="CustodyChainType" minOccurs="1"/>
+                    <xs:choice minOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="en">The receipts and deliveries need to be declared. Dependent on the requirements of the German paying agent this has to be done either with FiFo calculation applied or without.</xs:documentation>
+                            <xs:documentation xml:lang="de">Die Zu- und Abgänge müssen deklariert werden. Abhängig von den Anforderungen der deutschen Zahlstelle müssen diese entweder mit oder ohne angewendete FiFo Berechnung angegeben werden.</xs:documentation>
+                        </xs:annotation>
+                        <xs:element name="ReceiptsAndDeliveriesFiFo" type="ReceiptsAndDeliveriesFiFoType"/>
+                        <xs:element name="ReceiptsAndDeliveriesAll" type="ReceiptsAndDeliveriesAllType"/>
+                    </xs:choice>
+				</xs:sequence>
+                
+                <xs:attribute name="RequestedService" type="DisclosureRequestedServiceType" use="required" />
+                <xs:attribute name="RequestedServiceReason" type="Name256Type" use="optional">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">Reason for the requested service, especially for correction or cancellation.</xs:documentation>
+                        <xs:documentation xml:lang="de">Grund für die angefragte Leistung. Vor allem bei Korrektur oder Storno.</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>                
+                <xs:attribute name="RequestedAttestationType" type="DisclosureRequestedAttestationType" use="optional" />
+                <xs:attribute name="IsCorrectionRequest" type="xs:boolean" use="optional">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">A correction is to be performed for a report. The data record contains a reference to the preceding request.</xs:documentation>
+                        <xs:documentation xml:lang="de">Für einen Report soll eine Korrektur durchgeführt werden. Der Datensatz enthält einen Verweis auf die vorhergehende Anfrage.</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="PreviousRequestIdForCorrection" type="UUIDType" use="optional">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">If the request is for correction of a previous request, then the RequestId of the previous request must be provided.</xs:documentation>
+                        <xs:documentation xml:lang="de">Sofern die Anfrage der Berichtigung einer vorangegangenen Anfrage dient, ist die RequestId der vorangegangenen Anfrage anzugeben.</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="ReportSerialNumber" type="UUIDType" use="optional">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">Serial number (UUID) of an already submitted report, if provided previously by the German Paying agent. Used as a (additional) reference for correction.</xs:documentation>
+                        <xs:documentation xml:lang="de">Ordnungsnummer (UUID) eines bereits übermittelten Datensatzes, sofern von der deutschen Zahlstelle bereitgestellt; dient als (zusätzliche) Referenz für die Berichtigung.</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="TaxCertificatePrintedContactpersonName" type="Name200Type" use="optional">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">Name of the contact person for the customer, printed on the tax certificate or cover letter.</xs:documentation>
+                        <xs:documentation xml:lang="de">Name Ansprechpartner für Kunden (wird auf Steuerbescheinigung bzw. Anschreiben angedruckt).</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="TaxCertificatePrintedContactpersonPhone" type="Name35Type" use="optional">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">Telephone number of the contact person for the customer, printed on the tax certificate or cover letter.</xs:documentation>
+                        <xs:documentation xml:lang="de">Tel-Nr Ansprechpartner für Kunden (wird auf Steuerbescheinigung bzw. Anschreiben angedruckt).</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="TaxCertificatePrintedContactpersonEmail" type="Name200Type" use="optional">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">E-mail address of the contact person for the customer, printed on the tax certificate or cover letter.</xs:documentation>
+                        <xs:documentation xml:lang="de">E-Mail Ansprechpartner für Kunden (wird auf Steuerbescheinigung bzw. Anschreiben angedruckt).</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="TaxCertificateAlternativeRecipientName" type="Name200Type" use="optional">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">Name of the alternative mailing address recipient.</xs:documentation>
+                        <xs:documentation xml:lang="de">Name der (abweichenden) Versandadresse.</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="TaxCertificateAlternativeRecipientAddress" type="Name256Type" use="optional">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">Address of the alternative mailing address recipient.</xs:documentation>
+                        <xs:documentation xml:lang="de">Anschrift der (abweichenden) Versandadresse.</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="TaxCertificateAlternativeRecipientEmail" type="Name256Type" use="optional">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">E-mail address of the alternative mailing address recipient.</xs:documentation>
+                        <xs:documentation xml:lang="de">E-mail der (abweichenden) Versandadresse.</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="EventType" type="Name20Type" use="optional" >
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">Event designations of the German paying agent according to ISO 20022.</xs:documentation>
+                        <xs:documentation xml:lang="de">Eventbezeichnungen der Deutschen Zahlstelle nach ISO20022.</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="FundId" type="Name20Type" use="optional" >
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">Fund identifier (status certificate number).</xs:documentation>
+                        <xs:documentation xml:lang="de">Ordnungsnummer des Fonds (Statusbescheinigungsnummer).</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+    <xs:complexType name="CancelMiKaDivReportingForIncomeType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Cancellation of a previous disclosure request.</xs:documentation>
+            <xs:documentation xml:lang="de">Stornierung einer zuvor übermittelten Offenlegungsanfrage.</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="RequestDisclosureType">
+                
+                <xs:sequence>
+                </xs:sequence>
+                
+                <xs:attribute name="PreviousRequestIdForCancellation" type="UUIDType" use="required">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">If the request is for cancellation of a previous request, then the RequestId of the previous request must be provided.</xs:documentation>
+                        <xs:documentation xml:lang="de">Sofern die Anfrage der Stornierung einer vorangegangenen Anfrage dient, ist die RequestId der vorangegangenen Anfrage anzugeben.</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="ReportSerialNumber" type="UUIDType" use="optional">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">Serial number (UUID) of an already submitted report, if provided previously by the German Paying agent. Used as a (additional) reference for cancellation.</xs:documentation>
+                        <xs:documentation xml:lang="de">Ordnungsnummer (UUID) eines bereits übermittelten Datensatzes, sofern von der deutschen Zahlstelle bereitgestellt; dient als (zusätzliche) Referenz für die Storno.</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+	<xs:complexType name="AccountOwnersAndRepresentativeType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines the list of account persons.</xs:documentation>	
+			<xs:documentation xml:lang="de">Liste der Konto-Personen.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SecuritiesAccountNumber" type="Name200Type" minOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Account number of the tax voucher person at the custodian to whom the tax voucher person is directly contracted.</xs:documentation>
+					<xs:documentation xml:lang="de">Depotnummer der bescheinigungsberechtigten Person bei derjenigen Verwahrstelle, zu der eine unmittelbare Vertragsbeziehung besteht.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+            <xs:element name="AccountType" type="AccountTypeType" minOccurs="1" />
+            <xs:element name="TaxCertificateReceiverPersons" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">List of persons receiving the tax certificate.</xs:documentation>
+                    <xs:documentation xml:lang="de">Aufzählung der Personen, die die Steuerbescheinigung erhalten.</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="TaxCertificateReceiverPerson" type="TaxCertificateReceiverPersonType" minOccurs="1" maxOccurs="2"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ThirdPartyPersons" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">List of third party persons. Must be completed if the account holder is not the beneficial owner AND if the beneficial owner gets disclosed. In this scenario information about the third party who is the account holder must be disclosed as well.</xs:documentation>
+                    <xs:documentation xml:lang="de">Aufzählung der dritten Personen. Pflichtangabe, wenn der Kontoinhaber nicht der wirtschaftlich Berechtigte (Gläubiger der Kapitalerträge) ist und der wirtschaftlich Berechtigte offengelegt wird; in diesem Fall sind auch die Angaben zu dem Dritten als Kontoinhaber offenzulegen.</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ThirdPartyPerson" type="ThirdPartyPersonType" minOccurs="1" maxOccurs="5"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+			<xs:element name="AccountRelationship" type="AccountRelationshipType" minOccurs="0" >
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">If the tax voucher person is not the beneficial owner (creditor), then the account relationship has to be specified.</xs:documentation>
+                    <xs:documentation xml:lang="de">Ist die bescheinigungsberechtigte Person nicht selbst Gläubiger der Kapitalerträge (wirtschaftlich Berechtigter), so ist das Depotverhältnis anzugeben.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+    <xs:complexType name="TaxCertificateReceiverPersonType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Type of a person receiving the tax certificate.</xs:documentation>
+            <xs:documentation xml:lang="de">Personentyp für Empfänger der Steuerbescheinigung.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:choice>
+                <xs:sequence>
+                    <xs:element name="Individual" type="IndividualPersonType" minOccurs="1"/>
+                    <xs:element name="IndividualPersonRegistrationAddress" type="TaxCertificateIndividualPersonAddressType" minOccurs="1" />
+                    <xs:element name="IndividualPersonTaxIdentification" type="TaxCertificateIndividualPersonTaxIdentificationType" minOccurs="1"/>                    
+                </xs:sequence>
+                <xs:sequence>
+                    <xs:element name="LegalPerson" type="LegalPersonType" minOccurs="1"/>
+                    <xs:element name="LegalPersonRegistrationAddress" type="TaxCertificateLegalPersonAddressType"  minOccurs="1"/>
+                    <xs:element name="LegalPersonTaxIdentification" type="TaxCertificateLegalPersonTaxIdentificationType" minOccurs="1"/>
+                </xs:sequence>
+                <xs:element name="Community" type="CommunityPersonType"/>
+            </xs:choice>
+            <xs:element name="Relationship" minOccurs="1">
+                <xs:simpleType>
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">Indicate the role of the tax certificate receiver person.</xs:documentation>
+                        <xs:documentation xml:lang="de">Angabe der Rolle der die Steuerbescheinigung empfangenden Person.</xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="Creditor">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Creditor (beneficial owner).</xs:documentation>
+                                <xs:documentation xml:lang="de">Gläubiger der Kapitalerträge (wirtschaftlich Berechtigter).</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="AccountHolder">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Account holder (not the beneficial owner).</xs:documentation>
+                                <xs:documentation xml:lang="de">Kontoinhaber (nicht wirtschaftlich Berechtigter).</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ThirdPartyPersonType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Third Party person type.</xs:documentation>
+            <xs:documentation xml:lang="de">Personentyp Dritte.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:choice>
+                <xs:sequence>
+                    <xs:element name="Individual" type="IndividualPersonType" minOccurs="1" />
+                    <xs:element name="IndividualPersonRegistrationAddress" type="ThirdPartyIndividualPersonAddressType" minOccurs="1" />
+                    <xs:element name="IndividualPersonTaxIdentification" type="ThirdPartyIndividualPersonTaxIdentificationType" minOccurs="1" />
+                </xs:sequence>
+                <xs:sequence>
+                    <xs:element name="LegalPerson" type="LegalPersonType" minOccurs="1"/>
+                    <xs:element name="LegalPersonRegistrationAddress" type="ThirdPartyLegalPersonAddressType" minOccurs="1" />
+                    <xs:element name="LegalPersonTaxIdentification" type="ThirdPartyLegalPersonTaxIdentificationType" minOccurs="1" />
+                </xs:sequence>
+            </xs:choice>
+            <xs:element name="Relationship" minOccurs="1">
+                <xs:simpleType>
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">If the account holder is not the beneficial owner, this category specifies, how the account holder represents the beneficial owner.</xs:documentation>
+                        <xs:documentation xml:lang="de">Ist der Kontoinhaber nicht der wirtschaftlich Berechtigte, so ist hier anzugeben, in welcher Eigenschaft der Kontoinhaber den wirtschaftlich Berechtigten vertritt.</xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="Trustee">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Trustee.</xs:documentation>
+                                <xs:documentation xml:lang="de">Treuhänder.</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="Pledgor">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Pledgor.</xs:documentation>
+                                <xs:documentation xml:lang="de">Verpfänder (Pfandgeber).</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="Grantor of usufruct">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Grantor of usufruct.</xs:documentation>
+                                <xs:documentation xml:lang="de">Nießbrauchsbesteller.</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+	<xs:complexType name="PersonType" abstract="true">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Base type for a person. Not for direct use.</xs:documentation>	
+			<xs:documentation xml:lang="de">Basistyp für eine Person. Nicht für direkte Verwendung gedacht.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+	
+		</xs:sequence>
+		<xs:attribute name="PersonIdentifier" type="Name45Type" use="optional">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">Unique identifier for a person. Must be unique over subsequent files. For a subsequent request to the same person, the same identifier must be provided. To be defined by the customer institute.</xs:documentation>
+				<xs:documentation xml:lang="de">Eindeutiger Identifier für eine Person. Muss auch über folgende Dateien eindeutig sein. Für eine spätere Anfrage zum selben Person muss der gleiche Identifier geliefert werden. Ist durch das Kundeninstitut festzulegen.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="IndividualPersonType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Natural person.</xs:documentation>
+			<xs:documentation xml:lang="de">Natürliche Person.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="PersonType">
+				<xs:sequence>
+					<xs:element name="Title" type="Name20Type" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="en">The person’s title if applicable.</xs:documentation>
+                            <xs:documentation xml:lang="de">Akademischer Grad bzw. Titel der Person, soweit vorhanden.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+					<xs:element name="NamePrefix" type="Name20Type" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="en">The person’s name prefix if applicable.</xs:documentation>
+                            <xs:documentation xml:lang="de">Namenszusatz vor dem Nachnamen (Präfix), soweit vorhanden.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+					<xs:element name="FirstName" type="Name45Type" minOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="en">The person’s first name.</xs:documentation>
+                            <xs:documentation xml:lang="de">Vorname der Person.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+					<xs:element name="LastName" type="Name45Type" minOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="en">The person’s last name.</xs:documentation>
+                            <xs:documentation xml:lang="de">Nachname (Familienname) der Person.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+					<xs:element name="NameAffix" type="Name20Type" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="en">The person’s name prefix if applicable.</xs:documentation>
+                            <xs:documentation xml:lang="de">Namenszusatz nach dem Nachnamen (Affix), soweit vorhanden.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+					<xs:element name="DateOfBirth" type="DateOfBirthType" minOccurs="1" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="LegalPersonType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Non natural person.</xs:documentation>
+			<xs:documentation xml:lang="de">Nicht natürliche Person.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="PersonType">
+				<xs:sequence>
+					<xs:element name="Name" type="Name256Type" minOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="en">The name of the non-natural person.</xs:documentation>
+                            <xs:documentation xml:lang="de">Name der nicht natürlichen Person (juristische Person bzw. Personengesellschaft).</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+    <xs:complexType name="CommunityPersonType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Community of up to 10 persons.</xs:documentation>
+            <xs:documentation xml:lang="de">Gemeinschaft von bis zu 10 Personen.</xs:documentation>
+        </xs:annotation>
+		<xs:sequence>
+            <xs:element name="CommunityShareholder" minOccurs="1" maxOccurs="10">
+                <xs:complexType>
+                    <xs:choice>
+                        <xs:sequence>
+                            <xs:element name="Individual" type="IndividualPersonType" minOccurs="1"/>
+                            <xs:element name="IndividualPersonRegistrationAddress" type="TaxCertificateIndividualPersonAddressType" minOccurs="1"/>
+                            <xs:element name="IndividualPersonTaxIdentification" type="TaxCertificateIndividualPersonTaxIdentificationType" minOccurs="1"/>
+                        </xs:sequence>
+                        <xs:sequence>
+                            <xs:element name="LegalPerson" type="LegalPersonType"/>
+                            <xs:element name="LegalPersonRegistrationAddress" type="TaxCertificateLegalPersonAddressType" minOccurs="1"/>
+                            <xs:element name="LegalPersonTaxIdentification" type="TaxCertificateLegalPersonTaxIdentificationType" minOccurs="1"/>
+                        </xs:sequence>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+		</xs:sequence>
+    </xs:complexType>
+
+	<xs:complexType name="AddressType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Address.</xs:documentation>
+			<xs:documentation xml:lang="de">Adresse.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="StreetOrPostalCode" type="Name80Type" minOccurs="0" >
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">The street name of the address.</xs:documentation>
+                    <xs:documentation xml:lang="de">Straßenbezeichnung der Anschrift.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+			<xs:element name="HouseNumber" type="Number5Type" minOccurs="0" >
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Possible range 0 – 99999. Specifying the house number “0” as a default, if no house number has been assigned, is not permissible. Specifying it as such is only permissible if the municipality has assigned the number “0”.</xs:documentation>
+                    <xs:documentation xml:lang="de">Zulässiger Wertebereich 0–99999. Die Angabe der Hausnummer „0“ als Voreinstellung bei nicht vergebener Hausnummer ist unzulässig; sie ist nur zulässig, wenn die Gemeinde die Hausnummer „0“ tatsächlich vergeben hat.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+			<xs:element name="HouseNumberAddition" type="Name20Type" minOccurs="0" >
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Possible additions to the house number in the address: With a house number “5a”, the “a” would be mentioned here, the “5” must be indicated in the house number field. With a house number “105-109”, the “-109” would be mentioned here.</xs:documentation>
+                    <xs:documentation xml:lang="de">Mögliche Zusätze zur Hausnummer: Bei einer Hausnummer „5a“ ist hier „a“ anzugeben, während die „5“ im Feld Hausnummer einzutragen ist. Bei einer Hausnummer „105-109“ ist hier „-109“ anzugeben.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+			<xs:element name="AddressAddition" type="Name50Type" minOccurs="0" >
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Possible addition to foreign addresses.</xs:documentation>
+                    <xs:documentation xml:lang="de">Mögliche ergänzende Angaben zu ausländischen Anschriften.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+			<xs:element name="Postcode" type="Name5Type" minOccurs="0" >
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">The postcode of the address. For German addresses only five digits are allowed.</xs:documentation>
+                    <xs:documentation xml:lang="de">Postleitzahl der Anschrift. Bei deutschen Anschriften sind ausschließlich fünfstellige Postleitzahlen zulässig.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+			<xs:element name="City" type="Name80Type" minOccurs="1" >
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">The place name of the address.</xs:documentation>
+                    <xs:documentation xml:lang="de">Ortsbezeichnung der Anschrift.</xs:documentation>
+                </xs:annotation>
+            </xs:element>	
+			<xs:element name="Country" type="CountryISO3166Alpha2Type" minOccurs="0" >
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">The contry of the address in ISO 3166-1 alpha-2.</xs:documentation>
+                    <xs:documentation xml:lang="de">Staat der Anschrift nach ISO 3166-1 alpha-2.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+		</xs:sequence>
+	</xs:complexType>
+    
+    <xs:complexType name="TaxCertificateIndividualPersonAddressType">
+        <xs:complexContent>
+            <xs:extension base="AddressType">
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="ThirdPartyIndividualPersonAddressType">
+        <xs:complexContent>
+            <xs:extension base="AddressType">
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="TaxCertificateLegalPersonAddressType">
+        <xs:complexContent>
+            <xs:extension base="AddressType">
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="ThirdPartyLegalPersonAddressType">
+        <xs:complexContent>
+            <xs:extension base="AddressType">
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="CustodyEntryAddressType">
+        <xs:complexContent>
+            <xs:extension base="AddressType">
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+	<xs:complexType name="TaxIdentificationType" abstract="true">
+	</xs:complexType>
+
+	<xs:complexType name="IndividualPersonTaxIdentificationType">
+		<xs:complexContent>
+			<xs:extension base="TaxIdentificationType">
+                <xs:sequence>
+                    <xs:element name="CountryOfTaxResidence" type="CountryISO3166Alpha2Type" minOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="en">Country of tax residency in ISO 3166-1 alpha-2.</xs:documentation>
+                            <xs:documentation xml:lang="de">Staat der steuerlichen Ansässigkeit nach ISO 3166-1 alpha-2.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:choice>
+                        <xs:element name="GermanPerson">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="InvestmentMarketTaxId" type="GermanTaxIdType" minOccurs="1">
+                                        <xs:annotation>
+                                            <xs:documentation xml:lang="en">The German tax identification number (IdNr) of the tax voucher person. Only digits are permitted.</xs:documentation>
+                                            <xs:documentation xml:lang="de">Deutsche steuerliche Identifikationsnummer (IdNr.) der bescheinigungsberechtigten Person. Es sind ausschließlich Ziffern zulässig.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="NonGermanPerson">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:annotation>
+                                        <xs:documentation xml:lang="en">At least one of the two needs to be provided.</xs:documentation>
+                                        <xs:documentation xml:lang="de">Mindestens eine der Beiden muss angegeben werden.</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:element name="InvestmentMarketTaxId" type="GermanTaxIdType" minOccurs="0">
+                                        <xs:annotation>
+                                            <xs:documentation xml:lang="en">The German tax identification number (IdNr) of the tax voucher person. Only digits are permitted.</xs:documentation>
+                                            <xs:documentation xml:lang="de">Deutsche steuerliche Identifikationsnummer (IdNr.) der bescheinigungsberechtigten Person. Es sind ausschließlich Ziffern zulässig.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="ForeignTaxId" type="Name35Type" minOccurs="0">
+                                        <xs:annotation>
+                                            <xs:documentation xml:lang="en">If no German tax id number has been assigned yet: Tax identification attribute awarded by the country of residence.</xs:documentation>
+                                            <xs:documentation xml:lang="de">Sofern noch keine deutsche steuerliche Identifikationsnummer vergeben wurde: die vom Ansässigkeitsstaat zugeteilte steuerliche Identifikationsmerkmal.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:choice>
+                </xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+    
+    <xs:complexType name="TaxCertificateIndividualPersonTaxIdentificationType">
+        <xs:complexContent>
+            <xs:extension base="IndividualPersonTaxIdentificationType">
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="ThirdPartyIndividualPersonTaxIdentificationType">
+        <xs:complexContent>
+            <xs:extension base="IndividualPersonTaxIdentificationType">
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+	<xs:complexType name="LegalPersonTaxIdentificationType">
+		<xs:complexContent>
+			<xs:extension base="TaxIdentificationType">
+				
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+    <xs:complexType name="TaxCertificateLegalPersonTaxIdentificationType">
+        <xs:complexContent>
+            <xs:extension base="LegalPersonTaxIdentificationType">
+                <xs:sequence>
+                    <xs:element name="CountryOfTaxResidence" type="CountryISO3166Alpha2Type" minOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="en">Country of tax residency in ISO 3166-1 alpha-2.</xs:documentation>
+                            <xs:documentation xml:lang="de">Staat der steuerlichen Ansässigkeit nach ISO 3166-1 alpha-2.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:choice>
+                        <xs:element name="GermanPerson">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:annotation>
+                                        <xs:documentation xml:lang="en">At least one of the two needs to be provided.</xs:documentation>
+                                        <xs:documentation xml:lang="de">Mindestens eine der Two muss angegeben werden.</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:element name="InvestmentMarketBusinessId" type="GermanBusinessIdType" minOccurs="0">
+                                        <xs:annotation>
+                                            <xs:documentation xml:lang="en">German business identification number. The business identification number of the non-natural person without a hyphen before the differentiating element.</xs:documentation>
+                                            <xs:documentation xml:lang="de">Deutsche Wirtschafts-Identifikationsnummer der nicht natürlichen Person; anzugeben ohne Bindestrich vor dem Unterscheidungsmerkmal.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="InvestmentMarketTaxNumber" type="GermanTaxNumberType" minOccurs="0">
+                                        <xs:annotation>
+                                            <xs:documentation xml:lang="en">If a German business identification number hasn´t been assigned yet: The German tax number of the non-natural person.</xs:documentation>
+                                            <xs:documentation xml:lang="de">Sofern noch keine deutsche Wirtschafts-Identifikationsnummer vergeben wurde: die deutsche Steuernummer der nicht natürlichen Person.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="NonGermanPerson">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:annotation>
+                                        <xs:documentation xml:lang="en">At least one of the four needs to be provided.</xs:documentation>
+                                        <xs:documentation xml:lang="de">Mindestens eine der Vier muss angegeben werden.</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:element name="InvestmentMarketBusinessId" type="GermanBusinessIdType" minOccurs="0">
+                                        <xs:annotation>
+                                            <xs:documentation xml:lang="en">German business identification number. The business identification number of the non-natural person without a hyphen before the differentiating element.</xs:documentation>
+                                            <xs:documentation xml:lang="de">Deutsche Wirtschafts-Identifikationsnummer der nicht natürlichen Person; anzugeben ohne Bindestrich vor dem Unterscheidungsmerkmal.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="InvestmentMarketTaxNumber" type="GermanTaxNumberType" minOccurs="0">
+                                        <xs:annotation>
+                                            <xs:documentation xml:lang="en">If a German business identification number hasn´t been assigned yet: The German tax number of the non-natural person.</xs:documentation>
+                                            <xs:documentation xml:lang="de">Sofern noch keine deutsche Wirtschafts-Identifikationsnummer vergeben wurde: die deutsche Steuernummer der nicht natürlichen Person.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="LEI" type="LEIISO17442Type" minOccurs="0">
+                                        <xs:annotation>
+                                            <xs:documentation xml:lang="en">If neither a German business tax id number in the meaning of section 139c German General Tax Code nor a German tax id number (usually the Corporate Income Tax id number) is available, the Legal Entity Identifier (LEI).</xs:documentation>
+                                            <xs:documentation xml:lang="de">Sofern weder eine deutsche Wirtschafts-Identifikationsnummer im Sinne des § 139c AO noch eine deutsche steuerliche Identifikationsnummer (regelmäßig die Körperschaftsteuer-Identifikationsnummer) vorliegt: der Legal Entity Identifier (LEI).</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="EUID" type="EUIDType" minOccurs="0">
+                                        <xs:annotation>
+                                            <xs:documentation xml:lang="en">If neither a German business tax id number in the meaning of section 139c German General Tax Code nor a German tax id number (usually the Corporate Income Tax id number) is available nor a Legal Entity Identifier (LEI) is available, the European unique identifier (EUID; as referred to in Article 16 of Directive (EU) 2017/1132 of the European Parliament and of the Council).</xs:documentation>
+                                            <xs:documentation xml:lang="de">Sofern weder eine deutsche Wirtschafts-Identifikationsnummer im Sinne des § 139c AO noch eine deutsche steuerliche Identifikationsnummer (regelmäßig die Körperschaftsteuer-Identifikationsnummer) noch ein Legal Entity Identifier (LEI) vorliegt: der europäische einheitliche Kennzeichner (EUID; im Sinne des Artikels 16 der Richtlinie (EU) 2017/1132).</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:choice>
+                                        <xs:element name="ForeignTaxId" type="Name35Type" minOccurs="1">
+                                            <xs:annotation>
+                                                <xs:documentation xml:lang="en">Tax identification number assigned to the tax voucher person by its country of tax residency.</xs:documentation>
+                                                <xs:documentation xml:lang="de">Vom Ansässigkeitsstaat der bescheinigungsberechtigten Person zugeteilte steuerliche Identifikationsnummer.</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                        <xs:sequence>
+                                            <xs:element name="LegalForm" type="Name60Type" minOccurs="1">
+                                                <xs:annotation>
+                                                    <xs:documentation xml:lang="en">The foreign legal entity type must be specified as free text. Long and short form.</xs:documentation>
+                                                    <xs:documentation xml:lang="de">Ausländische Rechtsform; anzugeben als Freitext in Lang- und Kurzform.</xs:documentation>
+                                                </xs:annotation>
+                                            </xs:element>
+                                            <xs:element name="DateOfFoundation" type="xs:date" minOccurs="1">
+                                                <xs:annotation>
+                                                    <xs:documentation xml:lang="en">Date when the entity was established / founded / incorporated / launched.</xs:documentation>
+                                                    <xs:documentation xml:lang="de">Datum der Gründung bzw. Errichtung der Einheit.</xs:documentation>
+                                                </xs:annotation>
+                                            </xs:element>
+                                        </xs:sequence>
+                                    </xs:choice>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:choice>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="ThirdPartyLegalPersonTaxIdentificationType">
+        <xs:complexContent>
+            <xs:extension base="LegalPersonTaxIdentificationType">
+                <xs:sequence>
+                    <xs:element name="CountryOfTaxResidence" type="CountryISO3166Alpha2Type" minOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="en">Country of tax residency in ISO 3166-1 alpha-2.</xs:documentation>
+                            <xs:documentation xml:lang="de">Staat der steuerlichen Ansässigkeit nach ISO 3166-1 alpha-2.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:choice>
+                        <xs:element name="GermanPerson">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:annotation>
+                                        <xs:documentation xml:lang="en">At least one of the two needs to be provided.</xs:documentation>
+                                        <xs:documentation xml:lang="de">Mindestens eine der Zwei muss angegeben werden.</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:element name="InvestmentMarketBusinessId" type="GermanBusinessIdType" minOccurs="0">
+                                        <xs:annotation>
+                                            <xs:documentation xml:lang="en">German business identification number. The business identification number of the non-natural person without a hyphen before the differentiating element.</xs:documentation>
+                                            <xs:documentation xml:lang="de">Deutsche Wirtschafts-Identifikationsnummer der nicht natürlichen Person; anzugeben ohne Bindestrich vor dem Unterscheidungsmerkmal.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="InvestmentMarketTaxNumber" type="GermanTaxNumberType" minOccurs="0">
+                                        <xs:annotation>
+                                            <xs:documentation xml:lang="en">If a German business identification number hasn´t been assigned yet: The German tax number of the non-natural person.</xs:documentation>
+                                            <xs:documentation xml:lang="de">Sofern noch keine deutsche Wirtschafts-Identifikationsnummer vergeben wurde: die deutsche Steuernummer der nicht natürlichen Person.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="NonGermanPerson">
+                            <xs:complexType>
+                                <xs:choice>
+                                    <xs:sequence>
+                                        <xs:annotation>
+                                            <xs:documentation xml:lang="en">At least one of the four needs to be provided.</xs:documentation>
+                                            <xs:documentation xml:lang="de">Mindestens eine der Vier muss angegeben werden.</xs:documentation>
+                                        </xs:annotation>
+                                        <xs:element name="InvestmentMarketBusinessId" type="GermanBusinessIdType" minOccurs="0">
+                                            <xs:annotation>
+                                                <xs:documentation xml:lang="en">German business identification number. The business identification number of the non-natural person without a hyphen before the differentiating element.</xs:documentation>
+                                                <xs:documentation xml:lang="de">Deutsche Wirtschafts-Identifikationsnummer der nicht natürlichen Person; anzugeben ohne Bindestrich vor dem Unterscheidungsmerkmal.</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="InvestmentMarketTaxNumber" type="GermanTaxNumberType" minOccurs="0">
+                                            <xs:annotation>
+                                                <xs:documentation xml:lang="en">If a German business identification number hasn´t been assigned yet: The German tax number of the non-natural person.</xs:documentation>
+                                                <xs:documentation xml:lang="de">Sofern noch keine deutsche Wirtschafts-Identifikationsnummer vergeben wurde: die deutsche Steuernummer der nicht natürlichen Person.</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="InvestmentMarketSpecialFundsTaxNumber" type="GermanTaxNumberType" minOccurs="0">
+                                            <xs:annotation>
+                                                <xs:documentation xml:lang="en">This specific German tax number gets assigned by the German Federal Central Tax Authority (Bundeszentralamt für Steuern) to non-German Special-Investment Funds in the meaning of Section 26 of the German Investment Tax Act (GITA) which opted to be treated as a tax transparent fund under Section 30 GITA. This is a conditional mandatory field. Please leave the field blank if you don´t meet the above condition.</xs:documentation>
+                                                <xs:documentation xml:lang="de">Diese spezielle deutsche Steuernummer wird vom Bundeszentralamt für Steuern an ausländische Spezial-Investmentfonds im Sinne des § 26 Investmentsteuergesetz (InvStG) vergeben, die nach § 30 InvStG zur transparenten Besteuerung optiert haben. Es handelt sich um ein bedingt verpflichtendes Feld. Sofern die vorgenannte Voraussetzung nicht erfüllt ist, ist das Feld leer zu lassen.</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="LEI" type="LEIISO17442Type" minOccurs="0">
+                                            <xs:annotation>
+                                                <xs:documentation xml:lang="en">If neither a German business tax id number in the meaning of section 139c German General Tax Code nor a German tax id number (usually the Corporate Income Tax id number) is available, the Legal Entity Identifier (LEI).</xs:documentation>
+                                                <xs:documentation xml:lang="de">Sofern weder eine deutsche Wirtschafts-Identifikationsnummer im Sinne des § 139c AO noch eine deutsche steuerliche Identifikationsnummer (regelmäßig die Körperschaftsteuer-Identifikationsnummer) vorliegt: der Legal Entity Identifier (LEI).</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="EUID" type="EUIDType" minOccurs="0">
+                                            <xs:annotation>
+                                                <xs:documentation xml:lang="en">If neither a German business tax id number in the meaning of section 139c German General Tax Code nor a German tax id number (usually the Corporate Income Tax id number) is available nor a Legal Entity Identifier (LEI) is available, the European unique identifier (EUID; as referred to in Article 16 of Directive (EU) 2017/1132 of the European Parliament and of the Council).</xs:documentation>
+                                                <xs:documentation xml:lang="de">Sofern weder eine deutsche Wirtschafts-Identifikationsnummer im Sinne des § 139c AO noch eine deutsche steuerliche Identifikationsnummer (regelmäßig die Körperschaftsteuer-Identifikationsnummer) noch ein Legal Entity Identifier (LEI) vorliegt: der europäische einheitliche Kennzeichner (EUID; im Sinne des Artikels 16 der Richtlinie (EU) 2017/1132).</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="ForeignTaxId" type="Name35Type" minOccurs="1">
+                                            <xs:annotation>
+                                                <xs:documentation xml:lang="en">Tax identification number assigned to the tax voucher person by its country of tax residency.</xs:documentation>
+                                                <xs:documentation xml:lang="de">Vom Ansässigkeitsstaat der bescheinigungsberechtigten Person zugeteilte steuerliche Identifikationsnummer.</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:choice>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:choice>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+	<xs:complexType name="CustodianTaxIdentificationType">
+		<xs:complexContent>
+			<xs:extension base="TaxIdentificationType">
+				<xs:sequence>
+                    <xs:element name="CountryOfTaxResidence" type="CountryISO3166Alpha2Type" minOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="en">Country of tax residency in ISO 3166-1 alpha-2.</xs:documentation>
+                            <xs:documentation xml:lang="de">Staat der steuerlichen Ansässigkeit nach ISO 3166-1 alpha-2.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:choice>
+                        <xs:element name="GermanPerson">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:annotation>
+                                        <xs:documentation xml:lang="en">At least one of the two needs to be provided.</xs:documentation>
+                                        <xs:documentation xml:lang="de">Mindestens eine der Zwei muss angegeben werden.</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:element name="InvestmentMarketBusinessId" type="GermanBusinessIdType" minOccurs="0">
+                                        <xs:annotation>
+                                            <xs:documentation xml:lang="en">German business identification number. The business identification number of the non-natural person without a hyphen before the differentiating element.</xs:documentation>
+                                            <xs:documentation xml:lang="de">Deutsche Wirtschafts-Identifikationsnummer der nicht natürlichen Person; anzugeben ohne Bindestrich vor dem Unterscheidungsmerkmal.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="InvestmentMarketTaxNumber" type="GermanTaxNumberType" minOccurs="0">
+                                        <xs:annotation>
+                                            <xs:documentation xml:lang="en">If a German business identification number hasn´t been assigned yet: The German tax number of the non-natural person.</xs:documentation>
+                                            <xs:documentation xml:lang="de">Sofern noch keine deutsche Wirtschafts-Identifikationsnummer vergeben wurde: die deutsche Steuernummer der nicht natürlichen Person.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="NonGermanPerson">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:annotation>
+                                        <xs:documentation xml:lang="en">At least one of the four needs to be provided.</xs:documentation>
+                                        <xs:documentation xml:lang="de">Mindestens eine der Vier muss angegeben werden.</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:element name="InvestmentMarketBusinessId" type="GermanBusinessIdType" minOccurs="0">
+                                        <xs:annotation>
+                                            <xs:documentation xml:lang="en">German business identification number. The business identification number of the non-natural person without a hyphen before the differentiating element.</xs:documentation>
+                                            <xs:documentation xml:lang="de">Deutsche Wirtschafts-Identifikationsnummer der nicht natürlichen Person; anzugeben ohne Bindestrich vor dem Unterscheidungsmerkmal.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="InvestmentMarketTaxNumber" type="GermanTaxNumberType" minOccurs="0">
+                                        <xs:annotation>
+                                            <xs:documentation xml:lang="en">If a German business identification number hasn´t been assigned yet: The German tax number of the non-natural person.</xs:documentation>
+                                            <xs:documentation xml:lang="de">Sofern noch keine deutsche Wirtschafts-Identifikationsnummer vergeben wurde: die deutsche Steuernummer der nicht natürlichen Person.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="LEI" type="LEIISO17442Type" minOccurs="0">
+                                        <xs:annotation>
+                                            <xs:documentation xml:lang="en">If neither a German business tax id number in the meaning of section 139c German General Tax Code nor a German tax id number (usually the Corporate Income Tax id number) is available, the Legal Entity Identifier (LEI).</xs:documentation>
+                                            <xs:documentation xml:lang="de">Sofern weder eine deutsche Wirtschafts-Identifikationsnummer im Sinne des § 139c AO noch eine deutsche steuerliche Identifikationsnummer (regelmäßig die Körperschaftsteuer-Identifikationsnummer) vorliegt: der Legal Entity Identifier (LEI).</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="EUID" type="EUIDType" minOccurs="0">
+                                        <xs:annotation>
+                                            <xs:documentation xml:lang="en">If neither a German business tax id number in the meaning of section 139c German General Tax Code nor a German tax id number (usually the Corporate Income Tax id number) is available nor a Legal Entity Identifier (LEI) is available, the European unique identifier (EUID; as referred to in Article 16 of Directive (EU) 2017/1132 of the European Parliament and of the Council).</xs:documentation>
+                                            <xs:documentation xml:lang="de">Sofern weder eine deutsche Wirtschafts-Identifikationsnummer im Sinne des § 139c AO noch eine deutsche steuerliche Identifikationsnummer (regelmäßig die Körperschaftsteuer-Identifikationsnummer) noch ein Legal Entity Identifier (LEI) vorliegt: der europäische einheitliche Kennzeichner (EUID; im Sinne des Artikels 16 der Richtlinie (EU) 2017/1132).</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="ForeignTaxId" type="Name35Type" minOccurs="1">
+                                        <xs:annotation>
+                                            <xs:documentation xml:lang="en">Tax identification number assigned to the tax voucher person by its country of tax residency.</xs:documentation>
+                                            <xs:documentation xml:lang="de">Vom Ansässigkeitsstaat der bescheinigungsberechtigten Person zugeteilte steuerliche Identifikationsnummer.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:choice>
+					<xs:element name="BIC" type="SwiftBICCodeType" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="en">BIC (Bank Identifier Code) is an 8 to 11-character code used to uniquely identify banks globally during international transactions, often called a SWIFT code. Structure: Comprised of 4 letters (bank code), 2 letters (country code), 2 letters/numbers (location code), and an optional 3-digit branch code (or 'XXX' for head office).</xs:documentation>
+                            <xs:documentation xml:lang="de">BIC (Bank Identifier Code) ist ein 8- bis 11-stelliger Code zur eindeutigen Identifikation von Kreditinstituten im internationalen Zahlungsverkehr, häufig auch als SWIFT-Code bezeichnet. Aufbau: 4 Buchstaben (Institutskennung), 2 Buchstaben (Ländercode), 2 Buchstaben/Ziffern (Ortskennung) sowie optional 3-stellige Filialkennung (bzw. „XXX“ für die Hauptstelle).</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="CapitalIncomeType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Declares a capital income.</xs:documentation>
+			<xs:documentation xml:lang="de">Deklariert einen Kapitalertrag.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ISIN" type="ISINISO6166Type" minOccurs="1" />
+			<xs:element name="NameOfSecurity" type="Name256Type" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Designation of the category of security.</xs:documentation>
+                    <xs:documentation xml:lang="de">Bezeichnung der Wertpapiergattung.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="TypeOfSecurity" type="TypeOfSecurityType" minOccurs="0" />
+            <xs:element name="COAF" type="COAFType" minOccurs="1" />
+			<xs:element name="IsDepositaryReceipt" type="xs:boolean" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Did the beneficial owner receive the capital income via a depositary receipt on German equities (for example via an American Depositary Receipt (ADR))? Then the structure DepositaryReceipts has to be provided.</xs:documentation>
+                    <xs:documentation xml:lang="de">Hat der wirtschaftlich Berechtigte den Kapitalertrag über einen Hinterlegungsschein auf deutsche Aktien (z. B. American Depositary Receipt – ADR) bezogen, so ist die Struktur DepositaryReceipts zu befüllen.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+			<xs:element name="DepositaryReceipt" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ISINOfUnderlyingSecurity" type="ISINISO6166Type" minOccurs="1" />
+						<xs:element name="NameOfUnderlyingSecurity" type="Name256Type" minOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Name of the underlying German security.</xs:documentation>
+                                <xs:documentation xml:lang="de">Bezeichnung der zugrunde liegenden deutschen Wertpapiergattung.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+						<xs:element name="Recorddate" type="xs:date" minOccurs="1"> 
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Record date of the underlying German share.</xs:documentation>
+                                <xs:documentation xml:lang="de">Record Date (Stichtag) der zugrunde liegenden deutschen Aktie.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+						<xs:element name="TotalNumberOfCertificatesIssued" type="Decimal15Dot4Type" minOccurs="0">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Total number of depositary certificates (DRs) issued on the date of the profit distribution resolution (date of annual general meeting of the German stock corporation) by the respective DR issuer.</xs:documentation>
+                                <xs:documentation xml:lang="de">Gesamtzahl der vom jeweiligen DR-Emittenten am Tag des Gewinnverwendungsbeschlusses (Tag der Hauptversammlung der deutschen Aktiengesellschaft) ausgegebenen Hinterlegungsscheine (Depositary Receipts).</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+						<xs:element name="TotalNumberOfUnderlyingShares" type="Decimal15Dot4Type" minOccurs="0">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Total number of underlying German ordinary shares deposited by the respective DR issuer at the German depositary bank on the date of the profit resolution distribution of the German stock corporation.</xs:documentation>
+                                <xs:documentation xml:lang="de">Gesamtzahl der vom jeweiligen DR-Emittenten am Tag des Gewinnverwendungsbeschlusses der deutschen Aktiengesellschaft bei der deutschen Hinterlegungsstelle hinterlegten zugrunde liegenden deutschen Stammaktien.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+						<xs:element name="Ratio" type="Decimal11Dot2Type" minOccurs="0">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Ratio of the depositary certificate to the deposited securities. The ratio of depositary certificates stipulated in the issue conditions of the depositary certificate to the domestic securities stored by the German depository.</xs:documentation>
+                                <xs:documentation xml:lang="de">Verhältnis des Hinterlegungsscheins zu den hinterlegten Wertpapieren; das in den Emissionsbedingungen des Hinterlegungsscheins festgelegte Verhältnis der Hinterlegungsscheine zu den bei der deutschen Hinterlegungsstelle verwahrten inländischen Wertpapieren.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+						<xs:element name="NumberOfCertificatesHeld" type="Decimal15Dot4Type" minOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Number of depositary certificates held by the creditor of the capital income (of the tax certificate) at the date of the profit distribution resolution.</xs:documentation>
+                                <xs:documentation xml:lang="de">Anzahl der vom Gläubiger der Kapitalerträge (Adressat der Steuerbescheinigung) am Tag des Gewinnverwendungsbeschlusses gehaltenen Hinterlegungsscheine.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+					</xs:sequence>
+                    <xs:attribute name="CorporateActionIdOfUnderlyingSecurity" type="Name45Type" use="optional" >
+                        <xs:annotation>
+                            <xs:documentation xml:lang="en"></xs:documentation>
+                            <xs:documentation xml:lang="de">Corporate Action Identifier of the Custodian for the underlying security.</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Paydate" type="xs:date" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Date of Payment.</xs:documentation>
+                    <xs:documentation xml:lang="de">Tag der Zahlung.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="PayoutType" type="IncomePayoutTypeType" minOccurs="1" />
+            <xs:element name="CashAccountNumber" type="Name200Type" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Cash account number to which the income got credited at the custodian to whom the tax voucher person is directly contracted.</xs:documentation>
+                    <xs:documentation xml:lang="de">Verrechnungskontonummer, auf der der Ertrag bei der Verwahrstelle gutgeschrieben wurde, zu der die bescheinigungsberechtigte Person eine unmittelbare Vertragsbeziehung unterhält.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="AccountNumberPayingAgentLevel" type="Name200Type" minOccurs="0" >
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">If known: Account number of the account at the level of the German paying agent in which the shares are held.</xs:documentation>
+                    <xs:documentation xml:lang="de">Sofern bekannt: Kontonummer des Depots auf Ebene der inländischen auszahlenden Stelle, in dem die Aktien verwahrt werden.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+			
+			<xs:element name="TaxInformation" minOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Informationen converning taxation of the (final) beneficial owner.</xs:documentation>
+					<xs:documentation xml:lang="de">Informationen zur Besteuerung des (finalen) witschaftlichen Eigentümers.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="GrossAmount" type="Decimal14Dot2Type" minOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Gross amount of the capital income generated (in Euro).</xs:documentation>
+                                <xs:documentation xml:lang="de">Bruttobetrag des erzielten Kapitalertrags (in Euro).</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+						<xs:element name="NetIncomePayment" type="Decimal14Dot2Type" minOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Net income payment (in EURO).</xs:documentation>
+                                <xs:documentation xml:lang="de">Auszahlungsbetrag (Nettokapitalertrag) in Euro.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+						<xs:element name="WithholdingTaxAmount" type="Decimal14Dot2Type" minOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">German withholding tax amount in Euro.</xs:documentation>
+                                <xs:documentation xml:lang="de">Einbehaltene deutsche Kapitalertragsteuer in Euro.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="SurchargesAmount" type="Decimal14Dot2Type" minOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">German solidarity surcharge amount in Euro.</xs:documentation>
+                                <xs:documentation xml:lang="de">Einbehaltener Solidaritätszuschlag in Euro.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="WithholdingTaxRate" type="Decimal2Dot2Type" minOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Tax rate applied to capital income (German withholding tax rate).</xs:documentation>
+                                <xs:documentation xml:lang="de">Auf den Kapitalertrag angewandter Steuersatz (deutscher Kapitalertragsteuersatz).</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="SurchargesRate" type="Decimal2Dot2Type" minOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Tax rate of the solidarity surcharge applied (Solidarity surcharge rate) The current solidarity surcharge rate of 5.5% must be populated as 5.50.</xs:documentation>
+                                <xs:documentation xml:lang="de">Angewandter Satz des Solidaritätszuschlags. Der derzeit geltende Satz von 5,5 % ist als 5,50 anzugeben.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+						<xs:element name="Nominal" type="Decimal15Dot4Type" minOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Quantity of securities on which the capital income is based (Number of shares / nominal value on which the income has been paid including Market Claims).</xs:documentation>
+                                <xs:documentation xml:lang="de">Stückzahl der Wertpapiere bzw. Nennwert, auf die der Kapitalertrag entfällt (Anzahl der Aktien / Nennwert, auf den der Ertrag gezahlt wurde, einschließlich Market Claims).</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+						<xs:element name="NominalMoreThan5DaysPriorExdate" type="Decimal15Dot4Type" minOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Number of shares which have been received more than 5 days prior to the ex-date.</xs:documentation>
+                                <xs:documentation xml:lang="de">Anzahl der Aktien, die mehr als 5 Tage vor dem Ex-Tag erworben wurden.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+						<xs:element name="NominalWithin5DaysPriorExdate" type="Decimal15Dot4Type" minOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Number of shares which have been received within 5 days prior to the ex-date.</xs:documentation>
+                                <xs:documentation xml:lang="de">Anzahl der Aktien, die innerhalb von 5 Tagen vor dem Ex-Tag erworben wurden.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+						<xs:element name="NominalLinkedToFinancialArrangement" type="Decimal15Dot4Type" minOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Number of German shares value which were linked to Financial Arrangements (particularly hedging instruments like options, futures etc. but also borrowed securities or securities purchased under a Repo).
+                                    Financial arrangements in the meaning of Section 45b (3) of the German Income Tax Act and as defined in margin number 80 of the guidance notes of the German Ministry of Finance from April 22, 2025. According to marginal 5 of the guidance notes from the German Ministry of Finance, German shares were linked to Financial Arrangements if the Financial Arrangements were not yet settled, expired or otherwise completed on the day after the annual general meeting of the German stock corporation which distributed the dividend.</xs:documentation>
+                                <xs:documentation xml:lang="de">Anzahl der deutschen Aktien, die mit Finanzarrangements im Sinne des § 45b Abs. 3 EStG verknüpft waren (insbesondere Sicherungsinstrumente wie Optionen, Futures etc., aber auch geliehene oder im Rahmen eines Repo-Geschäfts erworbene Wertpapiere). Maßgeblich sind Finanzarrangements im Sinne des BMF-Schreibens vom 22. April 2025 (Rn. 80). Nach Rn. 5 dieses BMF-Schreibens gelten deutsche Aktien als mit Finanzarrangements verknüpft, wenn die Finanzarrangements am Tag nach der Hauptversammlung der ausschüttenden deutschen Aktiengesellschaft noch nicht abgewickelt, ausgelaufen oder anderweitig beendet waren.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+						<xs:element name="NominalNotLinkedToFinancialArrangement" type="Decimal15Dot4Type" minOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Number of German shares which were not linked to a Financial Arrangement.</xs:documentation>
+                                <xs:documentation xml:lang="de">Anzahl der deutschen Aktien, die nicht mit einem Finanzarrangement verknüpft waren.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+						<xs:element name="NominalLinkedToSecLending" type="Decimal15Dot4Type" minOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Number of German shares which are linked to a securities lending transaction that had not yet been completed on the day after the annual general meeting (AGM date).</xs:documentation>
+                                <xs:documentation xml:lang="de">Anzahl der deutschen Aktien, die mit einer Wertpapierleihe verknüpft sind, welche am Tag nach der Hauptversammlung (HV-Tag) noch nicht abgewickelt war.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+						<xs:element name="NominalLinkedToRepo" type="Decimal15Dot4Type" minOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Number of German shares which are linked to a repo transaction that had not yet been completed on the day after the annual general meeting (AGM date).</xs:documentation>
+                                <xs:documentation xml:lang="de">Anzahl der deutschen Aktien, die mit einem Repo-Geschäft verknüpft sind, welches am Tag nach der Hauptversammlung (HV-Tag) noch nicht abgewickelt war.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+
+		<xs:attribute name="IncomeIdentifier" type="Name45Type" use="optional">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">Unique identifier for an income. Must be unique over subsequent files. For a subsequent request to the same income, the same identifier must be provided. To be defined by the customer institute.</xs:documentation>
+				<xs:documentation xml:lang="de">Eindeutiger Identifier für das Einkommen. Muss auch über folgende Dateien eindeutig sein. Für eine spätere Anfrage zum selben Einkommen muss der gleiche Identifier geliefert werden. Ist durch das Kundeninstitut festzulegen.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="CustodianIncomeIdentifier" type="Name45Type" use="optional">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">Bookingnumber of the payment received from the custodian. Used to reference a specific booking, if there are multiple custody chains.</xs:documentation>
+				<xs:documentation xml:lang="de">Buchungsnummer der von der Verwahrstelle erhaltenen Zahlung; dient der Referenzierung einer konkreten Buchung bei mehreren Verwahrketten.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="ReceiptsAndDeliveriesFiFoType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">List of acquisitions and disposals between 12 month before payment and 45 days after payment.</xs:documentation>
+			<xs:documentation xml:lang="de">Liste von Anschaffungen und Veräußerungen zwischen 12 Monaten vor Zahlung und 45 Tagen nach Zahlung.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Receipts">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="MoreThan1000Available" type="xs:boolean" minOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Are more than 1.000 (one thousand) remaining reportable receipt transactions available?</xs:documentation>
+                                <xs:documentation xml:lang="de">Sind mehr als 1.000 (eintausend) verbleibende meldepflichtige Eingangstransaktionen vorhanden?</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+						<xs:element name="Receipt" type="ReceiptType" minOccurs="0" maxOccurs="1000">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">If more than 1.000 (one thousand) reportable receipt transactions remain after applying FIFO, please only provide us with the 1.000 most recent (from the AGM date perspective) receipt transactions.</xs:documentation>
+                                <xs:documentation xml:lang="de">Verbleiben nach Anwendung des FIFO-Verfahrens mehr als 1.000 (eintausend) meldepflichtige Eingangstransaktionen, sind ausschließlich die 1.000 jüngsten (aus Sicht des HV-Tages) Eingangstransaktionen zu übermitteln.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Deliveries">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="MoreThan1000Available" type="xs:boolean" minOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Are more than 1.000 (one thousand) reportable deliver transactions available?</xs:documentation>
+                                <xs:documentation xml:lang="de">Sind mehr als 1.000 (eintausend) meldepflichtige Auslieferungstransaktionen vorhanden?</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+						<xs:element name="Delivery" type="DeliveryType" minOccurs="0" maxOccurs="1000">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">If more than 1.000 (one thousand) reportable deliver transactions are available, please only provide us with the 1.000 deliver transactions which are closest (from a timing perspective) to the AGM date.</xs:documentation>
+                                <xs:documentation xml:lang="de">Sind mehr als 1.000 (eintausend) meldepflichtige Auslieferungstransaktionen vorhanden, sind ausschließlich die 1.000 dem HV-Tag (zeitlich) nächstgelegenen Auslieferungstransaktionen zu übermitteln.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<xs:complexType name="ReceiptType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Receipt trades are purchase trades, book-entry transfers (delivery in), securities lending transactions and repurchase trades (repo).</xs:documentation>
+			<xs:documentation xml:lang="de">Eingangstransaktionen sind Käufe, Übertragungen im Effektengiroverkehr (Einlieferungen), Wertpapierleihen sowie Wertpapierpensionsgeschäfte (Repo).</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Nominal" type="Decimal15Dot4Type" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Number of shares / nominal value on which the transaction is based (= per receipt trade with acquisition date &lt; 1 year prior to the day of the annual shareholders' meeting (day of the dividend distribution resolution).</xs:documentation>
+                    <xs:documentation xml:lang="de">Anzahl der Aktien / Nennwert, auf den die Transaktion entfällt (je Eingangstransaktion mit einem Anschaffungsdatum von weniger als einem Jahr vor dem Tag der Hauptversammlung, an dem der Gewinnverwendungsbeschluss gefasst wurde).</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+			<xs:element name="TradeDate" type="xs:date" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Trade Date.</xs:documentation>
+                    <xs:documentation xml:lang="de">Handelstag.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+			<xs:element name="TransactionType" type="ReceiptsTransactionType" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Category of securities trading transacted.</xs:documentation>
+                    <xs:documentation xml:lang="de">Art des getätigten Wertpapiergeschäfts.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+			<xs:element name="ContractualSettlementDate" type="xs:date" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Agreed settlement date (Contractual settlement date).</xs:documentation>
+                    <xs:documentation xml:lang="de">Vereinbarter Erfüllungstag (vertragliches Erfüllungsdatum).</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+			<xs:element name="ActualSettlementDate" type="xs:date" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Actual settlement date.</xs:documentation>
+                    <xs:documentation xml:lang="de">Tatsächlicher Erfüllungstag.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+		</xs:sequence>
+		<xs:attribute name="TransactionReference" type="Name45Type" use="optional">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">Transaction reference beneficial owner/customer .</xs:documentation>
+                <xs:documentation xml:lang="de">Transaktionsreferenz des wirtschaftlich Berechtigten bzw. Kunden.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="TransactionReferencePayingAgent" type="Name45Type" use="optional">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">Transaction reference German Paying Agent.</xs:documentation>
+                <xs:documentation xml:lang="de">Transaktionsreferenz der inländischen auszahlenden Stelle.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="DeliveryType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Deliver trades are sales, book-entry transfers (delivery out), securities lending transactions and repurchase trades (repo). .</xs:documentation>	
+			<xs:documentation xml:lang="de">Auslieferungstransaktionen sind Verkäufe, Übertragungen im Effektengiroverkehr (Auslieferungen), Wertpapierleihen sowie Wertpapierpensionsgeschäfte (Repo).</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Nominal" type="Decimal15Dot4Type" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Number of shares / nominal value on which the transaction is based (= per deliver trade, if the trade date is within 47 calendar days after the date of the annual shareholders' meeting (AGM date; day of the dividend distribution resolution).</xs:documentation>
+                    <xs:documentation xml:lang="de">Anzahl der Aktien / Nennwert, auf den die Transaktion entfällt (je Auslieferungstransaktion, sofern der Handelstag innerhalb von 47 Kalendertagen nach dem Tag der Hauptversammlung – HV-Tag, Tag des Gewinnverwendungsbeschlusses – liegt).</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+			<xs:element name="TradeDate" type="xs:date" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Trade Date.</xs:documentation>
+                    <xs:documentation xml:lang="de">Handelstag.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+			<xs:element name="TransactionType" type="DeliveriesTransactionType" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Category of securities trading transacted.</xs:documentation>
+                    <xs:documentation xml:lang="de">Art des getätigten Wertpapiergeschäfts.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+			<xs:element name="ContractualSettlementDate" type="xs:date" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Agreed settlement date (Contractual settlement date).</xs:documentation>
+                    <xs:documentation xml:lang="de">Vereinbarter Erfüllungstag (vertragliches Erfüllungsdatum).</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+			<xs:element name="ActualSettlementDate" type="xs:date" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Actual settlement date.</xs:documentation>
+                    <xs:documentation xml:lang="de">Tatsächlicher Erfüllungstag.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+		</xs:sequence>
+		<xs:attribute name="TransactionReference" type="Name45Type" use="optional">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">Transaction reference beneficial owner/customer .</xs:documentation>
+                <xs:documentation xml:lang="de">Transaktionsreferenz des wirtschaftlich Berechtigten bzw. Kunden.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="TransactionReferencePayingAgent" type="Name45Type" use="optional">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">Transaction reference German Paying Agent.</xs:documentation>
+                <xs:documentation xml:lang="de">Transaktionsreferenz der inländischen auszahlenden Stelle.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+	</xs:complexType>
+
+    <xs:complexType name="ReceiptsAndDeliveriesAllType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">List of acquisitions and disposals between 12 month before payment and 47 days after payment. No FiFo calculation applied.</xs:documentation>
+            <xs:documentation xml:lang="de">Liste von Anschaffungen und Veräußerungen zwischen 12 Monaten vor Zahlung und 47 Tagen nach Zahlung. Keine FiFo Berechnung angewendet.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="OpeningBalance" type="Decimal15Dot4Type" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Balance before 12 month.</xs:documentation>
+                    <xs:documentation xml:lang="de">Bestand vor 12 Monaten.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="OpeningBalanceDate" type="xs:dateTime" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Date of the initial holdings evaluation.</xs:documentation>
+                    <xs:documentation xml:lang="de">Datum des ermittelten Eingangsbestands.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:sequence>
+                <xs:element name="Transaction" type="RawTransactionType" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RawTransactionType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Deliver trades are sales, book-entry transfers (delivery out), securities lending transactions and repurchase trades (repo). .</xs:documentation>
+            <xs:documentation xml:lang="de">Auslieferungstransaktionen sind Verkäufe, Übertragungen im Effektengiroverkehr (Auslieferungen), Wertpapierleihen sowie Wertpapierpensionsgeschäfte (Repo).</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Nominal" type="Decimal15Dot4Type" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Number of shares / nominal value on which the transaction is based (= per deliver trade, if the trade date is within 47 calendar days after the date of the annual shareholders' meeting (AGM date; day of the dividend distribution resolution).</xs:documentation>
+                    <xs:documentation xml:lang="de">Anzahl der Aktien / Nennwert, auf den die Transaktion entfällt (je Auslieferungstransaktion, sofern der Handelstag innerhalb von 47 Kalendertagen nach dem Tag der Hauptversammlung – HV-Tag, Tag des Gewinnverwendungsbeschlusses – liegt).</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="TradeDate" type="xs:date" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Trade Date.</xs:documentation>
+                    <xs:documentation xml:lang="de">Handelstag.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="IntraDaySequence" type="xs:integer" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Sortable number, for the case that more than one transaction per trade date is delivered.</xs:documentation>
+                    <xs:documentation xml:lang="de">Sortierbare Zahl für den Fall dass mehr als eine Transaktion an einem Handelstag geliefert wird.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="TransactionType" type="RawTransactionTypeType" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Category of securities trading transacted.</xs:documentation>
+                    <xs:documentation xml:lang="de">Art des getätigten Wertpapiergeschäfts.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ContractualSettlementDate" type="xs:date" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Agreed settlement date (Contractual settlement date).</xs:documentation>
+                    <xs:documentation xml:lang="de">Vereinbarter Erfüllungstag (vertragliches Erfüllungsdatum).</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ActualSettlementDate" type="xs:date" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Actual settlement date.</xs:documentation>
+                    <xs:documentation xml:lang="de">Tatsächlicher Erfüllungstag.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="COAF" type="COAFType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Corporate action event reference (COAF). Must be provided, if dividend or interest transaction type.</xs:documentation>
+                    <xs:documentation xml:lang="de">Corporate action event reference (COAF). Muss geliefert werden für dividend oder interest Transaktionstypen.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="TransactionReference" type="Name45Type" use="optional">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">Transaction reference beneficial owner/customer .</xs:documentation>
+                <xs:documentation xml:lang="de">Transaktionsreferenz des wirtschaftlich Berechtigten bzw. Kunden.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="TransactionReferencePayingAgent" type="Name45Type" use="optional">
+            <xs:annotation>
+                <xs:documentation xml:lang="en">Transaction reference German Paying Agent.</xs:documentation>
+                <xs:documentation xml:lang="de">Transaktionsreferenz der inländischen auszahlenden Stelle.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    
+	<xs:complexType name="CustodyChainType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Ordered list of institutions in the custody chain.</xs:documentation>
+			<xs:documentation xml:lang="de">Geordnete Liste von Finanzinstituten in der Verwahrkette.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+            <xs:element name="CustodyEntry" minOccurs="0" maxOccurs="20">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Declares a custody in the chain.</xs:documentation>
+                    <xs:documentation xml:lang="de">Deklariert eine Verwahrung in der Verwahrkette.</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="NumberInChain" type="xs:unsignedByte" minOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Order in the custody chain. 1 is the custodian with the securities account for the beneficiary of person holding in favor of the beneficiary on its account.</xs:documentation>
+                                <xs:documentation xml:lang="de">Reihenfolge in der Verwahrkette. 1 ist die Depotführende Bank für den wirtschaftlichen Eigentümer oder den vertretenden Account-Eigentümer.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="NameOfIntermediary" type="Name256Type" minOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Name of the depository/(sub-)custodian.</xs:documentation>
+                                <xs:documentation xml:lang="de">Bezeichnung der Verwahrstelle bzw. Unterverwahrstelle.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="Address" type="CustodyEntryAddressType" minOccurs="1" />
+                        <xs:element name="TaxIdentification" type="CustodianTaxIdentificationType" minOccurs="1"/>
+                        <xs:element name="AccountNumber" type="Name200Type" minOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Account number or securities account in which the securities are held by the customer of an intermediary (i.e. the beneficiary or the person holding the position of the beneficiary on its account or the preceding intermediary).</xs:documentation>
+                                <xs:documentation xml:lang="de">Konto- bzw. Depotnummer, unter der die Wertpapiere für den Kunden eines Intermediärs geführt werden (d. h. für den wirtschaftlich Berechtigten, die für ihn die Position haltende Person oder den vorgelagerten Intermediär).</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="AccountType" type="AccountTypeType" minOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Account type.</xs:documentation>
+                                <xs:documentation xml:lang="de">Kontoart.</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="NominalInAccount" type="Decimal15Dot4Type" minOccurs="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Number of shares / nominal value held in the account of the respective account holder (i.e. the tax voucher person or of the third party holding the securities in the name of the tax voucher person or the preceding intermediary) (Number of shares held in the account).</xs:documentation>
+                                <xs:documentation xml:lang="de">Anzahl der Aktien / Nennwert, der im Konto des jeweiligen Kontoinhabers (d. h. der bescheinigungsberechtigten Person, des die Wertpapiere für die bescheinigungsberechtigte Person haltenden Dritten oder des vorgelagerten Intermediärs) gehalten wird (im Konto gehaltene Stückzahl).</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="ReceiptsTransactionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Kind of trade according to MiKaDiv.</xs:documentation>
+			<xs:documentation xml:lang="de">Art des Handels gemäß Vorgabe MiKaDiv.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PO">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Acquisition of securities.</xs:documentation>
+					<xs:documentation xml:lang="de">.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+            <xs:enumeration value="DT">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Book-entry transfer (delivery in).</xs:documentation>
+                    <xs:documentation xml:lang="de">.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+			<xs:enumeration value="TL">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Transfer based on a securities loan.</xs:documentation>
+					<xs:documentation xml:lang="de">Wertpapierleihe.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			
+			<xs:enumeration value="TP">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Transfer based on a repo transaction.</xs:documentation>
+					<xs:documentation xml:lang="de">Wertpapierpensionsgeschäft.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RL">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Retransfer based on a securities loan.</xs:documentation>
+					<xs:documentation xml:lang="de">Wertpapierleihe Rücktransfer.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+            <xs:enumeration value="RP">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Retransfer based on a repo transaction.</xs:documentation>
+                    <xs:documentation xml:lang="de">Wertpapierpensionsgeschäft Rücktransfer.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+    <xs:simpleType name="DeliveriesTransactionType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Kind of trade according to MiKaDiv.</xs:documentation>
+            <xs:documentation xml:lang="de">Art des Handels gemäß Vorgabe MiKaDiv.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="SO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Sale of securities.</xs:documentation>
+                    <xs:documentation xml:lang="de">.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="DT">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Book-entry transfer (delivery out).</xs:documentation>
+                    <xs:documentation xml:lang="de">.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="TL">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Transfer based on a securities loan.</xs:documentation>
+                    <xs:documentation xml:lang="de">Wertpapierleihe.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="TP">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Transfer based on a repo transaction.</xs:documentation>
+                    <xs:documentation xml:lang="de">Wertpapierpensionsgeschäft.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="RL">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Retransfer based on a securities loan.</xs:documentation>
+                    <xs:documentation xml:lang="de">Wertpapierleihe Rücktransfer.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="RP">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Retransfer based on a repo transaction.</xs:documentation>
+                    <xs:documentation xml:lang="de">Wertpapierpensionsgeschäft Rücktransfer.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="RawTransactionTypeType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Kind of trade for FiFo calculation by German paying agent.</xs:documentation>
+            <xs:documentation xml:lang="de">Art des Handels für FiFo Berechnung bei deutscher Zahlstelle.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Buy">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Buy of securities.</xs:documentation>
+                    <xs:documentation xml:lang="de">Kauf von Wertpapieren.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Sell">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Sell of securities.</xs:documentation>
+                    <xs:documentation xml:lang="de">Verkauf von Wertpapieren.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Transfer">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Book-entry transfer.</xs:documentation>
+                    <xs:documentation xml:lang="de">Buchungsmäßige Übertragung von Wertpapieren.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SlbOpen">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Transfer based on a securities loan.</xs:documentation>
+                    <xs:documentation xml:lang="de">Wertpapierleihe.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SlbClose">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Retransfer based on a securities loan.</xs:documentation>
+                    <xs:documentation xml:lang="de">Wertpapierleihe Rücktransfer.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="RepoOpen">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Transfer based on a repo transaction.</xs:documentation>
+                    <xs:documentation xml:lang="de">Wertpapierpensionsgeschäft.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="RepoClose">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Retransfer based on a repo transaction.</xs:documentation>
+                    <xs:documentation xml:lang="de">Wertpapierpensionsgeschäft Rücktransfer.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Dividend">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Dividend distribution.</xs:documentation>
+                    <xs:documentation xml:lang="de">Dividendenausschüttung.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Interest">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Interest payment.</xs:documentation>
+                    <xs:documentation xml:lang="de">Zinsauszahlung.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Other">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Other.</xs:documentation>
+                    <xs:documentation xml:lang="de">Anderes.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="IncomePayoutTypeType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Type of Payment.</xs:documentation>
+            <xs:documentation xml:lang="de">Art der Zahlung.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Cash">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Payment in Cash.</xs:documentation>
+                    <xs:documentation xml:lang="de">Zahlung in bar.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Shares">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Payment in Shares (stock dividend).</xs:documentation>
+                    <xs:documentation xml:lang="de">Zahlung in Aktien (Stockdividende).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+	<xs:simpleType name="AccountTypeType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Account type.</xs:documentation>
+            <xs:documentation xml:lang="de">Depottyp.</xs:documentation>
+        </xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="A">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">A - Own Account</xs:documentation>
+				    <xs:documentation xml:lang="de">A – Eigenbestandskonto.</xs:documentation>
+                </xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B">
+                <xs:annotation>
+					<xs:documentation xml:lang="en">B – Third-party general account</xs:documentation>
+				    <xs:documentation xml:lang="de">B – Fremdbestands-Sammelkonto.</xs:documentation>
+                </xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Ct">
+                <xs:annotation>
+					<xs:documentation xml:lang="en">C – Third-party individual account</xs:documentation>
+				    <xs:documentation xml:lang="de">C – Fremdbestands-Einzelkonto.</xs:documentation>
+                </xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="D">
+                <xs:annotation>
+					<xs:documentation xml:lang="en">D – Detail register account of a third-party general account</xs:documentation>
+				    <xs:documentation xml:lang="de">D – Detailverzeichnis-Unterkonto eines Fremdbestands-Sammelkontos.</xs:documentation>
+                </xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="E">
+                <xs:annotation>
+					<xs:documentation xml:lang="en">E – Third-party global account other than B</xs:documentation>
+				    <xs:documentation xml:lang="de">E – Sonstiges Fremdbestands-Globalkonto (abweichend von B).</xs:documentation>
+                </xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="F">
+                <xs:annotation>
+					<xs:documentation xml:lang="en">F – Individual account of a securities holder other than D or C</xs:documentation>
+				    <xs:documentation xml:lang="de">F – Einzelkonto eines Wertpapierinhabers (abweichend von D oder C).</xs:documentation>
+                </xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="G">
+                <xs:annotation>
+					<xs:documentation xml:lang="en">G – Other type of account</xs:documentation>
+				    <xs:documentation xml:lang="de">G – Sonstige Kontoart.</xs:documentation>
+                </xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+    
+    <xs:simpleType name="AccountRelationshipType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Account relationship.</xs:documentation>
+            <xs:documentation xml:lang="de">Depotverhältnis.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Trust">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Fiduciary account</xs:documentation>
+                    <xs:documentation xml:lang="de">Treuhanddepot.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Usufruct">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Securities account held in usufruct</xs:documentation>
+                    <xs:documentation xml:lang="de">Depot, an dem ein Nießbrauchsrecht bestellt ist.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Pledge">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Pledged securities account</xs:documentation>
+                    <xs:documentation xml:lang="de">Verpfändetes Depot.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="DisclosureRequestedServiceType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Type of requested service.</xs:documentation>
+            <xs:documentation xml:lang="de">Art der angefragten Leistung.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="TaxReportAndCertificate">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">The custodian is to perform a reporting of type 11. For domestic taxpayers, a tax certificate shall be issued.</xs:documentation>
+                    <xs:documentation xml:lang="de">Die Verwahrstelle soll eine Reporting vom Typ 11 durchführen. Für Steuerinländer soll eine Steuerbescheinigung ausgestellt werden.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Reclaim">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">The custodian should create or forward the application for reclaim of withholding tax. Additional information for the application needs to be delivered.</xs:documentation>
+                    <xs:documentation xml:lang="de">Die Verwahrstelle soll einen Antrag für Rückforderung von Quellensteuer erstellen oder weiterleiten. Zusätzliche Informationen zum Antrag sind erforderlich.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Relief">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">The custodian provided relief at source and additional information gets provided via the request.</xs:documentation>
+                    <xs:documentation xml:lang="de">Die Verwahrstelle hat an der Quelle entlasten und es werden zusätzeliche Informationen über die Anfrage geliefert.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="DisclosureRequestedAttestationType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Type of requested tax voucher.</xs:documentation>
+            <xs:documentation xml:lang="de">Art der angefragten Steuerbescheinigung.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="BV">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">BV for template III.</xs:documentation>
+                    <xs:documentation xml:lang="de">BV für Muster III.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="PV">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">PV for template I.</xs:documentation>
+                    <xs:documentation xml:lang="de">PV für Muster I.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SB">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">SB for collective tax voucher.</xs:documentation>
+                    <xs:documentation xml:lang="de">SB fürSammesteuerbescheinigung.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+	<xs:simpleType name="UUIDType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Universally Unique Identifier (UUID), format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</xs:documentation>
+			<xs:documentation xml:lang="de">Universally Unique Identifier (UUID), Format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="CountryISO3166Alpha2Type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Country code according to ISO 3166-1 alpha-2 (two uppercase letters).</xs:documentation>
+			<xs:documentation xml:lang="de">Ländercode nach ISO 3166-1 alpha-2 (zwei Großbuchstaben).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Z]{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="DateOfBirthType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Date of birth. Partially unknown dates are permitted: yyyy-mm-00 (unknown day), yyyy-00-00 (unknown month and day), 0000-00-00 (entirely unknown).</xs:documentation>
+			<xs:documentation xml:lang="de">Geburtsdatum. Teilweise unbekannte Daten sind zulässig: yyyy-mm-00 (unbekannter Tag), yyyy-00-00 (unbekannter Monat und Tag), 0000-00-00 (vollständig unbekannt).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{4}-[0-9]{2}-[0-9]{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+    <xs:simpleType name="NameType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Basetype for other name types.</xs:documentation>
+            <xs:documentation xml:lang="de">Basistyp für andere Name Typen.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([^\n\r\t])*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+	<xs:simpleType name="Name5Type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">String with a maximum length of 5 characters.</xs:documentation>
+			<xs:documentation xml:lang="de">Zeichenkette mit einer maximalen Länge von 5 Zeichen.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="NameType">
+			<xs:maxLength value="5"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="Name20Type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">String with a maximum length of 20 characters.</xs:documentation>
+			<xs:documentation xml:lang="de">Zeichenkette mit einer maximalen Länge von 20 Zeichen.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="NameType">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="Name35Type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">String with a maximum length of 35 characters.</xs:documentation>
+			<xs:documentation xml:lang="de">Zeichenkette mit einer maximalen Länge von 35 Zeichen.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="NameType">
+			<xs:maxLength value="35"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="Name45Type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">String with a maximum length of 45 characters.</xs:documentation>
+			<xs:documentation xml:lang="de">Zeichenkette mit einer maximalen Länge von 45 Zeichen.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="NameType">
+			<xs:maxLength value="45"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="Name50Type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">String with a maximum length of 50 characters.</xs:documentation>
+			<xs:documentation xml:lang="de">Zeichenkette mit einer maximalen Länge von 50 Zeichen.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="NameType">
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="Name60Type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">String with a maximum length of 60 characters.</xs:documentation>
+			<xs:documentation xml:lang="de">Zeichenkette mit einer maximalen Länge von 60 Zeichen.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="NameType">
+			<xs:maxLength value="60"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="Name80Type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">String with a maximum length of 80 characters.</xs:documentation>
+			<xs:documentation xml:lang="de">Zeichenkette mit einer maximalen Länge von 80 Zeichen.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="NameType">
+			<xs:maxLength value="80"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="Name256Type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">String with a maximum length of 256 characters.</xs:documentation>
+			<xs:documentation xml:lang="de">Zeichenkette mit einer maximalen Länge von 256 Zeichen.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="NameType">
+			<xs:maxLength value="256"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="Number5Type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Numeric string with a maximum length of 5 digits (e.g. house number 0–99999).</xs:documentation>
+			<xs:documentation xml:lang="de">Numerische Zeichenkette mit maximal 5 Stellen (z. B. Hausnummer 0–99999).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+            <xs:minInclusive value="0" />
+            <xs:maxInclusive value="99999" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="GermanTaxIdType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">German tax identification number (IdNr): exactly 11 digits.</xs:documentation>
+			<xs:documentation xml:lang="de">Deutsche steuerliche Identifikationsnummer (IdNr.): genau 11 Ziffern.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{11}"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="GermanBusinessIdType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">German business identification number (Wirtschafts-Identifikationsnummer): 13 digits without hyphen before the differentiating element.</xs:documentation>
+			<xs:documentation xml:lang="de">Deutsche Wirtschafts-Identifikationsnummer: 13 Ziffern, ohne Bindestrich vor dem Unterscheidungsmerkmal.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{13}"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="GermanTaxNumberType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">German tax number (Steuernummer): 10 to 13 digits.</xs:documentation>
+			<xs:documentation xml:lang="de">Deutsche Steuernummer: 10 bis 13 Ziffern.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{13}"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="LEIISO17442Type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Legal Entity Identifier (LEI) according to ISO 17442: exactly 20 alphanumeric characters.</xs:documentation>
+			<xs:documentation xml:lang="de">Legal Entity Identifier (LEI) gemäß ISO 17442: genau 20 alphanumerische Zeichen.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Z0-9]{20}"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="EUIDType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">European Unique Identifier (EUID) as referred to in Article 16 of Directive (EU) 2017/1132.</xs:documentation>
+			<xs:documentation xml:lang="de">Europäischer einheitlicher Kennzeichner (EUID) im Sinne des Artikels 16 der Richtlinie (EU) 2017/1132.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="NameType">
+			<xs:maxLength value="200"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="BZSTTaxNumberType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Special German tax number assigned by the Federal Central Tax Authority (BZSt) to non-German Special-Investment Funds under Section 30 GITA.</xs:documentation>
+			<xs:documentation xml:lang="de">Spezielle deutsche Steuernummer des Bundeszentralamts für Steuern für ausländische Spezial-Investmentfonds nach § 30 InvStG.</xs:documentation>
+		</xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9]{13}"/>
+        </xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="SwiftBICCodeType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">BIC (Bank Identifier Code): 8 or 11 alphanumeric characters per ISO 9362.</xs:documentation>
+			<xs:documentation xml:lang="de">BIC (Bank Identifier Code): 8 oder 11 alphanumerische Zeichen gemäß ISO 9362.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+
+	<xs:simpleType name="Name16Type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">String with a maximum length of 16 characters.</xs:documentation>
+			<xs:documentation xml:lang="de">Zeichenkette mit einer maximalen Länge von 16 Zeichen.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="NameType">
+			<xs:maxLength value="16"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="Name200Type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">String with a maximum length of 200 characters.</xs:documentation>
+			<xs:documentation xml:lang="de">Zeichenkette mit einer maximalen Länge von 200 Zeichen.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="NameType">
+			<xs:maxLength value="200"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="ISINISO6166Type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">International Securities Identification Number (ISIN) according to ISO 6166: 2 uppercase letters followed by 10 alphanumeric characters.</xs:documentation>
+			<xs:documentation xml:lang="de">International Securities Identification Number (ISIN) gemäß ISO 6166: 2 Großbuchstaben gefolgt von 10 alphanumerischen Zeichen.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Z]{2}[A-Z0-9]{10}"/>
+		</xs:restriction>
+	</xs:simpleType>
+    
+    <xs:simpleType name="COAFType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Corporate Action Event Reference (COAF).</xs:documentation>
+            <xs:documentation xml:lang="de">Corporate Action Event Reference (COAF).</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="NameType">
+            <xs:maxLength value="16"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="TypeOfSecurityType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Type of the security generating the capital income. Determines the category of the financial instrument held in the custodian account.</xs:documentation>
+            <xs:documentation xml:lang="de">Art des Wertpapiers, das den Kapitalertrag erzeugt. Bestimmt die Kategorie des im Depot gehaltenen Finanzinstruments.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Equity">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Equity security (share). Represents ownership in a corporation and entitles the holder to dividends and voting rights. Capital income typically arises from dividend distributions.</xs:documentation>
+                    <xs:documentation xml:lang="de">Beteiligungswertpapier (Aktie). Verbrieft eine Beteiligung an einer Kapitalgesellschaft und berechtigt den Inhaber zu Dividenden und Stimmrechten. Kapitalerträge entstehen typischerweise aus Gewinnausschüttungen.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Bond">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Debt security (bond). Represents a creditor relationship with the issuer and entitles the holder to interest payments. Capital income typically arises from interest distributions.</xs:documentation>
+                    <xs:documentation xml:lang="de">Schuldverschreibung (Anleihe). Verbrieft ein Gläubigerverhältnis gegenüber dem Emittenten und berechtigt den Inhaber zu Zinszahlungen. Kapitalerträge entstehen typischerweise aus Zinserträgen.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="DepositaryReceipt">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Depositary receipt (e.g. ADR, GDR). A certificate issued by a depositary bank representing shares of a foreign company held in custody. Capital income arises from the underlying dividend distributions of the foreign security.</xs:documentation>
+                    <xs:documentation xml:lang="de">Hinterlegungsschein (z. B. ADR, GDR). Von einer Depotbank ausgestellte Urkunde, die im Depot gehaltene Aktien eines ausländischen Unternehmens verbrieft. Kapitalerträge entstehen aus den Ausschüttungen des zugrunde liegenden ausländischen Wertpapiers.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+	<xs:simpleType name="Decimal14Dot2Type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Decimal number with up to 16 digits total and 2 decimal places.</xs:documentation>
+			<xs:documentation xml:lang="de">Dezimalzahl mit bis zu 16 Stellen gesamt und 2 Nachkommastellen.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="16"/>
+			<xs:fractionDigits value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="Decimal15Dot4Type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Decimal number with up to 19 digits total and 4 decimal places.</xs:documentation>
+			<xs:documentation xml:lang="de">Dezimalzahl mit bis zu 19 Stellen gesamt und 4 Nachkommastellen.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="19"/>
+			<xs:fractionDigits value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="Decimal11Dot2Type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Decimal number with up to 13 digits total and 2 decimal places (ratio/rate).</xs:documentation>
+			<xs:documentation xml:lang="de">Dezimalzahl mit bis zu 13 Stellen gesamt und 2 Nachkommastellen (z. B. Verhältniszahl).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="13"/>
+			<xs:fractionDigits value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="Decimal2Dot2Type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Decimal number with up to 4 digits total and 2 decimal places (tax rate, e.g. 0.25).</xs:documentation>
+			<xs:documentation xml:lang="de">Dezimalzahl mit bis zu 4 Stellen gesamt und 2 Nachkommastellen (Steuersatz, z. B. 0,25).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="4"/>
+			<xs:fractionDigits value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>

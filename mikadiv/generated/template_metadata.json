@@ -1,0 +1,2154 @@
+{
+  "title": "MiKaDiv Third-Party Disclosure - Excel Template",
+  "generatedFrom": "ThirdPartyDisclosureRequest.xsd",
+  "linkKey": "RequestId",
+  "headerRows": {
+    "1": "Technical column name",
+    "2": "English description",
+    "3": "Expected type / format / constraints",
+    "4": "Required / Optional / Conditional"
+  },
+  "enums": {
+    "Boolean": {
+      "values": [
+        "true",
+        "false"
+      ],
+      "meanings": {
+        "true": "Yes - the condition applies.",
+        "false": "No - the condition does not apply."
+      },
+      "usedIn": [
+        "1 Requests Master.IsCorrectionRequest",
+        "2 Security Related Information.IsDepositaryReceipt",
+        "2 Security Related Information.FifoReceiptsMoreThan1000Available",
+        "2 Security Related Information.FifoDeliveriesMoreThan1000Available"
+      ]
+    },
+    "RecordType": {
+      "values": [
+        "Request",
+        "Cancel"
+      ],
+      "meanings": {
+        "Request": "A MiKaDiv reporting-for-income disclosure (a new or corrective submission).",
+        "Cancel": "Cancellation of a previously submitted disclosure request; only the master cancellation fields are filled and the child sheets stay empty."
+      },
+      "usedIn": [
+        "1 Requests Master.RecordType"
+      ]
+    },
+    "RequestedService": {
+      "values": [
+        "TaxReportAndCertificate",
+        "Reclaim",
+        "Relief"
+      ],
+      "meanings": {
+        "TaxReportAndCertificate": "The custodian is to perform a reporting of type 11. For domestic taxpayers, a tax certificate shall be issued.",
+        "Reclaim": "The custodian should create or forward the application for reclaim of withholding tax. Additional information for the application needs to be delivered.",
+        "Relief": "The custodian provided relief at source and additional information gets provided via the request."
+      },
+      "usedIn": [
+        "1 Requests Master.RequestedService"
+      ]
+    },
+    "RequestedAttestationType": {
+      "values": [
+        "BV",
+        "PV",
+        "SB"
+      ],
+      "meanings": {
+        "BV": "BV for template III.",
+        "PV": "PV for template I.",
+        "SB": "SB for collective tax voucher."
+      },
+      "usedIn": [
+        "1 Requests Master.RequestedAttestationType"
+      ]
+    },
+    "AccountType": {
+      "values": [
+        "A",
+        "B",
+        "Ct",
+        "D",
+        "E",
+        "F",
+        "G"
+      ],
+      "meanings": {
+        "A": "A - Own Account",
+        "B": "B – Third-party general account",
+        "Ct": "C – Third-party individual account",
+        "D": "D – Detail register account of a third-party general account",
+        "E": "E – Third-party global account other than B",
+        "F": "F – Individual account of a securities holder other than D or C",
+        "G": "G – Other type of account"
+      },
+      "usedIn": [
+        "1 Requests Master.AccountType",
+        "7 Custody Chain.AccountType"
+      ]
+    },
+    "AccountRelationship": {
+      "values": [
+        "Trust",
+        "Usufruct",
+        "Pledge"
+      ],
+      "meanings": {
+        "Trust": "Fiduciary account",
+        "Usufruct": "Securities account held in usufruct",
+        "Pledge": "Pledged securities account"
+      },
+      "usedIn": [
+        "1 Requests Master.AccountRelationship"
+      ]
+    },
+    "TypeOfSecurity": {
+      "values": [
+        "Equity",
+        "Bond",
+        "DepositaryReceipt"
+      ],
+      "meanings": {
+        "Equity": "Equity security (share). Represents ownership in a corporation and entitles the holder to dividends and voting rights. Capital income typically arises from dividend distributions.",
+        "Bond": "Debt security (bond). Represents a creditor relationship with the issuer and entitles the holder to interest payments. Capital income typically arises from interest distributions.",
+        "DepositaryReceipt": "Depositary receipt (e.g. ADR, GDR). A certificate issued by a depositary bank representing shares of a foreign company held in custody. Capital income arises from the underlying dividend distributions of the foreign security."
+      },
+      "usedIn": [
+        "2 Security Related Information.TypeOfSecurity"
+      ]
+    },
+    "PayoutType": {
+      "values": [
+        "Cash",
+        "Shares"
+      ],
+      "meanings": {
+        "Cash": "Payment in Cash.",
+        "Shares": "Payment in Shares (stock dividend)."
+      },
+      "usedIn": [
+        "2 Security Related Information.PayoutType"
+      ]
+    },
+    "ReceiptsAndDeliveriesMode": {
+      "values": [
+        "FiFo",
+        "All"
+      ],
+      "meanings": {
+        "FiFo": "Receipts and deliveries are declared WITH FiFo calculation already applied by the submitter - fill the FIFO Trades sheet.",
+        "All": "Receipts and deliveries are declared WITHOUT FiFo (the German paying agent applies FiFo) - fill the Raw Transactions All sheet."
+      },
+      "usedIn": [
+        "2 Security Related Information.ReceiptsAndDeliveriesMode"
+      ]
+    },
+    "TVRelationship": {
+      "values": [
+        "Creditor",
+        "AccountHolder"
+      ],
+      "meanings": {
+        "Creditor": "Creditor (beneficial owner).",
+        "AccountHolder": "Account holder (not the beneficial owner)."
+      },
+      "usedIn": [
+        "3 Tax Voucher Individuals.Relationship",
+        "4 Tax Voucher Legal Persons.Relationship"
+      ]
+    },
+    "TPRelationship": {
+      "values": [
+        "Trustee",
+        "Pledgor",
+        "Grantor of usufruct"
+      ],
+      "meanings": {
+        "Trustee": "Trustee.",
+        "Pledgor": "Pledgor.",
+        "Grantor of usufruct": "Grantor of usufruct."
+      },
+      "usedIn": [
+        "5 Third Party Individuals.Relationship",
+        "6 Third Party Legal Persons.Relationship"
+      ]
+    },
+    "ReceiverGroupType": {
+      "values": [
+        "Single",
+        "CommunityMember"
+      ],
+      "meanings": {
+        "Single": "A single tax-certificate receiver (one individual or one legal person).",
+        "CommunityMember": "One member of a community of up to 10 persons; all members share the same CommunityGroupId and together form one receiver."
+      },
+      "usedIn": [
+        "3 Tax Voucher Individuals.ReceiverGroupType",
+        "4 Tax Voucher Legal Persons.ReceiverGroupType"
+      ]
+    },
+    "PersonTaxCategory": {
+      "values": [
+        "German",
+        "NonGerman"
+      ],
+      "meanings": {
+        "German": "German-identified person: provide German identifiers (IdNr / Wirtschafts-IdNr / Steuernummer).",
+        "NonGerman": "Non-German person: provide foreign identifiers (ForeignTaxId, LEI, EUID, or legal form + date of foundation, as applicable)."
+      },
+      "usedIn": [
+        "3 Tax Voucher Individuals.PersonTaxCategory",
+        "4 Tax Voucher Legal Persons.PersonTaxCategory",
+        "5 Third Party Individuals.PersonTaxCategory",
+        "6 Third Party Legal Persons.PersonTaxCategory",
+        "7 Custody Chain.PersonTaxCategory"
+      ]
+    },
+    "FifoDirection": {
+      "values": [
+        "Receipt",
+        "Delivery"
+      ],
+      "meanings": {
+        "Receipt": "Receipt trade: purchases, book-entry transfers in (delivery in), securities lending, and repo transactions.",
+        "Delivery": "Delivery trade: sales, book-entry transfers out (delivery out), securities lending, and repo transactions."
+      },
+      "usedIn": [
+        "8 FIFO Trades.Direction"
+      ]
+    },
+    "FifoTransactionType": {
+      "values": [
+        "PO",
+        "SO",
+        "DT",
+        "TL",
+        "TP",
+        "RL",
+        "RP"
+      ],
+      "meanings": {
+        "PO": "Acquisition of securities.",
+        "SO": "Sale of securities.",
+        "DT": "Book-entry transfer (delivery in).",
+        "TL": "Transfer based on a securities loan.",
+        "TP": "Transfer based on a repo transaction.",
+        "RL": "Retransfer based on a securities loan.",
+        "RP": "Retransfer based on a repo transaction."
+      },
+      "usedIn": [
+        "8 FIFO Trades.TransactionType"
+      ]
+    },
+    "RawTransactionType": {
+      "values": [
+        "Buy",
+        "Sell",
+        "Transfer",
+        "SlbOpen",
+        "SlbClose",
+        "RepoOpen",
+        "RepoClose",
+        "Dividend",
+        "Interest",
+        "Other"
+      ],
+      "meanings": {
+        "Buy": "Buy of securities.",
+        "Sell": "Sell of securities.",
+        "Transfer": "Book-entry transfer.",
+        "SlbOpen": "Transfer based on a securities loan.",
+        "SlbClose": "Retransfer based on a securities loan.",
+        "RepoOpen": "Transfer based on a repo transaction.",
+        "RepoClose": "Retransfer based on a repo transaction.",
+        "Dividend": "Dividend distribution.",
+        "Interest": "Interest payment.",
+        "Other": "Other."
+      },
+      "usedIn": [
+        "9 Raw Transactions All.TransactionType"
+      ]
+    }
+  },
+  "sheets": [
+    {
+      "order": 1,
+      "name": "1 Requests Master",
+      "significance": "The parent record. One row per disclosure, holding administrative and routing metadata, the record type (new request vs cancellation), the directly-contracted securities account, the account type and the account relationship. Every other sheet links back to this one through RequestId.",
+      "cardinality": "Exactly 1 row per RequestId (this sheet defines the RequestId).",
+      "whenToFill": "Always - every disclosure or cancellation starts here.",
+      "fieldCount": 25,
+      "fields": [
+        {
+          "position": 1,
+          "name": "RequestId",
+          "description": "Identifier for the request, defined by you. Used only as the key that links every sheet together, so any unique value (e.g. a running number) is fine.",
+          "type": "Text (identifier used to link the sheets; any unique value)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 2,
+          "name": "RecordType",
+          "description": "'Request' for a MiKaDiv reporting for income; 'Cancel' to cancel a previously submitted request (leave the child sheets empty for cancellation rows).",
+          "type": "Enum",
+          "requiredness": "Required",
+          "enum": "RecordType",
+          "allowedValues": [
+            "Request",
+            "Cancel"
+          ]
+        },
+        {
+          "position": 3,
+          "name": "AccountNumber",
+          "description": "Account number of the requesting custodian.",
+          "type": "Text (max 200)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 4,
+          "name": "ClientReference",
+          "description": "Custom reference data of the client.",
+          "type": "Text (max 200)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 5,
+          "name": "ClientContactpersonName",
+          "description": "Name of the responsible foreign bank contact person.",
+          "type": "Text (max 200)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 6,
+          "name": "ClientContactpersonPhone",
+          "description": "Telephone number of the responsible foreign bank contact person.",
+          "type": "Text (max 35)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 7,
+          "name": "ClientContactpersonEmail",
+          "description": "E-mail address of the responsible foreign bank contact person.",
+          "type": "Text (max 200)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 8,
+          "name": "RequestedService",
+          "description": "Type of requested service.",
+          "type": "Enum",
+          "requiredness": "Conditional",
+          "enum": "RequestedService",
+          "allowedValues": [
+            "TaxReportAndCertificate",
+            "Reclaim",
+            "Relief"
+          ]
+        },
+        {
+          "position": 9,
+          "name": "RequestedServiceReason",
+          "description": "Reason for the requested service, especially for correction or cancellation.",
+          "type": "Text (max 256)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 10,
+          "name": "RequestedAttestationType",
+          "description": "Type of requested tax voucher.",
+          "type": "Enum",
+          "requiredness": "Optional",
+          "enum": "RequestedAttestationType",
+          "allowedValues": [
+            "BV",
+            "PV",
+            "SB"
+          ]
+        },
+        {
+          "position": 11,
+          "name": "IsCorrectionRequest",
+          "description": "A correction is to be performed for a report. The data record contains a reference to the preceding request.",
+          "type": "Boolean (true / false)",
+          "requiredness": "Optional",
+          "enum": "Boolean",
+          "allowedValues": [
+            "true",
+            "false"
+          ]
+        },
+        {
+          "position": 12,
+          "name": "PreviousRequestIdForCorrection",
+          "description": "If the request is for correction of a previous request, then the RequestId of the previous request must be provided.",
+          "type": "UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 13,
+          "name": "ReportSerialNumber",
+          "description": "Serial number (UUID) of an already submitted report, if provided previously by the German Paying agent. Used as a (additional) reference for correction.",
+          "type": "UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 14,
+          "name": "TaxCertificatePrintedContactpersonName",
+          "description": "Name of the contact person for the customer, printed on the tax certificate or cover letter.",
+          "type": "Text (max 200)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 15,
+          "name": "TaxCertificatePrintedContactpersonPhone",
+          "description": "Telephone number of the contact person for the customer, printed on the tax certificate or cover letter.",
+          "type": "Text (max 35)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 16,
+          "name": "TaxCertificatePrintedContactpersonEmail",
+          "description": "E-mail address of the contact person for the customer, printed on the tax certificate or cover letter.",
+          "type": "Text (max 200)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 17,
+          "name": "TaxCertificateAlternativeRecipientName",
+          "description": "Name of the alternative mailing address recipient.",
+          "type": "Text (max 200)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 18,
+          "name": "TaxCertificateAlternativeRecipientAddress",
+          "description": "Address of the alternative mailing address recipient.",
+          "type": "Text (max 256)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 19,
+          "name": "TaxCertificateAlternativeRecipientEmail",
+          "description": "E-mail address of the alternative mailing address recipient.",
+          "type": "Text (max 256)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 20,
+          "name": "EventType",
+          "description": "Event designations of the German paying agent according to ISO 20022.",
+          "type": "Text (max 20)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 21,
+          "name": "FundId",
+          "description": "Fund identifier (status certificate number).",
+          "type": "Text (max 20)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 22,
+          "name": "PreviousRequestIdForCancellation",
+          "description": "If the request is for cancellation of a previous request, then the RequestId of the previous request must be provided.",
+          "type": "UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 23,
+          "name": "SecuritiesAccountNumber",
+          "description": "Account number of the tax voucher person at the custodian to whom the tax voucher person is directly contracted.",
+          "type": "Text (max 200)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 24,
+          "name": "AccountType",
+          "description": "Account type.",
+          "type": "Enum",
+          "requiredness": "Conditional",
+          "enum": "AccountType",
+          "allowedValues": [
+            "A",
+            "B",
+            "Ct",
+            "D",
+            "E",
+            "F",
+            "G"
+          ]
+        },
+        {
+          "position": 25,
+          "name": "AccountRelationship",
+          "description": "If the tax voucher person is not the beneficial owner (creditor), then the account relationship has to be specified.",
+          "type": "Enum",
+          "requiredness": "Optional",
+          "enum": "AccountRelationship",
+          "allowedValues": [
+            "Trust",
+            "Usufruct",
+            "Pledge"
+          ]
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "name": "2 Security Related Information",
+      "significance": "The single capital-income event being disclosed: the security (ISIN, name, type), the corporate-action reference, payment details, the complete tax breakdown (gross/net, withholding tax, solidarity surcharge and the nominal quantities per holding category) and which receipts/deliveries mode is used. It also contains the depositary-receipt block (underlying German security, record date, issuance ratios, certificates held), which describes the depositary receipt (e.g. ADR/GDR) through which the income was received.",
+      "cardinality": "0..1 row per RequestId.",
+      "whenToFill": "Required when RecordType = Request. Leave empty for RecordType = Cancel. Within this sheet, the depositary-receipt fields are required only when IsDepositaryReceipt = true.",
+      "fieldCount": 38,
+      "fields": [
+        {
+          "position": 1,
+          "name": "RequestId",
+          "description": "Foreign key. Must match a RequestId in the '1 Requests Master' sheet.",
+          "type": "Text (identifier used to link the sheets; any unique value)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 2,
+          "name": "IncomeIdentifier",
+          "description": "Unique identifier for an income. Must be unique over subsequent files. For a subsequent request to the same income, the same identifier must be provided. To be defined by the customer institute.",
+          "type": "Text (max 45)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 3,
+          "name": "CustodianIncomeIdentifier",
+          "description": "Bookingnumber of the payment received from the custodian. Used to reference a specific booking, if there are multiple custody chains.",
+          "type": "Text (max 45)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 4,
+          "name": "ISIN",
+          "description": "International Securities Identification Number (ISIN) according to ISO 6166: 2 uppercase letters followed by 10 alphanumeric characters.",
+          "type": "ISIN (ISO 6166, 12 chars: 2 letters + 10 alphanumeric)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 5,
+          "name": "NameOfSecurity",
+          "description": "Designation of the category of security.",
+          "type": "Text (max 256)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 6,
+          "name": "TypeOfSecurity",
+          "description": "Type of the security generating the capital income. Determines the category of the financial instrument held in the custodian account.",
+          "type": "Enum",
+          "requiredness": "Optional",
+          "enum": "TypeOfSecurity",
+          "allowedValues": [
+            "Equity",
+            "Bond",
+            "DepositaryReceipt"
+          ]
+        },
+        {
+          "position": 7,
+          "name": "COAF",
+          "description": "Corporate Action Event Reference (COAF).",
+          "type": "Text (Corporate Action Event Reference, max 16)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 8,
+          "name": "IsDepositaryReceipt",
+          "description": "Did the beneficial owner receive the capital income via a depositary receipt on German equities (for example via an American Depositary Receipt (ADR))? Then the structure DepositaryReceipts has to be provided.",
+          "type": "Boolean (true / false)",
+          "requiredness": "Required",
+          "enum": "Boolean",
+          "allowedValues": [
+            "true",
+            "false"
+          ]
+        },
+        {
+          "position": 9,
+          "name": "CorporateActionIdOfUnderlyingSecurity",
+          "description": "Depositary receipt only: Corporate Action Identifier of the custodian for the underlying security.",
+          "type": "Text (max 45)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 10,
+          "name": "ISINOfUnderlyingSecurity",
+          "description": "International Securities Identification Number (ISIN) according to ISO 6166: 2 uppercase letters followed by 10 alphanumeric characters.",
+          "type": "ISIN (ISO 6166, 12 chars: 2 letters + 10 alphanumeric)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 11,
+          "name": "NameOfUnderlyingSecurity",
+          "description": "Name of the underlying German security.",
+          "type": "Text (max 256)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 12,
+          "name": "Recorddate",
+          "description": "Record date of the underlying German share.",
+          "type": "Date (YYYY-MM-DD)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 13,
+          "name": "TotalNumberOfCertificatesIssued",
+          "description": "Total number of depositary certificates (DRs) issued on the date of the profit distribution resolution (date of annual general meeting of the German stock corporation) by the respective DR issuer.",
+          "type": "Decimal (19 digits total, 4 decimals)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 14,
+          "name": "TotalNumberOfUnderlyingShares",
+          "description": "Total number of underlying German ordinary shares deposited by the respective DR issuer at the German depositary bank on the date of the profit resolution distribution of the German stock corporation.",
+          "type": "Decimal (19 digits total, 4 decimals)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 15,
+          "name": "Ratio",
+          "description": "Ratio of the depositary certificate to the deposited securities. The ratio of depositary certificates stipulated in the issue conditions of the depositary certificate to the domestic securities stored by the German depository.",
+          "type": "Decimal (13 digits total, 2 decimals)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 16,
+          "name": "NumberOfCertificatesHeld",
+          "description": "Number of depositary certificates held by the creditor of the capital income (of the tax certificate) at the date of the profit distribution resolution.",
+          "type": "Decimal (19 digits total, 4 decimals)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 17,
+          "name": "Paydate",
+          "description": "Date of Payment.",
+          "type": "Date (YYYY-MM-DD)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 18,
+          "name": "PayoutType",
+          "description": "Type of Payment.",
+          "type": "Enum",
+          "requiredness": "Required",
+          "enum": "PayoutType",
+          "allowedValues": [
+            "Cash",
+            "Shares"
+          ]
+        },
+        {
+          "position": 19,
+          "name": "CashAccountNumber",
+          "description": "Cash account number to which the income got credited at the custodian to whom the tax voucher person is directly contracted.",
+          "type": "Text (max 200)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 20,
+          "name": "AccountNumberPayingAgentLevel",
+          "description": "If known: Account number of the account at the level of the German paying agent in which the shares are held.",
+          "type": "Text (max 200)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 21,
+          "name": "GrossAmount",
+          "description": "Gross amount of the capital income generated (in Euro).",
+          "type": "Decimal (16 digits total, 2 decimals)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 22,
+          "name": "NetIncomePayment",
+          "description": "Net income payment (in EURO).",
+          "type": "Decimal (16 digits total, 2 decimals)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 23,
+          "name": "WithholdingTaxAmount",
+          "description": "German withholding tax amount in Euro.",
+          "type": "Decimal (16 digits total, 2 decimals)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 24,
+          "name": "SurchargesAmount",
+          "description": "German solidarity surcharge amount in Euro.",
+          "type": "Decimal (16 digits total, 2 decimals)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 25,
+          "name": "WithholdingTaxRate",
+          "description": "Tax rate applied to capital income (German withholding tax rate).",
+          "type": "Decimal (4 digits total, 2 decimals)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 26,
+          "name": "SurchargesRate",
+          "description": "Tax rate of the solidarity surcharge applied (Solidarity surcharge rate) The current solidarity surcharge rate of 5.5% must be populated as 5.50.",
+          "type": "Decimal (4 digits total, 2 decimals)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 27,
+          "name": "Nominal",
+          "description": "Quantity of securities on which the capital income is based (Number of shares / nominal value on which the income has been paid including Market Claims).",
+          "type": "Decimal (19 digits total, 4 decimals)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 28,
+          "name": "NominalMoreThan5DaysPriorExdate",
+          "description": "Number of shares which have been received more than 5 days prior to the ex-date.",
+          "type": "Decimal (19 digits total, 4 decimals)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 29,
+          "name": "NominalWithin5DaysPriorExdate",
+          "description": "Number of shares which have been received within 5 days prior to the ex-date.",
+          "type": "Decimal (19 digits total, 4 decimals)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 30,
+          "name": "NominalLinkedToFinancialArrangement",
+          "description": "Number of German shares value which were linked to Financial Arrangements (particularly hedging instruments like options, futures etc. but also borrowed securities or securities purchased under a Repo).\n                                    Financial arrangements in the meaning of Section 45b (3) of the German Income Tax Act and as defined in margin number 80 of the guidance notes of the German Ministry of Finance from April 22, 2025. According to marginal 5 of the guidance notes from the German Ministry of Finance, German shares were linked to Financial Arrangements if the Financial Arrangements were not yet settled, expired or otherwise completed on the day after the annual general meeting of the German stock corporation which distributed the dividend.",
+          "type": "Decimal (19 digits total, 4 decimals)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 31,
+          "name": "NominalNotLinkedToFinancialArrangement",
+          "description": "Number of German shares which were not linked to a Financial Arrangement.",
+          "type": "Decimal (19 digits total, 4 decimals)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 32,
+          "name": "NominalLinkedToSecLending",
+          "description": "Number of German shares which are linked to a securities lending transaction that had not yet been completed on the day after the annual general meeting (AGM date).",
+          "type": "Decimal (19 digits total, 4 decimals)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 33,
+          "name": "NominalLinkedToRepo",
+          "description": "Number of German shares which are linked to a repo transaction that had not yet been completed on the day after the annual general meeting (AGM date).",
+          "type": "Decimal (19 digits total, 4 decimals)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 34,
+          "name": "ReceiptsAndDeliveriesMode",
+          "description": "Whether receipts/deliveries are declared with FiFo calculation (use the '8 FIFO Trades' sheet) or without (use the '9 Raw Transactions All' sheet).",
+          "type": "Enum",
+          "requiredness": "Required",
+          "enum": "ReceiptsAndDeliveriesMode",
+          "allowedValues": [
+            "FiFo",
+            "All"
+          ]
+        },
+        {
+          "position": 35,
+          "name": "FifoReceiptsMoreThan1000Available",
+          "description": "Are more than 1.000 (one thousand) remaining reportable receipt transactions available?",
+          "type": "Boolean (true / false)",
+          "requiredness": "Conditional",
+          "enum": "Boolean",
+          "allowedValues": [
+            "true",
+            "false"
+          ]
+        },
+        {
+          "position": 36,
+          "name": "FifoDeliveriesMoreThan1000Available",
+          "description": "Are more than 1.000 (one thousand) reportable deliver transactions available?",
+          "type": "Boolean (true / false)",
+          "requiredness": "Conditional",
+          "enum": "Boolean",
+          "allowedValues": [
+            "true",
+            "false"
+          ]
+        },
+        {
+          "position": 37,
+          "name": "OpeningBalance",
+          "description": "Balance before 12 month.",
+          "type": "Decimal (19 digits total, 4 decimals)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 38,
+          "name": "OpeningBalanceDate",
+          "description": "Date of the initial holdings evaluation.",
+          "type": "DateTime (YYYY-MM-DDThh:mm:ss)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "name": "3 Tax Voucher Individuals",
+      "significance": "Natural persons who receive the tax certificate (voucher) - either as beneficial owner (Creditor) or as account holder - with their name, registration address and tax identification. Community members are recorded here as well.",
+      "cardinality": "Tax-voucher receivers total up to 2 per RequestId, counted across this sheet and '4 Tax Voucher Legal Persons'. A community counts as ONE receiver and may span up to 10 member rows that share one CommunityGroupId.",
+      "whenToFill": "For Request records at least one tax-voucher receiver is required (here or on the legal-persons sheet). Add one row per natural-person receiver or community member.",
+      "fieldCount": 22,
+      "fields": [
+        {
+          "position": 1,
+          "name": "RequestId",
+          "description": "Foreign key. Must match a RequestId in the '1 Requests Master' sheet.",
+          "type": "Text (identifier used to link the sheets; any unique value)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 2,
+          "name": "Relationship",
+          "description": "Indicate the role of the tax certificate receiver person.",
+          "type": "Enum",
+          "requiredness": "Required",
+          "enum": "TVRelationship",
+          "allowedValues": [
+            "Creditor",
+            "AccountHolder"
+          ]
+        },
+        {
+          "position": 3,
+          "name": "ReceiverGroupType",
+          "description": "'Single' for a normal recipient; 'CommunityMember' when this row is one member of a community of up to 10 persons.",
+          "type": "Enum",
+          "requiredness": "Required",
+          "enum": "ReceiverGroupType",
+          "allowedValues": [
+            "Single",
+            "CommunityMember"
+          ]
+        },
+        {
+          "position": 4,
+          "name": "CommunityGroupId",
+          "description": "Identifier grouping up to 10 community members into one receiver. Required when ReceiverGroupType=CommunityMember.",
+          "type": "Text (max 45)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 5,
+          "name": "PersonIdentifier",
+          "description": "Unique identifier for a person. Must be unique over subsequent files. For a subsequent request to the same person, the same identifier must be provided. To be defined by the customer institute.",
+          "type": "Text (max 45)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 6,
+          "name": "Title",
+          "description": "The person’s title if applicable.",
+          "type": "Text (max 20)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 7,
+          "name": "NamePrefix",
+          "description": "The person’s name prefix if applicable.",
+          "type": "Text (max 20)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 8,
+          "name": "FirstName",
+          "description": "The person’s first name.",
+          "type": "Text (max 45)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 9,
+          "name": "LastName",
+          "description": "The person’s last name.",
+          "type": "Text (max 45)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 10,
+          "name": "NameAffix",
+          "description": "The person’s name prefix if applicable.",
+          "type": "Text (max 20)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 11,
+          "name": "DateOfBirth",
+          "description": "Date of birth. Partially unknown dates are permitted: yyyy-mm-00 (unknown day), yyyy-00-00 (unknown month and day), 0000-00-00 (entirely unknown).",
+          "type": "Date (YYYY-MM-DD; partial 0000 allowed)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 12,
+          "name": "StreetOrPostalCode",
+          "description": "The street name of the address.",
+          "type": "Text (max 80)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 13,
+          "name": "HouseNumber",
+          "description": "Possible range 0 – 99999. Specifying the house number “0” as a default, if no house number has been assigned, is not permissible. Specifying it as such is only permissible if the municipality has assigned the number “0”.",
+          "type": "Integer (0 - 99999)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 14,
+          "name": "HouseNumberAddition",
+          "description": "Possible additions to the house number in the address: With a house number “5a”, the “a” would be mentioned here, the “5” must be indicated in the house number field. With a house number “105-109”, the “-109” would be mentioned here.",
+          "type": "Text (max 20)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 15,
+          "name": "AddressAddition",
+          "description": "Possible addition to foreign addresses.",
+          "type": "Text (max 50)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 16,
+          "name": "Postcode",
+          "description": "The postcode of the address. For German addresses only five digits are allowed.",
+          "type": "Text (max 5)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 17,
+          "name": "City",
+          "description": "The place name of the address.",
+          "type": "Text (max 80)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 18,
+          "name": "Country",
+          "description": "The contry of the address in ISO 3166-1 alpha-2.",
+          "type": "Country code (ISO 3166-1 alpha-2, 2 uppercase letters)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 19,
+          "name": "CountryOfTaxResidence",
+          "description": "Country of tax residency in ISO 3166-1 alpha-2.",
+          "type": "Country code (ISO 3166-1 alpha-2, 2 uppercase letters)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 20,
+          "name": "PersonTaxCategory",
+          "description": "'German' or 'NonGerman'. Determines which tax-ID fields apply.",
+          "type": "Enum",
+          "requiredness": "Required",
+          "enum": "PersonTaxCategory",
+          "allowedValues": [
+            "German",
+            "NonGerman"
+          ]
+        },
+        {
+          "position": 21,
+          "name": "InvestmentMarketTaxId",
+          "description": "The German tax identification number (IdNr) of the tax voucher person. Only digits are permitted.",
+          "type": "Numeric string (German IdNr, exactly 11 digits)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 22,
+          "name": "ForeignTaxId",
+          "description": "If no German tax id number has been assigned yet: Tax identification attribute awarded by the country of residence.",
+          "type": "Text (max 35)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "name": "4 Tax Voucher Legal Persons",
+      "significance": "Non-natural tax-certificate receivers (companies, funds, partnerships) with name, registration address and the detailed legal-person tax identification.",
+      "cardinality": "Counts towards the up-to-2 tax-voucher receivers per RequestId (shared with '3 Tax Voucher Individuals').",
+      "whenToFill": "For Request records, use when a tax-voucher receiver (or community member) is a legal person.",
+      "fieldCount": 22,
+      "fields": [
+        {
+          "position": 1,
+          "name": "RequestId",
+          "description": "Foreign key. Must match a RequestId in the '1 Requests Master' sheet.",
+          "type": "Text (identifier used to link the sheets; any unique value)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 2,
+          "name": "Relationship",
+          "description": "Indicate the role of the tax certificate receiver person.",
+          "type": "Enum",
+          "requiredness": "Required",
+          "enum": "TVRelationship",
+          "allowedValues": [
+            "Creditor",
+            "AccountHolder"
+          ]
+        },
+        {
+          "position": 3,
+          "name": "ReceiverGroupType",
+          "description": "'Single' for a normal recipient; 'CommunityMember' when this row is one member of a community of up to 10 persons.",
+          "type": "Enum",
+          "requiredness": "Required",
+          "enum": "ReceiverGroupType",
+          "allowedValues": [
+            "Single",
+            "CommunityMember"
+          ]
+        },
+        {
+          "position": 4,
+          "name": "CommunityGroupId",
+          "description": "Identifier grouping up to 10 community members into one receiver. Required when ReceiverGroupType=CommunityMember.",
+          "type": "Text (max 45)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 5,
+          "name": "PersonIdentifier",
+          "description": "Unique identifier for a person. Must be unique over subsequent files. For a subsequent request to the same person, the same identifier must be provided. To be defined by the customer institute.",
+          "type": "Text (max 45)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 6,
+          "name": "Name",
+          "description": "The name of the non-natural person.",
+          "type": "Text (max 256)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 7,
+          "name": "StreetOrPostalCode",
+          "description": "The street name of the address.",
+          "type": "Text (max 80)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 8,
+          "name": "HouseNumber",
+          "description": "Possible range 0 – 99999. Specifying the house number “0” as a default, if no house number has been assigned, is not permissible. Specifying it as such is only permissible if the municipality has assigned the number “0”.",
+          "type": "Integer (0 - 99999)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 9,
+          "name": "HouseNumberAddition",
+          "description": "Possible additions to the house number in the address: With a house number “5a”, the “a” would be mentioned here, the “5” must be indicated in the house number field. With a house number “105-109”, the “-109” would be mentioned here.",
+          "type": "Text (max 20)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 10,
+          "name": "AddressAddition",
+          "description": "Possible addition to foreign addresses.",
+          "type": "Text (max 50)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 11,
+          "name": "Postcode",
+          "description": "The postcode of the address. For German addresses only five digits are allowed.",
+          "type": "Text (max 5)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 12,
+          "name": "City",
+          "description": "The place name of the address.",
+          "type": "Text (max 80)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 13,
+          "name": "Country",
+          "description": "The contry of the address in ISO 3166-1 alpha-2.",
+          "type": "Country code (ISO 3166-1 alpha-2, 2 uppercase letters)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 14,
+          "name": "CountryOfTaxResidence",
+          "description": "Country of tax residency in ISO 3166-1 alpha-2.",
+          "type": "Country code (ISO 3166-1 alpha-2, 2 uppercase letters)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 15,
+          "name": "PersonTaxCategory",
+          "description": "'German' or 'NonGerman'. Determines which tax-ID fields apply.",
+          "type": "Enum",
+          "requiredness": "Required",
+          "enum": "PersonTaxCategory",
+          "allowedValues": [
+            "German",
+            "NonGerman"
+          ]
+        },
+        {
+          "position": 16,
+          "name": "InvestmentMarketBusinessId",
+          "description": "German business identification number. The business identification number of the non-natural person without a hyphen before the differentiating element.",
+          "type": "Numeric string (German Wirtschafts-IdNr, 13 digits)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 17,
+          "name": "InvestmentMarketTaxNumber",
+          "description": "If a German business identification number hasn´t been assigned yet: The German tax number of the non-natural person.",
+          "type": "Numeric string (German Steuernummer, 13 digits)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 18,
+          "name": "LEI",
+          "description": "If neither a German business tax id number in the meaning of section 139c German General Tax Code nor a German tax id number (usually the Corporate Income Tax id number) is available, the Legal Entity Identifier (LEI).",
+          "type": "LEI (ISO 17442, 20 alphanumeric)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 19,
+          "name": "EUID",
+          "description": "If neither a German business tax id number in the meaning of section 139c German General Tax Code nor a German tax id number (usually the Corporate Income Tax id number) is available nor a Legal Entity Identifier (LEI) is available, the European unique identifier (EUID; as referred to in Article 16 of Directive (EU) 2017/1132 of the European Parliament and of the Council).",
+          "type": "Text (max 200)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 20,
+          "name": "ForeignTaxId",
+          "description": "Tax identification number assigned to the tax voucher person by its country of tax residency.",
+          "type": "Text (max 35)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 21,
+          "name": "LegalForm",
+          "description": "The foreign legal entity type must be specified as free text. Long and short form.",
+          "type": "Text (max 60)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 22,
+          "name": "DateOfFoundation",
+          "description": "Date when the entity was established / founded / incorporated / launched.",
+          "type": "Date (YYYY-MM-DD)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "name": "5 Third Party Individuals",
+      "significance": "Natural persons who are the account holder but not the beneficial owner (third parties), stating in what capacity they hold for the beneficial owner (trustee, pledgor or grantor of usufruct).",
+      "cardinality": "Third-party persons total up to 5 per RequestId, counted across this sheet and '6 Third Party Legal Persons'.",
+      "whenToFill": "Only when the account holder is not the beneficial owner AND the beneficial owner is disclosed. Otherwise leave empty.",
+      "fieldCount": 20,
+      "fields": [
+        {
+          "position": 1,
+          "name": "RequestId",
+          "description": "Foreign key. Must match a RequestId in the '1 Requests Master' sheet.",
+          "type": "Text (identifier used to link the sheets; any unique value)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 2,
+          "name": "Relationship",
+          "description": "If the account holder is not the beneficial owner, this category specifies, how the account holder represents the beneficial owner.",
+          "type": "Enum",
+          "requiredness": "Required",
+          "enum": "TPRelationship",
+          "allowedValues": [
+            "Trustee",
+            "Pledgor",
+            "Grantor of usufruct"
+          ]
+        },
+        {
+          "position": 3,
+          "name": "PersonIdentifier",
+          "description": "Unique identifier for a person. Must be unique over subsequent files. For a subsequent request to the same person, the same identifier must be provided. To be defined by the customer institute.",
+          "type": "Text (max 45)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 4,
+          "name": "Title",
+          "description": "The person’s title if applicable.",
+          "type": "Text (max 20)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 5,
+          "name": "NamePrefix",
+          "description": "The person’s name prefix if applicable.",
+          "type": "Text (max 20)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 6,
+          "name": "FirstName",
+          "description": "The person’s first name.",
+          "type": "Text (max 45)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 7,
+          "name": "LastName",
+          "description": "The person’s last name.",
+          "type": "Text (max 45)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 8,
+          "name": "NameAffix",
+          "description": "The person’s name prefix if applicable.",
+          "type": "Text (max 20)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 9,
+          "name": "DateOfBirth",
+          "description": "Date of birth. Partially unknown dates are permitted: yyyy-mm-00 (unknown day), yyyy-00-00 (unknown month and day), 0000-00-00 (entirely unknown).",
+          "type": "Date (YYYY-MM-DD; partial 0000 allowed)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 10,
+          "name": "StreetOrPostalCode",
+          "description": "The street name of the address.",
+          "type": "Text (max 80)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 11,
+          "name": "HouseNumber",
+          "description": "Possible range 0 – 99999. Specifying the house number “0” as a default, if no house number has been assigned, is not permissible. Specifying it as such is only permissible if the municipality has assigned the number “0”.",
+          "type": "Integer (0 - 99999)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 12,
+          "name": "HouseNumberAddition",
+          "description": "Possible additions to the house number in the address: With a house number “5a”, the “a” would be mentioned here, the “5” must be indicated in the house number field. With a house number “105-109”, the “-109” would be mentioned here.",
+          "type": "Text (max 20)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 13,
+          "name": "AddressAddition",
+          "description": "Possible addition to foreign addresses.",
+          "type": "Text (max 50)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 14,
+          "name": "Postcode",
+          "description": "The postcode of the address. For German addresses only five digits are allowed.",
+          "type": "Text (max 5)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 15,
+          "name": "City",
+          "description": "The place name of the address.",
+          "type": "Text (max 80)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 16,
+          "name": "Country",
+          "description": "The contry of the address in ISO 3166-1 alpha-2.",
+          "type": "Country code (ISO 3166-1 alpha-2, 2 uppercase letters)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 17,
+          "name": "CountryOfTaxResidence",
+          "description": "Country of tax residency in ISO 3166-1 alpha-2.",
+          "type": "Country code (ISO 3166-1 alpha-2, 2 uppercase letters)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 18,
+          "name": "PersonTaxCategory",
+          "description": "'German' or 'NonGerman'. Determines which tax-ID fields apply.",
+          "type": "Enum",
+          "requiredness": "Required",
+          "enum": "PersonTaxCategory",
+          "allowedValues": [
+            "German",
+            "NonGerman"
+          ]
+        },
+        {
+          "position": 19,
+          "name": "InvestmentMarketTaxId",
+          "description": "The German tax identification number (IdNr) of the tax voucher person. Only digits are permitted.",
+          "type": "Numeric string (German IdNr, exactly 11 digits)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 20,
+          "name": "ForeignTaxId",
+          "description": "If no German tax id number has been assigned yet: Tax identification attribute awarded by the country of residence.",
+          "type": "Text (max 35)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        }
+      ]
+    },
+    {
+      "order": 6,
+      "name": "6 Third Party Legal Persons",
+      "significance": "Non-natural third parties (account holders that are not the beneficial owner) with name, address and legal-person tax identification, including the special investment-funds tax number where relevant.",
+      "cardinality": "Counts towards the up-to-5 third-party persons per RequestId (shared with '5 Third Party Individuals').",
+      "whenToFill": "Same condition as '5 Third Party Individuals', when the third party is a legal person.",
+      "fieldCount": 19,
+      "fields": [
+        {
+          "position": 1,
+          "name": "RequestId",
+          "description": "Foreign key. Must match a RequestId in the '1 Requests Master' sheet.",
+          "type": "Text (identifier used to link the sheets; any unique value)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 2,
+          "name": "Relationship",
+          "description": "If the account holder is not the beneficial owner, this category specifies, how the account holder represents the beneficial owner.",
+          "type": "Enum",
+          "requiredness": "Required",
+          "enum": "TPRelationship",
+          "allowedValues": [
+            "Trustee",
+            "Pledgor",
+            "Grantor of usufruct"
+          ]
+        },
+        {
+          "position": 3,
+          "name": "PersonIdentifier",
+          "description": "Unique identifier for a person. Must be unique over subsequent files. For a subsequent request to the same person, the same identifier must be provided. To be defined by the customer institute.",
+          "type": "Text (max 45)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 4,
+          "name": "Name",
+          "description": "The name of the non-natural person.",
+          "type": "Text (max 256)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 5,
+          "name": "StreetOrPostalCode",
+          "description": "The street name of the address.",
+          "type": "Text (max 80)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 6,
+          "name": "HouseNumber",
+          "description": "Possible range 0 – 99999. Specifying the house number “0” as a default, if no house number has been assigned, is not permissible. Specifying it as such is only permissible if the municipality has assigned the number “0”.",
+          "type": "Integer (0 - 99999)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 7,
+          "name": "HouseNumberAddition",
+          "description": "Possible additions to the house number in the address: With a house number “5a”, the “a” would be mentioned here, the “5” must be indicated in the house number field. With a house number “105-109”, the “-109” would be mentioned here.",
+          "type": "Text (max 20)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 8,
+          "name": "AddressAddition",
+          "description": "Possible addition to foreign addresses.",
+          "type": "Text (max 50)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 9,
+          "name": "Postcode",
+          "description": "The postcode of the address. For German addresses only five digits are allowed.",
+          "type": "Text (max 5)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 10,
+          "name": "City",
+          "description": "The place name of the address.",
+          "type": "Text (max 80)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 11,
+          "name": "Country",
+          "description": "The contry of the address in ISO 3166-1 alpha-2.",
+          "type": "Country code (ISO 3166-1 alpha-2, 2 uppercase letters)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 12,
+          "name": "CountryOfTaxResidence",
+          "description": "Country of tax residency in ISO 3166-1 alpha-2.",
+          "type": "Country code (ISO 3166-1 alpha-2, 2 uppercase letters)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 13,
+          "name": "PersonTaxCategory",
+          "description": "'German' or 'NonGerman'. Determines which tax-ID fields apply.",
+          "type": "Enum",
+          "requiredness": "Required",
+          "enum": "PersonTaxCategory",
+          "allowedValues": [
+            "German",
+            "NonGerman"
+          ]
+        },
+        {
+          "position": 14,
+          "name": "InvestmentMarketBusinessId",
+          "description": "German business identification number. The business identification number of the non-natural person without a hyphen before the differentiating element.",
+          "type": "Numeric string (German Wirtschafts-IdNr, 13 digits)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 15,
+          "name": "InvestmentMarketTaxNumber",
+          "description": "If a German business identification number hasn´t been assigned yet: The German tax number of the non-natural person.",
+          "type": "Numeric string (German Steuernummer, 13 digits)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 16,
+          "name": "InvestmentMarketSpecialFundsTaxNumber",
+          "description": "This specific German tax number gets assigned by the German Federal Central Tax Authority (Bundeszentralamt für Steuern) to non-German Special-Investment Funds in the meaning of Section 26 of the German Investment Tax Act (GITA) which opted to be treated as a tax transparent fund under Section 30 GITA. This is a conditional mandatory field. Please leave the field blank if you don´t meet the above condition.",
+          "type": "Numeric string (German Steuernummer, 13 digits)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 17,
+          "name": "LEI",
+          "description": "If neither a German business tax id number in the meaning of section 139c German General Tax Code nor a German tax id number (usually the Corporate Income Tax id number) is available, the Legal Entity Identifier (LEI).",
+          "type": "LEI (ISO 17442, 20 alphanumeric)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 18,
+          "name": "EUID",
+          "description": "If neither a German business tax id number in the meaning of section 139c German General Tax Code nor a German tax id number (usually the Corporate Income Tax id number) is available nor a Legal Entity Identifier (LEI) is available, the European unique identifier (EUID; as referred to in Article 16 of Directive (EU) 2017/1132 of the European Parliament and of the Council).",
+          "type": "Text (max 200)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 19,
+          "name": "ForeignTaxId",
+          "description": "Tax identification number assigned to the tax voucher person by its country of tax residency.",
+          "type": "Text (max 35)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "name": "7 Custody Chain",
+      "significance": "The ordered chain of custodians / intermediaries between the beneficiary and the German paying agent. Each link carries its name, address, tax identification, BIC, account number, account type and the nominal held.",
+      "cardinality": "0..20 rows per RequestId, ordered by NumberInChain (1 = the custodian closest to the beneficiary).",
+      "whenToFill": "Required for Request records; add one row per intermediary link in the custody chain.",
+      "fieldCount": 21,
+      "fields": [
+        {
+          "position": 1,
+          "name": "RequestId",
+          "description": "Foreign key. Must match a RequestId in the '1 Requests Master' sheet.",
+          "type": "Text (identifier used to link the sheets; any unique value)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 2,
+          "name": "NumberInChain",
+          "description": "Order in the custody chain. 1 is the custodian with the securities account for the beneficiary of person holding in favor of the beneficiary on its account.",
+          "type": "Integer",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 3,
+          "name": "NameOfIntermediary",
+          "description": "Name of the depository/(sub-)custodian.",
+          "type": "Text (max 256)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 4,
+          "name": "StreetOrPostalCode",
+          "description": "The street name of the address.",
+          "type": "Text (max 80)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 5,
+          "name": "HouseNumber",
+          "description": "Possible range 0 – 99999. Specifying the house number “0” as a default, if no house number has been assigned, is not permissible. Specifying it as such is only permissible if the municipality has assigned the number “0”.",
+          "type": "Integer (0 - 99999)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 6,
+          "name": "HouseNumberAddition",
+          "description": "Possible additions to the house number in the address: With a house number “5a”, the “a” would be mentioned here, the “5” must be indicated in the house number field. With a house number “105-109”, the “-109” would be mentioned here.",
+          "type": "Text (max 20)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 7,
+          "name": "AddressAddition",
+          "description": "Possible addition to foreign addresses.",
+          "type": "Text (max 50)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 8,
+          "name": "Postcode",
+          "description": "The postcode of the address. For German addresses only five digits are allowed.",
+          "type": "Text (max 5)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 9,
+          "name": "City",
+          "description": "The place name of the address.",
+          "type": "Text (max 80)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 10,
+          "name": "Country",
+          "description": "The contry of the address in ISO 3166-1 alpha-2.",
+          "type": "Country code (ISO 3166-1 alpha-2, 2 uppercase letters)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 11,
+          "name": "AccountNumber",
+          "description": "Account number or securities account in which the securities are held by the customer of an intermediary (i.e. the beneficiary or the person holding the position of the beneficiary on its account or the preceding intermediary).",
+          "type": "Text (max 200)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 12,
+          "name": "AccountType",
+          "description": "Account type.",
+          "type": "Enum",
+          "requiredness": "Required",
+          "enum": "AccountType",
+          "allowedValues": [
+            "A",
+            "B",
+            "Ct",
+            "D",
+            "E",
+            "F",
+            "G"
+          ]
+        },
+        {
+          "position": 13,
+          "name": "NominalInAccount",
+          "description": "Number of shares / nominal value held in the account of the respective account holder (i.e. the tax voucher person or of the third party holding the securities in the name of the tax voucher person or the preceding intermediary) (Number of shares held in the account).",
+          "type": "Decimal (19 digits total, 4 decimals)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 14,
+          "name": "BIC",
+          "description": "BIC (Bank Identifier Code) is an 8 to 11-character code used to uniquely identify banks globally during international transactions, often called a SWIFT code. Structure: Comprised of 4 letters (bank code), 2 letters (country code), 2 letters/numbers (location code), and an optional 3-digit branch code (or 'XXX' for head office).",
+          "type": "BIC (ISO 9362, 8 or 11 alphanumeric)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 15,
+          "name": "CountryOfTaxResidence",
+          "description": "Country of tax residency in ISO 3166-1 alpha-2.",
+          "type": "Country code (ISO 3166-1 alpha-2, 2 uppercase letters)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 16,
+          "name": "PersonTaxCategory",
+          "description": "'German' or 'NonGerman'. Determines which tax-ID fields apply.",
+          "type": "Enum",
+          "requiredness": "Required",
+          "enum": "PersonTaxCategory",
+          "allowedValues": [
+            "German",
+            "NonGerman"
+          ]
+        },
+        {
+          "position": 17,
+          "name": "InvestmentMarketBusinessId",
+          "description": "German business identification number. The business identification number of the non-natural person without a hyphen before the differentiating element.",
+          "type": "Numeric string (German Wirtschafts-IdNr, 13 digits)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 18,
+          "name": "InvestmentMarketTaxNumber",
+          "description": "If a German business identification number hasn´t been assigned yet: The German tax number of the non-natural person.",
+          "type": "Numeric string (German Steuernummer, 13 digits)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 19,
+          "name": "LEI",
+          "description": "If neither a German business tax id number in the meaning of section 139c German General Tax Code nor a German tax id number (usually the Corporate Income Tax id number) is available, the Legal Entity Identifier (LEI).",
+          "type": "LEI (ISO 17442, 20 alphanumeric)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 20,
+          "name": "EUID",
+          "description": "If neither a German business tax id number in the meaning of section 139c German General Tax Code nor a German tax id number (usually the Corporate Income Tax id number) is available nor a Legal Entity Identifier (LEI) is available, the European unique identifier (EUID; as referred to in Article 16 of Directive (EU) 2017/1132 of the European Parliament and of the Council).",
+          "type": "Text (max 200)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 21,
+          "name": "ForeignTaxId",
+          "description": "Tax identification number assigned to the tax voucher person by its country of tax residency.",
+          "type": "Text (max 35)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "name": "8 FIFO Trades",
+      "significance": "Receipts and deliveries within the relevant window, already reduced with FiFo (first-in-first-out) calculation by the submitter. Receipts and deliveries share this sheet and are distinguished by the Direction column.",
+      "cardinality": "Up to 1000 Receipt rows and up to 1000 Delivery rows per RequestId.",
+      "whenToFill": "Only when ReceiptsAndDeliveriesMode = FiFo. Leave empty when the mode = All.",
+      "fieldCount": 9,
+      "fields": [
+        {
+          "position": 1,
+          "name": "RequestId",
+          "description": "Foreign key. Must match a RequestId in the '1 Requests Master' sheet.",
+          "type": "Text (identifier used to link the sheets; any unique value)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 2,
+          "name": "Direction",
+          "description": "'Receipt' (purchase / delivery-in / loan / repo) or 'Delivery' (sale / delivery-out / loan / repo). Up to 1000 rows each per request.",
+          "type": "Enum",
+          "requiredness": "Required",
+          "enum": "FifoDirection",
+          "allowedValues": [
+            "Receipt",
+            "Delivery"
+          ]
+        },
+        {
+          "position": 3,
+          "name": "Nominal",
+          "description": "Number of shares / nominal value on which the transaction is based (= per receipt trade with acquisition date < 1 year prior to the day of the annual shareholders' meeting (day of the dividend distribution resolution).",
+          "type": "Decimal (19 digits total, 4 decimals)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 4,
+          "name": "TradeDate",
+          "description": "Trade Date.",
+          "type": "Date (YYYY-MM-DD)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 5,
+          "name": "TransactionType",
+          "description": "Category of securities trading transacted.",
+          "type": "Enum",
+          "requiredness": "Required",
+          "enum": "FifoTransactionType",
+          "allowedValues": [
+            "PO",
+            "SO",
+            "DT",
+            "TL",
+            "TP",
+            "RL",
+            "RP"
+          ]
+        },
+        {
+          "position": 6,
+          "name": "ContractualSettlementDate",
+          "description": "Agreed settlement date (Contractual settlement date).",
+          "type": "Date (YYYY-MM-DD)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 7,
+          "name": "ActualSettlementDate",
+          "description": "Actual settlement date.",
+          "type": "Date (YYYY-MM-DD)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 8,
+          "name": "TransactionReference",
+          "description": "Transaction reference beneficial owner/customer .",
+          "type": "Text (max 45)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 9,
+          "name": "TransactionReferencePayingAgent",
+          "description": "Transaction reference German Paying Agent.",
+          "type": "Text (max 45)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "name": "9 Raw Transactions All",
+      "significance": "The full, unreduced ledger of receipts and deliveries (no FiFo applied); the German paying agent performs the FiFo calculation. The opening balance is captured on the Security Related Information sheet; every movement is one row here.",
+      "cardinality": "Unbounded rows per RequestId.",
+      "whenToFill": "Only when ReceiptsAndDeliveriesMode = All. Leave empty when the mode = FiFo.",
+      "fieldCount": 10,
+      "fields": [
+        {
+          "position": 1,
+          "name": "RequestId",
+          "description": "Foreign key. Must match a RequestId in the '1 Requests Master' sheet.",
+          "type": "Text (identifier used to link the sheets; any unique value)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 2,
+          "name": "Nominal",
+          "description": "Number of shares / nominal value on which the transaction is based (= per deliver trade, if the trade date is within 47 calendar days after the date of the annual shareholders' meeting (AGM date; day of the dividend distribution resolution).",
+          "type": "Decimal (19 digits total, 4 decimals)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 3,
+          "name": "TradeDate",
+          "description": "Trade Date.",
+          "type": "Date (YYYY-MM-DD)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 4,
+          "name": "IntraDaySequence",
+          "description": "Sortable number, for the case that more than one transaction per trade date is delivered.",
+          "type": "Integer",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 5,
+          "name": "TransactionType",
+          "description": "Category of securities trading transacted.",
+          "type": "Enum",
+          "requiredness": "Required",
+          "enum": "RawTransactionType",
+          "allowedValues": [
+            "Buy",
+            "Sell",
+            "Transfer",
+            "SlbOpen",
+            "SlbClose",
+            "RepoOpen",
+            "RepoClose",
+            "Dividend",
+            "Interest",
+            "Other"
+          ]
+        },
+        {
+          "position": 6,
+          "name": "ContractualSettlementDate",
+          "description": "Agreed settlement date (Contractual settlement date).",
+          "type": "Date (YYYY-MM-DD)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 7,
+          "name": "ActualSettlementDate",
+          "description": "Actual settlement date.",
+          "type": "Date (YYYY-MM-DD)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 8,
+          "name": "COAF",
+          "description": "Corporate action event reference (COAF). Must be provided, if dividend or interest transaction type.",
+          "type": "Text (Corporate Action Event Reference, max 16)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 9,
+          "name": "TransactionReference",
+          "description": "Transaction reference beneficial owner/customer .",
+          "type": "Text (max 45)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 10,
+          "name": "TransactionReferencePayingAgent",
+          "description": "Transaction reference German Paying Agent.",
+          "type": "Text (max 45)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        }
+      ]
+    }
+  ]
+}
