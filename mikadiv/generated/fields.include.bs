@@ -12,39 +12,39 @@
 
 <table class="complex data longlastcol dictionary">
   <colgroup>
-    <col style="width:4%">
-    <col style="width:14%">
-    <col style="width:10%">
-    <col style="width:24%">
-    <col style="width:48%">
+    <col style="width:7%">
+    <col style="width:12%">
+    <col style="width:12%">
+    <col style="width:20%">
+    <col style="width:49%">
   </colgroup>
-  <thead><tr><th>#<th>Field<th>Requiredness<th>Type / Allowed values<th>Description</tr></thead>
+  <thead><tr><th class="col-num">#<th>Field<th class="col-req">Requiredness<th>Type / Allowed values<th>Description</tr></thead>
   <tbody>
-    <tr><td>1<td><code>RequestId</code><td>Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Identifier for the request, defined by you. Used only as the key that links every sheet together, so any unique value (e.g. a running number) is fine.</tr>
-    <tr><td>2<td><code>RecordType</code><td>Required<td>Enum (<a href="#enum-recordtype">RecordType</a>): <code>Request</code>, <code>Cancel</code><td class="long">'Request' for a MiKaDiv reporting for income; 'Cancel' to cancel a previously submitted request (leave the child sheets empty for cancellation rows).</tr>
-    <tr><td>3<td><code>AccountNumber</code><td>Required<td>Text (max 200)<td class="long">Account number of the requesting custodian.</tr>
-    <tr><td>4<td><code>ClientReference</code><td>Optional<td>Text (max 200)<td class="long">Custom reference data of the client.</tr>
-    <tr><td>5<td><code>ClientContactpersonName</code><td>Optional<td>Text (max 200)<td class="long">Name of the responsible foreign bank contact person.</tr>
-    <tr><td>6<td><code>ClientContactpersonPhone</code><td>Optional<td>Text (max 35)<td class="long">Telephone number of the responsible foreign bank contact person.</tr>
-    <tr><td>7<td><code>ClientContactpersonEmail</code><td>Optional<td>Text (max 200)<td class="long">E-mail address of the responsible foreign bank contact person.</tr>
-    <tr><td>8<td><code>RequestedService</code><td>Conditional<td>Enum (<a href="#enum-requestedservice">RequestedService</a>): <code>TaxReportAndCertificate</code>, <code>Reclaim</code>, <code>Relief</code><td class="long">Type of requested service.</tr>
-    <tr><td>9<td><code>RequestedServiceReason</code><td>Optional<td>Text (max 256)<td class="long">Reason for the requested service, especially for correction or cancellation.</tr>
-    <tr><td>10<td><code>RequestedAttestationType</code><td>Optional<td>Enum (<a href="#enum-requestedattestationtype">RequestedAttestationType</a>): <code>BV</code>, <code>PV</code>, <code>SB</code><td class="long">Type of requested tax voucher.</tr>
-    <tr><td>11<td><code>IsCorrectionRequest</code><td>Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">A correction is to be performed for a report. The data record contains a reference to the preceding request.</tr>
-    <tr><td>12<td><code>PreviousRequestIdForCorrection</code><td>Optional<td>UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)<td class="long">If the request is for correction of a previous request, then the RequestId of the previous request must be provided.</tr>
-    <tr><td>13<td><code>ReportSerialNumber</code><td>Optional<td>UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)<td class="long">Serial number (UUID) of an already submitted report, if provided previously by the German Paying agent. Used as a (additional) reference for correction.</tr>
-    <tr><td>14<td><code>TaxCertificatePrintedContactpersonName</code><td>Optional<td>Text (max 200)<td class="long">Name of the contact person for the customer, printed on the tax certificate or cover letter.</tr>
-    <tr><td>15<td><code>TaxCertificatePrintedContactpersonPhone</code><td>Optional<td>Text (max 35)<td class="long">Telephone number of the contact person for the customer, printed on the tax certificate or cover letter.</tr>
-    <tr><td>16<td><code>TaxCertificatePrintedContactpersonEmail</code><td>Optional<td>Text (max 200)<td class="long">E-mail address of the contact person for the customer, printed on the tax certificate or cover letter.</tr>
-    <tr><td>17<td><code>TaxCertificateAlternativeRecipientName</code><td>Optional<td>Text (max 200)<td class="long">Name of the alternative mailing address recipient.</tr>
-    <tr><td>18<td><code>TaxCertificateAlternativeRecipientAddress</code><td>Optional<td>Text (max 256)<td class="long">Address of the alternative mailing address recipient.</tr>
-    <tr><td>19<td><code>TaxCertificateAlternativeRecipientEmail</code><td>Optional<td>Text (max 256)<td class="long">E-mail address of the alternative mailing address recipient.</tr>
-    <tr><td>20<td><code>EventType</code><td>Optional<td>Text (max 20)<td class="long">Event designations of the German paying agent according to ISO 20022.</tr>
-    <tr><td>21<td><code>FundId</code><td>Optional<td>Text (max 20)<td class="long">Fund identifier (status certificate number).</tr>
-    <tr><td>22<td><code>PreviousRequestIdForCancellation</code><td>Conditional<td>UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)<td class="long">If the request is for cancellation of a previous request, then the RequestId of the previous request must be provided.</tr>
-    <tr><td>23<td><code>SecuritiesAccountNumber</code><td>Conditional<td>Text (max 200)<td class="long">Account number of the tax voucher person at the custodian to whom the tax voucher person is directly contracted.</tr>
-    <tr><td>24<td><code>AccountType</code><td>Conditional<td>Enum (<a href="#enum-accounttype">AccountType</a>): <code>A</code>, <code>B</code>, <code>Ct</code>, <code>D</code>, <code>E</code>, <code>F</code>, <code>G</code><td class="long">Account type.</tr>
-    <tr><td>25<td><code>AccountRelationship</code><td>Optional<td>Enum (<a href="#enum-accountrelationship">AccountRelationship</a>): <code>Trust</code>, <code>Usufruct</code>, <code>Pledge</code><td class="long">If the tax voucher person is not the beneficial owner (creditor), then the account relationship has to be specified.</tr>
+    <tr><td class="col-num">1<td><code>RequestId</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Identifier for the request, defined by you. Used only as the key that links every sheet together, so any unique value (e.g. a running number) is fine.</tr>
+    <tr><td class="col-num">2<td><code>RecordType</code><td class="col-req">Required<td>Enum (<a href="#enum-recordtype">RecordType</a>): <code>Request</code>, <code>Cancel</code><td class="long">'Request' for a MiKaDiv reporting for income; 'Cancel' to cancel a previously submitted request (leave the child sheets empty for cancellation rows).</tr>
+    <tr><td class="col-num">3<td><code>AccountNumber</code><td class="col-req">Required<td>Text (max 200)<td class="long">Account number of the requesting custodian.</tr>
+    <tr><td class="col-num">4<td><code>ClientReference</code><td class="col-req">Optional<td>Text (max 200)<td class="long">Custom reference data of the client.</tr>
+    <tr><td class="col-num">5<td><code>ClientContactpersonName</code><td class="col-req">Optional<td>Text (max 200)<td class="long">Name of the responsible foreign bank contact person.</tr>
+    <tr><td class="col-num">6<td><code>ClientContactpersonPhone</code><td class="col-req">Optional<td>Text (max 35)<td class="long">Telephone number of the responsible foreign bank contact person.</tr>
+    <tr><td class="col-num">7<td><code>ClientContactpersonEmail</code><td class="col-req">Optional<td>Text (max 200)<td class="long">E-mail address of the responsible foreign bank contact person.</tr>
+    <tr><td class="col-num">8<td><code>RequestedService</code><td class="col-req">Conditional<td>Enum (<a href="#enum-requestedservice">RequestedService</a>): <code>TaxReportAndCertificate</code>, <code>Reclaim</code>, <code>Relief</code><td class="long">Type of requested service.</tr>
+    <tr><td class="col-num">9<td><code>RequestedServiceReason</code><td class="col-req">Optional<td>Text (max 256)<td class="long">Reason for the requested service, especially for correction or cancellation.</tr>
+    <tr><td class="col-num">10<td><code>RequestedAttestationType</code><td class="col-req">Optional<td>Enum (<a href="#enum-requestedattestationtype">RequestedAttestationType</a>): <code>BV</code>, <code>PV</code>, <code>SB</code><td class="long">Type of requested tax voucher.</tr>
+    <tr><td class="col-num">11<td><code>IsCorrectionRequest</code><td class="col-req">Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">A correction is to be performed for a report. The data record contains a reference to the preceding request.</tr>
+    <tr><td class="col-num">12<td><code>PreviousRequestIdForCorrection</code><td class="col-req">Optional<td>UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)<td class="long">If the request is for correction of a previous request, then the RequestId of the previous request must be provided.</tr>
+    <tr><td class="col-num">13<td><code>ReportSerialNumber</code><td class="col-req">Optional<td>UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)<td class="long">Serial number (UUID) of an already submitted report, if provided previously by the German Paying agent. Used as a (additional) reference for correction.</tr>
+    <tr><td class="col-num">14<td><code>TaxCertificatePrintedContactpersonName</code><td class="col-req">Optional<td>Text (max 200)<td class="long">Name of the contact person for the customer, printed on the tax certificate or cover letter.</tr>
+    <tr><td class="col-num">15<td><code>TaxCertificatePrintedContactpersonPhone</code><td class="col-req">Optional<td>Text (max 35)<td class="long">Telephone number of the contact person for the customer, printed on the tax certificate or cover letter.</tr>
+    <tr><td class="col-num">16<td><code>TaxCertificatePrintedContactpersonEmail</code><td class="col-req">Optional<td>Text (max 200)<td class="long">E-mail address of the contact person for the customer, printed on the tax certificate or cover letter.</tr>
+    <tr><td class="col-num">17<td><code>TaxCertificateAlternativeRecipientName</code><td class="col-req">Optional<td>Text (max 200)<td class="long">Name of the alternative mailing address recipient.</tr>
+    <tr><td class="col-num">18<td><code>TaxCertificateAlternativeRecipientAddress</code><td class="col-req">Optional<td>Text (max 256)<td class="long">Address of the alternative mailing address recipient.</tr>
+    <tr><td class="col-num">19<td><code>TaxCertificateAlternativeRecipientEmail</code><td class="col-req">Optional<td>Text (max 256)<td class="long">E-mail address of the alternative mailing address recipient.</tr>
+    <tr><td class="col-num">20<td><code>EventType</code><td class="col-req">Optional<td>Text (max 20)<td class="long">Event designations of the German paying agent according to ISO 20022.</tr>
+    <tr><td class="col-num">21<td><code>FundId</code><td class="col-req">Optional<td>Text (max 20)<td class="long">Fund identifier (status certificate number).</tr>
+    <tr><td class="col-num">22<td><code>PreviousRequestIdForCancellation</code><td class="col-req">Conditional<td>UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)<td class="long">If the request is for cancellation of a previous request, then the RequestId of the previous request must be provided.</tr>
+    <tr><td class="col-num">23<td><code>SecuritiesAccountNumber</code><td class="col-req">Conditional<td>Text (max 200)<td class="long">Account number of the tax voucher person at the custodian to whom the tax voucher person is directly contracted.</tr>
+    <tr><td class="col-num">24<td><code>AccountType</code><td class="col-req">Conditional<td>Enum (<a href="#enum-accounttype">AccountType</a>): <code>A</code>, <code>B</code>, <code>Ct</code>, <code>D</code>, <code>E</code>, <code>F</code>, <code>G</code><td class="long">Account type.</tr>
+    <tr><td class="col-num">25<td><code>AccountRelationship</code><td class="col-req">Optional<td>Enum (<a href="#enum-accountrelationship">AccountRelationship</a>): <code>Trust</code>, <code>Usufruct</code>, <code>Pledge</code><td class="long">If the tax voucher person is not the beneficial owner (creditor), then the account relationship has to be specified.</tr>
   </tbody>
 </table>
 
@@ -56,53 +56,53 @@
 
 <table class="complex data longlastcol dictionary">
   <colgroup>
-    <col style="width:4%">
-    <col style="width:14%">
-    <col style="width:10%">
-    <col style="width:24%">
-    <col style="width:48%">
+    <col style="width:7%">
+    <col style="width:12%">
+    <col style="width:12%">
+    <col style="width:20%">
+    <col style="width:49%">
   </colgroup>
-  <thead><tr><th>#<th>Field<th>Requiredness<th>Type / Allowed values<th>Description</tr></thead>
+  <thead><tr><th class="col-num">#<th>Field<th class="col-req">Requiredness<th>Type / Allowed values<th>Description</tr></thead>
   <tbody>
-    <tr><td>1<td><code>RequestId</code><td>Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match a RequestId in the '1 Requests Master' sheet.</tr>
-    <tr><td>2<td><code>IncomeIdentifier</code><td>Optional<td>Text (max 45)<td class="long">Unique identifier for an income. Must be unique over subsequent files. For a subsequent request to the same income, the same identifier must be provided. To be defined by the customer institute.</tr>
-    <tr><td>3<td><code>CustodianIncomeIdentifier</code><td>Optional<td>Text (max 45)<td class="long">Bookingnumber of the payment received from the custodian. Used to reference a specific booking, if there are multiple custody chains.</tr>
-    <tr><td>4<td><code>ISIN</code><td>Required<td>ISIN (ISO 6166, 12 chars: 2 letters + 10 alphanumeric)<td class="long">International Securities Identification Number (ISIN) according to ISO 6166: 2 uppercase letters followed by 10 alphanumeric characters.</tr>
-    <tr><td>5<td><code>NameOfSecurity</code><td>Required<td>Text (max 256)<td class="long">Designation of the category of security.</tr>
-    <tr><td>6<td><code>TypeOfSecurity</code><td>Optional<td>Enum (<a href="#enum-typeofsecurity">TypeOfSecurity</a>): <code>Equity</code>, <code>Bond</code>, <code>DepositaryReceipt</code><td class="long">Type of the security generating the capital income. Determines the category of the financial instrument held in the custodian account.</tr>
-    <tr><td>7<td><code>COAF</code><td>Required<td>Text (Corporate Action Event Reference, max 16)<td class="long">Corporate Action Event Reference (COAF).</tr>
-    <tr><td>8<td><code>IsDepositaryReceipt</code><td>Required<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Did the beneficial owner receive the capital income via a depositary receipt on German equities (for example via an American Depositary Receipt (ADR))? Then the structure DepositaryReceipts has to be provided.</tr>
-    <tr><td>9<td><code>CorporateActionIdOfUnderlyingSecurity</code><td>Optional<td>Text (max 45)<td class="long">Depositary receipt only: Corporate Action Identifier of the custodian for the underlying security.</tr>
-    <tr><td>10<td><code>ISINOfUnderlyingSecurity</code><td>Conditional<td>ISIN (ISO 6166, 12 chars: 2 letters + 10 alphanumeric)<td class="long">International Securities Identification Number (ISIN) according to ISO 6166: 2 uppercase letters followed by 10 alphanumeric characters.</tr>
-    <tr><td>11<td><code>NameOfUnderlyingSecurity</code><td>Conditional<td>Text (max 256)<td class="long">Name of the underlying German security.</tr>
-    <tr><td>12<td><code>Recorddate</code><td>Conditional<td>Date (YYYY-MM-DD)<td class="long">Record date of the underlying German share.</tr>
-    <tr><td>13<td><code>TotalNumberOfCertificatesIssued</code><td>Optional<td>Decimal (19 digits total, 4 decimals)<td class="long">Total number of depositary certificates (DRs) issued on the date of the profit distribution resolution (date of annual general meeting of the German stock corporation) by the respective DR issuer.</tr>
-    <tr><td>14<td><code>TotalNumberOfUnderlyingShares</code><td>Optional<td>Decimal (19 digits total, 4 decimals)<td class="long">Total number of underlying German ordinary shares deposited by the respective DR issuer at the German depositary bank on the date of the profit resolution distribution of the German stock corporation.</tr>
-    <tr><td>15<td><code>Ratio</code><td>Optional<td>Decimal (13 digits total, 2 decimals)<td class="long">Ratio of the depositary certificate to the deposited securities. The ratio of depositary certificates stipulated in the issue conditions of the depositary certificate to the domestic securities stored by the German depository.</tr>
-    <tr><td>16<td><code>NumberOfCertificatesHeld</code><td>Conditional<td>Decimal (19 digits total, 4 decimals)<td class="long">Number of depositary certificates held by the creditor of the capital income (of the tax certificate) at the date of the profit distribution resolution.</tr>
-    <tr><td>17<td><code>Paydate</code><td>Required<td>Date (YYYY-MM-DD)<td class="long">Date of Payment.</tr>
-    <tr><td>18<td><code>PayoutType</code><td>Required<td>Enum (<a href="#enum-payouttype">PayoutType</a>): <code>Cash</code>, <code>Shares</code><td class="long">Type of Payment.</tr>
-    <tr><td>19<td><code>CashAccountNumber</code><td>Required<td>Text (max 200)<td class="long">Cash account number to which the income got credited at the custodian to whom the tax voucher person is directly contracted.</tr>
-    <tr><td>20<td><code>AccountNumberPayingAgentLevel</code><td>Optional<td>Text (max 200)<td class="long">If known: Account number of the account at the level of the German paying agent in which the shares are held.</tr>
-    <tr><td>21<td><code>GrossAmount</code><td>Required<td>Decimal (16 digits total, 2 decimals)<td class="long">Gross amount of the capital income generated (in Euro).</tr>
-    <tr><td>22<td><code>NetIncomePayment</code><td>Required<td>Decimal (16 digits total, 2 decimals)<td class="long">Net income payment (in EURO).</tr>
-    <tr><td>23<td><code>WithholdingTaxAmount</code><td>Required<td>Decimal (16 digits total, 2 decimals)<td class="long">German withholding tax amount in Euro.</tr>
-    <tr><td>24<td><code>SurchargesAmount</code><td>Required<td>Decimal (16 digits total, 2 decimals)<td class="long">German solidarity surcharge amount in Euro.</tr>
-    <tr><td>25<td><code>WithholdingTaxRate</code><td>Required<td>Decimal (4 digits total, 2 decimals)<td class="long">Tax rate applied to capital income (German withholding tax rate).</tr>
-    <tr><td>26<td><code>SurchargesRate</code><td>Required<td>Decimal (4 digits total, 2 decimals)<td class="long">Tax rate of the solidarity surcharge applied (Solidarity surcharge rate) The current solidarity surcharge rate of 5.5% must be populated as 5.50.</tr>
-    <tr><td>27<td><code>Nominal</code><td>Required<td>Decimal (19 digits total, 4 decimals)<td class="long">Quantity of securities on which the capital income is based (Number of shares / nominal value on which the income has been paid including Market Claims).</tr>
-    <tr><td>28<td><code>NominalMoreThan5DaysPriorExdate</code><td>Required<td>Decimal (19 digits total, 4 decimals)<td class="long">Number of shares which have been received more than 5 days prior to the ex-date.</tr>
-    <tr><td>29<td><code>NominalWithin5DaysPriorExdate</code><td>Required<td>Decimal (19 digits total, 4 decimals)<td class="long">Number of shares which have been received within 5 days prior to the ex-date.</tr>
-    <tr><td>30<td><code>NominalLinkedToFinancialArrangement</code><td>Required<td>Decimal (19 digits total, 4 decimals)<td class="long">Number of German shares value which were linked to Financial Arrangements (particularly hedging instruments like options, futures etc. but also borrowed securities or securities purchased under a Repo).
+    <tr><td class="col-num">1<td><code>RequestId</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match a RequestId in the '1 Requests Master' sheet.</tr>
+    <tr><td class="col-num">2<td><code>IncomeIdentifier</code><td class="col-req">Optional<td>Text (max 45)<td class="long">Unique identifier for an income. Must be unique over subsequent files. For a subsequent request to the same income, the same identifier must be provided. To be defined by the customer institute.</tr>
+    <tr><td class="col-num">3<td><code>CustodianIncomeIdentifier</code><td class="col-req">Optional<td>Text (max 45)<td class="long">Bookingnumber of the payment received from the custodian. Used to reference a specific booking, if there are multiple custody chains.</tr>
+    <tr><td class="col-num">4<td><code>ISIN</code><td class="col-req">Required<td>ISIN (ISO 6166, 12 chars: 2 letters + 10 alphanumeric)<td class="long">International Securities Identification Number (ISIN) according to ISO 6166: 2 uppercase letters followed by 10 alphanumeric characters.</tr>
+    <tr><td class="col-num">5<td><code>NameOfSecurity</code><td class="col-req">Required<td>Text (max 256)<td class="long">Designation of the category of security.</tr>
+    <tr><td class="col-num">6<td><code>TypeOfSecurity</code><td class="col-req">Optional<td>Enum (<a href="#enum-typeofsecurity">TypeOfSecurity</a>): <code>Equity</code>, <code>Bond</code>, <code>DepositaryReceipt</code><td class="long">Type of the security generating the capital income. Determines the category of the financial instrument held in the custodian account.</tr>
+    <tr><td class="col-num">7<td><code>COAF</code><td class="col-req">Required<td>Text (Corporate Action Event Reference, max 16)<td class="long">Corporate Action Event Reference (COAF).</tr>
+    <tr><td class="col-num">8<td><code>IsDepositaryReceipt</code><td class="col-req">Required<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Did the beneficial owner receive the capital income via a depositary receipt on German equities (for example via an American Depositary Receipt (ADR))? Then the structure DepositaryReceipts has to be provided.</tr>
+    <tr><td class="col-num">9<td><code>CorporateActionIdOfUnderlyingSecurity</code><td class="col-req">Optional<td>Text (max 45)<td class="long">Depositary receipt only: Corporate Action Identifier of the custodian for the underlying security.</tr>
+    <tr><td class="col-num">10<td><code>ISINOfUnderlyingSecurity</code><td class="col-req">Conditional<td>ISIN (ISO 6166, 12 chars: 2 letters + 10 alphanumeric)<td class="long">International Securities Identification Number (ISIN) according to ISO 6166: 2 uppercase letters followed by 10 alphanumeric characters.</tr>
+    <tr><td class="col-num">11<td><code>NameOfUnderlyingSecurity</code><td class="col-req">Conditional<td>Text (max 256)<td class="long">Name of the underlying German security.</tr>
+    <tr><td class="col-num">12<td><code>Recorddate</code><td class="col-req">Conditional<td>Date (YYYY-MM-DD)<td class="long">Record date of the underlying German share.</tr>
+    <tr><td class="col-num">13<td><code>TotalNumberOfCertificatesIssued</code><td class="col-req">Optional<td>Decimal (19 digits total, 4 decimals)<td class="long">Total number of depositary certificates (DRs) issued on the date of the profit distribution resolution (date of annual general meeting of the German stock corporation) by the respective DR issuer.</tr>
+    <tr><td class="col-num">14<td><code>TotalNumberOfUnderlyingShares</code><td class="col-req">Optional<td>Decimal (19 digits total, 4 decimals)<td class="long">Total number of underlying German ordinary shares deposited by the respective DR issuer at the German depositary bank on the date of the profit resolution distribution of the German stock corporation.</tr>
+    <tr><td class="col-num">15<td><code>Ratio</code><td class="col-req">Optional<td>Decimal (13 digits total, 2 decimals)<td class="long">Ratio of the depositary certificate to the deposited securities. The ratio of depositary certificates stipulated in the issue conditions of the depositary certificate to the domestic securities stored by the German depository.</tr>
+    <tr><td class="col-num">16<td><code>NumberOfCertificatesHeld</code><td class="col-req">Conditional<td>Decimal (19 digits total, 4 decimals)<td class="long">Number of depositary certificates held by the creditor of the capital income (of the tax certificate) at the date of the profit distribution resolution.</tr>
+    <tr><td class="col-num">17<td><code>Paydate</code><td class="col-req">Required<td>Date (YYYY-MM-DD)<td class="long">Date of Payment.</tr>
+    <tr><td class="col-num">18<td><code>PayoutType</code><td class="col-req">Required<td>Enum (<a href="#enum-payouttype">PayoutType</a>): <code>Cash</code>, <code>Shares</code><td class="long">Type of Payment.</tr>
+    <tr><td class="col-num">19<td><code>CashAccountNumber</code><td class="col-req">Required<td>Text (max 200)<td class="long">Cash account number to which the income got credited at the custodian to whom the tax voucher person is directly contracted.</tr>
+    <tr><td class="col-num">20<td><code>AccountNumberPayingAgentLevel</code><td class="col-req">Optional<td>Text (max 200)<td class="long">If known: Account number of the account at the level of the German paying agent in which the shares are held.</tr>
+    <tr><td class="col-num">21<td><code>GrossAmount</code><td class="col-req">Required<td>Decimal (16 digits total, 2 decimals)<td class="long">Gross amount of the capital income generated (in Euro).</tr>
+    <tr><td class="col-num">22<td><code>NetIncomePayment</code><td class="col-req">Required<td>Decimal (16 digits total, 2 decimals)<td class="long">Net income payment (in EURO).</tr>
+    <tr><td class="col-num">23<td><code>WithholdingTaxAmount</code><td class="col-req">Required<td>Decimal (16 digits total, 2 decimals)<td class="long">German withholding tax amount in Euro.</tr>
+    <tr><td class="col-num">24<td><code>SurchargesAmount</code><td class="col-req">Required<td>Decimal (16 digits total, 2 decimals)<td class="long">German solidarity surcharge amount in Euro.</tr>
+    <tr><td class="col-num">25<td><code>WithholdingTaxRate</code><td class="col-req">Required<td>Decimal (4 digits total, 2 decimals)<td class="long">Tax rate applied to capital income (German withholding tax rate).</tr>
+    <tr><td class="col-num">26<td><code>SurchargesRate</code><td class="col-req">Required<td>Decimal (4 digits total, 2 decimals)<td class="long">Tax rate of the solidarity surcharge applied (Solidarity surcharge rate) The current solidarity surcharge rate of 5.5% must be populated as 5.50.</tr>
+    <tr><td class="col-num">27<td><code>Nominal</code><td class="col-req">Required<td>Decimal (19 digits total, 4 decimals)<td class="long">Quantity of securities on which the capital income is based (Number of shares / nominal value on which the income has been paid including Market Claims).</tr>
+    <tr><td class="col-num">28<td><code>NominalMoreThan5DaysPriorExdate</code><td class="col-req">Required<td>Decimal (19 digits total, 4 decimals)<td class="long">Number of shares which have been received more than 5 days prior to the ex-date.</tr>
+    <tr><td class="col-num">29<td><code>NominalWithin5DaysPriorExdate</code><td class="col-req">Required<td>Decimal (19 digits total, 4 decimals)<td class="long">Number of shares which have been received within 5 days prior to the ex-date.</tr>
+    <tr><td class="col-num">30<td><code>NominalLinkedToFinancialArrangement</code><td class="col-req">Required<td>Decimal (19 digits total, 4 decimals)<td class="long">Number of German shares value which were linked to Financial Arrangements (particularly hedging instruments like options, futures etc. but also borrowed securities or securities purchased under a Repo).
                                     Financial arrangements in the meaning of Section 45b (3) of the German Income Tax Act and as defined in margin number 80 of the guidance notes of the German Ministry of Finance from April 22, 2025. According to marginal 5 of the guidance notes from the German Ministry of Finance, German shares were linked to Financial Arrangements if the Financial Arrangements were not yet settled, expired or otherwise completed on the day after the annual general meeting of the German stock corporation which distributed the dividend.</tr>
-    <tr><td>31<td><code>NominalNotLinkedToFinancialArrangement</code><td>Required<td>Decimal (19 digits total, 4 decimals)<td class="long">Number of German shares which were not linked to a Financial Arrangement.</tr>
-    <tr><td>32<td><code>NominalLinkedToSecLending</code><td>Required<td>Decimal (19 digits total, 4 decimals)<td class="long">Number of German shares which are linked to a securities lending transaction that had not yet been completed on the day after the annual general meeting (AGM date).</tr>
-    <tr><td>33<td><code>NominalLinkedToRepo</code><td>Required<td>Decimal (19 digits total, 4 decimals)<td class="long">Number of German shares which are linked to a repo transaction that had not yet been completed on the day after the annual general meeting (AGM date).</tr>
-    <tr><td>34<td><code>ReceiptsAndDeliveriesMode</code><td>Required<td>Enum (<a href="#enum-receiptsanddeliveriesmode">ReceiptsAndDeliveriesMode</a>): <code>FiFo</code>, <code>All</code><td class="long">Whether receipts/deliveries are declared with FiFo calculation (use the '8 FIFO Trades' sheet) or without (use the '9 Raw Transactions All' sheet).</tr>
-    <tr><td>35<td><code>FifoReceiptsMoreThan1000Available</code><td>Conditional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Are more than 1.000 (one thousand) remaining reportable receipt transactions available?</tr>
-    <tr><td>36<td><code>FifoDeliveriesMoreThan1000Available</code><td>Conditional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Are more than 1.000 (one thousand) reportable deliver transactions available?</tr>
-    <tr><td>37<td><code>OpeningBalance</code><td>Conditional<td>Decimal (19 digits total, 4 decimals)<td class="long">Balance before 12 month.</tr>
-    <tr><td>38<td><code>OpeningBalanceDate</code><td>Conditional<td>DateTime (YYYY-MM-DDThh:mm:ss)<td class="long">Date of the initial holdings evaluation.</tr>
+    <tr><td class="col-num">31<td><code>NominalNotLinkedToFinancialArrangement</code><td class="col-req">Required<td>Decimal (19 digits total, 4 decimals)<td class="long">Number of German shares which were not linked to a Financial Arrangement.</tr>
+    <tr><td class="col-num">32<td><code>NominalLinkedToSecLending</code><td class="col-req">Required<td>Decimal (19 digits total, 4 decimals)<td class="long">Number of German shares which are linked to a securities lending transaction that had not yet been completed on the day after the annual general meeting (AGM date).</tr>
+    <tr><td class="col-num">33<td><code>NominalLinkedToRepo</code><td class="col-req">Required<td>Decimal (19 digits total, 4 decimals)<td class="long">Number of German shares which are linked to a repo transaction that had not yet been completed on the day after the annual general meeting (AGM date).</tr>
+    <tr><td class="col-num">34<td><code>ReceiptsAndDeliveriesMode</code><td class="col-req">Required<td>Enum (<a href="#enum-receiptsanddeliveriesmode">ReceiptsAndDeliveriesMode</a>): <code>FiFo</code>, <code>All</code><td class="long">Whether receipts/deliveries are declared with FiFo calculation (use the '8 FIFO Trades' sheet) or without (use the '9 Raw Transactions All' sheet).</tr>
+    <tr><td class="col-num">35<td><code>FifoReceiptsMoreThan1000Available</code><td class="col-req">Conditional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Are more than 1.000 (one thousand) remaining reportable receipt transactions available?</tr>
+    <tr><td class="col-num">36<td><code>FifoDeliveriesMoreThan1000Available</code><td class="col-req">Conditional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Are more than 1.000 (one thousand) reportable deliver transactions available?</tr>
+    <tr><td class="col-num">37<td><code>OpeningBalance</code><td class="col-req">Conditional<td>Decimal (19 digits total, 4 decimals)<td class="long">Balance before 12 month.</tr>
+    <tr><td class="col-num">38<td><code>OpeningBalanceDate</code><td class="col-req">Conditional<td>DateTime (YYYY-MM-DDThh:mm:ss)<td class="long">Date of the initial holdings evaluation.</tr>
   </tbody>
 </table>
 
@@ -114,36 +114,36 @@
 
 <table class="complex data longlastcol dictionary">
   <colgroup>
-    <col style="width:4%">
-    <col style="width:14%">
-    <col style="width:10%">
-    <col style="width:24%">
-    <col style="width:48%">
+    <col style="width:7%">
+    <col style="width:12%">
+    <col style="width:12%">
+    <col style="width:20%">
+    <col style="width:49%">
   </colgroup>
-  <thead><tr><th>#<th>Field<th>Requiredness<th>Type / Allowed values<th>Description</tr></thead>
+  <thead><tr><th class="col-num">#<th>Field<th class="col-req">Requiredness<th>Type / Allowed values<th>Description</tr></thead>
   <tbody>
-    <tr><td>1<td><code>RequestId</code><td>Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match a RequestId in the '1 Requests Master' sheet.</tr>
-    <tr><td>2<td><code>Relationship</code><td>Required<td>Enum (<a href="#enum-tvrelationship">TVRelationship</a>): <code>Creditor</code>, <code>AccountHolder</code><td class="long">Indicate the role of the tax certificate receiver person.</tr>
-    <tr><td>3<td><code>ReceiverGroupType</code><td>Required<td>Enum (<a href="#enum-receivergrouptype">ReceiverGroupType</a>): <code>Single</code>, <code>CommunityMember</code><td class="long">'Single' for a normal recipient; 'CommunityMember' when this row is one member of a community of up to 10 persons.</tr>
-    <tr><td>4<td><code>CommunityGroupId</code><td>Conditional<td>Text (max 45)<td class="long">Identifier grouping up to 10 community members into one receiver. Required when ReceiverGroupType=CommunityMember.</tr>
-    <tr><td>5<td><code>PersonIdentifier</code><td>Optional<td>Text (max 45)<td class="long">Unique identifier for a person. Must be unique over subsequent files. For a subsequent request to the same person, the same identifier must be provided. To be defined by the customer institute.</tr>
-    <tr><td>6<td><code>Title</code><td>Optional<td>Text (max 20)<td class="long">The person’s title if applicable.</tr>
-    <tr><td>7<td><code>NamePrefix</code><td>Optional<td>Text (max 20)<td class="long">The person’s name prefix if applicable.</tr>
-    <tr><td>8<td><code>FirstName</code><td>Required<td>Text (max 45)<td class="long">The person’s first name.</tr>
-    <tr><td>9<td><code>LastName</code><td>Required<td>Text (max 45)<td class="long">The person’s last name.</tr>
-    <tr><td>10<td><code>NameAffix</code><td>Optional<td>Text (max 20)<td class="long">The person’s name prefix if applicable.</tr>
-    <tr><td>11<td><code>DateOfBirth</code><td>Required<td>Date (YYYY-MM-DD; partial 0000 allowed)<td class="long">Date of birth. Partially unknown dates are permitted: yyyy-mm-00 (unknown day), yyyy-00-00 (unknown month and day), 0000-00-00 (entirely unknown).</tr>
-    <tr><td>12<td><code>StreetOrPostalCode</code><td>Optional<td>Text (max 80)<td class="long">The street name of the address.</tr>
-    <tr><td>13<td><code>HouseNumber</code><td>Optional<td>Integer (0 - 99999)<td class="long">Possible range 0 – 99999. Specifying the house number “0” as a default, if no house number has been assigned, is not permissible. Specifying it as such is only permissible if the municipality has assigned the number “0”.</tr>
-    <tr><td>14<td><code>HouseNumberAddition</code><td>Optional<td>Text (max 20)<td class="long">Possible additions to the house number in the address: With a house number “5a”, the “a” would be mentioned here, the “5” must be indicated in the house number field. With a house number “105-109”, the “-109” would be mentioned here.</tr>
-    <tr><td>15<td><code>AddressAddition</code><td>Optional<td>Text (max 50)<td class="long">Possible addition to foreign addresses.</tr>
-    <tr><td>16<td><code>Postcode</code><td>Optional<td>Text (max 5)<td class="long">The postcode of the address. For German addresses only five digits are allowed.</tr>
-    <tr><td>17<td><code>City</code><td>Required<td>Text (max 80)<td class="long">The place name of the address.</tr>
-    <tr><td>18<td><code>Country</code><td>Optional<td>Country code (ISO 3166-1 alpha-2, 2 uppercase letters)<td class="long">The contry of the address in ISO 3166-1 alpha-2.</tr>
-    <tr><td>19<td><code>CountryOfTaxResidence</code><td>Required<td>Country code (ISO 3166-1 alpha-2, 2 uppercase letters)<td class="long">Country of tax residency in ISO 3166-1 alpha-2.</tr>
-    <tr><td>20<td><code>PersonTaxCategory</code><td>Required<td>Enum (<a href="#enum-persontaxcategory">PersonTaxCategory</a>): <code>German</code>, <code>NonGerman</code><td class="long">'German' or 'NonGerman'. Determines which tax-ID fields apply.</tr>
-    <tr><td>21<td><code>InvestmentMarketTaxId</code><td>Conditional<td>Numeric string (German IdNr, exactly 11 digits)<td class="long">The German tax identification number (IdNr) of the tax voucher person. Only digits are permitted.</tr>
-    <tr><td>22<td><code>ForeignTaxId</code><td>Conditional<td>Text (max 35)<td class="long">If no German tax id number has been assigned yet: Tax identification attribute awarded by the country of residence.</tr>
+    <tr><td class="col-num">1<td><code>RequestId</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match a RequestId in the '1 Requests Master' sheet.</tr>
+    <tr><td class="col-num">2<td><code>Relationship</code><td class="col-req">Required<td>Enum (<a href="#enum-tvrelationship">TVRelationship</a>): <code>Creditor</code>, <code>AccountHolder</code><td class="long">Indicate the role of the tax certificate receiver person.</tr>
+    <tr><td class="col-num">3<td><code>ReceiverGroupType</code><td class="col-req">Required<td>Enum (<a href="#enum-receivergrouptype">ReceiverGroupType</a>): <code>Single</code>, <code>CommunityMember</code><td class="long">'Single' for a normal recipient; 'CommunityMember' when this row is one member of a community of up to 10 persons.</tr>
+    <tr><td class="col-num">4<td><code>CommunityGroupId</code><td class="col-req">Conditional<td>Text (max 45)<td class="long">Identifier grouping up to 10 community members into one receiver. Required when ReceiverGroupType=CommunityMember.</tr>
+    <tr><td class="col-num">5<td><code>PersonIdentifier</code><td class="col-req">Optional<td>Text (max 45)<td class="long">Unique identifier for a person. Must be unique over subsequent files. For a subsequent request to the same person, the same identifier must be provided. To be defined by the customer institute.</tr>
+    <tr><td class="col-num">6<td><code>Title</code><td class="col-req">Optional<td>Text (max 20)<td class="long">The person’s title if applicable.</tr>
+    <tr><td class="col-num">7<td><code>NamePrefix</code><td class="col-req">Optional<td>Text (max 20)<td class="long">The person’s name prefix if applicable.</tr>
+    <tr><td class="col-num">8<td><code>FirstName</code><td class="col-req">Required<td>Text (max 45)<td class="long">The person’s first name.</tr>
+    <tr><td class="col-num">9<td><code>LastName</code><td class="col-req">Required<td>Text (max 45)<td class="long">The person’s last name.</tr>
+    <tr><td class="col-num">10<td><code>NameAffix</code><td class="col-req">Optional<td>Text (max 20)<td class="long">The person’s name prefix if applicable.</tr>
+    <tr><td class="col-num">11<td><code>DateOfBirth</code><td class="col-req">Required<td>Date (YYYY-MM-DD; partial 0000 allowed)<td class="long">Date of birth. Partially unknown dates are permitted: yyyy-mm-00 (unknown day), yyyy-00-00 (unknown month and day), 0000-00-00 (entirely unknown).</tr>
+    <tr><td class="col-num">12<td><code>StreetOrPostalCode</code><td class="col-req">Optional<td>Text (max 80)<td class="long">The street name of the address.</tr>
+    <tr><td class="col-num">13<td><code>HouseNumber</code><td class="col-req">Optional<td>Integer (0 - 99999)<td class="long">Possible range 0 – 99999. Specifying the house number “0” as a default, if no house number has been assigned, is not permissible. Specifying it as such is only permissible if the municipality has assigned the number “0”.</tr>
+    <tr><td class="col-num">14<td><code>HouseNumberAddition</code><td class="col-req">Optional<td>Text (max 20)<td class="long">Possible additions to the house number in the address: With a house number “5a”, the “a” would be mentioned here, the “5” must be indicated in the house number field. With a house number “105-109”, the “-109” would be mentioned here.</tr>
+    <tr><td class="col-num">15<td><code>AddressAddition</code><td class="col-req">Optional<td>Text (max 50)<td class="long">Possible addition to foreign addresses.</tr>
+    <tr><td class="col-num">16<td><code>Postcode</code><td class="col-req">Optional<td>Text (max 5)<td class="long">The postcode of the address. For German addresses only five digits are allowed.</tr>
+    <tr><td class="col-num">17<td><code>City</code><td class="col-req">Required<td>Text (max 80)<td class="long">The place name of the address.</tr>
+    <tr><td class="col-num">18<td><code>Country</code><td class="col-req">Optional<td>Country code (ISO 3166-1 alpha-2, 2 uppercase letters)<td class="long">The contry of the address in ISO 3166-1 alpha-2.</tr>
+    <tr><td class="col-num">19<td><code>CountryOfTaxResidence</code><td class="col-req">Required<td>Country code (ISO 3166-1 alpha-2, 2 uppercase letters)<td class="long">Country of tax residency in ISO 3166-1 alpha-2.</tr>
+    <tr><td class="col-num">20<td><code>PersonTaxCategory</code><td class="col-req">Required<td>Enum (<a href="#enum-persontaxcategory">PersonTaxCategory</a>): <code>German</code>, <code>NonGerman</code><td class="long">'German' or 'NonGerman'. Determines which tax-ID fields apply.</tr>
+    <tr><td class="col-num">21<td><code>InvestmentMarketTaxId</code><td class="col-req">Conditional<td>Numeric string (German IdNr, exactly 11 digits)<td class="long">The German tax identification number (IdNr) of the tax voucher person. Only digits are permitted.</tr>
+    <tr><td class="col-num">22<td><code>ForeignTaxId</code><td class="col-req">Conditional<td>Text (max 35)<td class="long">If no German tax id number has been assigned yet: Tax identification attribute awarded by the country of residence.</tr>
   </tbody>
 </table>
 
@@ -155,36 +155,36 @@
 
 <table class="complex data longlastcol dictionary">
   <colgroup>
-    <col style="width:4%">
-    <col style="width:14%">
-    <col style="width:10%">
-    <col style="width:24%">
-    <col style="width:48%">
+    <col style="width:7%">
+    <col style="width:12%">
+    <col style="width:12%">
+    <col style="width:20%">
+    <col style="width:49%">
   </colgroup>
-  <thead><tr><th>#<th>Field<th>Requiredness<th>Type / Allowed values<th>Description</tr></thead>
+  <thead><tr><th class="col-num">#<th>Field<th class="col-req">Requiredness<th>Type / Allowed values<th>Description</tr></thead>
   <tbody>
-    <tr><td>1<td><code>RequestId</code><td>Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match a RequestId in the '1 Requests Master' sheet.</tr>
-    <tr><td>2<td><code>Relationship</code><td>Required<td>Enum (<a href="#enum-tvrelationship">TVRelationship</a>): <code>Creditor</code>, <code>AccountHolder</code><td class="long">Indicate the role of the tax certificate receiver person.</tr>
-    <tr><td>3<td><code>ReceiverGroupType</code><td>Required<td>Enum (<a href="#enum-receivergrouptype">ReceiverGroupType</a>): <code>Single</code>, <code>CommunityMember</code><td class="long">'Single' for a normal recipient; 'CommunityMember' when this row is one member of a community of up to 10 persons.</tr>
-    <tr><td>4<td><code>CommunityGroupId</code><td>Conditional<td>Text (max 45)<td class="long">Identifier grouping up to 10 community members into one receiver. Required when ReceiverGroupType=CommunityMember.</tr>
-    <tr><td>5<td><code>PersonIdentifier</code><td>Optional<td>Text (max 45)<td class="long">Unique identifier for a person. Must be unique over subsequent files. For a subsequent request to the same person, the same identifier must be provided. To be defined by the customer institute.</tr>
-    <tr><td>6<td><code>Name</code><td>Required<td>Text (max 256)<td class="long">The name of the non-natural person.</tr>
-    <tr><td>7<td><code>StreetOrPostalCode</code><td>Optional<td>Text (max 80)<td class="long">The street name of the address.</tr>
-    <tr><td>8<td><code>HouseNumber</code><td>Optional<td>Integer (0 - 99999)<td class="long">Possible range 0 – 99999. Specifying the house number “0” as a default, if no house number has been assigned, is not permissible. Specifying it as such is only permissible if the municipality has assigned the number “0”.</tr>
-    <tr><td>9<td><code>HouseNumberAddition</code><td>Optional<td>Text (max 20)<td class="long">Possible additions to the house number in the address: With a house number “5a”, the “a” would be mentioned here, the “5” must be indicated in the house number field. With a house number “105-109”, the “-109” would be mentioned here.</tr>
-    <tr><td>10<td><code>AddressAddition</code><td>Optional<td>Text (max 50)<td class="long">Possible addition to foreign addresses.</tr>
-    <tr><td>11<td><code>Postcode</code><td>Optional<td>Text (max 5)<td class="long">The postcode of the address. For German addresses only five digits are allowed.</tr>
-    <tr><td>12<td><code>City</code><td>Required<td>Text (max 80)<td class="long">The place name of the address.</tr>
-    <tr><td>13<td><code>Country</code><td>Optional<td>Country code (ISO 3166-1 alpha-2, 2 uppercase letters)<td class="long">The contry of the address in ISO 3166-1 alpha-2.</tr>
-    <tr><td>14<td><code>CountryOfTaxResidence</code><td>Required<td>Country code (ISO 3166-1 alpha-2, 2 uppercase letters)<td class="long">Country of tax residency in ISO 3166-1 alpha-2.</tr>
-    <tr><td>15<td><code>PersonTaxCategory</code><td>Required<td>Enum (<a href="#enum-persontaxcategory">PersonTaxCategory</a>): <code>German</code>, <code>NonGerman</code><td class="long">'German' or 'NonGerman'. Determines which tax-ID fields apply.</tr>
-    <tr><td>16<td><code>InvestmentMarketBusinessId</code><td>Conditional<td>Numeric string (German Wirtschafts-IdNr, 13 digits)<td class="long">German business identification number. The business identification number of the non-natural person without a hyphen before the differentiating element.</tr>
-    <tr><td>17<td><code>InvestmentMarketTaxNumber</code><td>Conditional<td>Numeric string (German Steuernummer, 13 digits)<td class="long">If a German business identification number hasn´t been assigned yet: The German tax number of the non-natural person.</tr>
-    <tr><td>18<td><code>LEI</code><td>Conditional<td>LEI (ISO 17442, 20 alphanumeric)<td class="long">If neither a German business tax id number in the meaning of section 139c German General Tax Code nor a German tax id number (usually the Corporate Income Tax id number) is available, the Legal Entity Identifier (LEI).</tr>
-    <tr><td>19<td><code>EUID</code><td>Conditional<td>Text (max 200)<td class="long">If neither a German business tax id number in the meaning of section 139c German General Tax Code nor a German tax id number (usually the Corporate Income Tax id number) is available nor a Legal Entity Identifier (LEI) is available, the European unique identifier (EUID; as referred to in Article 16 of Directive (EU) 2017/1132 of the European Parliament and of the Council).</tr>
-    <tr><td>20<td><code>ForeignTaxId</code><td>Conditional<td>Text (max 35)<td class="long">Tax identification number assigned to the tax voucher person by its country of tax residency.</tr>
-    <tr><td>21<td><code>LegalForm</code><td>Conditional<td>Text (max 60)<td class="long">The foreign legal entity type must be specified as free text. Long and short form.</tr>
-    <tr><td>22<td><code>DateOfFoundation</code><td>Conditional<td>Date (YYYY-MM-DD)<td class="long">Date when the entity was established / founded / incorporated / launched.</tr>
+    <tr><td class="col-num">1<td><code>RequestId</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match a RequestId in the '1 Requests Master' sheet.</tr>
+    <tr><td class="col-num">2<td><code>Relationship</code><td class="col-req">Required<td>Enum (<a href="#enum-tvrelationship">TVRelationship</a>): <code>Creditor</code>, <code>AccountHolder</code><td class="long">Indicate the role of the tax certificate receiver person.</tr>
+    <tr><td class="col-num">3<td><code>ReceiverGroupType</code><td class="col-req">Required<td>Enum (<a href="#enum-receivergrouptype">ReceiverGroupType</a>): <code>Single</code>, <code>CommunityMember</code><td class="long">'Single' for a normal recipient; 'CommunityMember' when this row is one member of a community of up to 10 persons.</tr>
+    <tr><td class="col-num">4<td><code>CommunityGroupId</code><td class="col-req">Conditional<td>Text (max 45)<td class="long">Identifier grouping up to 10 community members into one receiver. Required when ReceiverGroupType=CommunityMember.</tr>
+    <tr><td class="col-num">5<td><code>PersonIdentifier</code><td class="col-req">Optional<td>Text (max 45)<td class="long">Unique identifier for a person. Must be unique over subsequent files. For a subsequent request to the same person, the same identifier must be provided. To be defined by the customer institute.</tr>
+    <tr><td class="col-num">6<td><code>Name</code><td class="col-req">Required<td>Text (max 256)<td class="long">The name of the non-natural person.</tr>
+    <tr><td class="col-num">7<td><code>StreetOrPostalCode</code><td class="col-req">Optional<td>Text (max 80)<td class="long">The street name of the address.</tr>
+    <tr><td class="col-num">8<td><code>HouseNumber</code><td class="col-req">Optional<td>Integer (0 - 99999)<td class="long">Possible range 0 – 99999. Specifying the house number “0” as a default, if no house number has been assigned, is not permissible. Specifying it as such is only permissible if the municipality has assigned the number “0”.</tr>
+    <tr><td class="col-num">9<td><code>HouseNumberAddition</code><td class="col-req">Optional<td>Text (max 20)<td class="long">Possible additions to the house number in the address: With a house number “5a”, the “a” would be mentioned here, the “5” must be indicated in the house number field. With a house number “105-109”, the “-109” would be mentioned here.</tr>
+    <tr><td class="col-num">10<td><code>AddressAddition</code><td class="col-req">Optional<td>Text (max 50)<td class="long">Possible addition to foreign addresses.</tr>
+    <tr><td class="col-num">11<td><code>Postcode</code><td class="col-req">Optional<td>Text (max 5)<td class="long">The postcode of the address. For German addresses only five digits are allowed.</tr>
+    <tr><td class="col-num">12<td><code>City</code><td class="col-req">Required<td>Text (max 80)<td class="long">The place name of the address.</tr>
+    <tr><td class="col-num">13<td><code>Country</code><td class="col-req">Optional<td>Country code (ISO 3166-1 alpha-2, 2 uppercase letters)<td class="long">The contry of the address in ISO 3166-1 alpha-2.</tr>
+    <tr><td class="col-num">14<td><code>CountryOfTaxResidence</code><td class="col-req">Required<td>Country code (ISO 3166-1 alpha-2, 2 uppercase letters)<td class="long">Country of tax residency in ISO 3166-1 alpha-2.</tr>
+    <tr><td class="col-num">15<td><code>PersonTaxCategory</code><td class="col-req">Required<td>Enum (<a href="#enum-persontaxcategory">PersonTaxCategory</a>): <code>German</code>, <code>NonGerman</code><td class="long">'German' or 'NonGerman'. Determines which tax-ID fields apply.</tr>
+    <tr><td class="col-num">16<td><code>InvestmentMarketBusinessId</code><td class="col-req">Conditional<td>Numeric string (German Wirtschafts-IdNr, 13 digits)<td class="long">German business identification number. The business identification number of the non-natural person without a hyphen before the differentiating element.</tr>
+    <tr><td class="col-num">17<td><code>InvestmentMarketTaxNumber</code><td class="col-req">Conditional<td>Numeric string (German Steuernummer, 13 digits)<td class="long">If a German business identification number hasn´t been assigned yet: The German tax number of the non-natural person.</tr>
+    <tr><td class="col-num">18<td><code>LEI</code><td class="col-req">Conditional<td>LEI (ISO 17442, 20 alphanumeric)<td class="long">If neither a German business tax id number in the meaning of section 139c German General Tax Code nor a German tax id number (usually the Corporate Income Tax id number) is available, the Legal Entity Identifier (LEI).</tr>
+    <tr><td class="col-num">19<td><code>EUID</code><td class="col-req">Conditional<td>Text (max 200)<td class="long">If neither a German business tax id number in the meaning of section 139c German General Tax Code nor a German tax id number (usually the Corporate Income Tax id number) is available nor a Legal Entity Identifier (LEI) is available, the European unique identifier (EUID; as referred to in Article 16 of Directive (EU) 2017/1132 of the European Parliament and of the Council).</tr>
+    <tr><td class="col-num">20<td><code>ForeignTaxId</code><td class="col-req">Conditional<td>Text (max 35)<td class="long">Tax identification number assigned to the tax voucher person by its country of tax residency.</tr>
+    <tr><td class="col-num">21<td><code>LegalForm</code><td class="col-req">Conditional<td>Text (max 60)<td class="long">The foreign legal entity type must be specified as free text. Long and short form.</tr>
+    <tr><td class="col-num">22<td><code>DateOfFoundation</code><td class="col-req">Conditional<td>Date (YYYY-MM-DD)<td class="long">Date when the entity was established / founded / incorporated / launched.</tr>
   </tbody>
 </table>
 
@@ -196,34 +196,34 @@
 
 <table class="complex data longlastcol dictionary">
   <colgroup>
-    <col style="width:4%">
-    <col style="width:14%">
-    <col style="width:10%">
-    <col style="width:24%">
-    <col style="width:48%">
+    <col style="width:7%">
+    <col style="width:12%">
+    <col style="width:12%">
+    <col style="width:20%">
+    <col style="width:49%">
   </colgroup>
-  <thead><tr><th>#<th>Field<th>Requiredness<th>Type / Allowed values<th>Description</tr></thead>
+  <thead><tr><th class="col-num">#<th>Field<th class="col-req">Requiredness<th>Type / Allowed values<th>Description</tr></thead>
   <tbody>
-    <tr><td>1<td><code>RequestId</code><td>Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match a RequestId in the '1 Requests Master' sheet.</tr>
-    <tr><td>2<td><code>Relationship</code><td>Required<td>Enum (<a href="#enum-tprelationship">TPRelationship</a>): <code>Trustee</code>, <code>Pledgor</code>, <code>Grantor of usufruct</code><td class="long">If the account holder is not the beneficial owner, this category specifies, how the account holder represents the beneficial owner.</tr>
-    <tr><td>3<td><code>PersonIdentifier</code><td>Optional<td>Text (max 45)<td class="long">Unique identifier for a person. Must be unique over subsequent files. For a subsequent request to the same person, the same identifier must be provided. To be defined by the customer institute.</tr>
-    <tr><td>4<td><code>Title</code><td>Optional<td>Text (max 20)<td class="long">The person’s title if applicable.</tr>
-    <tr><td>5<td><code>NamePrefix</code><td>Optional<td>Text (max 20)<td class="long">The person’s name prefix if applicable.</tr>
-    <tr><td>6<td><code>FirstName</code><td>Required<td>Text (max 45)<td class="long">The person’s first name.</tr>
-    <tr><td>7<td><code>LastName</code><td>Required<td>Text (max 45)<td class="long">The person’s last name.</tr>
-    <tr><td>8<td><code>NameAffix</code><td>Optional<td>Text (max 20)<td class="long">The person’s name prefix if applicable.</tr>
-    <tr><td>9<td><code>DateOfBirth</code><td>Required<td>Date (YYYY-MM-DD; partial 0000 allowed)<td class="long">Date of birth. Partially unknown dates are permitted: yyyy-mm-00 (unknown day), yyyy-00-00 (unknown month and day), 0000-00-00 (entirely unknown).</tr>
-    <tr><td>10<td><code>StreetOrPostalCode</code><td>Optional<td>Text (max 80)<td class="long">The street name of the address.</tr>
-    <tr><td>11<td><code>HouseNumber</code><td>Optional<td>Integer (0 - 99999)<td class="long">Possible range 0 – 99999. Specifying the house number “0” as a default, if no house number has been assigned, is not permissible. Specifying it as such is only permissible if the municipality has assigned the number “0”.</tr>
-    <tr><td>12<td><code>HouseNumberAddition</code><td>Optional<td>Text (max 20)<td class="long">Possible additions to the house number in the address: With a house number “5a”, the “a” would be mentioned here, the “5” must be indicated in the house number field. With a house number “105-109”, the “-109” would be mentioned here.</tr>
-    <tr><td>13<td><code>AddressAddition</code><td>Optional<td>Text (max 50)<td class="long">Possible addition to foreign addresses.</tr>
-    <tr><td>14<td><code>Postcode</code><td>Optional<td>Text (max 5)<td class="long">The postcode of the address. For German addresses only five digits are allowed.</tr>
-    <tr><td>15<td><code>City</code><td>Required<td>Text (max 80)<td class="long">The place name of the address.</tr>
-    <tr><td>16<td><code>Country</code><td>Optional<td>Country code (ISO 3166-1 alpha-2, 2 uppercase letters)<td class="long">The contry of the address in ISO 3166-1 alpha-2.</tr>
-    <tr><td>17<td><code>CountryOfTaxResidence</code><td>Required<td>Country code (ISO 3166-1 alpha-2, 2 uppercase letters)<td class="long">Country of tax residency in ISO 3166-1 alpha-2.</tr>
-    <tr><td>18<td><code>PersonTaxCategory</code><td>Required<td>Enum (<a href="#enum-persontaxcategory">PersonTaxCategory</a>): <code>German</code>, <code>NonGerman</code><td class="long">'German' or 'NonGerman'. Determines which tax-ID fields apply.</tr>
-    <tr><td>19<td><code>InvestmentMarketTaxId</code><td>Conditional<td>Numeric string (German IdNr, exactly 11 digits)<td class="long">The German tax identification number (IdNr) of the tax voucher person. Only digits are permitted.</tr>
-    <tr><td>20<td><code>ForeignTaxId</code><td>Conditional<td>Text (max 35)<td class="long">If no German tax id number has been assigned yet: Tax identification attribute awarded by the country of residence.</tr>
+    <tr><td class="col-num">1<td><code>RequestId</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match a RequestId in the '1 Requests Master' sheet.</tr>
+    <tr><td class="col-num">2<td><code>Relationship</code><td class="col-req">Required<td>Enum (<a href="#enum-tprelationship">TPRelationship</a>): <code>Trustee</code>, <code>Pledgor</code>, <code>Grantor of usufruct</code><td class="long">If the account holder is not the beneficial owner, this category specifies, how the account holder represents the beneficial owner.</tr>
+    <tr><td class="col-num">3<td><code>PersonIdentifier</code><td class="col-req">Optional<td>Text (max 45)<td class="long">Unique identifier for a person. Must be unique over subsequent files. For a subsequent request to the same person, the same identifier must be provided. To be defined by the customer institute.</tr>
+    <tr><td class="col-num">4<td><code>Title</code><td class="col-req">Optional<td>Text (max 20)<td class="long">The person’s title if applicable.</tr>
+    <tr><td class="col-num">5<td><code>NamePrefix</code><td class="col-req">Optional<td>Text (max 20)<td class="long">The person’s name prefix if applicable.</tr>
+    <tr><td class="col-num">6<td><code>FirstName</code><td class="col-req">Required<td>Text (max 45)<td class="long">The person’s first name.</tr>
+    <tr><td class="col-num">7<td><code>LastName</code><td class="col-req">Required<td>Text (max 45)<td class="long">The person’s last name.</tr>
+    <tr><td class="col-num">8<td><code>NameAffix</code><td class="col-req">Optional<td>Text (max 20)<td class="long">The person’s name prefix if applicable.</tr>
+    <tr><td class="col-num">9<td><code>DateOfBirth</code><td class="col-req">Required<td>Date (YYYY-MM-DD; partial 0000 allowed)<td class="long">Date of birth. Partially unknown dates are permitted: yyyy-mm-00 (unknown day), yyyy-00-00 (unknown month and day), 0000-00-00 (entirely unknown).</tr>
+    <tr><td class="col-num">10<td><code>StreetOrPostalCode</code><td class="col-req">Optional<td>Text (max 80)<td class="long">The street name of the address.</tr>
+    <tr><td class="col-num">11<td><code>HouseNumber</code><td class="col-req">Optional<td>Integer (0 - 99999)<td class="long">Possible range 0 – 99999. Specifying the house number “0” as a default, if no house number has been assigned, is not permissible. Specifying it as such is only permissible if the municipality has assigned the number “0”.</tr>
+    <tr><td class="col-num">12<td><code>HouseNumberAddition</code><td class="col-req">Optional<td>Text (max 20)<td class="long">Possible additions to the house number in the address: With a house number “5a”, the “a” would be mentioned here, the “5” must be indicated in the house number field. With a house number “105-109”, the “-109” would be mentioned here.</tr>
+    <tr><td class="col-num">13<td><code>AddressAddition</code><td class="col-req">Optional<td>Text (max 50)<td class="long">Possible addition to foreign addresses.</tr>
+    <tr><td class="col-num">14<td><code>Postcode</code><td class="col-req">Optional<td>Text (max 5)<td class="long">The postcode of the address. For German addresses only five digits are allowed.</tr>
+    <tr><td class="col-num">15<td><code>City</code><td class="col-req">Required<td>Text (max 80)<td class="long">The place name of the address.</tr>
+    <tr><td class="col-num">16<td><code>Country</code><td class="col-req">Optional<td>Country code (ISO 3166-1 alpha-2, 2 uppercase letters)<td class="long">The contry of the address in ISO 3166-1 alpha-2.</tr>
+    <tr><td class="col-num">17<td><code>CountryOfTaxResidence</code><td class="col-req">Required<td>Country code (ISO 3166-1 alpha-2, 2 uppercase letters)<td class="long">Country of tax residency in ISO 3166-1 alpha-2.</tr>
+    <tr><td class="col-num">18<td><code>PersonTaxCategory</code><td class="col-req">Required<td>Enum (<a href="#enum-persontaxcategory">PersonTaxCategory</a>): <code>German</code>, <code>NonGerman</code><td class="long">'German' or 'NonGerman'. Determines which tax-ID fields apply.</tr>
+    <tr><td class="col-num">19<td><code>InvestmentMarketTaxId</code><td class="col-req">Conditional<td>Numeric string (German IdNr, exactly 11 digits)<td class="long">The German tax identification number (IdNr) of the tax voucher person. Only digits are permitted.</tr>
+    <tr><td class="col-num">20<td><code>ForeignTaxId</code><td class="col-req">Conditional<td>Text (max 35)<td class="long">If no German tax id number has been assigned yet: Tax identification attribute awarded by the country of residence.</tr>
   </tbody>
 </table>
 
@@ -235,33 +235,33 @@
 
 <table class="complex data longlastcol dictionary">
   <colgroup>
-    <col style="width:4%">
-    <col style="width:14%">
-    <col style="width:10%">
-    <col style="width:24%">
-    <col style="width:48%">
+    <col style="width:7%">
+    <col style="width:12%">
+    <col style="width:12%">
+    <col style="width:20%">
+    <col style="width:49%">
   </colgroup>
-  <thead><tr><th>#<th>Field<th>Requiredness<th>Type / Allowed values<th>Description</tr></thead>
+  <thead><tr><th class="col-num">#<th>Field<th class="col-req">Requiredness<th>Type / Allowed values<th>Description</tr></thead>
   <tbody>
-    <tr><td>1<td><code>RequestId</code><td>Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match a RequestId in the '1 Requests Master' sheet.</tr>
-    <tr><td>2<td><code>Relationship</code><td>Required<td>Enum (<a href="#enum-tprelationship">TPRelationship</a>): <code>Trustee</code>, <code>Pledgor</code>, <code>Grantor of usufruct</code><td class="long">If the account holder is not the beneficial owner, this category specifies, how the account holder represents the beneficial owner.</tr>
-    <tr><td>3<td><code>PersonIdentifier</code><td>Optional<td>Text (max 45)<td class="long">Unique identifier for a person. Must be unique over subsequent files. For a subsequent request to the same person, the same identifier must be provided. To be defined by the customer institute.</tr>
-    <tr><td>4<td><code>Name</code><td>Required<td>Text (max 256)<td class="long">The name of the non-natural person.</tr>
-    <tr><td>5<td><code>StreetOrPostalCode</code><td>Optional<td>Text (max 80)<td class="long">The street name of the address.</tr>
-    <tr><td>6<td><code>HouseNumber</code><td>Optional<td>Integer (0 - 99999)<td class="long">Possible range 0 – 99999. Specifying the house number “0” as a default, if no house number has been assigned, is not permissible. Specifying it as such is only permissible if the municipality has assigned the number “0”.</tr>
-    <tr><td>7<td><code>HouseNumberAddition</code><td>Optional<td>Text (max 20)<td class="long">Possible additions to the house number in the address: With a house number “5a”, the “a” would be mentioned here, the “5” must be indicated in the house number field. With a house number “105-109”, the “-109” would be mentioned here.</tr>
-    <tr><td>8<td><code>AddressAddition</code><td>Optional<td>Text (max 50)<td class="long">Possible addition to foreign addresses.</tr>
-    <tr><td>9<td><code>Postcode</code><td>Optional<td>Text (max 5)<td class="long">The postcode of the address. For German addresses only five digits are allowed.</tr>
-    <tr><td>10<td><code>City</code><td>Required<td>Text (max 80)<td class="long">The place name of the address.</tr>
-    <tr><td>11<td><code>Country</code><td>Optional<td>Country code (ISO 3166-1 alpha-2, 2 uppercase letters)<td class="long">The contry of the address in ISO 3166-1 alpha-2.</tr>
-    <tr><td>12<td><code>CountryOfTaxResidence</code><td>Required<td>Country code (ISO 3166-1 alpha-2, 2 uppercase letters)<td class="long">Country of tax residency in ISO 3166-1 alpha-2.</tr>
-    <tr><td>13<td><code>PersonTaxCategory</code><td>Required<td>Enum (<a href="#enum-persontaxcategory">PersonTaxCategory</a>): <code>German</code>, <code>NonGerman</code><td class="long">'German' or 'NonGerman'. Determines which tax-ID fields apply.</tr>
-    <tr><td>14<td><code>InvestmentMarketBusinessId</code><td>Conditional<td>Numeric string (German Wirtschafts-IdNr, 13 digits)<td class="long">German business identification number. The business identification number of the non-natural person without a hyphen before the differentiating element.</tr>
-    <tr><td>15<td><code>InvestmentMarketTaxNumber</code><td>Conditional<td>Numeric string (German Steuernummer, 13 digits)<td class="long">If a German business identification number hasn´t been assigned yet: The German tax number of the non-natural person.</tr>
-    <tr><td>16<td><code>InvestmentMarketSpecialFundsTaxNumber</code><td>Conditional<td>Numeric string (German Steuernummer, 13 digits)<td class="long">This specific German tax number gets assigned by the German Federal Central Tax Authority (Bundeszentralamt für Steuern) to non-German Special-Investment Funds in the meaning of Section 26 of the German Investment Tax Act (GITA) which opted to be treated as a tax transparent fund under Section 30 GITA. This is a conditional mandatory field. Please leave the field blank if you don´t meet the above condition.</tr>
-    <tr><td>17<td><code>LEI</code><td>Conditional<td>LEI (ISO 17442, 20 alphanumeric)<td class="long">If neither a German business tax id number in the meaning of section 139c German General Tax Code nor a German tax id number (usually the Corporate Income Tax id number) is available, the Legal Entity Identifier (LEI).</tr>
-    <tr><td>18<td><code>EUID</code><td>Conditional<td>Text (max 200)<td class="long">If neither a German business tax id number in the meaning of section 139c German General Tax Code nor a German tax id number (usually the Corporate Income Tax id number) is available nor a Legal Entity Identifier (LEI) is available, the European unique identifier (EUID; as referred to in Article 16 of Directive (EU) 2017/1132 of the European Parliament and of the Council).</tr>
-    <tr><td>19<td><code>ForeignTaxId</code><td>Conditional<td>Text (max 35)<td class="long">Tax identification number assigned to the tax voucher person by its country of tax residency.</tr>
+    <tr><td class="col-num">1<td><code>RequestId</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match a RequestId in the '1 Requests Master' sheet.</tr>
+    <tr><td class="col-num">2<td><code>Relationship</code><td class="col-req">Required<td>Enum (<a href="#enum-tprelationship">TPRelationship</a>): <code>Trustee</code>, <code>Pledgor</code>, <code>Grantor of usufruct</code><td class="long">If the account holder is not the beneficial owner, this category specifies, how the account holder represents the beneficial owner.</tr>
+    <tr><td class="col-num">3<td><code>PersonIdentifier</code><td class="col-req">Optional<td>Text (max 45)<td class="long">Unique identifier for a person. Must be unique over subsequent files. For a subsequent request to the same person, the same identifier must be provided. To be defined by the customer institute.</tr>
+    <tr><td class="col-num">4<td><code>Name</code><td class="col-req">Required<td>Text (max 256)<td class="long">The name of the non-natural person.</tr>
+    <tr><td class="col-num">5<td><code>StreetOrPostalCode</code><td class="col-req">Optional<td>Text (max 80)<td class="long">The street name of the address.</tr>
+    <tr><td class="col-num">6<td><code>HouseNumber</code><td class="col-req">Optional<td>Integer (0 - 99999)<td class="long">Possible range 0 – 99999. Specifying the house number “0” as a default, if no house number has been assigned, is not permissible. Specifying it as such is only permissible if the municipality has assigned the number “0”.</tr>
+    <tr><td class="col-num">7<td><code>HouseNumberAddition</code><td class="col-req">Optional<td>Text (max 20)<td class="long">Possible additions to the house number in the address: With a house number “5a”, the “a” would be mentioned here, the “5” must be indicated in the house number field. With a house number “105-109”, the “-109” would be mentioned here.</tr>
+    <tr><td class="col-num">8<td><code>AddressAddition</code><td class="col-req">Optional<td>Text (max 50)<td class="long">Possible addition to foreign addresses.</tr>
+    <tr><td class="col-num">9<td><code>Postcode</code><td class="col-req">Optional<td>Text (max 5)<td class="long">The postcode of the address. For German addresses only five digits are allowed.</tr>
+    <tr><td class="col-num">10<td><code>City</code><td class="col-req">Required<td>Text (max 80)<td class="long">The place name of the address.</tr>
+    <tr><td class="col-num">11<td><code>Country</code><td class="col-req">Optional<td>Country code (ISO 3166-1 alpha-2, 2 uppercase letters)<td class="long">The contry of the address in ISO 3166-1 alpha-2.</tr>
+    <tr><td class="col-num">12<td><code>CountryOfTaxResidence</code><td class="col-req">Required<td>Country code (ISO 3166-1 alpha-2, 2 uppercase letters)<td class="long">Country of tax residency in ISO 3166-1 alpha-2.</tr>
+    <tr><td class="col-num">13<td><code>PersonTaxCategory</code><td class="col-req">Required<td>Enum (<a href="#enum-persontaxcategory">PersonTaxCategory</a>): <code>German</code>, <code>NonGerman</code><td class="long">'German' or 'NonGerman'. Determines which tax-ID fields apply.</tr>
+    <tr><td class="col-num">14<td><code>InvestmentMarketBusinessId</code><td class="col-req">Conditional<td>Numeric string (German Wirtschafts-IdNr, 13 digits)<td class="long">German business identification number. The business identification number of the non-natural person without a hyphen before the differentiating element.</tr>
+    <tr><td class="col-num">15<td><code>InvestmentMarketTaxNumber</code><td class="col-req">Conditional<td>Numeric string (German Steuernummer, 13 digits)<td class="long">If a German business identification number hasn´t been assigned yet: The German tax number of the non-natural person.</tr>
+    <tr><td class="col-num">16<td><code>InvestmentMarketSpecialFundsTaxNumber</code><td class="col-req">Conditional<td>Numeric string (German Steuernummer, 13 digits)<td class="long">This specific German tax number gets assigned by the German Federal Central Tax Authority (Bundeszentralamt für Steuern) to non-German Special-Investment Funds in the meaning of Section 26 of the German Investment Tax Act (GITA) which opted to be treated as a tax transparent fund under Section 30 GITA. This is a conditional mandatory field. Please leave the field blank if you don´t meet the above condition.</tr>
+    <tr><td class="col-num">17<td><code>LEI</code><td class="col-req">Conditional<td>LEI (ISO 17442, 20 alphanumeric)<td class="long">If neither a German business tax id number in the meaning of section 139c German General Tax Code nor a German tax id number (usually the Corporate Income Tax id number) is available, the Legal Entity Identifier (LEI).</tr>
+    <tr><td class="col-num">18<td><code>EUID</code><td class="col-req">Conditional<td>Text (max 200)<td class="long">If neither a German business tax id number in the meaning of section 139c German General Tax Code nor a German tax id number (usually the Corporate Income Tax id number) is available nor a Legal Entity Identifier (LEI) is available, the European unique identifier (EUID; as referred to in Article 16 of Directive (EU) 2017/1132 of the European Parliament and of the Council).</tr>
+    <tr><td class="col-num">19<td><code>ForeignTaxId</code><td class="col-req">Conditional<td>Text (max 35)<td class="long">Tax identification number assigned to the tax voucher person by its country of tax residency.</tr>
   </tbody>
 </table>
 
@@ -273,35 +273,35 @@
 
 <table class="complex data longlastcol dictionary">
   <colgroup>
-    <col style="width:4%">
-    <col style="width:14%">
-    <col style="width:10%">
-    <col style="width:24%">
-    <col style="width:48%">
+    <col style="width:7%">
+    <col style="width:12%">
+    <col style="width:12%">
+    <col style="width:20%">
+    <col style="width:49%">
   </colgroup>
-  <thead><tr><th>#<th>Field<th>Requiredness<th>Type / Allowed values<th>Description</tr></thead>
+  <thead><tr><th class="col-num">#<th>Field<th class="col-req">Requiredness<th>Type / Allowed values<th>Description</tr></thead>
   <tbody>
-    <tr><td>1<td><code>RequestId</code><td>Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match a RequestId in the '1 Requests Master' sheet.</tr>
-    <tr><td>2<td><code>NumberInChain</code><td>Required<td>Integer<td class="long">Order in the custody chain. 1 is the custodian with the securities account for the beneficiary of person holding in favor of the beneficiary on its account.</tr>
-    <tr><td>3<td><code>NameOfIntermediary</code><td>Required<td>Text (max 256)<td class="long">Name of the depository/(sub-)custodian.</tr>
-    <tr><td>4<td><code>StreetOrPostalCode</code><td>Optional<td>Text (max 80)<td class="long">The street name of the address.</tr>
-    <tr><td>5<td><code>HouseNumber</code><td>Optional<td>Integer (0 - 99999)<td class="long">Possible range 0 – 99999. Specifying the house number “0” as a default, if no house number has been assigned, is not permissible. Specifying it as such is only permissible if the municipality has assigned the number “0”.</tr>
-    <tr><td>6<td><code>HouseNumberAddition</code><td>Optional<td>Text (max 20)<td class="long">Possible additions to the house number in the address: With a house number “5a”, the “a” would be mentioned here, the “5” must be indicated in the house number field. With a house number “105-109”, the “-109” would be mentioned here.</tr>
-    <tr><td>7<td><code>AddressAddition</code><td>Optional<td>Text (max 50)<td class="long">Possible addition to foreign addresses.</tr>
-    <tr><td>8<td><code>Postcode</code><td>Optional<td>Text (max 5)<td class="long">The postcode of the address. For German addresses only five digits are allowed.</tr>
-    <tr><td>9<td><code>City</code><td>Required<td>Text (max 80)<td class="long">The place name of the address.</tr>
-    <tr><td>10<td><code>Country</code><td>Optional<td>Country code (ISO 3166-1 alpha-2, 2 uppercase letters)<td class="long">The contry of the address in ISO 3166-1 alpha-2.</tr>
-    <tr><td>11<td><code>AccountNumber</code><td>Required<td>Text (max 200)<td class="long">Account number or securities account in which the securities are held by the customer of an intermediary (i.e. the beneficiary or the person holding the position of the beneficiary on its account or the preceding intermediary).</tr>
-    <tr><td>12<td><code>AccountType</code><td>Required<td>Enum (<a href="#enum-accounttype">AccountType</a>): <code>A</code>, <code>B</code>, <code>Ct</code>, <code>D</code>, <code>E</code>, <code>F</code>, <code>G</code><td class="long">Account type.</tr>
-    <tr><td>13<td><code>NominalInAccount</code><td>Required<td>Decimal (19 digits total, 4 decimals)<td class="long">Number of shares / nominal value held in the account of the respective account holder (i.e. the tax voucher person or of the third party holding the securities in the name of the tax voucher person or the preceding intermediary) (Number of shares held in the account).</tr>
-    <tr><td>14<td><code>BIC</code><td>Optional<td>BIC (ISO 9362, 8 or 11 alphanumeric)<td class="long">BIC (Bank Identifier Code) is an 8 to 11-character code used to uniquely identify banks globally during international transactions, often called a SWIFT code. Structure: Comprised of 4 letters (bank code), 2 letters (country code), 2 letters/numbers (location code), and an optional 3-digit branch code (or 'XXX' for head office).</tr>
-    <tr><td>15<td><code>CountryOfTaxResidence</code><td>Required<td>Country code (ISO 3166-1 alpha-2, 2 uppercase letters)<td class="long">Country of tax residency in ISO 3166-1 alpha-2.</tr>
-    <tr><td>16<td><code>PersonTaxCategory</code><td>Required<td>Enum (<a href="#enum-persontaxcategory">PersonTaxCategory</a>): <code>German</code>, <code>NonGerman</code><td class="long">'German' or 'NonGerman'. Determines which tax-ID fields apply.</tr>
-    <tr><td>17<td><code>InvestmentMarketBusinessId</code><td>Conditional<td>Numeric string (German Wirtschafts-IdNr, 13 digits)<td class="long">German business identification number. The business identification number of the non-natural person without a hyphen before the differentiating element.</tr>
-    <tr><td>18<td><code>InvestmentMarketTaxNumber</code><td>Conditional<td>Numeric string (German Steuernummer, 13 digits)<td class="long">If a German business identification number hasn´t been assigned yet: The German tax number of the non-natural person.</tr>
-    <tr><td>19<td><code>LEI</code><td>Conditional<td>LEI (ISO 17442, 20 alphanumeric)<td class="long">If neither a German business tax id number in the meaning of section 139c German General Tax Code nor a German tax id number (usually the Corporate Income Tax id number) is available, the Legal Entity Identifier (LEI).</tr>
-    <tr><td>20<td><code>EUID</code><td>Conditional<td>Text (max 200)<td class="long">If neither a German business tax id number in the meaning of section 139c German General Tax Code nor a German tax id number (usually the Corporate Income Tax id number) is available nor a Legal Entity Identifier (LEI) is available, the European unique identifier (EUID; as referred to in Article 16 of Directive (EU) 2017/1132 of the European Parliament and of the Council).</tr>
-    <tr><td>21<td><code>ForeignTaxId</code><td>Conditional<td>Text (max 35)<td class="long">Tax identification number assigned to the tax voucher person by its country of tax residency.</tr>
+    <tr><td class="col-num">1<td><code>RequestId</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match a RequestId in the '1 Requests Master' sheet.</tr>
+    <tr><td class="col-num">2<td><code>NumberInChain</code><td class="col-req">Required<td>Integer<td class="long">Order in the custody chain. 1 is the custodian with the securities account for the beneficiary of person holding in favor of the beneficiary on its account.</tr>
+    <tr><td class="col-num">3<td><code>NameOfIntermediary</code><td class="col-req">Required<td>Text (max 256)<td class="long">Name of the depository/(sub-)custodian.</tr>
+    <tr><td class="col-num">4<td><code>StreetOrPostalCode</code><td class="col-req">Optional<td>Text (max 80)<td class="long">The street name of the address.</tr>
+    <tr><td class="col-num">5<td><code>HouseNumber</code><td class="col-req">Optional<td>Integer (0 - 99999)<td class="long">Possible range 0 – 99999. Specifying the house number “0” as a default, if no house number has been assigned, is not permissible. Specifying it as such is only permissible if the municipality has assigned the number “0”.</tr>
+    <tr><td class="col-num">6<td><code>HouseNumberAddition</code><td class="col-req">Optional<td>Text (max 20)<td class="long">Possible additions to the house number in the address: With a house number “5a”, the “a” would be mentioned here, the “5” must be indicated in the house number field. With a house number “105-109”, the “-109” would be mentioned here.</tr>
+    <tr><td class="col-num">7<td><code>AddressAddition</code><td class="col-req">Optional<td>Text (max 50)<td class="long">Possible addition to foreign addresses.</tr>
+    <tr><td class="col-num">8<td><code>Postcode</code><td class="col-req">Optional<td>Text (max 5)<td class="long">The postcode of the address. For German addresses only five digits are allowed.</tr>
+    <tr><td class="col-num">9<td><code>City</code><td class="col-req">Required<td>Text (max 80)<td class="long">The place name of the address.</tr>
+    <tr><td class="col-num">10<td><code>Country</code><td class="col-req">Optional<td>Country code (ISO 3166-1 alpha-2, 2 uppercase letters)<td class="long">The contry of the address in ISO 3166-1 alpha-2.</tr>
+    <tr><td class="col-num">11<td><code>AccountNumber</code><td class="col-req">Required<td>Text (max 200)<td class="long">Account number or securities account in which the securities are held by the customer of an intermediary (i.e. the beneficiary or the person holding the position of the beneficiary on its account or the preceding intermediary).</tr>
+    <tr><td class="col-num">12<td><code>AccountType</code><td class="col-req">Required<td>Enum (<a href="#enum-accounttype">AccountType</a>): <code>A</code>, <code>B</code>, <code>Ct</code>, <code>D</code>, <code>E</code>, <code>F</code>, <code>G</code><td class="long">Account type.</tr>
+    <tr><td class="col-num">13<td><code>NominalInAccount</code><td class="col-req">Required<td>Decimal (19 digits total, 4 decimals)<td class="long">Number of shares / nominal value held in the account of the respective account holder (i.e. the tax voucher person or of the third party holding the securities in the name of the tax voucher person or the preceding intermediary) (Number of shares held in the account).</tr>
+    <tr><td class="col-num">14<td><code>BIC</code><td class="col-req">Optional<td>BIC (ISO 9362, 8 or 11 alphanumeric)<td class="long">BIC (Bank Identifier Code) is an 8 to 11-character code used to uniquely identify banks globally during international transactions, often called a SWIFT code. Structure: Comprised of 4 letters (bank code), 2 letters (country code), 2 letters/numbers (location code), and an optional 3-digit branch code (or 'XXX' for head office).</tr>
+    <tr><td class="col-num">15<td><code>CountryOfTaxResidence</code><td class="col-req">Required<td>Country code (ISO 3166-1 alpha-2, 2 uppercase letters)<td class="long">Country of tax residency in ISO 3166-1 alpha-2.</tr>
+    <tr><td class="col-num">16<td><code>PersonTaxCategory</code><td class="col-req">Required<td>Enum (<a href="#enum-persontaxcategory">PersonTaxCategory</a>): <code>German</code>, <code>NonGerman</code><td class="long">'German' or 'NonGerman'. Determines which tax-ID fields apply.</tr>
+    <tr><td class="col-num">17<td><code>InvestmentMarketBusinessId</code><td class="col-req">Conditional<td>Numeric string (German Wirtschafts-IdNr, 13 digits)<td class="long">German business identification number. The business identification number of the non-natural person without a hyphen before the differentiating element.</tr>
+    <tr><td class="col-num">18<td><code>InvestmentMarketTaxNumber</code><td class="col-req">Conditional<td>Numeric string (German Steuernummer, 13 digits)<td class="long">If a German business identification number hasn´t been assigned yet: The German tax number of the non-natural person.</tr>
+    <tr><td class="col-num">19<td><code>LEI</code><td class="col-req">Conditional<td>LEI (ISO 17442, 20 alphanumeric)<td class="long">If neither a German business tax id number in the meaning of section 139c German General Tax Code nor a German tax id number (usually the Corporate Income Tax id number) is available, the Legal Entity Identifier (LEI).</tr>
+    <tr><td class="col-num">20<td><code>EUID</code><td class="col-req">Conditional<td>Text (max 200)<td class="long">If neither a German business tax id number in the meaning of section 139c German General Tax Code nor a German tax id number (usually the Corporate Income Tax id number) is available nor a Legal Entity Identifier (LEI) is available, the European unique identifier (EUID; as referred to in Article 16 of Directive (EU) 2017/1132 of the European Parliament and of the Council).</tr>
+    <tr><td class="col-num">21<td><code>ForeignTaxId</code><td class="col-req">Conditional<td>Text (max 35)<td class="long">Tax identification number assigned to the tax voucher person by its country of tax residency.</tr>
   </tbody>
 </table>
 
@@ -313,23 +313,23 @@
 
 <table class="complex data longlastcol dictionary">
   <colgroup>
-    <col style="width:4%">
-    <col style="width:14%">
-    <col style="width:10%">
-    <col style="width:24%">
-    <col style="width:48%">
+    <col style="width:7%">
+    <col style="width:12%">
+    <col style="width:12%">
+    <col style="width:20%">
+    <col style="width:49%">
   </colgroup>
-  <thead><tr><th>#<th>Field<th>Requiredness<th>Type / Allowed values<th>Description</tr></thead>
+  <thead><tr><th class="col-num">#<th>Field<th class="col-req">Requiredness<th>Type / Allowed values<th>Description</tr></thead>
   <tbody>
-    <tr><td>1<td><code>RequestId</code><td>Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match a RequestId in the '1 Requests Master' sheet.</tr>
-    <tr><td>2<td><code>Direction</code><td>Required<td>Enum (<a href="#enum-fifodirection">FifoDirection</a>): <code>Receipt</code>, <code>Delivery</code><td class="long">'Receipt' (purchase / delivery-in / loan / repo) or 'Delivery' (sale / delivery-out / loan / repo). Up to 1000 rows each per request.</tr>
-    <tr><td>3<td><code>Nominal</code><td>Required<td>Decimal (19 digits total, 4 decimals)<td class="long">Number of shares / nominal value on which the transaction is based (= per receipt trade with acquisition date &lt; 1 year prior to the day of the annual shareholders' meeting (day of the dividend distribution resolution).</tr>
-    <tr><td>4<td><code>TradeDate</code><td>Required<td>Date (YYYY-MM-DD)<td class="long">Trade Date.</tr>
-    <tr><td>5<td><code>TransactionType</code><td>Required<td>Enum (<a href="#enum-fifotransactiontype">FifoTransactionType</a>): <code>PO</code>, <code>SO</code>, <code>DT</code>, <code>TL</code>, <code>TP</code>, <code>RL</code>, <code>RP</code><td class="long">Category of securities trading transacted.</tr>
-    <tr><td>6<td><code>ContractualSettlementDate</code><td>Required<td>Date (YYYY-MM-DD)<td class="long">Agreed settlement date (Contractual settlement date).</tr>
-    <tr><td>7<td><code>ActualSettlementDate</code><td>Required<td>Date (YYYY-MM-DD)<td class="long">Actual settlement date.</tr>
-    <tr><td>8<td><code>TransactionReference</code><td>Optional<td>Text (max 45)<td class="long">Transaction reference beneficial owner/customer .</tr>
-    <tr><td>9<td><code>TransactionReferencePayingAgent</code><td>Optional<td>Text (max 45)<td class="long">Transaction reference German Paying Agent.</tr>
+    <tr><td class="col-num">1<td><code>RequestId</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match a RequestId in the '1 Requests Master' sheet.</tr>
+    <tr><td class="col-num">2<td><code>Direction</code><td class="col-req">Required<td>Enum (<a href="#enum-fifodirection">FifoDirection</a>): <code>Receipt</code>, <code>Delivery</code><td class="long">'Receipt' (purchase / delivery-in / loan / repo) or 'Delivery' (sale / delivery-out / loan / repo). Up to 1000 rows each per request.</tr>
+    <tr><td class="col-num">3<td><code>Nominal</code><td class="col-req">Required<td>Decimal (19 digits total, 4 decimals)<td class="long">Number of shares / nominal value on which the transaction is based (= per receipt trade with acquisition date &lt; 1 year prior to the day of the annual shareholders' meeting (day of the dividend distribution resolution).</tr>
+    <tr><td class="col-num">4<td><code>TradeDate</code><td class="col-req">Required<td>Date (YYYY-MM-DD)<td class="long">Trade Date.</tr>
+    <tr><td class="col-num">5<td><code>TransactionType</code><td class="col-req">Required<td>Enum (<a href="#enum-fifotransactiontype">FifoTransactionType</a>): <code>PO</code>, <code>SO</code>, <code>DT</code>, <code>TL</code>, <code>TP</code>, <code>RL</code>, <code>RP</code><td class="long">Category of securities trading transacted.</tr>
+    <tr><td class="col-num">6<td><code>ContractualSettlementDate</code><td class="col-req">Required<td>Date (YYYY-MM-DD)<td class="long">Agreed settlement date (Contractual settlement date).</tr>
+    <tr><td class="col-num">7<td><code>ActualSettlementDate</code><td class="col-req">Required<td>Date (YYYY-MM-DD)<td class="long">Actual settlement date.</tr>
+    <tr><td class="col-num">8<td><code>TransactionReference</code><td class="col-req">Optional<td>Text (max 45)<td class="long">Transaction reference beneficial owner/customer .</tr>
+    <tr><td class="col-num">9<td><code>TransactionReferencePayingAgent</code><td class="col-req">Optional<td>Text (max 45)<td class="long">Transaction reference German Paying Agent.</tr>
   </tbody>
 </table>
 
@@ -341,24 +341,24 @@
 
 <table class="complex data longlastcol dictionary">
   <colgroup>
-    <col style="width:4%">
-    <col style="width:14%">
-    <col style="width:10%">
-    <col style="width:24%">
-    <col style="width:48%">
+    <col style="width:7%">
+    <col style="width:12%">
+    <col style="width:12%">
+    <col style="width:20%">
+    <col style="width:49%">
   </colgroup>
-  <thead><tr><th>#<th>Field<th>Requiredness<th>Type / Allowed values<th>Description</tr></thead>
+  <thead><tr><th class="col-num">#<th>Field<th class="col-req">Requiredness<th>Type / Allowed values<th>Description</tr></thead>
   <tbody>
-    <tr><td>1<td><code>RequestId</code><td>Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match a RequestId in the '1 Requests Master' sheet.</tr>
-    <tr><td>2<td><code>Nominal</code><td>Required<td>Decimal (19 digits total, 4 decimals)<td class="long">Number of shares / nominal value on which the transaction is based (= per deliver trade, if the trade date is within 47 calendar days after the date of the annual shareholders' meeting (AGM date; day of the dividend distribution resolution).</tr>
-    <tr><td>3<td><code>TradeDate</code><td>Required<td>Date (YYYY-MM-DD)<td class="long">Trade Date.</tr>
-    <tr><td>4<td><code>IntraDaySequence</code><td>Required<td>Integer<td class="long">Sortable number, for the case that more than one transaction per trade date is delivered.</tr>
-    <tr><td>5<td><code>TransactionType</code><td>Required<td>Enum (<a href="#enum-rawtransactiontype">RawTransactionType</a>): <code>Buy</code>, <code>Sell</code>, <code>Transfer</code>, <code>SlbOpen</code>, <code>SlbClose</code>, <code>RepoOpen</code>, <code>RepoClose</code>, <code>Dividend</code>, <code>Interest</code>, <code>Other</code><td class="long">Category of securities trading transacted.</tr>
-    <tr><td>6<td><code>ContractualSettlementDate</code><td>Required<td>Date (YYYY-MM-DD)<td class="long">Agreed settlement date (Contractual settlement date).</tr>
-    <tr><td>7<td><code>ActualSettlementDate</code><td>Required<td>Date (YYYY-MM-DD)<td class="long">Actual settlement date.</tr>
-    <tr><td>8<td><code>COAF</code><td>Conditional<td>Text (Corporate Action Event Reference, max 16)<td class="long">Corporate action event reference (COAF). Must be provided, if dividend or interest transaction type.</tr>
-    <tr><td>9<td><code>TransactionReference</code><td>Optional<td>Text (max 45)<td class="long">Transaction reference beneficial owner/customer .</tr>
-    <tr><td>10<td><code>TransactionReferencePayingAgent</code><td>Optional<td>Text (max 45)<td class="long">Transaction reference German Paying Agent.</tr>
+    <tr><td class="col-num">1<td><code>RequestId</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match a RequestId in the '1 Requests Master' sheet.</tr>
+    <tr><td class="col-num">2<td><code>Nominal</code><td class="col-req">Required<td>Decimal (19 digits total, 4 decimals)<td class="long">Number of shares / nominal value on which the transaction is based (= per deliver trade, if the trade date is within 47 calendar days after the date of the annual shareholders' meeting (AGM date; day of the dividend distribution resolution).</tr>
+    <tr><td class="col-num">3<td><code>TradeDate</code><td class="col-req">Required<td>Date (YYYY-MM-DD)<td class="long">Trade Date.</tr>
+    <tr><td class="col-num">4<td><code>IntraDaySequence</code><td class="col-req">Required<td>Integer<td class="long">Sortable number, for the case that more than one transaction per trade date is delivered.</tr>
+    <tr><td class="col-num">5<td><code>TransactionType</code><td class="col-req">Required<td>Enum (<a href="#enum-rawtransactiontype">RawTransactionType</a>): <code>Buy</code>, <code>Sell</code>, <code>Transfer</code>, <code>SlbOpen</code>, <code>SlbClose</code>, <code>RepoOpen</code>, <code>RepoClose</code>, <code>Dividend</code>, <code>Interest</code>, <code>Other</code><td class="long">Category of securities trading transacted.</tr>
+    <tr><td class="col-num">6<td><code>ContractualSettlementDate</code><td class="col-req">Required<td>Date (YYYY-MM-DD)<td class="long">Agreed settlement date (Contractual settlement date).</tr>
+    <tr><td class="col-num">7<td><code>ActualSettlementDate</code><td class="col-req">Required<td>Date (YYYY-MM-DD)<td class="long">Actual settlement date.</tr>
+    <tr><td class="col-num">8<td><code>COAF</code><td class="col-req">Conditional<td>Text (Corporate Action Event Reference, max 16)<td class="long">Corporate action event reference (COAF). Must be provided, if dividend or interest transaction type.</tr>
+    <tr><td class="col-num">9<td><code>TransactionReference</code><td class="col-req">Optional<td>Text (max 45)<td class="long">Transaction reference beneficial owner/customer .</tr>
+    <tr><td class="col-num">10<td><code>TransactionReferencePayingAgent</code><td class="col-req">Optional<td>Text (max 45)<td class="long">Transaction reference German Paying Agent.</tr>
   </tbody>
 </table>
 

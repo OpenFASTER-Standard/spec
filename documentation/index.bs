@@ -6,14 +6,16 @@ Status: DREAM
 URL: https://www.openfaster.org/
 Repository: https://github.com/OpenFASTER-Standard/spec
 Text Macro: LONGSTATUS Vendor-independent, interoperable protocol standard for EU withholding tax and dividend reporting data exchange under MiKaDiv and FASTER
+Text Macro: DOCVERSION 1.0.0
 Editor: Julian Nalenz, https://github.com/sigalor
 Editor: Alaa Eddine Cherif, https://github.com/AlaaCherif
 Abstract: OpenFASTER is a vendor-independent family of open standards for the
-    exchange of EU withholding-tax and dividend-reporting data. This document
-    defines the family and specifies its first module: the MiKaDiv Third-Party
-    Disclosure format, a self-documenting data model (with an accompanying Excel
-    template) that mirrors the German MiKaDiv (§45b EStG) capital-income
-    disclosure schema.
+    exchange of EU withholding-tax and dividend-reporting data under MiKaDiv
+    and FASTER. This document defines the family; at this version it specifies
+    only the first module—the MiKaDiv Third-Party Disclosure format, a
+    self-documenting data model (with an accompanying Excel template) that mirrors
+    the German MiKaDiv (§45b EStG) capital-income disclosure schema. Further
+    modules for FASTER are planned.
 Markup Shorthands: markdown yes, dfn yes, css no
 Boilerplate: omit conformance
 Complain About: accidental-2119 yes, missing-example-ids yes
@@ -30,11 +32,6 @@ Complain About: accidental-2119 yes, missing-example-ids yes
     "title": "Council Directive (EU) on Faster and Safer Relief of Excess Withholding Taxes (FASTER)",
     "publisher": "Council of the European Union",
     "href": "https://taxation-customs.ec.europa.eu/faster_en"
-  },
-  "BIRD": {
-    "title": "Banks' Integrated Reporting Dictionary (BIRD)",
-    "publisher": "European Central Bank",
-    "href": "https://bird.ecb.europa.eu/"
   }
 }
 </pre>
@@ -83,14 +80,6 @@ The goals shared with these initiatives are harmonized dividend reporting,
 reduced withholding-tax fraud, greater transparency for tax authorities, and
 efficient cross-border tax-reclaim processing.
 
-Relationship to BIRD {#bird}
-----------------------------
-
-The OpenFASTER data model is informed by the European Central Bank's Banks'
-Integrated Reporting Dictionary ([[BIRD]]), which provides a harmonized
-description of the data banks hold. Alignment with BIRD is a design goal so that
-institutions can reuse existing data definitions rather than maintain a parallel
-vocabulary.
 
 Terminology {#terminology}
 ==========================
@@ -124,6 +113,28 @@ The first OpenFASTER module defines the data required for a German MiKaDiv
 (§45b EStG) **third-party disclosure**: the structured description of a
 capital-income event, the securities involved, every party in the chain, and the
 receipts and deliveries that support a first-in-first-out (FIFO) determination.
+
+An accompanying self-documenting Excel template is published alongside this
+specification:
+[MiKaDiv Third-Party Disclosure Template](https://github.com/OpenFASTER-Standard/spec/blob/main/mikadiv/generated/MiKaDiv_ThirdPartyDisclosure_Template.xlsx).
+Each sheet mirrors one logical group below; every field carries its English
+description, type constraints, and requiredness in the header rows.
+
+Source schema {#source-schema}
+------------------------------
+
+The data model of this module is derived from the XML Schema Definition (XSD)
+produced by the <dfn>VIB</dfn> (Verband Internationaler Banken e.V.), the
+association representing internationally active banks in Germany. The VIB is
+developing this schema to standardize the electronic exchange of MiKaDiv
+third-party disclosure data between banks and towards the German
+[=paying agent=].
+
+OpenFASTER treats the [=VIB=] XSD as the machine source of truth: the field
+definitions, requiredness, enumerations, the [[#data-dictionary|data dictionary]]
+in this document, and the accompanying Excel template are all generated directly
+from it. As the VIB schema evolves, regenerating from the updated XSD keeps this
+specification and the template in lock-step with the VIB source.
 
 Data model {#data-model}
 ------------------------
@@ -210,4 +221,23 @@ A format (an XSD plus an equivalent Excel representation) with which a reporting
 entity — for example Clearstream, or another reporting party — can report the
 assigned UUIDs back to the foreign banks that originated the disclosures, closing
 the loop between submission and acknowledgement.
+
+Versioning and changelog {#versioning}
+======================================
+
+OpenFASTER specifications use [semantic versioning](https://semver.org/)
+(`MAJOR.MINOR.PATCH`). This document is version <b>[DOCVERSION]</b>.
+
+* <b>MAJOR</b> — incompatible changes to the data model (for example, removing a
+    field, or changing its meaning or requiredness).
+* <b>MINOR</b> — backwards-compatible additions (for example, new optional
+    fields or new enumeration values).
+* <b>PATCH</b> — editorial or documentation-only corrections.
+
+The changelog below is maintained in a separate file
+(<code>documentation/changelog.include.bs</code>) and included here.
+
+<pre class=include>
+path: changelog.include.bs
+</pre>
 

@@ -1,0 +1,19 @@
+<!-- Changelog for the OpenFASTER specification. Maintained by hand.
+     Add a new row at the TOP for each released version (newest first). -->
+
+<table class="data changelog">
+  <thead>
+    <tr><th>Version<th>Date<th>Summary of changes</tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1.0.0
+      <td>2026-07-05
+      <td>Initial version. Defines the OpenFASTER family and specifies the
+          MiKaDiv Third-Party Disclosure module: data model, linking model,
+          conformance requirements, and the full data dictionary and
+          enumerations generated from the VIB MiKaDiv XSD, with an accompanying
+          self-documenting Excel template.
+    </tr>
+  </tbody>
+</table>

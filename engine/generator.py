@@ -486,14 +486,15 @@ class Generator:
             add("")
             add('<table class="complex data longlastcol dictionary">')
             add("  <colgroup>")
-            add('    <col style="width:4%">')
-            add('    <col style="width:14%">')
-            add('    <col style="width:10%">')
-            add('    <col style="width:24%">')
-            add('    <col style="width:48%">')
+            add('    <col style="width:7%">')
+            add('    <col style="width:12%">')
+            add('    <col style="width:12%">')
+            add('    <col style="width:20%">')
+            add('    <col style="width:49%">')
             add("  </colgroup>")
             add(
-                "  <thead><tr><th>#<th>Field<th>Requiredness"
+                '  <thead><tr><th class="col-num">#<th>Field'
+                '<th class="col-req">Requiredness'
                 "<th>Type / Allowed values<th>Description</tr></thead>"
             )
             add("  <tbody>")
@@ -510,9 +511,9 @@ class Generator:
                 else:
                     type_col = esc(field_meta["type"])
                 add(
-                    f"    <tr><td>{field_meta['position']}"
+                    f'    <tr><td class="col-num">{field_meta["position"]}'
                     f"<td><code>{esc(field_meta['name'])}</code>"
-                    f"<td>{esc(field_meta['requiredness'])}"
+                    f'<td class="col-req">{esc(field_meta["requiredness"])}'
                     f"<td>{type_col}"
                     f'<td class="long">{esc(field_meta["description"])}</tr>'
                 )
