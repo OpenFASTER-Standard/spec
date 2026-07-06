@@ -1,0 +1,243 @@
+<pre class=metadata>
+Title: OpenFASTER
+Shortname: openfaster
+Level: 1
+Status: DREAM
+URL: https://www.openfaster.org/
+Repository: https://github.com/OpenFASTER-Standard/spec
+Text Macro: LONGSTATUS Vendor-independent, interoperable protocol standard for EU withholding tax and dividend reporting data exchange under MiKaDiv and FASTER
+Text Macro: DOCVERSION 1.0.0
+Editor: Julian Nalenz, https://github.com/sigalor
+Editor: Alaa Eddine Cherif, https://github.com/AlaaCherif
+Abstract: OpenFASTER is a vendor-independent family of open standards for the
+    exchange of EU withholding-tax and dividend-reporting data under MiKaDiv
+    and FASTER. This document defines the family; at this version it specifies
+    only the first module—the MiKaDiv Third-Party Disclosure format, a
+    self-documenting data model (with an accompanying Excel template) that mirrors
+    the German MiKaDiv (§45b EStG) capital-income disclosure schema. Further
+    modules for FASTER are planned.
+Markup Shorthands: markdown yes, dfn yes, css no
+Boilerplate: omit conformance
+Complain About: accidental-2119 yes, missing-example-ids yes
+</pre>
+
+<pre class=biblio>
+{
+  "MIKADIV": {
+    "title": "MiKaDiv – Mitteilungsverfahren für Kapitalerträge und Steuerabzug (§45b EStG)",
+    "publisher": "Bundeszentralamt für Steuern (BZSt)",
+    "href": "https://www.bzst.de/"
+  },
+  "FASTER": {
+    "title": "Council Directive (EU) on Faster and Safer Relief of Excess Withholding Taxes (FASTER)",
+    "publisher": "Council of the European Union",
+    "href": "https://taxation-customs.ec.europa.eu/faster_en"
+  }
+}
+</pre>
+
+Introduction {#intro}
+=====================
+
+OpenFASTER is a **vendor-independent family of open standards** for exchanging
+the data required for EU withholding-tax and dividend reporting. It is designed
+so that [=Certified Financial Intermediary|Certified Financial Intermediaries=]
+(CFIs) — banks, custodians, central securities depositories, and other reporting
+parties — can produce and exchange this data interoperably, regardless of which
+vendor or in-house system they use.
+
+
+Scope {#scope}
+--------------
+
+The scope of OpenFASTER is **purely operational**: defining the technical data
+model, vocabulary, and (in future modules) the exchange mechanics that make
+indirect reporting and the collection of supplementary data efficient and
+standardized across the EU.
+
+OpenFASTER deliberately does <em>not</em> address:
+
+* legislative or business-logic questions (for example, whether anonymous
+    reporting is permissible);
+* the internal calculation of tax positions; or
+* commercial or contractual arrangements between participants.
+
+Regulatory context {#regulatory-context}
+-----------------------------------------
+
+OpenFASTER is developed against the timeline of the EU [[FASTER]] initiative and
+the German [[MIKADIV]] reporting procedure.
+
+<table class="data">
+  <thead>
+    <tr><th>Milestone<th>Date
+  <tbody>
+    <tr><td>Standardized dividend reporting (MiKaDiv)<td>2027-01-01
+    <tr><td>Full regulatory reporting under FASTER<td>2030-01-01
+</table>
+
+The goals shared with these initiatives are harmonized dividend reporting,
+reduced withholding-tax fraud, greater transparency for tax authorities, and
+efficient cross-border tax-reclaim processing.
+
+
+Terminology {#terminology}
+==========================
+
+<dfn>Certified Financial Intermediary</dfn> (CFI)
+: A regulated party — such as a bank, custodian, or central securities
+    depository — that participates in withholding-tax and dividend reporting and
+    exchanges disclosure data with other participants.
+
+A <dfn>disclosure</dfn>
+: One complete third-party disclosure record for a single capital-income event,
+    identified and linked together by a single [=RequestId=].
+
+<dfn>RequestId</dfn>
+: The identifier that ties together all parts of one [=disclosure=]. It is a
+    linking key only: any value that is unique within the submission is valid, so
+    it need not be a UUID.
+
+<dfn>paying agent</dfn>
+: The German institution responsible for the withholding-tax reporting for a
+    given capital-income event.
+
+<dfn>tax voucher</dfn>
+: The tax certificate (Steuerbescheinigung) issued in respect of a
+    capital-income event.
+
+The MiKaDiv Third-Party Disclosure module {#mikadiv-module}
+===========================================================
+
+The first OpenFASTER module defines the data required for a German MiKaDiv
+(§45b EStG) **third-party disclosure**: the structured description of a
+capital-income event, the securities involved, every party in the chain, and the
+receipts and deliveries that support a first-in-first-out (FIFO) determination.
+
+An accompanying self-documenting Excel template is published alongside this
+specification:
+[MiKaDiv Third-Party Disclosure Template](https://github.com/OpenFASTER-Standard/spec/blob/main/mikadiv/generated/MiKaDiv_ThirdPartyDisclosure_Template.xlsx).
+Each sheet mirrors one logical group below; every field carries its English
+description, type constraints, and requiredness in the header rows.
+
+Source schema {#source-schema}
+------------------------------
+
+The data model of this module is derived from the XML Schema Definition (XSD)
+produced by the <dfn>VIB</dfn> (Verband Internationaler Banken e.V.), the
+association representing internationally active banks in Germany. The VIB is
+developing this schema to standardize the electronic exchange of MiKaDiv
+third-party disclosure data between banks and towards the German
+[=paying agent=].
+
+OpenFASTER treats the [=VIB=] XSD as the machine source of truth: the field
+definitions, requiredness, enumerations, the [[#data-dictionary|data dictionary]]
+in this document, and the accompanying Excel template are all generated directly
+from it. As the VIB schema evolves, regenerating from the updated XSD keeps this
+specification and the template in lock-step with the VIB source.
+
+Data model {#data-model}
+------------------------
+
+A [=disclosure=] is decomposed into several logical groups (rendered as separate
+sheets in the Excel template). Every group carries the [=RequestId=] so that the
+groups can be recombined into one record.
+
+<table class="data">
+  <thead>
+    <tr><th>Group<th>Rows per RequestId<th>Purpose
+  <tbody>
+    <tr><td>Requests Master<td>1<td>Request-level metadata; new request vs cancellation; account owner scalars.
+    <tr><td>Security Related Information<td>0..1<td>The capital-income event, security identification, tax breakdown, and depositary-receipt block.
+    <tr><td>Tax Voucher Individuals / Legal Persons<td>up to 2 receivers total<td>The recipients of the [=tax voucher=].
+    <tr><td>Third Party Individuals / Legal Persons<td>up to 5 total<td>Account holders who are not the beneficial owner.
+    <tr><td>Custody Chain<td>up to 20<td>The ordered intermediary chain, closest-to-beneficiary first.
+    <tr><td>FIFO Trades<td>up to 1000 each way<td>Receipts and deliveries with FIFO already applied by the submitter.
+    <tr><td>Raw Transactions All<td>unbounded<td>The unreduced ledger when the paying agent performs the FIFO calculation.
+</table>
+
+When the raw ledger is supplied, the German [=paying agent=] performs the FIFO
+determination; when the submitter applies FIFO itself, the reduced trades are
+supplied directly.
+
+Linking model {#linking-model}
+------------------------------
+
+The [=RequestId=] is the key on the *Requests Master* group and the first column
+of every other group. Because it is used only to join the groups, any value that
+is unique within a submission works.
+
+* <b>Cancellations.</b> Set `RecordType` = `Cancel` on the master group, fill
+    `PreviousRequestIdForCancellation` (and optionally `ReportSerialNumber`), and
+    leave every other group empty for that [=RequestId=].
+* <b>Community recipients.</b> A community tax-voucher receiver (up to 10
+    members) is captured by setting `ReceiverGroupType` = `CommunityMember` on
+    the tax-voucher groups and giving all members of one community the same
+    `CommunityGroupId`. A community counts as one receiver.
+
+Conformance requirements {#module-conformance}
+----------------------------------------------
+
+A conforming producer MUST populate every field marked `Required` for each group
+it emits. Fields marked `Conditional` MUST be populated when the condition stated
+in their description holds, and MUST otherwise be omitted or left empty. Fields
+marked `Optional` MAY be omitted.
+
+Enum-typed fields MUST carry one of the values enumerated for that field in
+[[#enumerations|Enumerations]]. A conforming consumer MUST reject a
+[=disclosure=] whose enum-typed field carries a value outside the enumerated set.
+
+<pre class=include>
+path: ../mikadiv/generated/fields.include.bs
+</pre>
+
+Planned work {#roadmap}
+=======================
+
+The following modules and improvements are planned. They are <em>not</em> part of
+the normative content of this document yet; they are recorded here to describe the
+intended direction of the OpenFASTER family.
+
+Bulk disclosure template {#roadmap-bulk}
+----------------------------------------
+
+A revised template (and matching schema) in which an arbitrary number of
+beneficiaries, income lines, and related records can be entered, enabling
+mass/batch processing of disclosures rather than one disclosure at a time.
+
+Published multilingual vocabulary {#roadmap-vocabulary}
+-------------------------------------------------------
+
+A published <em>vocabulary</em> that fixes the (non-official) translations of the
+field names and their explanations into several languages, each validated by
+appropriate domain experts. This lets institutions across jurisdictions work
+against a shared, authoritative set of terms while the official German schema
+remains the legal reference.
+
+UUID return format {#roadmap-uuid-return}
+-----------------------------------------
+
+A format (an XSD plus an equivalent Excel representation) with which a reporting
+entity — for example Clearstream, or another reporting party — can report the
+assigned UUIDs back to the foreign banks that originated the disclosures, closing
+the loop between submission and acknowledgement.
+
+Versioning and changelog {#versioning}
+======================================
+
+OpenFASTER specifications use [semantic versioning](https://semver.org/)
+(`MAJOR.MINOR.PATCH`). This document is version <b>[DOCVERSION]</b>.
+
+* <b>MAJOR</b> — incompatible changes to the data model (for example, removing a
+    field, or changing its meaning or requiredness).
+* <b>MINOR</b> — backwards-compatible additions (for example, new optional
+    fields or new enumeration values).
+* <b>PATCH</b> — editorial or documentation-only corrections.
+
+The changelog below is maintained in a separate file
+(<code>documentation/changelog.include.bs</code>) and included here.
+
+<pre class=include>
+path: changelog.include.bs
+</pre>
+

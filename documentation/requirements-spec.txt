@@ -1,0 +1,5 @@
+# Tooling to build the OpenFASTER specification (index.bs) into HTML + PDF.
+# Kept separate from requirements.txt (which only needs openpyxl for the Excel
+# template generator).
+bikeshed==7.1.1
+weasyprint==66.0

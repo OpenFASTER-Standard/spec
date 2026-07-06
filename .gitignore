@@ -1,2 +1,5 @@
-.vercel
-.env*.local
+_site/
+
+# Python
+__pycache__/
+*.pyc
