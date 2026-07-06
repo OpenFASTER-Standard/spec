@@ -1,0 +1,29 @@
+/* OpenFASTER site overrides (HTML + PDF via print.css @import). */
+
+/* Specification version — shown under “This version” in the header metadata. */
+.head dl dd .spec-version {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #0b3d6e;
+}
+
+.head dl dd .spec-version strong {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+/* Changelog block at the top of the document (before the TOC). */
+.changelog-top {
+  margin: 1.5rem 0 2rem;
+}
+
+.changelog-top > h2 {
+  margin-bottom: 0.75rem;
+}
+
+.changelog-top table.changelog {
+  margin-top: 0;
+}

@@ -7,6 +7,8 @@ URL: https://www.openfaster.org/
 Repository: https://github.com/OpenFASTER-Standard/spec
 Text Macro: LONGSTATUS Vendor-independent, interoperable protocol standard for EU withholding tax and dividend reporting data exchange under MiKaDiv and FASTER
 Text Macro: DOCVERSION 1.0.0
+Metadata Order: This version, Issue Tracking, Editor, *
+!This version: <p class="spec-version">Version <strong>[DOCVERSION]</strong></p>
 Editor: Julian Nalenz, https://github.com/sigalor
 Editor: Alaa Eddine Cherif, https://github.com/AlaaCherif
 Abstract: OpenFASTER is a vendor-independent family of open standards for the
@@ -18,6 +20,7 @@ Abstract: OpenFASTER is a vendor-independent family of open standards for the
     modules for FASTER are planned.
 Markup Shorthands: markdown yes, dfn yes, css no
 Boilerplate: omit conformance
+Local Boilerplate: header yes
 Complain About: accidental-2119 yes, missing-example-ids yes
 </pre>
 
@@ -222,8 +225,8 @@ entity — for example Clearstream, or another reporting party — can report th
 assigned UUIDs back to the foreign banks that originated the disclosures, closing
 the loop between submission and acknowledgement.
 
-Versioning and changelog {#versioning}
-======================================
+Versioning {#versioning}
+======================
 
 OpenFASTER specifications use [semantic versioning](https://semver.org/)
 (`MAJOR.MINOR.PATCH`). This document is version <b>[DOCVERSION]</b>.
@@ -234,10 +237,8 @@ OpenFASTER specifications use [semantic versioning](https://semver.org/)
     fields or new enumeration values).
 * <b>PATCH</b> — editorial or documentation-only corrections.
 
-The changelog below is maintained in a separate file
-(<code>documentation/changelog.include.bs</code>) and included here.
-
-<pre class=include>
-path: changelog.include.bs
-</pre>
+The changelog is published at the top of this document
+(<a href="#changelog">Changelog</a>). It is maintained in
+<code>documentation/changelog.include.bs</code> and included automatically when
+the specification is built.
 

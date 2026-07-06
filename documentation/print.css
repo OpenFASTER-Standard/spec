@@ -1,5 +1,7 @@
 /* PDF overrides for WeasyPrint (applied on top of the Bikeshed/W3C HTML). */
 
+@import "site.css";
+
 @page {
   size: A4 portrait;
   margin: 1.1cm 0.85cm;
@@ -77,4 +79,15 @@ table.data td,
 table.data th {
   overflow-wrap: anywhere;
   word-break: break-word;
+}
+
+/* Table of contents starts on its own page in the PDF. */
+#toc {
+  break-before: page;
+  page-break-before: always;
+}
+
+/* Changelog overview table at the top of the document. */
+.changelog-top table.changelog {
+  font-size: 8.5pt;
 }

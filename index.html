@@ -3,6 +3,7 @@
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <title>OpenFASTER</title>
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+  <link href="documentation/site.css" rel="stylesheet">
 <style data-fill-with="stylesheet">/******************************************************************************
  *                   Style sheet for the W3C specifications                   *
  *
@@ -2058,11 +2059,12 @@ dfn > a.self-link::before      { content: "#"; }
    <p data-fill-with="logo"></p>
    <h1 class="no-ref p-name" id="title">OpenFASTER</h1>
    <h2 class="heading no-num no-ref no-toc settled" id="profile-and-date"><span class="content">Vendor-independent, interoperable protocol standard for EU withholding tax and dividend reporting data exchange under MiKaDiv and FASTER,
-    <time class="dt-updated" datetime="2026-07-05">5 July 2026</time></span></h2>
+    <time class="dt-updated" datetime="2026-07-06">6 July 2026</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
      <dd><a class="u-url" href="https://www.openfaster.org/">https://www.openfaster.org/</a>
+     <dd><p class="spec-version">Version <strong>1.0.0</strong></p>
      <dt>Issue Tracking:
      <dd><a href="https://github.com/OpenFASTER-Standard/spec/issues/">GitHub</a>
      <dt class="editor">Editors:
@@ -2074,7 +2076,7 @@ dfn > a.self-link::before      { content: "#"; }
    <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" height="15" src="https://licensebuttons.net/p/zero/1.0/80x15.png" width="80"></a>
 To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 5 July 2026,
+In addition, as of 6 July 2026,
 the editors have made this specification available under the
 <a href="https://www.openwebfoundation.org/the-agreements/the-owf-1-0-agreements-granted-claims/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at https://www.openwebfoundation.org/the-agreements/the-owf-1-0-agreements-granted-claims/owfa-1-0.
@@ -2093,6 +2095,28 @@ the German MiKaDiv (§45b EStG) capital-income disclosure schema. Further
 modules for FASTER are planned.</p>
   </div>
   <div data-fill-with="at-risk"></div>
+  <section class="changelog-top" id="changelog">
+   <h2 class="heading no-num no-ref no-toc settled" id="changelog-heading"><span class="content">Changelog</span></h2>
+   <table class="changelog data">
+    <thead>
+     <tr>
+      <th>Version
+      <th>Date
+      <th>Summary of changes
+    <tbody>
+     <tr>
+      <td>1.0.0
+      
+      <td>2026-07-05
+      
+      <td>Initial version. Defines the OpenFASTER family and specifies the
+          MiKaDiv Third-Party Disclosure module: data model, linking model,
+          conformance requirements, and the full data dictionary and
+          enumerations generated from the VIB MiKaDiv XSD, with an accompanying
+          self-documenting Excel template.
+    
+   </table>
+  </section>
   <nav data-fill-with="table-of-contents" id="toc">
    <h2 class="no-num no-ref no-toc" id="contents">Table of Contents</h2>
    <ol class="toc">
@@ -2151,7 +2175,7 @@ modules for FASTER are planned.</p>
       <li><a href="#roadmap-vocabulary"><span class="secno">6.2</span> <span class="content">Published multilingual vocabulary</span></a>
       <li><a href="#roadmap-uuid-return"><span class="secno">6.3</span> <span class="content">UUID return format</span></a>
      </ol>
-    <li><a href="#versioning"><span class="secno">7</span> <span class="content">Versioning and changelog</span></a>
+    <li><a href="#versioning"><span class="secno">7</span> <span class="content">Versioning</span></a>
     <li>
      <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
      <ol class="toc">
@@ -4010,7 +4034,7 @@ remains the legal reference.</p>
 entity — for example Clearstream, or another reporting party — can report the
 assigned UUIDs back to the foreign banks that originated the disclosures, closing
 the loop between submission and acknowledgement.</p>
-   <h2 class="heading settled" data-level="7" id="versioning"><span class="secno">7. </span><span class="content">Versioning and changelog</span><a class="self-link" href="#versioning"></a></h2>
+   <h2 class="heading settled" data-level="7" id="versioning"><span class="secno">7. </span><span class="content">Versioning</span><a class="self-link" href="#versioning"></a></h2>
    <p>OpenFASTER specifications use <a href="https://semver.org/">semantic versioning</a>
 (<code>MAJOR.MINOR.PATCH</code>). This document is version <b>1.0.0</b>.</p>
    <ul>
@@ -4023,27 +4047,10 @@ fields or new enumeration values).</p>
     <li data-md>
      <p><b>PATCH</b> — editorial or documentation-only corrections.</p>
    </ul>
-   <p>The changelog below is maintained in a separate file
-(<code>documentation/changelog.include.bs</code>) and included here.</p>
-   <table class="changelog data">
-    <thead>
-     <tr>
-      <th>Version
-      <th>Date
-      <th>Summary of changes
-    <tbody>
-     <tr>
-      <td>1.0.0
-      
-      <td>2026-07-05
-      
-      <td>Initial version. Defines the OpenFASTER family and specifies the
-          MiKaDiv Third-Party Disclosure module: data model, linking model,
-          conformance requirements, and the full data dictionary and
-          enumerations generated from the VIB MiKaDiv XSD, with an accompanying
-          self-documenting Excel template.
-    
-   </table>
+   <p>The changelog is published at the top of this document
+(<a href="#changelog">Changelog</a>). It is maintained in
+<code>documentation/changelog.include.bs</code> and included automatically when
+the specification is built.</p>
   </main>
 <script>
 (function() {

@@ -106,6 +106,7 @@ by [Bikeshed](https://speced.github.io/bikeshed/) to HTML, and rendered to PDF.
 python -m pip install -r requirements.txt -r documentation/requirements-spec.txt
 bikeshed update            # first run only, fetches Bikeshed data files
 python generate_template.py                       # refresh the generated include
+python documentation/prepare_spec.py              # embed changelog into header boilerplate
 bikeshed --allow-nonlocal-files --die-on=link-error spec documentation/index.bs index.html
 weasyprint --stylesheet documentation/print.css index.html documentation/openfaster.pdf   # PDF (see note)
 ```
