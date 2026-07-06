@@ -1,4 +1,8 @@
 {
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/", "destination": "/documentation/index.html" },
+    { "source": "/openfaster.pdf", "destination": "/documentation/openfaster.pdf" }
+  ]
 }
