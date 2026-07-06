@@ -30,8 +30,9 @@ and the documentation/specification kept separate:
 ├── documentation/                 # the specification / site
 │   ├── index.bs                   #   Bikeshed source (includes the module include)
 │   ├── requirements-spec.txt      #   spec build deps (bikeshed, weasyprint)
-│   ├── index.html                 #   built (generated)
+│   ├── print.css                  #   PDF stylesheet
 │   └── openfaster.pdf             #   built (generated)
+├── index.html                     # built spec (generated); served at site root
 ├── generate_template.py           # build entry point (wires engine + modules)
 ├── requirements.txt               # engine deps (openpyxl, xmlschema)
 ├── Dockerfile                     # reproducible spec + PDF build
@@ -59,7 +60,7 @@ flowchart LR
   gen --> meta["mikadiv/generated/template_metadata.json"]
   meta --> incl["mikadiv/generated/fields.include.bs"]
   incl --> bs["documentation/index.bs"]
-  bs --> html["documentation/index.html"]
+  bs --> html["index.html"]
   bs --> pdf["documentation/openfaster.pdf"]
   meta --> xlsx["mikadiv/generated/…Template.xlsx"]
 ```
@@ -92,7 +93,7 @@ presentation stays controllable:
 | `mikadiv/generated/fields.include.bs` | Data dictionary + enumerations, pulled into `index.bs` | Generated |
 | `mikadiv/generated/TEMPLATE_FIELDS.md` | Human-readable field reference | Generated |
 | `mikadiv/generated/MiKaDiv_ThirdPartyDisclosure_Template.xlsx` | Fillable Excel template | Generated |
-| `documentation/index.html` / `documentation/openfaster.pdf` | Built specification (deployed to openfaster.org) | Generated |
+| `index.html` / `documentation/openfaster.pdf` | Built specification (deployed to openfaster.org) | Generated |
 
 ## Building the specification
 
@@ -105,8 +106,8 @@ by [Bikeshed](https://speced.github.io/bikeshed/) to HTML, and rendered to PDF.
 python -m pip install -r requirements.txt -r documentation/requirements-spec.txt
 bikeshed update            # first run only, fetches Bikeshed data files
 python generate_template.py                       # refresh the generated include
-bikeshed --allow-nonlocal-files --die-on=link-error spec documentation/index.bs documentation/index.html
-weasyprint --stylesheet documentation/print.css documentation/index.html documentation/openfaster.pdf   # PDF (see note)
+bikeshed --allow-nonlocal-files --die-on=link-error spec documentation/index.bs index.html
+weasyprint --stylesheet documentation/print.css index.html documentation/openfaster.pdf   # PDF (see note)
 ```
 
 > Note: WeasyPrint needs native libraries (Pango/Cairo/HarfBuzz). These are
@@ -119,20 +120,20 @@ docker build -t openfaster-spec .
 docker run --rm -v "${PWD}:/spec" openfaster-spec
 ```
 
-This regenerates the data dictionary, builds `documentation/index.html`, and
+This regenerates the data dictionary, builds `index.html`, and
 renders `documentation/openfaster.pdf` back into the mounted directory.
 
 ### Option C - CI
 
 [`.github/workflows/spec.yml`](.github/workflows/spec.yml) runs the full build on
-every push, uploads `documentation/index.html` + `documentation/openfaster.pdf`
+every push, uploads `index.html` + `documentation/openfaster.pdf`
 as an artifact, and (on `main`) publishes them to GitHub Pages - so
 openfaster.org always reflects `documentation/index.bs`.
 
 ## Deploying to openfaster.org
 
 Author here, then publish the built artifacts. You do **not** need to edit the
-live site directly: copy `documentation/index.html` (and
+live site directly: copy `index.html` (and
 `documentation/openfaster.pdf`) to the openfaster.org host, or let the CI
 workflow deploy them to GitHub Pages.
 
