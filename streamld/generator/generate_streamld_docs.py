@@ -26,7 +26,7 @@ def render_bikeshed_include(model_path: str) -> str:
     lines = ["<!-- Generated from streamld/model/envelope.ttl. Do not edit by hand. -->", ""]
 
     for shape_name, shape_iri in SHAPES.items():
-        lines.append(f"### {shape_name} ### {{#{shape_name.lower()}-fields}}")
+        lines.append(f"## {shape_name} ## {{#{shape_name.lower()}-fields}}")
         lines.append("")
         lines.append("| Field | Type | Required |")
         lines.append("| --- | --- | --- |")

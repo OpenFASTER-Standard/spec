@@ -1,6 +1,6 @@
 <!-- Generated from streamld/model/envelope.ttl. Do not edit by hand. -->
 
-### EventEnvelope ### {#eventenvelope-fields}
+## EventEnvelope ## {#eventenvelope-fields}
 
 | Field | Type | Required |
 | --- | --- | --- |
@@ -9,21 +9,21 @@
 | `sequence` | integer | Yes |
 | `streamId` | string | Yes |
 
-### ReplicationFrame ### {#replicationframe-fields}
+## ReplicationFrame ## {#replicationframe-fields}
 
 | Field | Type | Required |
 | --- | --- | --- |
 | `cursor` | integer | Yes |
 | `event` | (node) | Yes |
 
-### SubscriptionRequest ### {#subscriptionrequest-fields}
+## SubscriptionRequest ## {#subscriptionrequest-fields}
 
 | Field | Type | Required |
 | --- | --- | --- |
 | `after` | integer | No |
 | `stream` | (node) | Yes |
 
-### GapSignal ### {#gapsignal-fields}
+## GapSignal ## {#gapsignal-fields}
 
 | Field | Type | Required |
 | --- | --- | --- |
