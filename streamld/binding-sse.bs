@@ -1,0 +1,30 @@
+<pre class='metadata'>
+Title: StreamLD SSE Binding
+Shortname: streamld-sse
+Level: 1
+Status: w3c/CG-DRAFT
+URL: https://openfaster.org/streamld/binding-sse.html
+Editor: OpenFASTER Editors
+Abstract: Defines how StreamLD's cursor-based subscription model is carried over Server-Sent Events, for server-to-client delivery.
+</pre>
+
+# Overview # {#overview}
+
+A client subscribes to a stream by opening an SSE connection to that stream's
+subscription endpoint. The connection MUST be served over HTTP/2 or later, to
+avoid the six-connections-per-origin limit HTTP/1.1 imposes on `EventSource`.
+
+# Resumption # {#resumption}
+
+The StreamLD cursor (see StreamLD Core) is carried directly as the
+SSE `id` field of each event. A reconnecting client's browser automatically
+resends the last-seen `id` as the `Last-Event-ID` request header; a
+conformant server MUST treat an incoming `Last-Event-ID` header as the
+`streamld:after` value of an implicit subscription request.
+
+# Gap responses # {#gap-responses}
+
+If the requested cursor cannot be satisfied (see StreamLD Core's gap-handling rules),
+the server MUST respond with HTTP status 409
+and a JSON body matching the `streamld:GapSignal` shape, and MUST NOT begin an
+`text/event-stream` response in that case.
