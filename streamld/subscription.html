@@ -8,7 +8,7 @@
   <meta content="Bikeshed version d113b2e81, updated Tue Jun 9 14:57:55 2026 -0700" name="generator">
   <link href="https://openfaster.org/streamld/subscription.html" rel="canonical">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="c74a44e6abbe585560ac94728d3bab225046a62d" name="revision">
+  <meta content="3c4c0c27de04d984607ab7920b3c8202d8d3c86e" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -445,7 +445,7 @@ dfn > a.self-link::before      { content: "#"; }
   </div>
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="heading no-num no-ref no-toc settled" id="abstract"><span class="content">Abstract</span></h2>
-   <p>Defines how a client discovers a stream’s subscription endpoint(s), independent of which transport binding it then uses.</p>
+   <p>Defines how a client discovers a stream’s subscription endpoint(s), independent of which transport binding (<a href="binding-sse.html">StreamLD SSE Binding</a> or <a href="binding-websocket.html">StreamLD WebSocket Replication Binding</a>) it then uses.</p>
   </div>
   <h2 class="heading no-num no-ref no-toc settled" id="sotd"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
@@ -473,7 +473,8 @@ dfn > a.self-link::before      { content: "#"; }
    <h2 class="heading settled" data-level="1" id="overview"><span class="secno">1. </span><span class="content">Overview</span><a class="self-link" href="#overview"></a></h2>
    <p>This document separates *discovering* a stream’s subscribable endpoint from
 *subscribing* to it over a specific transport — the same separation
-the SSE and WebSocket replication bindings rely on, and the same one
+<a href="binding-sse.html">StreamLD SSE Binding</a> and
+<a href="binding-websocket.html">StreamLD WebSocket Replication Binding</a> rely on, and the same one
 AsyncAPI draws between its Channel and Operation objects.</p>
    <h2 class="heading settled" data-level="2" id="discovery"><span class="secno">2. </span><span class="content">Discovery</span><a class="self-link" href="#discovery"></a></h2>
    <p>A StreamLD resource MUST advertise its subscription endpoint(s) via one `Link`

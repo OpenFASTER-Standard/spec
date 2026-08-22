@@ -8,7 +8,7 @@
   <meta content="Bikeshed version d113b2e81, updated Tue Jun 9 14:57:55 2026 -0700" name="generator">
   <link href="https://openfaster.org/streamld/binding-sse.html" rel="canonical">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="c74a44e6abbe585560ac94728d3bab225046a62d" name="revision">
+  <meta content="3c4c0c27de04d984607ab7920b3c8202d8d3c86e" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -445,7 +445,7 @@ dfn > a.self-link::before      { content: "#"; }
   </div>
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="heading no-num no-ref no-toc settled" id="abstract"><span class="content">Abstract</span></h2>
-   <p>Defines how StreamLD’s cursor-based subscription model is carried over Server-Sent Events, for server-to-client delivery.</p>
+   <p>Defines how StreamLD’s cursor-based subscription model (see <a href="core.html">StreamLD Core</a>) is carried over Server-Sent Events, for server-to-client delivery.</p>
   </div>
   <h2 class="heading no-num no-ref no-toc settled" id="sotd"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
@@ -476,13 +476,13 @@ dfn > a.self-link::before      { content: "#"; }
 subscription endpoint. The connection MUST be served over HTTP/2 or later, to
 avoid the six-connections-per-origin limit HTTP/1.1 imposes on `EventSource`.</p>
    <h2 class="heading settled" data-level="2" id="resumption"><span class="secno">2. </span><span class="content">Resumption</span><a class="self-link" href="#resumption"></a></h2>
-   <p>The StreamLD cursor (see StreamLD Core) is carried directly as the
+   <p>The StreamLD cursor (see <a href="core.html#cursor">StreamLD Core, The Cursor</a>) is carried directly as the
 SSE `id` field of each event. A reconnecting client’s browser automatically
 resends the last-seen `id` as the `Last-Event-ID` request header; a
 conformant server MUST treat an incoming `Last-Event-ID` header as the
 `streamld:after` value of an implicit subscription request.</p>
    <h2 class="heading settled" data-level="3" id="gap-responses"><span class="secno">3. </span><span class="content">Gap responses</span><a class="self-link" href="#gap-responses"></a></h2>
-   <p>If the requested cursor cannot be satisfied (see StreamLD Core’s gap-handling rules),
+   <p>If the requested cursor cannot be satisfied (see <a href="core.html#gap-handling">StreamLD Core, Gap handling</a>),
 the server MUST respond with HTTP status 409
 and a JSON body matching the `streamld:GapSignal` shape, and MUST NOT begin an
 `text/event-stream` response in that case.</p>

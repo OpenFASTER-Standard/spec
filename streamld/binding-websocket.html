@@ -8,7 +8,7 @@
   <meta content="Bikeshed version d113b2e81, updated Tue Jun 9 14:57:55 2026 -0700" name="generator">
   <link href="https://openfaster.org/streamld/binding-websocket.html" rel="canonical">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="c74a44e6abbe585560ac94728d3bab225046a62d" name="revision">
+  <meta content="3c4c0c27de04d984607ab7920b3c8202d8d3c86e" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>/* Boilerplate: style-autolinks */
@@ -472,17 +472,17 @@ dfn > a.self-link::before      { content: "#"; }
   </nav>
   <main>
    <h2 class="heading settled" data-level="1" id="overview"><span class="secno">1. </span><span class="content">Overview</span><a class="self-link" href="#overview"></a></h2>
-   <p>Unlike the SSE binding, which serves a single browser
+   <p>Unlike the SSE binding (<a href="binding-sse.html">StreamLD SSE Binding</a>), which serves a single browser
 client, the WebSocket replication binding is intended for one server
 mirroring another server’s stream in full. There is no browser-platform
 reconnection help available on this transport, so resumption is handled
 entirely in-protocol.</p>
    <h2 class="heading settled" data-level="2" id="join"><span class="secno">2. </span><span class="content">Join and backlog</span><a class="self-link" href="#join"></a></h2>
    <p>A replicating server opens a WebSocket connection and sends a join request
-carrying a `streamld:SubscriptionRequest`. The upstream server responds with either
+carrying a `streamld:SubscriptionRequest` (see <a href="core.html#envelope">StreamLD Core, The Event Envelope</a>). The upstream server responds with either
 every already-buffered `streamld:ReplicationFrame` with `streamld:cursor` greater than
 the requested `streamld:after` value, in ascending cursor order, or
-a `streamld:GapSignal`, per the same gap-handling rule as StreamLD Core, if the
+a `streamld:GapSignal`, per the same rule as <a href="core.html#gap-handling">StreamLD Core, Gap handling</a>, if the
 requested cursor is not resolvable.</p>
    <h2 class="heading settled" data-level="3" id="live-frames"><span class="secno">3. </span><span class="content">Live frames</span><a class="self-link" href="#live-frames"></a></h2>
    <p>After a successful join, the upstream server pushes one
