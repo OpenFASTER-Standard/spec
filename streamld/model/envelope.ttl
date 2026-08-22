@@ -29,3 +29,47 @@ streamld:EventEnvelopeShape
         sh:minCount 1 ;
         sh:maxCount 1 ;
     ] .
+
+streamld:ReplicationFrameShape
+    a sh:NodeShape ;
+    sh:targetClass streamld:ReplicationFrame ;
+    sh:property [
+        sh:path streamld:cursor ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:minInclusive 0 ;
+    ] ;
+    sh:property [
+        sh:path streamld:event ;
+        sh:class streamld:EventEnvelope ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
+
+streamld:SubscriptionRequestShape
+    a sh:NodeShape ;
+    sh:targetClass streamld:SubscriptionRequest ;
+    sh:property [
+        sh:path streamld:stream ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path streamld:after ;
+        sh:datatype xsd:integer ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:minInclusive 0 ;
+    ] .
+
+streamld:GapSignalShape
+    a sh:NodeShape ;
+    sh:targetClass streamld:GapSignal ;
+    sh:property [
+        sh:path streamld:oldestAvailable ;
+        sh:datatype xsd:integer ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+    ] .
