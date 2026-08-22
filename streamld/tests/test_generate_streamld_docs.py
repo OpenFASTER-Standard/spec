@@ -11,12 +11,12 @@ SHAPES_PATH = str(Path(__file__).parent.parent / "model" / "envelope.ttl")
 def test_render_bikeshed_include_contains_all_shapes():
     output = render_bikeshed_include(SHAPES_PATH)
 
-    assert "### EventEnvelope ###" in output
+    assert "## EventEnvelope ##" in output
     assert "`sequence`" in output
     assert "`isSnapshot`" in output
-    assert "### ReplicationFrame ###" in output
-    assert "### SubscriptionRequest ###" in output
-    assert "### GapSignal ###" in output
+    assert "## ReplicationFrame ##" in output
+    assert "## SubscriptionRequest ##" in output
+    assert "## GapSignal ##" in output
 
 
 def test_render_bikeshed_include_marks_required_fields():
