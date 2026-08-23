@@ -1,0 +1,30 @@
+<!-- Generated from streamld/model/envelope.ttl. Do not edit by hand. -->
+
+## EventEnvelope ## {#eventenvelope-fields}
+
+| Field | Type | Required |
+| --- | --- | --- |
+| `isSnapshot` | boolean | Yes |
+| `payload` | (node) | Yes |
+| `sequence` | integer | Yes |
+| `streamId` | string | Yes |
+
+## ReplicationFrame ## {#replicationframe-fields}
+
+| Field | Type | Required |
+| --- | --- | --- |
+| `cursor` | integer | Yes |
+| `event` | (node) | Yes |
+
+## SubscriptionRequest ## {#subscriptionrequest-fields}
+
+| Field | Type | Required |
+| --- | --- | --- |
+| `after` | integer | No |
+| `stream` | (node) | Yes |
+
+## GapSignal ## {#gapsignal-fields}
+
+| Field | Type | Required |
+| --- | --- | --- |
+| `oldestAvailable` | integer | No |

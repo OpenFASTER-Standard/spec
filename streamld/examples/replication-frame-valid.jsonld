@@ -1,0 +1,23 @@
+{
+  "@context": {
+    "streamld": "https://openfaster.org/streamld#",
+    "cursor": { "@id": "streamld:cursor", "@type": "xsd:integer" },
+    "event": { "@id": "streamld:event", "@type": "@id" },
+    "sequence": { "@id": "streamld:sequence", "@type": "xsd:integer" },
+    "streamId": { "@id": "streamld:streamId", "@type": "xsd:string" },
+    "isSnapshot": { "@id": "streamld:isSnapshot", "@type": "xsd:boolean" },
+    "payload": { "@id": "streamld:payload", "@type": "@id" },
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "streamld:ReplicationFrame",
+  "cursor": 5,
+  "event": {
+    "@id": "https://pod.example/alice/profile/events/5",
+    "@type": "streamld:EventEnvelope",
+    "sequence": 5,
+    "streamId": "https://pod.example/alice/profile",
+    "isSnapshot": false,
+    "payload": "https://pod.example/alice/profile#me"
+  }
+}
+

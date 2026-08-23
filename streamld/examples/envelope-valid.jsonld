@@ -1,0 +1,15 @@
+{
+  "@context": {
+    "streamld": "https://openfaster.org/streamld#",
+    "sequence": { "@id": "streamld:sequence", "@type": "xsd:integer" },
+    "streamId": "streamld:streamId",
+    "isSnapshot": { "@id": "streamld:isSnapshot", "@type": "xsd:boolean" },
+    "payload": { "@id": "streamld:payload", "@type": "@id" },
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "streamld:EventEnvelope",
+  "sequence": 1,
+  "streamId": "https://pod.example/alice/profile",
+  "isSnapshot": true,
+  "payload": "https://pod.example/alice/profile#me"
+}

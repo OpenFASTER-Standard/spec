@@ -1,0 +1,9 @@
+{
+  "@context": {
+    "streamld": "https://openfaster.org/streamld#",
+    "cursor": { "@id": "streamld:cursor", "@type": "xsd:integer" },
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "streamld:ReplicationFrame",
+  "cursor": -1
+}

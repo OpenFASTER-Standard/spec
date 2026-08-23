@@ -1,0 +1,9 @@
+{
+  "@context": {
+    "streamld": "https://openfaster.org/streamld#",
+    "after": { "@id": "streamld:after", "@type": "xsd:integer" },
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "streamld:SubscriptionRequest",
+  "after": 5
+}

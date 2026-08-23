@@ -1,0 +1,172 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix sh2c: <https://jpewdev.github.io/shacl2code/schema#> .
+@prefix streamld: <https://openfaster.org/streamld#> .
+
+streamld:EventEnvelopeShape
+    a sh:NodeShape ;
+    sh:targetClass streamld:EventEnvelope ;
+    sh:property [
+        sh:path streamld:sequence ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:minInclusive 1 ;
+    ] ;
+    sh:property [
+        sh:path streamld:streamId ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path streamld:isSnapshot ;
+        sh:datatype xsd:boolean ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path streamld:payload ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
+
+streamld:ReplicationFrameShape
+    a sh:NodeShape ;
+    sh:targetClass streamld:ReplicationFrame ;
+    sh:property [
+        sh:path streamld:cursor ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:minInclusive 0 ;
+    ] ;
+    sh:property [
+        sh:path streamld:event ;
+        sh:class streamld:EventEnvelope ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
+
+streamld:SubscriptionRequestShape
+    a sh:NodeShape ;
+    sh:targetClass streamld:SubscriptionRequest ;
+    sh:property [
+        sh:path streamld:stream ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path streamld:after ;
+        sh:datatype xsd:integer ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:minInclusive 0 ;
+    ] .
+
+streamld:GapSignalShape
+    a sh:NodeShape ;
+    sh:targetClass streamld:GapSignal ;
+    sh:property [
+        sh:path streamld:oldestAvailable ;
+        sh:datatype xsd:integer ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+    ] .
+
+# --- shacl2code interop -----------------------------------------------------
+# shacl2code (unlike pyshacl) never reads sh:targetClass; it only recognizes a
+# resource as a "class" if that resource itself is typed owl:Class AND
+# directly carries sh:property triples (shacl2code's model.py, around lines
+# 318 and 349: it collects `subjects(RDF.type, OWL.Class)` and then reads
+# `objects(cls_iri, SH.property)` straight off that same subject). The
+# NodeShape blocks above attach sh:property to the "...Shape" resources, not
+# to the sh:targetClass values, so shacl2code alone finds zero classes and
+# zero fields (confirmed empirically before this block was added: generating
+# jsonschema from the file as it stood above produced only empty boilerplate,
+# no shape or field names). The blocks below give shacl2code what it needs by
+# mirroring each NodeShape's fields directly on its sh:targetClass value.
+# `sh:deactivated true` keeps these mirror shapes out of pyshacl's runtime
+# validation (which continues to run only via the NodeShape blocks above,
+# unchanged — confirmed by re-running Tasks 1-2's test suite after adding
+# this block) — they exist solely so shacl2code can derive the JSON Schema.
+# Keep these in sync with the NodeShape blocks above if fields ever change.
+streamld:AnyNode
+    a owl:Class ;
+    sh:deactivated true ;
+    sh:nodeKind sh:BlankNodeOrIRI ;
+    sh2c:isExtensible true .
+
+streamld:payload rdfs:range streamld:AnyNode .
+streamld:stream rdfs:range xsd:anyURI .
+
+streamld:EventEnvelope
+    a owl:Class ;
+    sh:deactivated true ;
+    sh:property [
+        sh:path streamld:sequence ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path streamld:streamId ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path streamld:isSnapshot ;
+        sh:datatype xsd:boolean ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path streamld:payload ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
+
+streamld:ReplicationFrame
+    a owl:Class ;
+    sh:deactivated true ;
+    sh:property [
+        sh:path streamld:cursor ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path streamld:event ;
+        sh:class streamld:EventEnvelope ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
+
+streamld:SubscriptionRequest
+    a owl:Class ;
+    sh:deactivated true ;
+    sh:property [
+        sh:path streamld:stream ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path streamld:after ;
+        sh:datatype xsd:integer ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+    ] .
+
+streamld:GapSignal
+    a owl:Class ;
+    sh:deactivated true ;
+    sh:property [
+        sh:path streamld:oldestAvailable ;
+        sh:datatype xsd:integer ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+    ] .

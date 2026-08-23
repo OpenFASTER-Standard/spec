@@ -1,0 +1,11 @@
+{
+  "@context": {
+    "streamld": "https://openfaster.org/streamld#",
+    "sequence": { "@id": "streamld:sequence", "@type": "xsd:integer" },
+    "isSnapshot": { "@id": "streamld:isSnapshot", "@type": "xsd:boolean" },
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "streamld:EventEnvelope",
+  "sequence": 0,
+  "isSnapshot": true
+}

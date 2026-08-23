@@ -1,0 +1,34 @@
+<pre class='metadata'>
+Title: StreamLD WebSocket Replication Binding
+Shortname: streamld-websocket
+Level: 1
+Status: w3c/CG-DRAFT
+URL: https://openfaster.org/streamld/binding-websocket.html
+Editor: OpenFASTER Editors
+Abstract: Defines StreamLD's server-to-server replication binding over WebSockets — the transport a downstream server uses to mirror an upstream stream in full, in order, with explicit resumption.
+</pre>
+
+# Overview # {#overview}
+
+Unlike the SSE binding (<a href="binding-sse.html">StreamLD SSE Binding</a>), which serves a single browser
+client, the WebSocket replication binding is intended for one server
+mirroring another server's stream in full. There is no browser-platform
+reconnection help available on this transport, so resumption is handled
+entirely in-protocol.
+
+# Join and backlog # {#join}
+
+A replicating server opens a WebSocket connection and sends a join request
+carrying a `streamld:SubscriptionRequest` (see <a href="core.html#envelope">StreamLD Core, The Event Envelope</a>). The upstream server responds with either
+every already-buffered `streamld:ReplicationFrame` with `streamld:cursor` greater than
+the requested `streamld:after` value, in ascending cursor order, or
+a `streamld:GapSignal`, per the same rule as <a href="core.html#gap-handling">StreamLD Core, Gap handling</a>, if the
+requested cursor is not resolvable.
+
+# Live frames # {#live-frames}
+
+After a successful join, the upstream server pushes one
+`streamld:ReplicationFrame` per subsequent append, in cursor order. A
+replicating server MUST persist the highest cursor it has durably stored, so
+that a reconnect after a network interruption can resume from that persisted
+cursor rather than the beginning of the stream.
