@@ -21,12 +21,17 @@ and the documentation/specification kept separate:
 │   ├── generator.py               #   Layer 3: renders workbook + docs + include
 │   └── version.py                 #   reads a module's canonical version from its .bs source
 ├── mikadiv-vib/                   # the MiKaDiv Third-Party Disclosure module
-│   ├── ThirdPartyDisclosureRequest.xsd   # schema (machine source of truth)
-│   ├── mapping.py                 #   Layer 2: template shape for this module
-│   ├── index.bs                   #   Bikeshed source; built to index.html, served at /mikadiv-vib
+│   ├── ThirdPartyDisclosureRequest.xsd   # Request schema (machine source of truth)
+│   ├── ThirdPartyDisclosureResponse.xsd  # Response schema (machine source of truth)
+│   ├── mapping.py                 #   Layer 2: Request template shape
+│   ├── generate_response_docs.py  #   builds the Response doc's data from its XSD (no Excel)
+│   ├── index.bs                   #   landing page; built to index.html, served at /mikadiv-vib
+│   ├── request.bs                 #   Bikeshed source; built to request.html, served at /mikadiv-vib/request
+│   ├── response.bs                #   Bikeshed source; built to response.html, served at /mikadiv-vib/response
 │   └── generated/                 #   generated artifacts (do not edit by hand)
 │       ├── mikadiv-vib-v<version>.xlsx
 │       ├── mikadiv-vib-v<version>.pdf
+│       ├── response.include.bs
 │       ├── template_metadata.json
 │       ├── TEMPLATE_FIELDS.md
 │       └── fields.include.bs
@@ -71,10 +76,15 @@ flowchart LR
   model --> gen
   gen --> meta["mikadiv-vib/generated/template_metadata.json"]
   meta --> incl["mikadiv-vib/generated/fields.include.bs"]
-  incl --> bs["mikadiv-vib/index.bs"]
-  bs --> html["mikadiv-vib/index.html"]
+  incl --> bs["mikadiv-vib/request.bs"]
+  bs --> html["mikadiv-vib/request.html"]
   bs --> pdf["mikadiv-vib/generated/mikadiv-vib-v<version>.pdf"]
   meta --> xlsx["mikadiv-vib/generated/mikadiv-vib-v<version>.xlsx"]
+  rxsd["mikadiv-vib/ThirdPartyDisclosureResponse.xsd"] --> model
+  model --> rgen["mikadiv-vib/generate_response_docs.py"]
+  rgen --> rincl["mikadiv-vib/generated/response.include.bs"]
+  rincl --> rbs["mikadiv-vib/response.bs"]
+  rbs --> rhtml["mikadiv-vib/response.html"]
 ```
 
 Generation is layered so the schema stays authoritative while the template's
@@ -95,19 +105,26 @@ presentation stays controllable:
 
 | File | Role | Edited by hand? |
 | --- | --- | --- |
-| [`mikadiv-vib/ThirdPartyDisclosureRequest.xsd`](mikadiv-vib/ThirdPartyDisclosureRequest.xsd) | Schema; machine source for all field content | Yes (the schema) |
-| [`mikadiv-vib/index.bs`](mikadiv-vib/index.bs) | Bikeshed specification source (prose, structure, roadmap) | Yes |
+| [`mikadiv-vib/ThirdPartyDisclosureRequest.xsd`](mikadiv-vib/ThirdPartyDisclosureRequest.xsd) | Request schema; machine source for all Request field content | Yes (the schema) |
+| [`mikadiv-vib/ThirdPartyDisclosureResponse.xsd`](mikadiv-vib/ThirdPartyDisclosureResponse.xsd) | Response schema; machine source for all Response field content | Yes (the schema) |
+| [`mikadiv-vib/index.bs`](mikadiv-vib/index.bs) | Landing page linking the Request and Response documents | Yes |
+| [`mikadiv-vib/request.bs`](mikadiv-vib/request.bs) | Bikeshed specification source for the Request format (prose, structure) | Yes |
+| [`mikadiv-vib/response.bs`](mikadiv-vib/response.bs) | Bikeshed specification source for the Response format (prose, structure) | Yes |
 | [`engine/xsd_model.py`](engine/xsd_model.py) | Layer 1: XSD extractor (via `xmlschema`) | Yes |
-| [`mikadiv-vib/mapping.py`](mikadiv-vib/mapping.py) | Layer 2: template shape + presentation-only columns | Yes |
-| [`engine/generator.py`](engine/generator.py) | Layer 3: renders metadata, docs, Bikeshed include, and Excel template | Yes |
+| [`mikadiv-vib/mapping.py`](mikadiv-vib/mapping.py) | Layer 2: Request template shape + presentation-only columns | Yes |
+| [`engine/generator.py`](engine/generator.py) | Layer 3: renders Request metadata, docs, Bikeshed include, and Excel template | Yes |
+| [`mikadiv-vib/generate_response_docs.py`](mikadiv-vib/generate_response_docs.py) | Renders the Response document's Bikeshed include (no Excel template) | Yes |
 | [`engine/version.py`](engine/version.py) | Reads a module's canonical version from its `.bs` source | Yes |
-| [`generate_template.py`](generate_template.py) | Build entry point; wires the engine to each module | Yes |
-| `mikadiv-vib/generated/template_metadata.json` | Machine-readable field metadata store | Generated |
-| `mikadiv-vib/generated/fields.include.bs` | Data dictionary + enumerations, pulled into `index.bs` | Generated |
-| `mikadiv-vib/generated/TEMPLATE_FIELDS.md` | Human-readable field reference | Generated |
-| `mikadiv-vib/generated/mikadiv-vib-v<version>.xlsx` | Fillable Excel template | Generated |
-| `mikadiv-vib/index.html` | Built HTML spec, compiled from `mikadiv-vib/index.bs` | Generated |
-| `mikadiv-vib/generated/mikadiv-vib-v<version>.pdf` | Built PDF, rendered from `mikadiv-vib/index.html` (downloadable via GitHub raw link, see `mikadiv-vib/index.bs`'s Downloads section) | Generated |
+| [`generate_template.py`](generate_template.py) | Build entry point; wires the engine to each Excel-backed module | Yes |
+| `mikadiv-vib/generated/template_metadata.json` | Machine-readable Request field metadata store | Generated |
+| `mikadiv-vib/generated/fields.include.bs` | Request data dictionary + enumerations, pulled into `request.bs` | Generated |
+| `mikadiv-vib/generated/response.include.bs` | Response field catalog + enumerations, pulled into `response.bs` | Generated |
+| `mikadiv-vib/generated/TEMPLATE_FIELDS.md` | Human-readable Request field reference | Generated |
+| `mikadiv-vib/generated/mikadiv-vib-v<version>.xlsx` | Fillable Excel template (Request only) | Generated |
+| `mikadiv-vib/index.html` | Built HTML landing page, compiled from `mikadiv-vib/index.bs` | Generated |
+| `mikadiv-vib/request.html` | Built HTML spec, compiled from `mikadiv-vib/request.bs` | Generated |
+| `mikadiv-vib/response.html` | Built HTML spec, compiled from `mikadiv-vib/response.bs` | Generated |
+| `mikadiv-vib/generated/mikadiv-vib-v<version>.pdf` | Built PDF, rendered from `mikadiv-vib/request.html` (downloadable via GitHub raw link, see `mikadiv-vib/request.bs`'s Downloads section) | Generated |
 | `index.html` | Hand-authored site portal (NOT Bikeshed-compiled); served at site root | Yes (hand-authored, not built) |
 | `404.html` | Hand-authored fallback (NOT Bikeshed-compiled); redirects unmatched paths to site root | Yes (hand-authored, not built) |
 
@@ -122,7 +139,7 @@ by [Bikeshed](https://speced.github.io/bikeshed/) to HTML, and rendered to PDF.
 python -m pip install -r requirements.txt -r documentation/requirements-spec.txt -r streamld/tests/requirements.txt
 bikeshed update            # first run only, fetches Bikeshed data files
 
-python generate_template.py                                  # MiKaDiv-VIB: XSD -> generated include + Excel template
+python generate_template.py                                  # MiKaDiv-VIB Request: XSD -> generated include + Excel template
 PYTHONPATH=streamld python -m generator.generate_streamld_docs   # StreamLD: SHACL -> generated include + JSON Schema
 
 python documentation/prepare_spec.py              # embed changelog into header boilerplate
@@ -130,8 +147,11 @@ python documentation/prepare_spec.py              # embed changelog into header 
 bikeshed --allow-nonlocal-files --die-on=link-error spec documentation/about.bs documentation/about.html
 
 bikeshed --allow-nonlocal-files --die-on=link-error spec mikadiv-vib/index.bs mikadiv-vib/index.html
-MIKADIV_VIB_VERSION=$(python -m engine.version mikadiv-vib/index.bs)
-weasyprint --stylesheet documentation/print.css mikadiv-vib/index.html mikadiv-vib/generated/mikadiv-vib-v${MIKADIV_VIB_VERSION}.pdf   # PDF (see note)
+bikeshed --allow-nonlocal-files --die-on=link-error spec mikadiv-vib/request.bs mikadiv-vib/request.html
+MIKADIV_VIB_VERSION=$(python -m engine.version mikadiv-vib/request.bs)
+weasyprint --stylesheet documentation/print.css mikadiv-vib/request.html mikadiv-vib/generated/mikadiv-vib-v${MIKADIV_VIB_VERSION}.pdf   # PDF (see note)
+PYTHONPATH=. python mikadiv-vib/generate_response_docs.py
+bikeshed --allow-nonlocal-files --die-on=link-error spec mikadiv-vib/response.bs mikadiv-vib/response.html
 
 bikeshed --allow-nonlocal-files --die-on=link-error spec streamld/index.bs streamld/index.html
 bikeshed --allow-nonlocal-files --die-on=link-error spec streamld/core.bs streamld/core.html
@@ -153,12 +173,13 @@ source) and need no build step - they're just static pages.
 ### Option B - CI
 
 [`.github/workflows/spec.yml`](.github/workflows/spec.yml) runs the exact
-sequence above (MiKaDiv-VIB, StreamLD, `about.html`, `mikadiv-vib/index.html`
-+ PDF, `streamld/index.html` + its 4 documents, then the StreamLD test suite)
-on every push to `main` and every PR against `main`. On `push` to `main`
-specifically, it also commits any changed generated output back to the
-branch (`chore: rebuild site [skip ci]`). It does not deploy anywhere itself
-- see "Deploying to openfaster.org" below.
+sequence above (MiKaDiv-VIB Request + Response, StreamLD, `about.html`,
+`mikadiv-vib/index.html`, `mikadiv-vib/request.html` + PDF,
+`mikadiv-vib/response.html`, `streamld/index.html` + its 4 documents, then
+the StreamLD test suite) on every push to `main` and every PR against
+`main`. On `push` to `main` specifically, it also commits any changed
+generated output back to the branch (`chore: rebuild site [skip ci]`). It
+does not deploy anywhere itself - see "Deploying to openfaster.org" below.
 
 ## Deploying to openfaster.org
 
@@ -178,11 +199,14 @@ later:
 - [W3C Editor's Guide](https://w3c.github.io/guide/editor/) for structure.
 - [W3C TR style sheets](https://www.w3.org/StyleSheets/TR/) applied by Bikeshed.
 
-To change **field content** (a description, a type, an enum value or its
-meaning), edit `mikadiv-vib/ThirdPartyDisclosureRequest.xsd` and re-run
-`generate_template.py`. To change the **template shape** (add/re-order a column,
-adjust a presentation-only helper column), edit `mikadiv-vib/mapping.py`. Never edit
-anything under `mikadiv-vib/generated/` by hand.
+To change **Request field content** (a description, a type, an enum value or
+its meaning), edit `mikadiv-vib/ThirdPartyDisclosureRequest.xsd` and re-run
+`generate_template.py`. To change the **Request template shape** (add/re-order
+a column, adjust a presentation-only helper column), edit
+`mikadiv-vib/mapping.py`. To change **Response field content**, edit
+`mikadiv-vib/ThirdPartyDisclosureResponse.xsd` and re-run
+`mikadiv-vib/generate_response_docs.py`. Never edit anything under
+`mikadiv-vib/generated/` by hand.
 
 ---
 
@@ -203,10 +227,10 @@ python generate_template.py
 This writes, into `mikadiv-vib/generated/`:
 
 - `mikadiv-vib-v<version>.xlsx` - the fillable template (`<version>` from
-  `mikadiv-vib/index.bs`'s `DOCVERSION` text macro).
+  `mikadiv-vib/request.bs`'s `DOCVERSION` text macro).
 - `template_metadata.json` - the field metadata store (source for docs + spec).
 - `TEMPLATE_FIELDS.md` - a human-readable field reference.
-- `fields.include.bs` - the Bikeshed include consumed by `mikadiv-vib/index.bs`.
+- `fields.include.bs` - the Bikeshed include consumed by `mikadiv-vib/request.bs`.
 
 Re-run any time to regenerate everything (for example after the XSD changes).
 
