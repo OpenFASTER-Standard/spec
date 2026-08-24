@@ -3,7 +3,49 @@
    hand-authored root portal by direct duplication -- see the portal task's
    own note on why this isn't further templated). */
 
+/* Fixed offset reserved for .of-shell-header's own rendered height (measured
+   ~51.6px for its current content/padding/font-size at default browser
+   settings; 56px leaves a few px of headroom against sub-pixel/font
+   rendering differences across browsers). Both the header's own vertical
+   position and everything that must not sit under it (page content, and
+   Bikeshed's own fixed/sidebar #toc -- see below) key off this one value so
+   they can't drift out of sync. */
+:root {
+  --of-shell-header-height: 56px;
+}
+
+/* Bikeshed's base stylesheet is embedded in a <style data-fill-with> block
+   that lands *after* this file's <link> in the document, so at equal
+   selector specificity it wins ties on source order alone -- this is what
+   caused the header nav's illegible dark-blue-on-dark-blue text (Bikeshed's
+   own `a[href] { color: var(--a-normal-text); }`, same specificity as this
+   file's plain `.of-shell-header a`, but later in source order). Also,
+   Bikeshed positions its own #toc sidebar with `position: fixed; top: 0;`
+   at the same "body.toc-sidebar"/"body:not(.toc-inline)" breakpoints,
+   itself keyed by an #toc ID selector -- higher specificity than any class
+   selector here can match short of also using an ID or !important. Both
+   fixes below use !important rather than trying to out-specificity
+   Bikeshed's own rules, since that's the only mechanism guaranteed to win
+   regardless of which of Bikeshed's internal rules is currently active. */
+
 .of-shell-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  /* No explicit `width`: with `left: 0; right: 0` already given, width is
+     auto-derived from the containing block (the viewport, for a fixed
+     element) minus this box's own horizontal padding/border -- the standard
+     idiom for a full-bleed fixed header. An earlier version of this rule
+     also set `width: 100%`, which -- combined with box-sizing's default
+     `content-box` -- added the 1.5rem/side padding *on top of* a
+     already-100%-wide content box, overflowing the viewport by 2x1.5rem
+     (48px) and forcing unwanted horizontal scroll; confirmed via a real
+     getBoundingClientRect() showing the header 48px wider than
+     window.innerWidth before this fix. box-sizing: border-box below is a
+     second, independent safety net for the same class of bug. */
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -13,13 +55,43 @@
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
-.of-shell-header a {
-  color: #fff;
+.of-shell-header a,
+.of-shell-header a:visited {
+  color: #fff !important;
   text-decoration: none;
 }
 
 .of-shell-header a:hover {
   text-decoration: underline;
+}
+
+/* Push page content below the now-fixed header. Higher specificity
+   (body.h-entry, a class selector) than Bikeshed's own plain `body { padding:
+   1.6em 1.5em 2em calc(26px + 1.5em); }` shorthand rule wins this in a
+   browser regardless of source order (shorthand/longhand conflicts resolve
+   per-longhand-property by specificity, not by whole-rule order) -- but the
+   PDF pipeline (weasyprint --stylesheet documentation/print.css ...) loads
+   this file (via print.css's own @import chain, see site.css) as a CSS
+   "user origin" stylesheet, and in the cascade, *any* normal-weight author
+   rule beats *any* normal-weight user rule regardless of specificity --
+   confirmed by walking weasyprint's own computed style tree
+   (HTML(...).render().pages[0]) and finding body's padding_top still
+   resolved to Bikeshed's embedded ~1.6em rather than this value. `!important`
+   promotes this to "user !important", which *does* outrank normal-weight
+   author rules (including Bikeshed's inline stylesheet), fixing both the
+   browser and the PDF the same way. */
+body.h-entry {
+  padding-top: var(--of-shell-header-height) !important;
+}
+
+/* Keep Bikeshed's fixed/sidebar #toc (both its "body.toc-sidebar #toc" and
+   "body:not(.toc-inline) #toc" forms, screen-only, ID-selector specificity)
+   from starting underneath the fixed header. Harmless to apply unconditionally:
+   `top` has no effect on #toc while it's in normal static flow (narrower
+   viewports), so this only does anything once Bikeshed's own rules already
+   made #toc `position: fixed`. */
+#toc {
+  top: var(--of-shell-header-height) !important;
 }
 
 .of-shell-logo {
