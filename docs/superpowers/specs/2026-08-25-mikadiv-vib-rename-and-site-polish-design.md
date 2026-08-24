@@ -146,16 +146,31 @@ reordering the same way.
 
 ## 8. Unknown routes redirect to root
 
-`vercel.json` gains a catch-all: any path that doesn't match an existing file, directory-index,
-or explicit rewrite issues a real HTTP redirect (not a silent rewrite) to `/`, changing the
-visitor's address bar. This is standard, discoverable 404-replacement behavior — a mistyped or
-stale URL clearly and visibly lands the visitor on the real home page, rather than silently
-serving root's content under whatever wrong URL they typed.
+**Correction 2026-08-25** (during plan-writing, after live research): a `vercel.json`
+`redirects` catch-all (`{"source": "/(.*)", "destination": "/"}`) was the original plan here,
+but Vercel's own documentation confirms `redirects` are **not** filesystem-aware the way
+`rewrites` are — a pattern like that matches *every* request, including real existing pages,
+and even redirect-loops on `/` itself (`.*` matches the empty string too). This would have
+broken the site. Confirmed via Vercel's own official example, which uses that exact pattern
+specifically to redirect an *entire* site elsewhere.
+
+The corrected mechanism: a static `404.html` file at the repository root. Vercel serves this
+only as a genuine last-resort fallback — strictly after real files, directory-index resolution,
+`rewrites`, and `redirects` have all failed to match — so it can never shadow an existing page,
+and needs no maintained exclusion list as new pages are added later (e.g. the future `kafe/`
+module). The tradeoff: the *first* HTTP response for an unmatched path carries a real `404`
+status (Vercel's own behavior for a served 404 page), with the actual navigation to `/`
+happening a moment later via a small inline script in `404.html` (a `<meta
+http-equiv="refresh">` fallback covers non-JS clients/crawlers too). This differs slightly from
+a true server-side `30x` redirect as the very first response, but was chosen over the
+alternative — a `redirects` rule with a manually maintained exclusion list for every real
+top-level path — since that reintroduces exactly the kind of ongoing sync burden this batch of
+fixes is otherwise trying to eliminate.
 
 This also cleanly subsumes the old `/mikadiv` URL (no separate redirect needed — once the
-directory is renamed, `/mikadiv` simply becomes an "unknown route" and falls through to this
-same catch-all) and the never-relinked `/openfaster.pdf` (same treatment, once its rewrite is
-removed per section 6).
+directory is renamed, `/mikadiv` simply becomes an "unknown route" and falls through to the same
+`404.html` fallback) and the never-relinked `/openfaster.pdf` (same treatment, once its rewrite
+is removed per section 6).
 
 ## 9. Root portal copy
 
