@@ -1492,7 +1492,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version d113b2e81, updated Tue Jun 9 14:57:55 2026 -0700" name="generator">
   <link href="https://openfaster.org/about" rel="canonical">
-  <meta content="877a17c04bf93225be33247dc0b53056e190adf1" name="revision">
+  <meta content="5c8e06bb3f3d4d2ae357e35db38c9ef3cb085c48" name="revision">
   <meta content="dark light" name="color-scheme">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
@@ -2078,9 +2078,8 @@ dfn > a.self-link::before      { content: "#"; }
      <dd><a class="u-url" href="https://openfaster.org/about">https://openfaster.org/about</a>
      <dt>Issue Tracking:
      <dd><a href="https://github.com/OpenFASTER-Standard/spec/issues/">GitHub</a>
-     <dt class="editor">Editors:
+     <dt class="editor">Editor:
      <dd class="editor h-card p-author vcard"><a class="fn p-name u-url url" href="https://github.com/sigalor">Julian Nalenz</a>
-     <dd class="editor h-card p-author vcard"><a class="fn p-name u-url url" href="https://github.com/AlaaCherif">Alaa Eddine Cherif</a>
     </dl>
    </div>
    <div data-fill-with="warning"></div>
@@ -2138,14 +2137,7 @@ concrete modules -- currently MiKaDiv Third-Party Disclosure and StreamLD
       <li><a href="#regulatory-context"><span class="secno">1.2</span> <span class="content">Regulatory context</span></a>
      </ol>
     <li><a href="#terminology"><span class="secno">2</span> <span class="content">Terminology</span></a>
-    <li>
-     <a href="#roadmap"><span class="secno">3</span> <span class="content">Planned work</span></a>
-     <ol class="toc">
-      <li><a href="#roadmap-bulk"><span class="secno">3.1</span> <span class="content">Bulk disclosure template</span></a>
-      <li><a href="#roadmap-vocabulary"><span class="secno">3.2</span> <span class="content">Published multilingual vocabulary</span></a>
-      <li><a href="#roadmap-uuid-return"><span class="secno">3.3</span> <span class="content">UUID return format</span></a>
-     </ol>
-    <li><a href="#versioning"><span class="secno">4</span> <span class="content">Versioning</span></a>
+    <li><a href="#versioning"><span class="secno">3</span> <span class="content">Versioning</span></a>
     <li>
      <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
      <ol class="toc">
@@ -2210,47 +2202,7 @@ efficient cross-border tax-reclaim processing.</p>
 depository — that participates in withholding-tax and dividend reporting and
 exchanges disclosure data with other participants.
    </dl>
-   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="disclosure">disclosure</dfn></p>
-   <dl>
-    <dt data-md>One complete third-party disclosure record for a single capital-income event,
-identified and linked together by a single <a data-link-type="dfn" href="#requestid" id="ref-for-requestid">RequestId</a>.
-   </dl>
-   <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="requestid">RequestId</dfn></p>
-   <dl>
-    <dt data-md>The identifier that ties together all parts of one <a data-link-type="dfn" href="#disclosure" id="ref-for-disclosure">disclosure</a>. It is a
-linking key only: any value that is unique within the submission is valid, so
-it need not be a UUID.
-   </dl>
-   <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="paying-agent">paying agent</dfn></p>
-   <dl>
-    <dt data-md>The German institution responsible for the withholding-tax reporting for a
-given capital-income event.
-   </dl>
-   <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="tax-voucher">tax voucher</dfn></p>
-   <dl>
-    <dt data-md>The tax certificate (Steuerbescheinigung) issued in respect of a
-capital-income event.
-   </dl>
-   <h2 class="heading settled" data-level="3" id="roadmap"><span class="secno">3. </span><span class="content">Planned work</span><a class="self-link" href="#roadmap"></a></h2>
-   <p>The following modules and improvements are planned. They are <em>not</em> part of
-the normative content of any published module yet; they are recorded here to
-describe the intended direction of the OpenFASTER family.</p>
-   <h3 class="heading settled" data-level="3.1" id="roadmap-bulk"><span class="secno">3.1. </span><span class="content">Bulk disclosure template</span><a class="self-link" href="#roadmap-bulk"></a></h3>
-   <p>A revised template (and matching schema) in which an arbitrary number of
-beneficiaries, income lines, and related records can be entered, enabling
-mass/batch processing of disclosures rather than one disclosure at a time.</p>
-   <h3 class="heading settled" data-level="3.2" id="roadmap-vocabulary"><span class="secno">3.2. </span><span class="content">Published multilingual vocabulary</span><a class="self-link" href="#roadmap-vocabulary"></a></h3>
-   <p>A published <em>vocabulary</em> that fixes the (non-official) translations of the
-field names and their explanations into several languages, each validated by
-appropriate domain experts. This lets institutions across jurisdictions work
-against a shared, authoritative set of terms while the official German schema
-remains the legal reference.</p>
-   <h3 class="heading settled" data-level="3.3" id="roadmap-uuid-return"><span class="secno">3.3. </span><span class="content">UUID return format</span><a class="self-link" href="#roadmap-uuid-return"></a></h3>
-   <p>A format (an XSD plus an equivalent Excel representation) with which a reporting
-entity — for example Clearstream, or another reporting party — can report the
-assigned UUIDs back to the foreign banks that originated the disclosures, closing
-the loop between submission and acknowledgement.</p>
-   <h2 class="heading settled" data-level="4" id="versioning"><span class="secno">4. </span><span class="content">Versioning</span><a class="self-link" href="#versioning"></a></h2>
+   <h2 class="heading settled" data-level="3" id="versioning"><span class="secno">3. </span><span class="content">Versioning</span><a class="self-link" href="#versioning"></a></h2>
    <p>Each OpenFASTER module is versioned independently using
 <a href="https://semver.org/">semantic versioning</a> (<code>MAJOR.MINOR.PATCH</code>):</p>
    <ul>
@@ -2264,7 +2216,7 @@ fields or new enumeration values).</p>
      <p><b>PATCH</b> — editorial or documentation-only corrections.</p>
    </ul>
    <p>A module’s own changelog is published at the top of its document. Every module
-publishes at a single, stable "latest" URL (e.g. <code>/mikadiv</code>, <code>/streamld</code>),
+publishes at a single, stable "latest" URL (e.g. <code>/mikadiv-vib</code>, <code>/streamld</code>),
 updated in place as new versions are released — dated snapshot URLs for
 citing a frozen historical version are minted only once a module actually
 reaches a second version.</p>
@@ -2402,10 +2354,6 @@ reaches a second version.</p>
   <h3 class="heading no-num no-ref settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
    <li><a href="#certified-financial-intermediary">Certified Financial Intermediary</a><span>, in § 2</span>
-   <li><a href="#disclosure">disclosure</a><span>, in § 2</span>
-   <li><a href="#paying-agent">paying agent</a><span>, in § 2</span>
-   <li><a href="#requestid">RequestId</a><span>, in § 2</span>
-   <li><a href="#tax-voucher">tax voucher</a><span>, in § 2</span>
   </ul>
   <h2 class="heading no-num no-ref settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="heading no-num no-ref settled" id="informative"><span class="content">Non-Normative References</span><a class="self-link" href="#informative"></a></h3>
@@ -2616,10 +2564,6 @@ function parseHTML(markup) {
 {
 let dfnPanelData = {
 "certified-financial-intermediary": {"dfnID":"certified-financial-intermediary","dfnText":"Certified Financial Intermediary","external":false,"refSections":[{"refs":[{"id":"ref-for-certified-financial-intermediary"}],"title":"1. Introduction"}],"url":"#certified-financial-intermediary"},
-"disclosure": {"dfnID":"disclosure","dfnText":"disclosure","external":false,"refSections":[{"refs":[{"id":"ref-for-disclosure"}],"title":"2. Terminology"}],"url":"#disclosure"},
-"paying-agent": {"dfnID":"paying-agent","dfnText":"paying agent","external":false,"refSections":[],"url":"#paying-agent"},
-"requestid": {"dfnID":"requestid","dfnText":"RequestId","external":false,"refSections":[{"refs":[{"id":"ref-for-requestid"}],"title":"2. Terminology"}],"url":"#requestid"},
-"tax-voucher": {"dfnID":"tax-voucher","dfnText":"tax voucher","external":false,"refSections":[],"url":"#tax-voucher"},
 };
 
 document.addEventListener("DOMContentLoaded", ()=>{
@@ -3009,8 +2953,6 @@ function genLinkingSyntaxes(dfn) {
 {
 let refsData = {
 "#certified-financial-intermediary": {"displayText":"certified financial intermediary","export":true,"for_":[],"level":"1","normative":true,"shortname":"openfaster","spec":"openfaster-1","status":"local","text":"certified financial intermediary","type":"dfn","url":"#certified-financial-intermediary"},
-"#disclosure": {"displayText":"disclosure","export":true,"for_":[],"level":"1","normative":true,"shortname":"openfaster","spec":"openfaster-1","status":"local","text":"disclosure","type":"dfn","url":"#disclosure"},
-"#requestid": {"displayText":"requestid","export":true,"for_":[],"level":"1","normative":true,"shortname":"openfaster","spec":"openfaster-1","status":"local","text":"requestid","type":"dfn","url":"#requestid"},
 };
 
 function mkRefHint(link, ref) {
