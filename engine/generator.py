@@ -87,6 +87,9 @@ class ModuleConfig:
     build_sheets: Callable[[XsdModel], dict[str, list[tuple]]]
     sheet_info: dict[str, dict[str, str]]
     legend_rows: list[tuple[str, str]]
+    slug: str
+    version: str
+    spec_url: str
     link_key: str = "RequestId"
 
 
@@ -207,6 +210,21 @@ class Generator:
                 label_cell.alignment = Alignment(vertical="top")
 
         ws.freeze_panes = "A3"
+
+    def _build_meta(self, ws) -> None:
+        ws.column_dimensions["A"].width = 20
+        ws.column_dimensions["B"].width = 60
+
+        rows = [
+            ("Standard", self.c.title),
+            ("Slug", self.c.slug),
+            ("Version", self.c.version),
+            ("Spec URL", self.c.spec_url),
+        ]
+        for offset, (label, value) in enumerate(rows, start=1):
+            label_cell = ws.cell(row=offset, column=1, value=label)
+            label_cell.font = Font(bold=True, color="1F3864", size=10)
+            ws.cell(row=offset, column=2, value=value)
 
     # ------------------------------------------------------------------ #
     # Metadata store + documentation
@@ -469,7 +487,7 @@ class Generator:
             f"<code>{esc(metadata['generatedFrom'])}</code>. Each group below "
             "corresponds to one sheet of the accompanying Excel template. The "
             f"<code>{esc(metadata['linkKey'])}</code> column links the groups "
-            "of a single [[openfaster#disclosure|disclosure]] together.</p>"
+            "of a single disclosure together.</p>"
         )
         add("")
 
@@ -586,6 +604,9 @@ class Generator:
         lists_ws.sheet_state = "hidden"
         wb.move_sheet(lists_ws, offset=len(wb.sheetnames) - 1 - wb.sheetnames.index("_Lists"))
         wb.active = wb.sheetnames.index(self.c.master_sheet_name)
+
+        meta_ws = wb.create_sheet("Meta")
+        self._build_meta(meta_ws)
 
         xlsx_path = self.c.output_dir / self.c.xlsx_name
         try:

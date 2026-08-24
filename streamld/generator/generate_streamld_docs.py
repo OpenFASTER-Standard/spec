@@ -1,5 +1,5 @@
 """Build entry point: SHACL -> Bikeshed data-dictionary include + derived JSON
-Schema. Mirrors generate_template.py's role for mikadiv/, but for SHACL
+Schema. Mirrors generate_template.py's role for mikadiv-vib/, but for SHACL
 instead of XSD.
 """
 from __future__ import annotations

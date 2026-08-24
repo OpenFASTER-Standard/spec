@@ -7,7 +7,7 @@ OpenFASTER is designed as a suite of modular specifications (in the spirit of
 families such as CSS or RDF), with the long-term ambition of maturing onto a
 formal international standards track. Its first concrete module is the **MiKaDiv
 Third-Party Disclosure format**, derived directly from
-[`mikadiv/ThirdPartyDisclosureRequest.xsd`](mikadiv/ThirdPartyDisclosureRequest.xsd)
+[`mikadiv-vib/ThirdPartyDisclosureRequest.xsd`](mikadiv-vib/ThirdPartyDisclosureRequest.xsd)
 (German §45b EStG capital-income disclosure).
 
 ## Repository layout
@@ -18,13 +18,15 @@ and the documentation/specification kept separate:
 ```
 ├── engine/                        # shared, module-agnostic generator
 │   ├── xsd_model.py               #   Layer 1: XSD extractor (via xmlschema)
-│   └── generator.py               #   Layer 3: renders workbook + docs + include
-├── mikadiv/                       # the MiKaDiv Third-Party Disclosure module
+│   ├── generator.py               #   Layer 3: renders workbook + docs + include
+│   └── version.py                 #   reads a module's canonical version from its .bs source
+├── mikadiv-vib/                   # the MiKaDiv Third-Party Disclosure module
 │   ├── ThirdPartyDisclosureRequest.xsd   # schema (machine source of truth)
 │   ├── mapping.py                 #   Layer 2: template shape for this module
-│   ├── index.bs                   #   Bikeshed source; built to index.html, served at /mikadiv
+│   ├── index.bs                   #   Bikeshed source; built to index.html, served at /mikadiv-vib
 │   └── generated/                 #   generated artifacts (do not edit by hand)
-│       ├── MiKaDiv_ThirdPartyDisclosure_Template.xlsx
+│       ├── mikadiv-vib-v<version>.xlsx
+│       ├── mikadiv-vib-v<version>.pdf
 │       ├── template_metadata.json
 │       ├── TEMPLATE_FIELDS.md
 │       └── fields.include.bs
@@ -32,8 +34,7 @@ and the documentation/specification kept separate:
 │   ├── about.bs                   #   Bikeshed source; built to about.html, served at /about
 │   ├── prepare_spec.py            #   embeds the changelog into header boilerplate
 │   ├── requirements-spec.txt      #   spec build deps (bikeshed, weasyprint)
-│   ├── print.css                  #   PDF stylesheet
-│   └── openfaster.pdf             #   built (generated)
+│   └── print.css                  #   PDF stylesheet
 ├── streamld/                      # the StreamLD module: a landing page + 4 documents
 │   ├── index.bs                   #   module landing page; built to index.html, served at /streamld
 │   ├── core.bs                    #   built to core.html, served at /streamld/core
@@ -43,7 +44,8 @@ and the documentation/specification kept separate:
 │   ├── generator/                 #   SHACL -> generated include + JSON Schema
 │   └── generated/                 #   generated artifacts (do not edit by hand)
 ├── index.html                     # hand-authored portal (NOT Bikeshed-compiled); served at site root
-├── generate_template.py           # MiKaDiv build entry point (wires engine + module)
+├── 404.html                       # hand-authored fallback (NOT Bikeshed-compiled); redirects to site root
+├── generate_template.py           # MiKaDiv-VIB build entry point (wires engine + module)
 ├── requirements.txt               # engine deps (openpyxl, xmlschema)
 ├── .github/workflows/spec.yml     # CI: rebuilds every output on push/PR, auto-commits on push to main
 └── vercel.json                    # deploy routing (clean URLs, rewrites)
@@ -64,15 +66,15 @@ schema, so nothing can drift apart:
 
 ```mermaid
 flowchart LR
-  xsd["mikadiv/ThirdPartyDisclosureRequest.xsd"] --> model["engine/xsd_model.py"]
-  map["mikadiv/mapping.py (template shape)"] --> gen["engine/generator.py"]
+  xsd["mikadiv-vib/ThirdPartyDisclosureRequest.xsd"] --> model["engine/xsd_model.py"]
+  map["mikadiv-vib/mapping.py (template shape)"] --> gen["engine/generator.py"]
   model --> gen
-  gen --> meta["mikadiv/generated/template_metadata.json"]
-  meta --> incl["mikadiv/generated/fields.include.bs"]
-  incl --> bs["mikadiv/index.bs"]
-  bs --> html["mikadiv/index.html"]
-  bs --> pdf["documentation/openfaster.pdf"]
-  meta --> xlsx["mikadiv/generated/…Template.xlsx"]
+  gen --> meta["mikadiv-vib/generated/template_metadata.json"]
+  meta --> incl["mikadiv-vib/generated/fields.include.bs"]
+  incl --> bs["mikadiv-vib/index.bs"]
+  bs --> html["mikadiv-vib/index.html"]
+  bs --> pdf["mikadiv-vib/generated/mikadiv-vib-v<version>.pdf"]
+  meta --> xlsx["mikadiv-vib/generated/mikadiv-vib-v<version>.xlsx"]
 ```
 
 Generation is layered so the schema stays authoritative while the template's
@@ -82,7 +84,7 @@ presentation stays controllable:
    [`xmlschema`](https://pypi.org/project/xmlschema/) and answers "what does the
    schema say about field X of type Y?" (documentation, format, requiredness,
    enums). No hand-typed content. Shared by every module.
-2. **`mikadiv/mapping.py`** (Layer 2) - declares the template *shape*: which
+2. **`mikadiv-vib/mapping.py`** (Layer 2) - declares the template *shape*: which
    sheets exist, their column order, how nested XSD choices flatten into columns,
    and the few presentation-only helper columns (e.g. `RecordType`,
    `PersonTaxCategory`) that model a schema choice as a flat column. It says
@@ -93,19 +95,21 @@ presentation stays controllable:
 
 | File | Role | Edited by hand? |
 | --- | --- | --- |
-| [`mikadiv/ThirdPartyDisclosureRequest.xsd`](mikadiv/ThirdPartyDisclosureRequest.xsd) | Schema; machine source for all field content | Yes (the schema) |
-| [`mikadiv/index.bs`](mikadiv/index.bs) | Bikeshed specification source (prose, structure, roadmap) | Yes |
+| [`mikadiv-vib/ThirdPartyDisclosureRequest.xsd`](mikadiv-vib/ThirdPartyDisclosureRequest.xsd) | Schema; machine source for all field content | Yes (the schema) |
+| [`mikadiv-vib/index.bs`](mikadiv-vib/index.bs) | Bikeshed specification source (prose, structure, roadmap) | Yes |
 | [`engine/xsd_model.py`](engine/xsd_model.py) | Layer 1: XSD extractor (via `xmlschema`) | Yes |
-| [`mikadiv/mapping.py`](mikadiv/mapping.py) | Layer 2: template shape + presentation-only columns | Yes |
+| [`mikadiv-vib/mapping.py`](mikadiv-vib/mapping.py) | Layer 2: template shape + presentation-only columns | Yes |
 | [`engine/generator.py`](engine/generator.py) | Layer 3: renders metadata, docs, Bikeshed include, and Excel template | Yes |
+| [`engine/version.py`](engine/version.py) | Reads a module's canonical version from its `.bs` source | Yes |
 | [`generate_template.py`](generate_template.py) | Build entry point; wires the engine to each module | Yes |
-| `mikadiv/generated/template_metadata.json` | Machine-readable field metadata store | Generated |
-| `mikadiv/generated/fields.include.bs` | Data dictionary + enumerations, pulled into `index.bs` | Generated |
-| `mikadiv/generated/TEMPLATE_FIELDS.md` | Human-readable field reference | Generated |
-| `mikadiv/generated/MiKaDiv_ThirdPartyDisclosure_Template.xlsx` | Fillable Excel template | Generated |
-| `mikadiv/index.html` | Built HTML spec, compiled from `mikadiv/index.bs` | Generated |
-| `documentation/openfaster.pdf` | Built PDF, rendered from `mikadiv/index.html` (deployed to openfaster.org) | Generated |
+| `mikadiv-vib/generated/template_metadata.json` | Machine-readable field metadata store | Generated |
+| `mikadiv-vib/generated/fields.include.bs` | Data dictionary + enumerations, pulled into `index.bs` | Generated |
+| `mikadiv-vib/generated/TEMPLATE_FIELDS.md` | Human-readable field reference | Generated |
+| `mikadiv-vib/generated/mikadiv-vib-v<version>.xlsx` | Fillable Excel template | Generated |
+| `mikadiv-vib/index.html` | Built HTML spec, compiled from `mikadiv-vib/index.bs` | Generated |
+| `mikadiv-vib/generated/mikadiv-vib-v<version>.pdf` | Built PDF, rendered from `mikadiv-vib/index.html` (downloadable via GitHub raw link, see `mikadiv-vib/index.bs`'s Downloads section) | Generated |
 | `index.html` | Hand-authored site portal (NOT Bikeshed-compiled); served at site root | Yes (hand-authored, not built) |
+| `404.html` | Hand-authored fallback (NOT Bikeshed-compiled); redirects unmatched paths to site root | Yes (hand-authored, not built) |
 
 ## Building the specification
 
@@ -118,15 +122,16 @@ by [Bikeshed](https://speced.github.io/bikeshed/) to HTML, and rendered to PDF.
 python -m pip install -r requirements.txt -r documentation/requirements-spec.txt -r streamld/tests/requirements.txt
 bikeshed update            # first run only, fetches Bikeshed data files
 
-python generate_template.py                                  # MiKaDiv: XSD -> generated include + Excel template
+python generate_template.py                                  # MiKaDiv-VIB: XSD -> generated include + Excel template
 PYTHONPATH=streamld python -m generator.generate_streamld_docs   # StreamLD: SHACL -> generated include + JSON Schema
 
 python documentation/prepare_spec.py              # embed changelog into header boilerplate
 
 bikeshed --allow-nonlocal-files --die-on=link-error spec documentation/about.bs documentation/about.html
 
-bikeshed --allow-nonlocal-files --die-on=link-error spec mikadiv/index.bs mikadiv/index.html
-weasyprint --stylesheet documentation/print.css mikadiv/index.html documentation/openfaster.pdf   # PDF (see note)
+bikeshed --allow-nonlocal-files --die-on=link-error spec mikadiv-vib/index.bs mikadiv-vib/index.html
+MIKADIV_VIB_VERSION=$(python -m engine.version mikadiv-vib/index.bs)
+weasyprint --stylesheet documentation/print.css mikadiv-vib/index.html mikadiv-vib/generated/mikadiv-vib-v${MIKADIV_VIB_VERSION}.pdf   # PDF (see note)
 
 bikeshed --allow-nonlocal-files --die-on=link-error spec streamld/index.bs streamld/index.html
 bikeshed --allow-nonlocal-files --die-on=link-error spec streamld/core.bs streamld/core.html
@@ -137,8 +142,8 @@ bikeshed --allow-nonlocal-files --die-on=link-error spec streamld/binding-websoc
 python -m pytest streamld/tests/          # StreamLD's own test suite
 ```
 
-`index.html` at the repo root is hand-authored (not built from a `.bs`
-source) and needs no build step - it's just the static portal page.
+`index.html` and `404.html` at the repo root are both hand-authored (not built from a `.bs`
+source) and need no build step - they're just static pages.
 
 > Note: WeasyPrint needs native libraries (Pango/Cairo/HarfBuzz). These are
 > present on Linux/CI; on Windows, installing them is more involved (see
@@ -148,9 +153,9 @@ source) and needs no build step - it's just the static portal page.
 ### Option B - CI
 
 [`.github/workflows/spec.yml`](.github/workflows/spec.yml) runs the exact
-sequence above (MiKaDiv, StreamLD, `about.html`, `mikadiv/index.html` + PDF,
-`streamld/index.html` + its 4 documents, then the StreamLD test suite) on
-every push to `main` and every PR against `main`. On `push` to `main`
+sequence above (MiKaDiv-VIB, StreamLD, `about.html`, `mikadiv-vib/index.html`
++ PDF, `streamld/index.html` + its 4 documents, then the StreamLD test suite)
+on every push to `main` and every PR against `main`. On `push` to `main`
 specifically, it also commits any changed generated output back to the
 branch (`chore: rebuild site [skip ci]`). It does not deploy anywhere itself
 - see "Deploying to openfaster.org" below.
@@ -174,10 +179,10 @@ later:
 - [W3C TR style sheets](https://www.w3.org/StyleSheets/TR/) applied by Bikeshed.
 
 To change **field content** (a description, a type, an enum value or its
-meaning), edit `mikadiv/ThirdPartyDisclosureRequest.xsd` and re-run
+meaning), edit `mikadiv-vib/ThirdPartyDisclosureRequest.xsd` and re-run
 `generate_template.py`. To change the **template shape** (add/re-order a column,
-adjust a presentation-only helper column), edit `mikadiv/mapping.py`. Never edit
-anything under `mikadiv/generated/` by hand.
+adjust a presentation-only helper column), edit `mikadiv-vib/mapping.py`. Never edit
+anything under `mikadiv-vib/generated/` by hand.
 
 ---
 
@@ -195,12 +200,13 @@ python -m pip install -r requirements.txt
 python generate_template.py
 ```
 
-This writes, into `mikadiv/generated/`:
+This writes, into `mikadiv-vib/generated/`:
 
-- `MiKaDiv_ThirdPartyDisclosure_Template.xlsx` - the fillable template.
+- `mikadiv-vib-v<version>.xlsx` - the fillable template (`<version>` from
+  `mikadiv-vib/index.bs`'s `DOCVERSION` text macro).
 - `template_metadata.json` - the field metadata store (source for docs + spec).
 - `TEMPLATE_FIELDS.md` - a human-readable field reference.
-- `fields.include.bs` - the Bikeshed include consumed by `mikadiv/index.bs`.
+- `fields.include.bs` - the Bikeshed include consumed by `mikadiv-vib/index.bs`.
 
 Re-run any time to regenerate everything (for example after the XSD changes).
 
@@ -264,9 +270,9 @@ The template is generated in three layers (see
 [Single source of truth](#single-source-of-truth)):
 
 - **Field content comes from the XSD.** A description, type/format, requiredness,
-  or enum value/meaning is read from `mikadiv/ThirdPartyDisclosureRequest.xsd` by
+  or enum value/meaning is read from `mikadiv-vib/ThirdPartyDisclosureRequest.xsd` by
   [`engine/xsd_model.py`](engine/xsd_model.py). To change it, change the schema.
-- **Template shape lives in [`mikadiv/mapping.py`](mikadiv/mapping.py):**
+- **Template shape lives in [`mikadiv-vib/mapping.py`](mikadiv-vib/mapping.py):**
   - `SHEET_ORDER` and the per-sheet field lists - each column referencing an XSD
     element/attribute (`E`/`A`/`P`) or a presentation-only synthetic column
     (`SYN`), yielding `(name, description, type_display, requiredness, enum_key)`.

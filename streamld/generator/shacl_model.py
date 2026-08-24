@@ -1,4 +1,4 @@
-"""Layer 1: SHACL extractor. Mirrors engine/xsd_model.py's role for mikadiv/:
+"""Layer 1: SHACL extractor. Mirrors engine/xsd_model.py's role for mikadiv-vib/:
 parses a SHACL shapes file and answers "what fields does shape X have, with
 what type/cardinality?" No hand-typed content — everything is read from the
 shapes graph.
