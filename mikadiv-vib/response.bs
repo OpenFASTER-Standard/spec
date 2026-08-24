@@ -1,0 +1,91 @@
+<pre class=metadata>
+Title: MiKaDiv Third-Party Disclosure — Response
+Shortname: mikadiv-vib-response
+Level: 1
+Status: DREAM
+URL: https://openfaster.org/mikadiv-vib/response
+Repository: https://github.com/OpenFASTER-Standard/spec
+Editor: Julian Nalenz, https://github.com/sigalor
+Abstract: This document is for developers implementing a MiKaDiv integration
+    against this platform -- banks never see this raw response directly. It
+    documents the format the German paying agent (via the custodian, VIB) uses
+    to acknowledge, confirm, or reject a submitted
+    <a href="/mikadiv-vib/request">MiKaDiv disclosure request</a>.
+Markup Shorthands: markdown yes, dfn yes, css no
+Boilerplate: omit conformance
+Local Boilerplate: header yes
+Complain About: accidental-2119 yes, missing-example-ids yes
+</pre>
+
+The MiKaDiv Third-Party Disclosure Response format {#mikadiv-vib-response-module}
+====================================================================================
+
+VIB publishes a second schema, `ThirdPartyDisclosureResponse.xsd`, for the
+message a custodian sends back after processing a submitted
+<a href="/mikadiv-vib/request">request</a>. One response file can batch
+responses for multiple requests: each `ResponseToDisclosureForIncomeType`
+entry answers exactly one prior request, correlated by RequestId.
+
+Source schema {#source-schema}
+------------------------------
+
+This document's field definitions, requiredness, and enumerations are
+generated directly from VIB's published `ThirdPartyDisclosureResponse.xsd`,
+the same way the <a href="/mikadiv-vib/request">Request document</a> is
+generated from `ThirdPartyDisclosureRequest.xsd` — regenerating from the
+updated XSD keeps this document in lock-step with the VIB source.
+
+Unlike the Request side, `ResponseId` and `RequestId` are typed as plain text
+in this schema, not the UUID-pattern-constrained type the Request side's own
+`RequestId` uses — the wire format doesn't itself enforce a UUID shape on
+either identifier here, even though VIB's own real sample data uses
+UUID-looking values for both.
+
+Identifiers {#response-identifiers}
+------------------------------------
+
+A response carries three separate identifiers, with no formal relationship
+declared between them by the schema:
+
+* <b>`ResponseId`</b> — assigned by the custodian, must stay unique even
+    across subsequent files.
+* <b>`RequestId`</b> — correlates this response back to the request it
+    answers.
+* <b>A `Record` of `RecordType` = `TaxDocumentIdentifier`</b> — the tax
+    certificate's own official reference number (the "Ordnungsnummer"),
+    unrelated to either of the two identifiers above.
+
+Processing status and result {#processing-status}
+----------------------------------------------------
+
+`ProcessingStatus` and `ProcessingResult` are independent fields, not one
+combined status. `ProcessingStatus` names a 6-stage pipeline (`Receive` →
+`StructureValidation` → `ContentValidation` → `Plausibilization` → `Reporting`
+→ `TaxCertification`); a response can be emitted after *any* stage, not only
+the last, so an early-stage `Error` represents a structural/format rejection,
+distinct from a later business-rule rejection or a final
+certificate-issuance failure. `ProcessingCompleted` is the schema's actual
+mechanism for expressing an in-progress vs. final state — a stage can
+succeed (`ProcessingResult` = `Success`) while `ProcessingCompleted` = `false`,
+signaling that further responses are still to come. There is no explicit
+`Pending` or `Rejected` value anywhere in this schema; both are inferred by
+combining `ProcessingStatus`, `ProcessingResult`, and `ProcessingCompleted`,
+never read off one field alone.
+
+<pre class=include>
+path: generated/response.include.bs
+</pre>
+
+Known gaps in this schema {#response-known-gaps}
+----------------------------------------------------
+
+Worth disclosing rather than silently working around: `ResponseToDisclosureForIncomeType`
+is documented in the XSD itself as "Not for direct use" (a base type,
+presumably meant to be subtyped per income category), yet no derived subtype
+exists and the schema's own root element references this exact type
+directly — in practice, this base type is the only one ever used. Also, the
+only real sample VIB has published for this schema
+(`Sample1-TaxCertificateSuccess.xml`) demonstrates the full-success path only
+— there is no published example of an `Error` or a `ProcessingCompleted` =
+`false` response, so this document's coverage of those states is derived from
+the schema's own structure, not confirmed against a real example.
