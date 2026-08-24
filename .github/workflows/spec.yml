@@ -32,7 +32,7 @@ jobs:
           pip install -r requirements.txt -r documentation/requirements-spec.txt -r streamld/tests/requirements.txt
           bikeshed update
 
-      - name: Build MiKaDiv (XSD -> generated include -> Excel template)
+      - name: Build MiKaDiv-VIB (XSD -> generated include -> Excel template)
         run: python generate_template.py
 
       - name: Build StreamLD (SHACL -> generated include + JSON Schema)
@@ -44,10 +44,14 @@ jobs:
       - name: Build documentation/about.html
         run: bikeshed --allow-nonlocal-files --die-on=link-error spec documentation/about.bs documentation/about.html
 
-      - name: Build mikadiv/index.html + PDF
+      - name: Read MiKaDiv-VIB version
+        id: mikadiv_vib_version
+        run: echo "version=$(python -m engine.version mikadiv-vib/index.bs)" >> "$GITHUB_OUTPUT"
+
+      - name: Build mikadiv-vib/index.html + PDF
         run: |
-          bikeshed --allow-nonlocal-files --die-on=link-error spec mikadiv/index.bs mikadiv/index.html
-          weasyprint --stylesheet documentation/print.css mikadiv/index.html documentation/openfaster.pdf
+          bikeshed --allow-nonlocal-files --die-on=link-error spec mikadiv-vib/index.bs mikadiv-vib/index.html
+          weasyprint --stylesheet documentation/print.css mikadiv-vib/index.html mikadiv-vib/generated/mikadiv-vib-v${{ steps.mikadiv_vib_version.outputs.version }}.pdf
 
       - name: Build streamld/index.html
         run: bikeshed --allow-nonlocal-files --die-on=link-error spec streamld/index.bs streamld/index.html
@@ -69,7 +73,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.html mikadiv/index.html mikadiv/generated/ documentation/about.html documentation/header.include mikadiv/header.include streamld/header.include documentation/openfaster.pdf streamld/index.html streamld/core.html streamld/subscription.html streamld/binding-sse.html streamld/binding-websocket.html streamld/generated/
+          git add index.html 404.html mikadiv-vib/index.html mikadiv-vib/generated/ documentation/about.html documentation/header.include mikadiv-vib/header.include streamld/header.include streamld/index.html streamld/core.html streamld/subscription.html streamld/binding-sse.html streamld/binding-websocket.html streamld/generated/
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
