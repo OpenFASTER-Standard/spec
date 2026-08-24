@@ -1,7 +1,7 @@
 <!doctype html><html lang="en">
  <head>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-  <title>MiKaDiv Third-Party Disclosure</title>
+  <title>MiKaDiv Third-Party Disclosure — Request</title>
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <link href="/documentation/site.css" rel="stylesheet">
   <link href="/documentation/shell.css" rel="stylesheet">
@@ -1491,8 +1491,8 @@ Possible extra rowspan handling
 	}
 </style>
   <meta content="Bikeshed version d113b2e81, updated Tue Jun 9 14:57:55 2026 -0700" name="generator">
-  <link href="https://openfaster.org/mikadiv-vib" rel="canonical">
-  <meta content="0547f4a1f2e039c1f0f9ccb71bd39b16f6daf4ec" name="revision">
+  <link href="https://openfaster.org/mikadiv-vib/request" rel="canonical">
+  <meta content="e40f84dac200cca3fd3790da48643916dd69a3f1" name="revision">
   <meta content="dark light" name="color-scheme">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
@@ -1912,13 +1912,13 @@ dfn > a.self-link::before      { content: "#"; }
   </header>
   <div class="head">
    <p data-fill-with="logo"></p>
-   <h1 class="no-ref p-name" id="title">MiKaDiv Third-Party Disclosure</h1>
-   <h2 class="heading no-num no-ref no-toc settled" id="profile-and-date"><span class="content">MiKaDiv Third-Party Disclosure -- a module of the OpenFASTER family,
+   <h1 class="no-ref p-name" id="title">MiKaDiv Third-Party Disclosure — Request</h1>
+   <h2 class="heading no-num no-ref no-toc settled" id="profile-and-date"><span class="content">MiKaDiv Third-Party Disclosure Request -- a module of the OpenFASTER family,
     <time class="dt-updated" datetime="2026-08-24">24 August 2026</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
-     <dd><a class="u-url" href="https://openfaster.org/mikadiv-vib">https://openfaster.org/mikadiv-vib</a>
+     <dd><a class="u-url" href="https://openfaster.org/mikadiv-vib/request">https://openfaster.org/mikadiv-vib/request</a>
      <dd><p class="spec-version">Version <strong>1.0.0</strong></p>
      <dt>Issue Tracking:
      <dd><a href="https://github.com/OpenFASTER-Standard/spec/issues/">GitHub</a>
@@ -1940,10 +1940,13 @@ Parts of this work may be from another specification document.  If so, those par
   </div>
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="heading no-num no-ref no-toc settled" id="abstract"><span class="content">Abstract</span></h2>
-   <p>The MiKaDiv Third-Party Disclosure format is a module of the
-<a href="/about">OpenFASTER</a> family: a self-documenting data model
-(with an accompanying Excel template) that mirrors the German MiKaDiv
-(§45b EStG) capital-income disclosure schema.</p>
+   <p>This document is for banks and other reporting institutes
+submitting MiKaDiv disclosures. The MiKaDiv Third-Party Disclosure Request
+format is a module of the <a href="/about">OpenFASTER</a> family: a
+self-documenting data model (with an accompanying Excel template) that
+mirrors the German MiKaDiv (§45b EStG) capital-income disclosure request
+schema. See <a href="/mikadiv-vib/response">the Response document</a> for
+what a submission receives back.</p>
   </div>
   <div data-fill-with="at-risk"></div>
   <section class="changelog-top" id="changelog">
@@ -1973,12 +1976,13 @@ Parts of this work may be from another specification document.  If so, those par
    <ol class="toc">
     <li><a href="#downloads"><span class="secno">1</span> <span class="content">Downloads</span></a>
     <li>
-     <a href="#mikadiv-vib-module"><span class="secno">2</span> <span class="content">The MiKaDiv Third-Party Disclosure module</span></a>
+     <a href="#mikadiv-vib-request-module"><span class="secno">2</span> <span class="content">The MiKaDiv Third-Party Disclosure Request module</span></a>
      <ol class="toc">
       <li><a href="#source-schema"><span class="secno">2.1</span> <span class="content">Source schema</span></a>
       <li><a href="#data-model"><span class="secno">2.2</span> <span class="content">Data model</span></a>
       <li><a href="#linking-model"><span class="secno">2.3</span> <span class="content">Linking model</span></a>
-      <li><a href="#module-conformance"><span class="secno">2.4</span> <span class="content">Conformance requirements</span></a>
+      <li><a href="#lifecycle"><span class="secno">2.4</span> <span class="content">Lifecycle</span></a>
+      <li><a href="#module-conformance"><span class="secno">2.5</span> <span class="content">Conformance requirements</span></a>
      </ol>
     <li>
      <a href="#data-dictionary"><span class="secno">3</span> <span class="content">Data dictionary</span></a>
@@ -1997,21 +2001,20 @@ Parts of this work may be from another specification document.  If so, those par
      <a href="#enumerations"><span class="secno">4</span> <span class="content">Enumerations</span></a>
      <ol class="toc">
       <li><a href="#enum-boolean"><span class="secno">4.1</span> <span class="content">Boolean</span></a>
-      <li><a href="#enum-recordtype"><span class="secno">4.2</span> <span class="content">RecordType</span></a>
-      <li><a href="#enum-requestedservice"><span class="secno">4.3</span> <span class="content">RequestedService</span></a>
-      <li><a href="#enum-requestedattestationtype"><span class="secno">4.4</span> <span class="content">RequestedAttestationType</span></a>
-      <li><a href="#enum-accounttype"><span class="secno">4.5</span> <span class="content">AccountType</span></a>
-      <li><a href="#enum-accountrelationship"><span class="secno">4.6</span> <span class="content">AccountRelationship</span></a>
-      <li><a href="#enum-typeofsecurity"><span class="secno">4.7</span> <span class="content">TypeOfSecurity</span></a>
-      <li><a href="#enum-payouttype"><span class="secno">4.8</span> <span class="content">PayoutType</span></a>
-      <li><a href="#enum-receiptsanddeliveriesmode"><span class="secno">4.9</span> <span class="content">ReceiptsAndDeliveriesMode</span></a>
-      <li><a href="#enum-tvrelationship"><span class="secno">4.10</span> <span class="content">TVRelationship</span></a>
-      <li><a href="#enum-tprelationship"><span class="secno">4.11</span> <span class="content">TPRelationship</span></a>
-      <li><a href="#enum-receivergrouptype"><span class="secno">4.12</span> <span class="content">ReceiverGroupType</span></a>
-      <li><a href="#enum-persontaxcategory"><span class="secno">4.13</span> <span class="content">PersonTaxCategory</span></a>
-      <li><a href="#enum-fifodirection"><span class="secno">4.14</span> <span class="content">FifoDirection</span></a>
-      <li><a href="#enum-fifotransactiontype"><span class="secno">4.15</span> <span class="content">FifoTransactionType</span></a>
-      <li><a href="#enum-rawtransactiontype"><span class="secno">4.16</span> <span class="content">RawTransactionType</span></a>
+      <li><a href="#enum-requestedservice"><span class="secno">4.2</span> <span class="content">RequestedService</span></a>
+      <li><a href="#enum-requestedattestationtype"><span class="secno">4.3</span> <span class="content">RequestedAttestationType</span></a>
+      <li><a href="#enum-accounttype"><span class="secno">4.4</span> <span class="content">AccountType</span></a>
+      <li><a href="#enum-accountrelationship"><span class="secno">4.5</span> <span class="content">AccountRelationship</span></a>
+      <li><a href="#enum-typeofsecurity"><span class="secno">4.6</span> <span class="content">TypeOfSecurity</span></a>
+      <li><a href="#enum-payouttype"><span class="secno">4.7</span> <span class="content">PayoutType</span></a>
+      <li><a href="#enum-receiptsanddeliveriesmode"><span class="secno">4.8</span> <span class="content">ReceiptsAndDeliveriesMode</span></a>
+      <li><a href="#enum-tvrelationship"><span class="secno">4.9</span> <span class="content">TVRelationship</span></a>
+      <li><a href="#enum-tprelationship"><span class="secno">4.10</span> <span class="content">TPRelationship</span></a>
+      <li><a href="#enum-receivergrouptype"><span class="secno">4.11</span> <span class="content">ReceiverGroupType</span></a>
+      <li><a href="#enum-persontaxcategory"><span class="secno">4.12</span> <span class="content">PersonTaxCategory</span></a>
+      <li><a href="#enum-fifodirection"><span class="secno">4.13</span> <span class="content">FifoDirection</span></a>
+      <li><a href="#enum-fifotransactiontype"><span class="secno">4.14</span> <span class="content">FifoTransactionType</span></a>
+      <li><a href="#enum-rawtransactiontype"><span class="secno">4.15</span> <span class="content">RawTransactionType</span></a>
      </ol>
    </ol>
   </nav>
@@ -2019,10 +2022,10 @@ Parts of this work may be from another specification document.  If so, those par
    <h2 class="heading settled" data-level="1" id="downloads"><span class="secno">1. </span><span class="content">Downloads</span><a class="self-link" href="#downloads"></a></h2>
    <p><a href="https://raw.githubusercontent.com/OpenFASTER-Standard/spec/main/mikadiv-vib/generated/mikadiv-vib-v1.0.0.pdf">Specification PDF</a> ·
 <a href="https://raw.githubusercontent.com/OpenFASTER-Standard/spec/main/mikadiv-vib/generated/mikadiv-vib-v1.0.0.xlsx">Excel template</a></p>
-   <h2 class="heading settled" data-level="2" id="mikadiv-vib-module"><span class="secno">2. </span><span class="content">The MiKaDiv Third-Party Disclosure module</span><a class="self-link" href="#mikadiv-vib-module"></a></h2>
-   <p>The MiKaDiv (§45b EStG) <strong>third-party disclosure</strong> module defines the data
-required to describe a capital-income event, the securities involved, every
-party in the chain, and the receipts and deliveries that support a
+   <h2 class="heading settled" data-level="2" id="mikadiv-vib-request-module"><span class="secno">2. </span><span class="content">The MiKaDiv Third-Party Disclosure Request module</span><a class="self-link" href="#mikadiv-vib-request-module"></a></h2>
+   <p>The MiKaDiv (§45b EStG) <strong>third-party disclosure request</strong> format defines the
+data required to describe a capital-income event, the securities involved,
+every party in the chain, and the receipts and deliveries that support a
 first-in-first-out (FIFO) determination. An accompanying self-documenting
 Excel template is published alongside this specification (see
 <a href="#downloads">Downloads</a> above); each sheet mirrors one logical group below,
@@ -2056,7 +2059,7 @@ groups can be recombined into one record.</p>
      <tr>
       <td>Requests Master
       <td>1
-      <td>Request-level metadata; new request vs cancellation; account owner scalars.
+      <td>Request-level metadata; account owner scalars.
     
      <tr>
       <td>Security Related Information
@@ -2071,7 +2074,7 @@ groups can be recombined into one record.</p>
      <tr>
       <td>Third Party Individuals / Legal Persons
       <td>up to 5 total
-      <td>Account holders who are not the beneficial owner.
+      <td>The fiduciary counterpart (trustee, pledgor, or grantor of usufruct) tied to the beneficial owner, when the account holder is not the beneficial owner themselves.
     
      <tr>
       <td>Custody Chain
@@ -2094,20 +2097,44 @@ determination; when the submitter applies FIFO itself, the reduced trades are
 supplied directly.</p>
    <h3 class="heading settled" data-level="2.3" id="linking-model"><span class="secno">2.3. </span><span class="content">Linking model</span><a class="self-link" href="#linking-model"></a></h3>
    <p>The RequestId is the key on the <em>Requests
-Master</em> group and the first column of every other group. Because it is used
-only to join the groups, any value that is unique within a submission works.</p>
+Master</em> group and the first column of every other group, used to join a
+request’s data across the groups. Per the VIB schema, a RequestId must stay
+unique even across subsequent files — not just within one submission — since
+later corrections and cancellations reference it by exact value.</p>
+   <p>Every submission through this Excel template is a New Report; the platform
+constructs Corrections and Cancellations directly from records already on
+file, without a further Excel round-trip (see <a href="#lifecycle">Lifecycle</a> below
+for how VIB’s wire format expresses those two actions).</p>
    <ul>
-    <li data-md>
-     <p><b>Cancellations.</b> Set <code>RecordType</code> = <code>Cancel</code> on the master group, fill
-<code>PreviousRequestIdForCancellation</code> (and optionally <code>ReportSerialNumber</code>), and
-leave every other group empty for that RequestId.</p>
     <li data-md>
      <p><b>Community recipients.</b> A community tax-voucher receiver (up to 10
 members) is captured by setting <code>ReceiverGroupType</code> = <code>CommunityMember</code> on
 the tax-voucher groups and giving all members of one community the same
-<code>CommunityGroupId</code>. A community counts as one receiver.</p>
+<code>CommunityGroupId</code>. A community counts as one receiver. (<code>ReceiverGroupType</code>
+and <code>CommunityGroupId</code> are OpenFASTER’s own presentation-layer field names
+for this template, not present in the VIB XSD itself — they flatten a
+schema-level choice into two Excel columns.)</p>
    </ul>
-   <h3 class="heading settled" data-level="2.4" id="module-conformance"><span class="secno">2.4. </span><span class="content">Conformance requirements</span><a class="self-link" href="#module-conformance"></a></h3>
+   <h3 class="heading settled" data-level="2.4" id="lifecycle"><span class="secno">2.4. </span><span class="content">Lifecycle</span><a class="self-link" href="#lifecycle"></a></h3>
+   <p>Beyond a New Report, the VIB schema defines two further request types.
+Neither is constructed through this Excel template — the platform generates
+both directly from a report already on file — but both are documented here as
+part of the complete wire format:</p>
+   <ul>
+    <li data-md>
+     <p><b>Correction.</b> A full resubmission of the entire report, with
+<code>IsCorrectionRequest</code> set to <code>true</code> and <code>PreviousRequestIdForCorrection</code> set
+to the RequestId being corrected. Every group is repeated in full; there is
+no delta/patch format. An optional <code>ReportSerialNumber</code> gives an additional
+reference to an already-submitted report, once the German paying agent has
+assigned one.</p>
+    <li data-md>
+     <p><b>Cancellation.</b> A minimal message carrying no report data at all — only
+a reference. <code>PreviousRequestIdForCancellation</code> (required) identifies the
+RequestId being cancelled; <code>ReportSerialNumber</code> (optional) is the same kind
+of additional paying-agent-issued reference as for corrections.</p>
+   </ul>
+   <h3 class="heading settled" data-level="2.5" id="module-conformance"><span class="secno">2.5. </span><span class="content">Conformance requirements</span><a class="self-link" href="#module-conformance"></a></h3>
    <p>A conforming producer MUST populate every field marked <code>Required</code> for each group
 it emits. Fields marked <code>Conditional</code> MUST be populated when the condition stated
 in their description holds, and MUST otherwise be omitted or left empty. Fields
@@ -2118,9 +2145,9 @@ disclosure whose enum-typed field carries a value outside the enumerated set.</p
    <h2 class="heading settled" data-level="3" id="data-dictionary"><span class="secno">3. </span><span class="content">Data dictionary</span><a class="self-link" href="#data-dictionary"></a></h2>
    <p>The following field-level definitions are generated from <code>ThirdPartyDisclosureRequest.xsd</code>. Each group below corresponds to one sheet of the accompanying Excel template. The <code>RequestId</code> column links the groups of a single disclosure together.</p>
    <h3 class="heading settled" data-level="3.1" id="sheet-1-requests-master"><span class="secno">3.1. </span><span class="content">1 Requests Master</span><a class="self-link" href="#sheet-1-requests-master"></a></h3>
-   <p><b>Significance.</b> The parent record. One row per disclosure, holding administrative and routing metadata, the record type (new request vs cancellation), the directly-contracted securities account, the account type and the account relationship. Every other sheet links back to this one through RequestId.</p>
+   <p><b>Significance.</b> The parent record. One row per disclosure, holding administrative and routing metadata, the directly-contracted securities account, the account type and the account relationship. Every other sheet links back to this one through RequestId.</p>
    <p><b>Cardinality.</b> Exactly 1 row per RequestId (this sheet defines the RequestId).</p>
-   <p><b>When to fill.</b> Always - every disclosure or cancellation starts here.</p>
+   <p><b>When to fill.</b> Always - every disclosure starts here.</p>
    <table class="complex data dictionary longlastcol">
     <colgroup>
      <col style="width:7%">
@@ -2144,144 +2171,132 @@ disclosure whose enum-typed field carries a value outside the enumerated set.</p
       <td class="long">Identifier for the request, defined by you. Used only as the key that links every sheet together, so any unique value (e.g. a running number) is fine.
      <tr>
       <td class="col-num">2
-      <td><code>RecordType</code>
-      <td class="col-req">Required
-      <td>Enum (<a href="#enum-recordtype">RecordType</a>): <code>Request</code>, <code>Cancel</code>
-      <td class="long">'Request' for a MiKaDiv reporting for income; 'Cancel' to cancel a previously submitted request (leave the child sheets empty for cancellation rows).
-     <tr>
-      <td class="col-num">3
       <td><code>AccountNumber</code>
       <td class="col-req">Required
       <td>Text (max 200)
       <td class="long">Account number of the requesting custodian.
      <tr>
-      <td class="col-num">4
+      <td class="col-num">3
       <td><code>ClientReference</code>
       <td class="col-req">Optional
       <td>Text (max 200)
       <td class="long">Custom reference data of the client.
      <tr>
-      <td class="col-num">5
+      <td class="col-num">4
       <td><code>ClientContactpersonName</code>
       <td class="col-req">Optional
       <td>Text (max 200)
       <td class="long">Name of the responsible foreign bank contact person.
      <tr>
-      <td class="col-num">6
+      <td class="col-num">5
       <td><code>ClientContactpersonPhone</code>
       <td class="col-req">Optional
       <td>Text (max 35)
       <td class="long">Telephone number of the responsible foreign bank contact person.
      <tr>
-      <td class="col-num">7
+      <td class="col-num">6
       <td><code>ClientContactpersonEmail</code>
       <td class="col-req">Optional
       <td>Text (max 200)
       <td class="long">E-mail address of the responsible foreign bank contact person.
      <tr>
-      <td class="col-num">8
+      <td class="col-num">7
       <td><code>RequestedService</code>
       <td class="col-req">Conditional
       <td>Enum (<a href="#enum-requestedservice">RequestedService</a>): <code>TaxReportAndCertificate</code>, <code>Reclaim</code>, <code>Relief</code>
       <td class="long">Type of requested service.
      <tr>
-      <td class="col-num">9
+      <td class="col-num">8
       <td><code>RequestedServiceReason</code>
       <td class="col-req">Optional
       <td>Text (max 256)
       <td class="long">Reason for the requested service, especially for correction or cancellation.
      <tr>
-      <td class="col-num">10
+      <td class="col-num">9
       <td><code>RequestedAttestationType</code>
       <td class="col-req">Optional
       <td>Enum (<a href="#enum-requestedattestationtype">RequestedAttestationType</a>): <code>BV</code>, <code>PV</code>, <code>SB</code>
       <td class="long">Type of requested tax voucher.
      <tr>
-      <td class="col-num">11
+      <td class="col-num">10
       <td><code>IsCorrectionRequest</code>
       <td class="col-req">Optional
       <td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code>
       <td class="long">A correction is to be performed for a report. The data record contains a reference to the preceding request.
      <tr>
-      <td class="col-num">12
+      <td class="col-num">11
       <td><code>PreviousRequestIdForCorrection</code>
       <td class="col-req">Optional
       <td>UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
       <td class="long">If the request is for correction of a previous request, then the RequestId of the previous request must be provided.
      <tr>
-      <td class="col-num">13
+      <td class="col-num">12
       <td><code>ReportSerialNumber</code>
       <td class="col-req">Optional
       <td>UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
       <td class="long">Serial number (UUID) of an already submitted report, if provided previously by the German Paying agent. Used as a (additional) reference for correction.
      <tr>
-      <td class="col-num">14
+      <td class="col-num">13
       <td><code>TaxCertificatePrintedContactpersonName</code>
       <td class="col-req">Optional
       <td>Text (max 200)
       <td class="long">Name of the contact person for the customer, printed on the tax certificate or cover letter.
      <tr>
-      <td class="col-num">15
+      <td class="col-num">14
       <td><code>TaxCertificatePrintedContactpersonPhone</code>
       <td class="col-req">Optional
       <td>Text (max 35)
       <td class="long">Telephone number of the contact person for the customer, printed on the tax certificate or cover letter.
      <tr>
-      <td class="col-num">16
+      <td class="col-num">15
       <td><code>TaxCertificatePrintedContactpersonEmail</code>
       <td class="col-req">Optional
       <td>Text (max 200)
       <td class="long">E-mail address of the contact person for the customer, printed on the tax certificate or cover letter.
      <tr>
-      <td class="col-num">17
+      <td class="col-num">16
       <td><code>TaxCertificateAlternativeRecipientName</code>
       <td class="col-req">Optional
       <td>Text (max 200)
       <td class="long">Name of the alternative mailing address recipient.
      <tr>
-      <td class="col-num">18
+      <td class="col-num">17
       <td><code>TaxCertificateAlternativeRecipientAddress</code>
       <td class="col-req">Optional
       <td>Text (max 256)
       <td class="long">Address of the alternative mailing address recipient.
      <tr>
-      <td class="col-num">19
+      <td class="col-num">18
       <td><code>TaxCertificateAlternativeRecipientEmail</code>
       <td class="col-req">Optional
       <td>Text (max 256)
       <td class="long">E-mail address of the alternative mailing address recipient.
      <tr>
-      <td class="col-num">20
+      <td class="col-num">19
       <td><code>EventType</code>
       <td class="col-req">Optional
       <td>Text (max 20)
       <td class="long">Event designations of the German paying agent according to ISO 20022.
      <tr>
-      <td class="col-num">21
+      <td class="col-num">20
       <td><code>FundId</code>
       <td class="col-req">Optional
       <td>Text (max 20)
       <td class="long">Fund identifier (status certificate number).
      <tr>
-      <td class="col-num">22
-      <td><code>PreviousRequestIdForCancellation</code>
-      <td class="col-req">Conditional
-      <td>UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
-      <td class="long">If the request is for cancellation of a previous request, then the RequestId of the previous request must be provided.
-     <tr>
-      <td class="col-num">23
+      <td class="col-num">21
       <td><code>SecuritiesAccountNumber</code>
       <td class="col-req">Conditional
       <td>Text (max 200)
       <td class="long">Account number of the tax voucher person at the custodian to whom the tax voucher person is directly contracted.
      <tr>
-      <td class="col-num">24
+      <td class="col-num">22
       <td><code>AccountType</code>
       <td class="col-req">Conditional
       <td>Enum (<a href="#enum-accounttype">AccountType</a>): <code>A</code>, <code>B</code>, <code>Ct</code>, <code>D</code>, <code>E</code>, <code>F</code>, <code>G</code>
       <td class="long">Account type.
      <tr>
-      <td class="col-num">25
+      <td class="col-num">23
       <td><code>AccountRelationship</code>
       <td class="col-req">Optional
       <td>Enum (<a href="#enum-accountrelationship">AccountRelationship</a>): <code>Trust</code>, <code>Usufruct</code>, <code>Pledge</code>
@@ -2290,7 +2305,7 @@ disclosure whose enum-typed field carries a value outside the enumerated set.</p
    <h3 class="heading settled" data-level="3.2" id="sheet-2-security-related-information"><span class="secno">3.2. </span><span class="content">2 Security Related Information</span><a class="self-link" href="#sheet-2-security-related-information"></a></h3>
    <p><b>Significance.</b> The single capital-income event being disclosed: the security (ISIN, name, type), the corporate-action reference, payment details, the complete tax breakdown (gross/net, withholding tax, solidarity surcharge and the nominal quantities per holding category) and which receipts/deliveries mode is used. It also contains the depositary-receipt block (underlying German security, record date, issuance ratios, certificates held), which describes the depositary receipt (e.g. ADR/GDR) through which the income was received.</p>
    <p><b>Cardinality.</b> 0..1 row per RequestId.</p>
-   <p><b>When to fill.</b> Required when RecordType = Request. Leave empty for RecordType = Cancel. Within this sheet, the depositary-receipt fields are required only when IsDepositaryReceipt = true.</p>
+   <p><b>When to fill.</b> Required for every disclosure. Within this sheet, the depositary-receipt fields are required only when IsDepositaryReceipt = true.</p>
    <table class="complex data dictionary longlastcol">
     <colgroup>
      <col style="width:7%">
@@ -3434,25 +3449,7 @@ disclosure whose enum-typed field carries a value outside the enumerated set.</p
       <td><code>false</code>
       <td class="long">No - the condition does not apply.
    </table>
-   <h3 class="heading settled" data-level="4.2" id="enum-recordtype"><span class="secno">4.2. </span><span class="content">RecordType</span><a class="self-link" href="#enum-recordtype"></a></h3>
-   <p><em>Used in:</em> <code>1 Requests Master.RecordType</code></p>
-   <table class="complex data enum-table longlastcol">
-    <colgroup>
-     <col style="width:18%">
-     <col style="width:82%">
-    <thead>
-     <tr>
-      <th>Value
-      <th>Meaning
-    <tbody>
-     <tr>
-      <td><code>Request</code>
-      <td class="long">A MiKaDiv reporting-for-income disclosure (a new or corrective submission).
-     <tr>
-      <td><code>Cancel</code>
-      <td class="long">Cancellation of a previously submitted disclosure request; only the master cancellation fields are filled and the child sheets stay empty.
-   </table>
-   <h3 class="heading settled" data-level="4.3" id="enum-requestedservice"><span class="secno">4.3. </span><span class="content">RequestedService</span><a class="self-link" href="#enum-requestedservice"></a></h3>
+   <h3 class="heading settled" data-level="4.2" id="enum-requestedservice"><span class="secno">4.2. </span><span class="content">RequestedService</span><a class="self-link" href="#enum-requestedservice"></a></h3>
    <p><em>Used in:</em> <code>1 Requests Master.RequestedService</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3473,7 +3470,7 @@ disclosure whose enum-typed field carries a value outside the enumerated set.</p
       <td><code>Relief</code>
       <td class="long">The custodian provided relief at source and additional information gets provided via the request.
    </table>
-   <h3 class="heading settled" data-level="4.4" id="enum-requestedattestationtype"><span class="secno">4.4. </span><span class="content">RequestedAttestationType</span><a class="self-link" href="#enum-requestedattestationtype"></a></h3>
+   <h3 class="heading settled" data-level="4.3" id="enum-requestedattestationtype"><span class="secno">4.3. </span><span class="content">RequestedAttestationType</span><a class="self-link" href="#enum-requestedattestationtype"></a></h3>
    <p><em>Used in:</em> <code>1 Requests Master.RequestedAttestationType</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3494,7 +3491,7 @@ disclosure whose enum-typed field carries a value outside the enumerated set.</p
       <td><code>SB</code>
       <td class="long">SB for collective tax voucher.
    </table>
-   <h3 class="heading settled" data-level="4.5" id="enum-accounttype"><span class="secno">4.5. </span><span class="content">AccountType</span><a class="self-link" href="#enum-accounttype"></a></h3>
+   <h3 class="heading settled" data-level="4.4" id="enum-accounttype"><span class="secno">4.4. </span><span class="content">AccountType</span><a class="self-link" href="#enum-accounttype"></a></h3>
    <p><em>Used in:</em> <code>1 Requests Master.AccountType</code>, <code>7 Custody Chain.AccountType</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3527,7 +3524,7 @@ disclosure whose enum-typed field carries a value outside the enumerated set.</p
       <td><code>G</code>
       <td class="long">G – Other type of account
    </table>
-   <h3 class="heading settled" data-level="4.6" id="enum-accountrelationship"><span class="secno">4.6. </span><span class="content">AccountRelationship</span><a class="self-link" href="#enum-accountrelationship"></a></h3>
+   <h3 class="heading settled" data-level="4.5" id="enum-accountrelationship"><span class="secno">4.5. </span><span class="content">AccountRelationship</span><a class="self-link" href="#enum-accountrelationship"></a></h3>
    <p><em>Used in:</em> <code>1 Requests Master.AccountRelationship</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3548,7 +3545,7 @@ disclosure whose enum-typed field carries a value outside the enumerated set.</p
       <td><code>Pledge</code>
       <td class="long">Pledged securities account
    </table>
-   <h3 class="heading settled" data-level="4.7" id="enum-typeofsecurity"><span class="secno">4.7. </span><span class="content">TypeOfSecurity</span><a class="self-link" href="#enum-typeofsecurity"></a></h3>
+   <h3 class="heading settled" data-level="4.6" id="enum-typeofsecurity"><span class="secno">4.6. </span><span class="content">TypeOfSecurity</span><a class="self-link" href="#enum-typeofsecurity"></a></h3>
    <p><em>Used in:</em> <code>2 Security Related Information.TypeOfSecurity</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3569,7 +3566,7 @@ disclosure whose enum-typed field carries a value outside the enumerated set.</p
       <td><code>DepositaryReceipt</code>
       <td class="long">Depositary receipt (e.g. ADR, GDR). A certificate issued by a depositary bank representing shares of a foreign company held in custody. Capital income arises from the underlying dividend distributions of the foreign security.
    </table>
-   <h3 class="heading settled" data-level="4.8" id="enum-payouttype"><span class="secno">4.8. </span><span class="content">PayoutType</span><a class="self-link" href="#enum-payouttype"></a></h3>
+   <h3 class="heading settled" data-level="4.7" id="enum-payouttype"><span class="secno">4.7. </span><span class="content">PayoutType</span><a class="self-link" href="#enum-payouttype"></a></h3>
    <p><em>Used in:</em> <code>2 Security Related Information.PayoutType</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3587,7 +3584,7 @@ disclosure whose enum-typed field carries a value outside the enumerated set.</p
       <td><code>Shares</code>
       <td class="long">Payment in Shares (stock dividend).
    </table>
-   <h3 class="heading settled" data-level="4.9" id="enum-receiptsanddeliveriesmode"><span class="secno">4.9. </span><span class="content">ReceiptsAndDeliveriesMode</span><a class="self-link" href="#enum-receiptsanddeliveriesmode"></a></h3>
+   <h3 class="heading settled" data-level="4.8" id="enum-receiptsanddeliveriesmode"><span class="secno">4.8. </span><span class="content">ReceiptsAndDeliveriesMode</span><a class="self-link" href="#enum-receiptsanddeliveriesmode"></a></h3>
    <p><em>Used in:</em> <code>2 Security Related Information.ReceiptsAndDeliveriesMode</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3605,7 +3602,7 @@ disclosure whose enum-typed field carries a value outside the enumerated set.</p
       <td><code>All</code>
       <td class="long">Receipts and deliveries are declared WITHOUT FiFo (the German paying agent applies FiFo) - fill the Raw Transactions All sheet.
    </table>
-   <h3 class="heading settled" data-level="4.10" id="enum-tvrelationship"><span class="secno">4.10. </span><span class="content">TVRelationship</span><a class="self-link" href="#enum-tvrelationship"></a></h3>
+   <h3 class="heading settled" data-level="4.9" id="enum-tvrelationship"><span class="secno">4.9. </span><span class="content">TVRelationship</span><a class="self-link" href="#enum-tvrelationship"></a></h3>
    <p><em>Used in:</em> <code>3 Tax Voucher Individuals.Relationship</code>, <code>4 Tax Voucher Legal Persons.Relationship</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3623,7 +3620,7 @@ disclosure whose enum-typed field carries a value outside the enumerated set.</p
       <td><code>AccountHolder</code>
       <td class="long">Account holder (not the beneficial owner).
    </table>
-   <h3 class="heading settled" data-level="4.11" id="enum-tprelationship"><span class="secno">4.11. </span><span class="content">TPRelationship</span><a class="self-link" href="#enum-tprelationship"></a></h3>
+   <h3 class="heading settled" data-level="4.10" id="enum-tprelationship"><span class="secno">4.10. </span><span class="content">TPRelationship</span><a class="self-link" href="#enum-tprelationship"></a></h3>
    <p><em>Used in:</em> <code>5 Third Party Individuals.Relationship</code>, <code>6 Third Party Legal Persons.Relationship</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3644,7 +3641,7 @@ disclosure whose enum-typed field carries a value outside the enumerated set.</p
       <td><code>Grantor of usufruct</code>
       <td class="long">Grantor of usufruct.
    </table>
-   <h3 class="heading settled" data-level="4.12" id="enum-receivergrouptype"><span class="secno">4.12. </span><span class="content">ReceiverGroupType</span><a class="self-link" href="#enum-receivergrouptype"></a></h3>
+   <h3 class="heading settled" data-level="4.11" id="enum-receivergrouptype"><span class="secno">4.11. </span><span class="content">ReceiverGroupType</span><a class="self-link" href="#enum-receivergrouptype"></a></h3>
    <p><em>Used in:</em> <code>3 Tax Voucher Individuals.ReceiverGroupType</code>, <code>4 Tax Voucher Legal Persons.ReceiverGroupType</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3662,7 +3659,7 @@ disclosure whose enum-typed field carries a value outside the enumerated set.</p
       <td><code>CommunityMember</code>
       <td class="long">One member of a community of up to 10 persons; all members share the same CommunityGroupId and together form one receiver.
    </table>
-   <h3 class="heading settled" data-level="4.13" id="enum-persontaxcategory"><span class="secno">4.13. </span><span class="content">PersonTaxCategory</span><a class="self-link" href="#enum-persontaxcategory"></a></h3>
+   <h3 class="heading settled" data-level="4.12" id="enum-persontaxcategory"><span class="secno">4.12. </span><span class="content">PersonTaxCategory</span><a class="self-link" href="#enum-persontaxcategory"></a></h3>
    <p><em>Used in:</em> <code>3 Tax Voucher Individuals.PersonTaxCategory</code>, <code>4 Tax Voucher Legal Persons.PersonTaxCategory</code>, <code>5 Third Party Individuals.PersonTaxCategory</code>, <code>6 Third Party Legal Persons.PersonTaxCategory</code>, <code>7 Custody Chain.PersonTaxCategory</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3680,7 +3677,7 @@ disclosure whose enum-typed field carries a value outside the enumerated set.</p
       <td><code>NonGerman</code>
       <td class="long">Non-German person: provide foreign identifiers (ForeignTaxId, LEI, EUID, or legal form + date of foundation, as applicable).
    </table>
-   <h3 class="heading settled" data-level="4.14" id="enum-fifodirection"><span class="secno">4.14. </span><span class="content">FifoDirection</span><a class="self-link" href="#enum-fifodirection"></a></h3>
+   <h3 class="heading settled" data-level="4.13" id="enum-fifodirection"><span class="secno">4.13. </span><span class="content">FifoDirection</span><a class="self-link" href="#enum-fifodirection"></a></h3>
    <p><em>Used in:</em> <code>8 FIFO Trades.Direction</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3698,7 +3695,7 @@ disclosure whose enum-typed field carries a value outside the enumerated set.</p
       <td><code>Delivery</code>
       <td class="long">Delivery trade: sales, book-entry transfers out (delivery out), securities lending, and repo transactions.
    </table>
-   <h3 class="heading settled" data-level="4.15" id="enum-fifotransactiontype"><span class="secno">4.15. </span><span class="content">FifoTransactionType</span><a class="self-link" href="#enum-fifotransactiontype"></a></h3>
+   <h3 class="heading settled" data-level="4.14" id="enum-fifotransactiontype"><span class="secno">4.14. </span><span class="content">FifoTransactionType</span><a class="self-link" href="#enum-fifotransactiontype"></a></h3>
    <p><em>Used in:</em> <code>8 FIFO Trades.TransactionType</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3731,7 +3728,7 @@ disclosure whose enum-typed field carries a value outside the enumerated set.</p
       <td><code>RP</code>
       <td class="long">Retransfer based on a repo transaction.
    </table>
-   <h3 class="heading settled" data-level="4.16" id="enum-rawtransactiontype"><span class="secno">4.16. </span><span class="content">RawTransactionType</span><a class="self-link" href="#enum-rawtransactiontype"></a></h3>
+   <h3 class="heading settled" data-level="4.15" id="enum-rawtransactiontype"><span class="secno">4.15. </span><span class="content">RawTransactionType</span><a class="self-link" href="#enum-rawtransactiontype"></a></h3>
    <p><em>Used in:</em> <code>9 Raw Transactions All.TransactionType</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
