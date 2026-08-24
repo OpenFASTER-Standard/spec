@@ -1,7 +1,7 @@
 <!doctype html><html lang="en">
  <head>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-  <title>OpenFASTER</title>
+  <title>MiKaDiv Third-Party Disclosure</title>
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <link href="/documentation/site.css" rel="stylesheet">
   <link href="/documentation/shell.css" rel="stylesheet">
@@ -1491,8 +1491,8 @@ Possible extra rowspan handling
 	}
 </style>
   <meta content="Bikeshed version d113b2e81, updated Tue Jun 9 14:57:55 2026 -0700" name="generator">
-  <link href="https://www.openfaster.org/" rel="canonical">
-  <meta content="057da22f3c43be1c8ad5b6334e2c9b7d77bb2fed" name="revision">
+  <link href="https://openfaster.org/mikadiv" rel="canonical">
+  <meta content="d46de26d1aa1cc03dc120ceeb5b0786d305d3d59" name="revision">
   <meta content="dark light" name="color-scheme">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
@@ -1821,130 +1821,6 @@ figure.table figcaption:not(.no-marker)::before {
     content: "Table " counter(table) " ";
 }
 </style>
-<style>/* Boilerplate: style-dfn-panel */
-:root {
-    --dfnpanel-bg: #ddd;
-    --dfnpanel-text: var(--text);
-    --dfnpanel-target-bg: #ffc;
-    --dfnpanel-target-outline: orange;
-}
-@media (prefers-color-scheme: dark) {
-    :root {
-        --dfnpanel-bg: #222;
-        --dfnpanel-text: var(--text);
-        --dfnpanel-target-bg: #333;
-        --dfnpanel-target-outline: silver;
-    }
-}
-.dfn-panel {
-    position: absolute;
-    z-index: 35;
-    width: 20em;
-    width: 300px;
-    height: auto;
-    max-height: 500px;
-    overflow: auto;
-    padding: 0.5em 0.75em;
-    font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
-    background: var(--dfnpanel-bg);
-    color: var(--dfnpanel-text);
-    border: outset 0.2em;
-    white-space: normal; /* in case it's moved into a pre */
-}
-.dfn-panel:not(.on) { display: none; }
-.dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
-.dfn-panel > b { display: block; }
-.dfn-panel a { color: var(--dfnpanel-text); }
-.dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
-.dfn-panel a:focus {
-    outline: 5px auto Highlight;
-    outline: 5px auto -webkit-focus-ring-color;
-}
-.dfn-panel > b + b { margin-top: 0.25em; }
-.dfn-panel ul { padding: 0 0 0 1em; list-style: none; }
-.dfn-panel li a {
-    max-width: calc(300px - 1.5em - 1em);
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.dfn-panel.activated {
-    display: inline-block;
-    position: fixed;
-    left: 8px;
-    bottom: 2em;
-    margin: 0 auto;
-    max-width: calc(100vw - 1.5em - .4em - .5em);
-    max-height: 30vh;
-    transition: left 1s ease-out, bottom 1s ease-out;
-}
-
-.dfn-panel .link-item:hover {
-    text-decoration: underline;
-}
-.dfn-panel .link-item .copy-icon {
-    opacity: 0;
-}
-.dfn-panel .link-item:hover .copy-icon,
-.dfn-panel .link-item .copy-icon:focus {
-    opacity: 1;
-}
-
-.dfn-panel .copy-icon {
-    display: inline-block;
-    margin-right: 0.5em;
-    width: 0.85em;
-    height: 1em;
-    border-radius: 3px;
-    background-color: #ccc;
-    cursor: pointer;
-}
-
-.dfn-panel .copy-icon .icon {
-    width: 100%;
-    height: 100%;
-    background-color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-}
-
-.dfn-panel .copy-icon .icon::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 1px solid black;
-    background-color: #ccc;
-    opacity: 0.25;
-    transform: translate(3px, -3px);
-}
-
-.dfn-panel .copy-icon:active .icon::before {
-    opacity: 1;
-}
-
-.dfn-paneled[role="button"] { cursor: help; }
-
-.highlighted {
-    animation: target-fade 3s;
-}
-
-@keyframes target-fade {
-    from {
-        background-color: var(--dfnpanel-target-bg);
-        outline: 5px solid var(--dfnpanel-target-outline);
-    }
-    to {
-        color: var(--a-normal-text);
-        background-color: transparent;
-        outline: transparent;
-    }
-}
-</style>
 <style>/* Boilerplate: style-issues */
 a[href].issue-return {
     float: right;
@@ -1963,39 +1839,6 @@ a[href].issue-return {
 [data-md] > :last-child {
     margin-bottom: 0;
 }
-</style>
-<style>/* Boilerplate: style-ref-hints */
-:root {
-    --ref-hint-bg: #ddd;
-    --ref-hint-text: var(--text);
-}
-@media (prefers-color-scheme: dark) {
-    :root {
-        --ref-hint-bg: #222;
-        --ref-hint-text: var(--text);
-    }
-}
-
-.ref-hint {
-    display: inline-block;
-    position: absolute;
-    z-index: 35;
-    width: 20em;
-    width: 300px;
-    height: auto;
-    max-height: 500px;
-    overflow: auto;
-    padding: 0.5em 0.5em;
-    font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
-    background: var(--ref-hint-bg);
-    color: var(--ref-hint-text);
-    border: outset 0.2em;
-    white-space: normal; /* in case it's moved into a pre */
-}
-
-.ref-hint * { margin: 0; padding: 0; text-indent: 0; }
-
-.ref-hint ul { padding: 0 0 0 1em; list-style: none; }
 </style>
 <style>/* Boilerplate: style-selflinks */
 :root {
@@ -2069,13 +1912,13 @@ dfn > a.self-link::before      { content: "#"; }
   </header>
   <div class="head">
    <p data-fill-with="logo"></p>
-   <h1 class="no-ref p-name" id="title">OpenFASTER</h1>
-   <h2 class="heading no-num no-ref no-toc settled" id="profile-and-date"><span class="content">Vendor-independent, interoperable protocol standard for EU withholding tax and dividend reporting data exchange under MiKaDiv and FASTER,
-    <time class="dt-updated" datetime="2026-08-22">22 August 2026</time></span></h2>
+   <h1 class="no-ref p-name" id="title">MiKaDiv Third-Party Disclosure</h1>
+   <h2 class="heading no-num no-ref no-toc settled" id="profile-and-date"><span class="content">MiKaDiv Third-Party Disclosure -- a module of the OpenFASTER family,
+    <time class="dt-updated" datetime="2026-08-24">24 August 2026</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
-     <dd><a class="u-url" href="https://www.openfaster.org/">https://www.openfaster.org/</a>
+     <dd><a class="u-url" href="https://openfaster.org/mikadiv">https://openfaster.org/mikadiv</a>
      <dd><p class="spec-version">Version <strong>1.0.0</strong></p>
      <dt>Issue Tracking:
      <dd><a href="https://github.com/OpenFASTER-Standard/spec/issues/">GitHub</a>
@@ -2088,7 +1931,7 @@ dfn > a.self-link::before      { content: "#"; }
    <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" height="15" src="https://licensebuttons.net/p/zero/1.0/80x15.png" width="80"></a>
 To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 22 August 2026,
+In addition, as of 24 August 2026,
 the editors have made this specification available under the
 <a href="https://www.openwebfoundation.org/the-agreements/the-owf-1-0-agreements-granted-claims/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at https://www.openwebfoundation.org/the-agreements/the-owf-1-0-agreements-granted-claims/owfa-1-0.
@@ -2098,13 +1941,10 @@ Parts of this work may be from another specification document.  If so, those par
   </div>
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="heading no-num no-ref no-toc settled" id="abstract"><span class="content">Abstract</span></h2>
-   <p>OpenFASTER is a vendor-independent family of open standards for the
-exchange of EU withholding-tax and dividend-reporting data under MiKaDiv
-and FASTER. This document defines the family; at this version it specifies
-only the first module—the MiKaDiv Third-Party Disclosure format, a
-self-documenting data model (with an accompanying Excel template) that mirrors
-the German MiKaDiv (§45b EStG) capital-income disclosure schema. Further
-modules for FASTER are planned.</p>
+   <p>The MiKaDiv Third-Party Disclosure format is a module of the
+<a href="/about">OpenFASTER</a> family: a self-documenting data model
+(with an accompanying Excel template) that mirrors the German MiKaDiv
+(§45b EStG) capital-income disclosure schema.</p>
   </div>
   <div data-fill-with="at-risk"></div>
   <section class="changelog-top" id="changelog">
@@ -2133,171 +1973,80 @@ modules for FASTER are planned.</p>
    <h2 class="no-num no-ref no-toc" id="contents">Table of Contents</h2>
    <ol class="toc">
     <li>
-     <a href="#intro"><span class="secno">1</span> <span class="content">Introduction</span></a>
+     <a href="#mikadiv-module"><span class="secno">1</span> <span class="content">The MiKaDiv Third-Party Disclosure module</span></a>
      <ol class="toc">
-      <li><a href="#scope"><span class="secno">1.1</span> <span class="content">Scope</span></a>
-      <li><a href="#regulatory-context"><span class="secno">1.2</span> <span class="content">Regulatory context</span></a>
-     </ol>
-    <li><a href="#terminology"><span class="secno">2</span> <span class="content">Terminology</span></a>
-    <li>
-     <a href="#mikadiv-module"><span class="secno">3</span> <span class="content">The MiKaDiv Third-Party Disclosure module</span></a>
-     <ol class="toc">
-      <li><a href="#source-schema"><span class="secno">3.1</span> <span class="content">Source schema</span></a>
-      <li><a href="#data-model"><span class="secno">3.2</span> <span class="content">Data model</span></a>
-      <li><a href="#linking-model"><span class="secno">3.3</span> <span class="content">Linking model</span></a>
-      <li><a href="#module-conformance"><span class="secno">3.4</span> <span class="content">Conformance requirements</span></a>
+      <li><a href="#source-schema"><span class="secno">1.1</span> <span class="content">Source schema</span></a>
+      <li><a href="#data-model"><span class="secno">1.2</span> <span class="content">Data model</span></a>
+      <li><a href="#linking-model"><span class="secno">1.3</span> <span class="content">Linking model</span></a>
+      <li><a href="#module-conformance"><span class="secno">1.4</span> <span class="content">Conformance requirements</span></a>
      </ol>
     <li>
-     <a href="#data-dictionary"><span class="secno">4</span> <span class="content">Data dictionary</span></a>
+     <a href="#data-dictionary"><span class="secno">2</span> <span class="content">Data dictionary</span></a>
      <ol class="toc">
-      <li><a href="#sheet-1-requests-master"><span class="secno">4.1</span> <span class="content">1 Requests Master</span></a>
-      <li><a href="#sheet-2-security-related-information"><span class="secno">4.2</span> <span class="content">2 Security Related Information</span></a>
-      <li><a href="#sheet-3-tax-voucher-individuals"><span class="secno">4.3</span> <span class="content">3 Tax Voucher Individuals</span></a>
-      <li><a href="#sheet-4-tax-voucher-legal-persons"><span class="secno">4.4</span> <span class="content">4 Tax Voucher Legal Persons</span></a>
-      <li><a href="#sheet-5-third-party-individuals"><span class="secno">4.5</span> <span class="content">5 Third Party Individuals</span></a>
-      <li><a href="#sheet-6-third-party-legal-persons"><span class="secno">4.6</span> <span class="content">6 Third Party Legal Persons</span></a>
-      <li><a href="#sheet-7-custody-chain"><span class="secno">4.7</span> <span class="content">7 Custody Chain</span></a>
-      <li><a href="#sheet-8-fifo-trades"><span class="secno">4.8</span> <span class="content">8 FIFO Trades</span></a>
-      <li><a href="#sheet-9-raw-transactions-all"><span class="secno">4.9</span> <span class="content">9 Raw Transactions All</span></a>
+      <li><a href="#sheet-1-requests-master"><span class="secno">2.1</span> <span class="content">1 Requests Master</span></a>
+      <li><a href="#sheet-2-security-related-information"><span class="secno">2.2</span> <span class="content">2 Security Related Information</span></a>
+      <li><a href="#sheet-3-tax-voucher-individuals"><span class="secno">2.3</span> <span class="content">3 Tax Voucher Individuals</span></a>
+      <li><a href="#sheet-4-tax-voucher-legal-persons"><span class="secno">2.4</span> <span class="content">4 Tax Voucher Legal Persons</span></a>
+      <li><a href="#sheet-5-third-party-individuals"><span class="secno">2.5</span> <span class="content">5 Third Party Individuals</span></a>
+      <li><a href="#sheet-6-third-party-legal-persons"><span class="secno">2.6</span> <span class="content">6 Third Party Legal Persons</span></a>
+      <li><a href="#sheet-7-custody-chain"><span class="secno">2.7</span> <span class="content">7 Custody Chain</span></a>
+      <li><a href="#sheet-8-fifo-trades"><span class="secno">2.8</span> <span class="content">8 FIFO Trades</span></a>
+      <li><a href="#sheet-9-raw-transactions-all"><span class="secno">2.9</span> <span class="content">9 Raw Transactions All</span></a>
      </ol>
     <li>
-     <a href="#enumerations"><span class="secno">5</span> <span class="content">Enumerations</span></a>
+     <a href="#enumerations"><span class="secno">3</span> <span class="content">Enumerations</span></a>
      <ol class="toc">
-      <li><a href="#enum-boolean"><span class="secno">5.1</span> <span class="content">Boolean</span></a>
-      <li><a href="#enum-recordtype"><span class="secno">5.2</span> <span class="content">RecordType</span></a>
-      <li><a href="#enum-requestedservice"><span class="secno">5.3</span> <span class="content">RequestedService</span></a>
-      <li><a href="#enum-requestedattestationtype"><span class="secno">5.4</span> <span class="content">RequestedAttestationType</span></a>
-      <li><a href="#enum-accounttype"><span class="secno">5.5</span> <span class="content">AccountType</span></a>
-      <li><a href="#enum-accountrelationship"><span class="secno">5.6</span> <span class="content">AccountRelationship</span></a>
-      <li><a href="#enum-typeofsecurity"><span class="secno">5.7</span> <span class="content">TypeOfSecurity</span></a>
-      <li><a href="#enum-payouttype"><span class="secno">5.8</span> <span class="content">PayoutType</span></a>
-      <li><a href="#enum-receiptsanddeliveriesmode"><span class="secno">5.9</span> <span class="content">ReceiptsAndDeliveriesMode</span></a>
-      <li><a href="#enum-tvrelationship"><span class="secno">5.10</span> <span class="content">TVRelationship</span></a>
-      <li><a href="#enum-tprelationship"><span class="secno">5.11</span> <span class="content">TPRelationship</span></a>
-      <li><a href="#enum-receivergrouptype"><span class="secno">5.12</span> <span class="content">ReceiverGroupType</span></a>
-      <li><a href="#enum-persontaxcategory"><span class="secno">5.13</span> <span class="content">PersonTaxCategory</span></a>
-      <li><a href="#enum-fifodirection"><span class="secno">5.14</span> <span class="content">FifoDirection</span></a>
-      <li><a href="#enum-fifotransactiontype"><span class="secno">5.15</span> <span class="content">FifoTransactionType</span></a>
-      <li><a href="#enum-rawtransactiontype"><span class="secno">5.16</span> <span class="content">RawTransactionType</span></a>
-     </ol>
-    <li>
-     <a href="#roadmap"><span class="secno">6</span> <span class="content">Planned work</span></a>
-     <ol class="toc">
-      <li><a href="#roadmap-bulk"><span class="secno">6.1</span> <span class="content">Bulk disclosure template</span></a>
-      <li><a href="#roadmap-vocabulary"><span class="secno">6.2</span> <span class="content">Published multilingual vocabulary</span></a>
-      <li><a href="#roadmap-uuid-return"><span class="secno">6.3</span> <span class="content">UUID return format</span></a>
-     </ol>
-    <li><a href="#versioning"><span class="secno">7</span> <span class="content">Versioning</span></a>
-    <li>
-     <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
-     <ol class="toc">
-      <li><a href="#index-defined-here"><span class="secno"></span> <span class="content">Terms defined by this specification</span></a>
+      <li><a href="#enum-boolean"><span class="secno">3.1</span> <span class="content">Boolean</span></a>
+      <li><a href="#enum-recordtype"><span class="secno">3.2</span> <span class="content">RecordType</span></a>
+      <li><a href="#enum-requestedservice"><span class="secno">3.3</span> <span class="content">RequestedService</span></a>
+      <li><a href="#enum-requestedattestationtype"><span class="secno">3.4</span> <span class="content">RequestedAttestationType</span></a>
+      <li><a href="#enum-accounttype"><span class="secno">3.5</span> <span class="content">AccountType</span></a>
+      <li><a href="#enum-accountrelationship"><span class="secno">3.6</span> <span class="content">AccountRelationship</span></a>
+      <li><a href="#enum-typeofsecurity"><span class="secno">3.7</span> <span class="content">TypeOfSecurity</span></a>
+      <li><a href="#enum-payouttype"><span class="secno">3.8</span> <span class="content">PayoutType</span></a>
+      <li><a href="#enum-receiptsanddeliveriesmode"><span class="secno">3.9</span> <span class="content">ReceiptsAndDeliveriesMode</span></a>
+      <li><a href="#enum-tvrelationship"><span class="secno">3.10</span> <span class="content">TVRelationship</span></a>
+      <li><a href="#enum-tprelationship"><span class="secno">3.11</span> <span class="content">TPRelationship</span></a>
+      <li><a href="#enum-receivergrouptype"><span class="secno">3.12</span> <span class="content">ReceiverGroupType</span></a>
+      <li><a href="#enum-persontaxcategory"><span class="secno">3.13</span> <span class="content">PersonTaxCategory</span></a>
+      <li><a href="#enum-fifodirection"><span class="secno">3.14</span> <span class="content">FifoDirection</span></a>
+      <li><a href="#enum-fifotransactiontype"><span class="secno">3.15</span> <span class="content">FifoTransactionType</span></a>
+      <li><a href="#enum-rawtransactiontype"><span class="secno">3.16</span> <span class="content">RawTransactionType</span></a>
      </ol>
     <li>
      <a href="#references"><span class="secno"></span> <span class="content">References</span></a>
      <ol class="toc">
-      <li><a href="#informative"><span class="secno"></span> <span class="content">Non-Normative References</span></a>
+      <li><a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a>
      </ol>
    </ol>
   </nav>
   <main>
-   <h2 class="heading settled" data-level="1" id="intro"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#intro"></a></h2>
-   <p>OpenFASTER is a <strong>vendor-independent family of open standards</strong> for exchanging
-the data required for EU withholding-tax and dividend reporting. It is designed
-so that <a data-link-type="dfn" href="#certified-financial-intermediary" id="ref-for-certified-financial-intermediary">Certified Financial Intermediaries</a>
-(CFIs) — banks, custodians, central securities depositories, and other reporting
-parties — can produce and exchange this data interoperably, regardless of which
-vendor or in-house system they use.</p>
-   <h3 class="heading settled" data-level="1.1" id="scope"><span class="secno">1.1. </span><span class="content">Scope</span><a class="self-link" href="#scope"></a></h3>
-   <p>The scope of OpenFASTER is <strong>purely operational</strong>: defining the technical data
-model, vocabulary, and (in future modules) the exchange mechanics that make
-indirect reporting and the collection of supplementary data efficient and
-standardized across the EU.</p>
-   <p>OpenFASTER deliberately does <em>not</em> address:</p>
-   <ul>
-    <li data-md>
-     <p>legislative or business-logic questions (for example, whether anonymous
-reporting is permissible);</p>
-    <li data-md>
-     <p>the internal calculation of tax positions; or</p>
-    <li data-md>
-     <p>commercial or contractual arrangements between participants.</p>
-   </ul>
-   <h3 class="heading settled" data-level="1.2" id="regulatory-context"><span class="secno">1.2. </span><span class="content">Regulatory context</span><a class="self-link" href="#regulatory-context"></a></h3>
-   <p>OpenFASTER is developed against the timeline of the EU <a data-link-type="biblio" href="#biblio-faster" title="Council Directive (EU) on Faster and Safer Relief of Excess Withholding Taxes (FASTER)">[FASTER]</a> initiative and
-the German <a data-link-type="biblio" href="#biblio-mikadiv" title="MiKaDiv – Mitteilungsverfahren für Kapitalerträge und Steuerabzug (§45b EStG)">[MIKADIV]</a> reporting procedure.</p>
-   <table class="data">
-    <thead>
-     <tr>
-      <th>Milestone
-      <th>Date
-  
-    <tbody>
-     <tr>
-      <td>Standardized dividend reporting (MiKaDiv)
-      <td>2027-01-01
-    
-     <tr>
-      <td>Full regulatory reporting under FASTER
-      <td>2030-01-01
-
-   </table>
-   <p>The goals shared with these initiatives are harmonized dividend reporting,
-reduced withholding-tax fraud, greater transparency for tax authorities, and
-efficient cross-border tax-reclaim processing.</p>
-   <h2 class="heading settled" data-level="2" id="terminology"><span class="secno">2. </span><span class="content">Terminology</span><a class="self-link" href="#terminology"></a></h2>
-   <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="certified-financial-intermediary">Certified Financial Intermediary</dfn> (CFI)</p>
-   <dl>
-    <dt data-md>A regulated party — such as a bank, custodian, or central securities
-depository — that participates in withholding-tax and dividend reporting and
-exchanges disclosure data with other participants.
-   </dl>
-   <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="disclosure">disclosure</dfn></p>
-   <dl>
-    <dt data-md>One complete third-party disclosure record for a single capital-income event,
-identified and linked together by a single <a data-link-type="dfn" href="#requestid" id="ref-for-requestid">RequestId</a>.
-   </dl>
-   <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="requestid">RequestId</dfn></p>
-   <dl>
-    <dt data-md>The identifier that ties together all parts of one <a data-link-type="dfn" href="#disclosure" id="ref-for-disclosure">disclosure</a>. It is a
-linking key only: any value that is unique within the submission is valid, so
-it need not be a UUID.
-   </dl>
-   <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="paying-agent">paying agent</dfn></p>
-   <dl>
-    <dt data-md>The German institution responsible for the withholding-tax reporting for a
-given capital-income event.
-   </dl>
-   <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="tax-voucher">tax voucher</dfn></p>
-   <dl>
-    <dt data-md>The tax certificate (Steuerbescheinigung) issued in respect of a
-capital-income event.
-   </dl>
-   <h2 class="heading settled" data-level="3" id="mikadiv-module"><span class="secno">3. </span><span class="content">The MiKaDiv Third-Party Disclosure module</span><a class="self-link" href="#mikadiv-module"></a></h2>
-   <p>The first OpenFASTER module defines the data required for a German MiKaDiv
-(§45b EStG) <strong>third-party disclosure</strong>: the structured description of a
-capital-income event, the securities involved, every party in the chain, and the
-receipts and deliveries that support a first-in-first-out (FIFO) determination.</p>
+   <h2 class="heading settled" data-level="1" id="mikadiv-module"><span class="secno">1. </span><span class="content">The MiKaDiv Third-Party Disclosure module</span><a class="self-link" href="#mikadiv-module"></a></h2>
+   <p>The MiKaDiv (§45b EStG) <strong>third-party disclosure</strong> module defines the data
+required to describe a capital-income event, the securities involved, every
+party in the chain, and the receipts and deliveries that support a
+first-in-first-out (FIFO) determination.</p>
    <p>An accompanying self-documenting Excel template is published alongside this
 specification:
 <a href="https://github.com/OpenFASTER-Standard/spec/blob/main/mikadiv/generated/MiKaDiv_ThirdPartyDisclosure_Template.xlsx">MiKaDiv Third-Party Disclosure Template</a>.
 Each sheet mirrors one logical group below; every field carries its English
 description, type constraints, and requiredness in the header rows.</p>
-   <h3 class="heading settled" data-level="3.1" id="source-schema"><span class="secno">3.1. </span><span class="content">Source schema</span><a class="self-link" href="#source-schema"></a></h3>
+   <h3 class="heading settled" data-level="1.1" id="source-schema"><span class="secno">1.1. </span><span class="content">Source schema</span><a class="self-link" href="#source-schema"></a></h3>
    <p>The data model of this module is derived from the XML Schema Definition (XSD)
-produced by the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="vib">VIB</dfn> (Verband Internationaler Banken e.V.), the
+produced by the VIB (Verband Internationaler Banken e.V.), the
 association representing internationally active banks in Germany. The VIB is
 developing this schema to standardize the electronic exchange of MiKaDiv
 third-party disclosure data between banks and towards the German
-<a data-link-type="dfn" href="#paying-agent" id="ref-for-paying-agent">paying agent</a>.</p>
-   <p>OpenFASTER treats the <a data-link-type="dfn" href="#vib" id="ref-for-vib">VIB</a> XSD as the machine source of truth: the field
+<a href="https://openfaster.org/about#paying-agent">paying agent</a>.</p>
+   <p>OpenFASTER treats the VIB XSD as the machine source of truth: the field
 definitions, requiredness, enumerations, the <a href="#data-dictionary">data dictionary</a>
 in this document, and the accompanying Excel template are all generated directly
 from it. As the VIB schema evolves, regenerating from the updated XSD keeps this
 specification and the template in lock-step with the VIB source.</p>
-   <h3 class="heading settled" data-level="3.2" id="data-model"><span class="secno">3.2. </span><span class="content">Data model</span><a class="self-link" href="#data-model"></a></h3>
-   <p>A <a data-link-type="dfn" href="#disclosure" id="ref-for-disclosure①">disclosure</a> is decomposed into several logical groups (rendered as separate
-sheets in the Excel template). Every group carries the <a data-link-type="dfn" href="#requestid" id="ref-for-requestid①">RequestId</a> so that the
+   <h3 class="heading settled" data-level="1.2" id="data-model"><span class="secno">1.2. </span><span class="content">Data model</span><a class="self-link" href="#data-model"></a></h3>
+   <p>A <a href="https://openfaster.org/about#disclosure">disclosure</a> is decomposed into several
+logical groups (rendered as separate sheets in the Excel template). Every
+group carries the <a href="https://openfaster.org/about#requestid">RequestId</a> so that the
 groups can be recombined into one record.</p>
    <table class="data">
     <thead>
@@ -2320,7 +2069,7 @@ groups can be recombined into one record.</p>
      <tr>
       <td>Tax Voucher Individuals / Legal Persons
       <td>up to 2 receivers total
-      <td>The recipients of the <a data-link-type="dfn" href="#tax-voucher" id="ref-for-tax-voucher">tax voucher</a>.
+      <td>The recipients of the <a href="https://openfaster.org/about#tax-voucher">tax voucher</a>.
     
      <tr>
       <td>Third Party Individuals / Legal Persons
@@ -2343,35 +2092,36 @@ groups can be recombined into one record.</p>
       <td>The unreduced ledger when the paying agent performs the FIFO calculation.
 
    </table>
-   <p>When the raw ledger is supplied, the German <a data-link-type="dfn" href="#paying-agent" id="ref-for-paying-agent①">paying agent</a> performs the FIFO
+   <p>When the raw ledger is supplied, the German
+<a href="https://openfaster.org/about#paying-agent">paying agent</a> performs the FIFO
 determination; when the submitter applies FIFO itself, the reduced trades are
 supplied directly.</p>
-   <h3 class="heading settled" data-level="3.3" id="linking-model"><span class="secno">3.3. </span><span class="content">Linking model</span><a class="self-link" href="#linking-model"></a></h3>
-   <p>The <a data-link-type="dfn" href="#requestid" id="ref-for-requestid②">RequestId</a> is the key on the <em>Requests Master</em> group and the first column
-of every other group. Because it is used only to join the groups, any value that
-is unique within a submission works.</p>
+   <h3 class="heading settled" data-level="1.3" id="linking-model"><span class="secno">1.3. </span><span class="content">Linking model</span><a class="self-link" href="#linking-model"></a></h3>
+   <p>The <a href="https://openfaster.org/about#requestid">RequestId</a> is the key on the <em>Requests
+Master</em> group and the first column of every other group. Because it is used
+only to join the groups, any value that is unique within a submission works.</p>
    <ul>
     <li data-md>
      <p><b>Cancellations.</b> Set <code>RecordType</code> = <code>Cancel</code> on the master group, fill
 <code>PreviousRequestIdForCancellation</code> (and optionally <code>ReportSerialNumber</code>), and
-leave every other group empty for that <a data-link-type="dfn" href="#requestid" id="ref-for-requestid③">RequestId</a>.</p>
+leave every other group empty for that RequestId.</p>
     <li data-md>
      <p><b>Community recipients.</b> A community tax-voucher receiver (up to 10
 members) is captured by setting <code>ReceiverGroupType</code> = <code>CommunityMember</code> on
 the tax-voucher groups and giving all members of one community the same
 <code>CommunityGroupId</code>. A community counts as one receiver.</p>
    </ul>
-   <h3 class="heading settled" data-level="3.4" id="module-conformance"><span class="secno">3.4. </span><span class="content">Conformance requirements</span><a class="self-link" href="#module-conformance"></a></h3>
+   <h3 class="heading settled" data-level="1.4" id="module-conformance"><span class="secno">1.4. </span><span class="content">Conformance requirements</span><a class="self-link" href="#module-conformance"></a></h3>
    <p>A conforming producer MUST populate every field marked <code>Required</code> for each group
 it emits. Fields marked <code>Conditional</code> MUST be populated when the condition stated
 in their description holds, and MUST otherwise be omitted or left empty. Fields
 marked <code>Optional</code> MAY be omitted.</p>
    <p>Enum-typed fields MUST carry one of the values enumerated for that field in
 <a href="#enumerations">Enumerations</a>. A conforming consumer MUST reject a
-<a data-link-type="dfn" href="#disclosure" id="ref-for-disclosure②">disclosure</a> whose enum-typed field carries a value outside the enumerated set.</p>
-   <h2 class="heading settled" data-level="4" id="data-dictionary"><span class="secno">4. </span><span class="content">Data dictionary</span><a class="self-link" href="#data-dictionary"></a></h2>
-   <p>The following field-level definitions are generated from <code>ThirdPartyDisclosureRequest.xsd</code>. Each group below corresponds to one sheet of the accompanying Excel template. The <code>RequestId</code> column links the groups of a single <a data-link-type="dfn" href="#disclosure" id="ref-for-disclosure③">disclosure</a> together.</p>
-   <h3 class="heading settled" data-level="4.1" id="sheet-1-requests-master"><span class="secno">4.1. </span><span class="content">1 Requests Master</span><a class="self-link" href="#sheet-1-requests-master"></a></h3>
+disclosure whose enum-typed field carries a value outside the enumerated set.</p>
+   <h2 class="heading settled" data-level="2" id="data-dictionary"><span class="secno">2. </span><span class="content">Data dictionary</span><a class="self-link" href="#data-dictionary"></a></h2>
+   <p>The following field-level definitions are generated from <code>ThirdPartyDisclosureRequest.xsd</code>. Each group below corresponds to one sheet of the accompanying Excel template. The <code>RequestId</code> column links the groups of a single <a href="https://openfaster.org/about#disclosure">disclosure</a> together.</p>
+   <h3 class="heading settled" data-level="2.1" id="sheet-1-requests-master"><span class="secno">2.1. </span><span class="content">1 Requests Master</span><a class="self-link" href="#sheet-1-requests-master"></a></h3>
    <p><b>Significance.</b> The parent record. One row per disclosure, holding administrative and routing metadata, the record type (new request vs cancellation), the directly-contracted securities account, the account type and the account relationship. Every other sheet links back to this one through RequestId.</p>
    <p><b>Cardinality.</b> Exactly 1 row per RequestId (this sheet defines the RequestId).</p>
    <p><b>When to fill.</b> Always - every disclosure or cancellation starts here.</p>
@@ -2541,7 +2291,7 @@ marked <code>Optional</code> MAY be omitted.</p>
       <td>Enum (<a href="#enum-accountrelationship">AccountRelationship</a>): <code>Trust</code>, <code>Usufruct</code>, <code>Pledge</code>
       <td class="long">If the tax voucher person is not the beneficial owner (creditor), then the account relationship has to be specified.
    </table>
-   <h3 class="heading settled" data-level="4.2" id="sheet-2-security-related-information"><span class="secno">4.2. </span><span class="content">2 Security Related Information</span><a class="self-link" href="#sheet-2-security-related-information"></a></h3>
+   <h3 class="heading settled" data-level="2.2" id="sheet-2-security-related-information"><span class="secno">2.2. </span><span class="content">2 Security Related Information</span><a class="self-link" href="#sheet-2-security-related-information"></a></h3>
    <p><b>Significance.</b> The single capital-income event being disclosed: the security (ISIN, name, type), the corporate-action reference, payment details, the complete tax breakdown (gross/net, withholding tax, solidarity surcharge and the nominal quantities per holding category) and which receipts/deliveries mode is used. It also contains the depositary-receipt block (underlying German security, record date, issuance ratios, certificates held), which describes the depositary receipt (e.g. ADR/GDR) through which the income was received.</p>
    <p><b>Cardinality.</b> 0..1 row per RequestId.</p>
    <p><b>When to fill.</b> Required when RecordType = Request. Leave empty for RecordType = Cancel. Within this sheet, the depositary-receipt fields are required only when IsDepositaryReceipt = true.</p>
@@ -2790,7 +2540,7 @@ marked <code>Optional</code> MAY be omitted.</p>
       <td>DateTime (YYYY-MM-DDThh:mm:ss)
       <td class="long">Date of the initial holdings evaluation.
    </table>
-   <h3 class="heading settled" data-level="4.3" id="sheet-3-tax-voucher-individuals"><span class="secno">4.3. </span><span class="content">3 Tax Voucher Individuals</span><a class="self-link" href="#sheet-3-tax-voucher-individuals"></a></h3>
+   <h3 class="heading settled" data-level="2.3" id="sheet-3-tax-voucher-individuals"><span class="secno">2.3. </span><span class="content">3 Tax Voucher Individuals</span><a class="self-link" href="#sheet-3-tax-voucher-individuals"></a></h3>
    <p><b>Significance.</b> Natural persons who receive the tax certificate (voucher) - either as beneficial owner (Creditor) or as account holder - with their name, registration address and tax identification. Community members are recorded here as well.</p>
    <p><b>Cardinality.</b> Tax-voucher receivers total up to 2 per RequestId, counted across this sheet and '4 Tax Voucher Legal Persons'. A community counts as ONE receiver and may span up to 10 member rows that share one CommunityGroupId.</p>
    <p><b>When to fill.</b> For Request records at least one tax-voucher receiver is required (here or on the legal-persons sheet). Add one row per natural-person receiver or community member.</p>
@@ -2942,7 +2692,7 @@ marked <code>Optional</code> MAY be omitted.</p>
       <td>Text (max 35)
       <td class="long">If no German tax id number has been assigned yet: Tax identification attribute awarded by the country of residence.
    </table>
-   <h3 class="heading settled" data-level="4.4" id="sheet-4-tax-voucher-legal-persons"><span class="secno">4.4. </span><span class="content">4 Tax Voucher Legal Persons</span><a class="self-link" href="#sheet-4-tax-voucher-legal-persons"></a></h3>
+   <h3 class="heading settled" data-level="2.4" id="sheet-4-tax-voucher-legal-persons"><span class="secno">2.4. </span><span class="content">4 Tax Voucher Legal Persons</span><a class="self-link" href="#sheet-4-tax-voucher-legal-persons"></a></h3>
    <p><b>Significance.</b> Non-natural tax-certificate receivers (companies, funds, partnerships) with name, registration address and the detailed legal-person tax identification.</p>
    <p><b>Cardinality.</b> Counts towards the up-to-2 tax-voucher receivers per RequestId (shared with '3 Tax Voucher Individuals').</p>
    <p><b>When to fill.</b> For Request records, use when a tax-voucher receiver (or community member) is a legal person.</p>
@@ -3094,7 +2844,7 @@ marked <code>Optional</code> MAY be omitted.</p>
       <td>Date (YYYY-MM-DD)
       <td class="long">Date when the entity was established / founded / incorporated / launched.
    </table>
-   <h3 class="heading settled" data-level="4.5" id="sheet-5-third-party-individuals"><span class="secno">4.5. </span><span class="content">5 Third Party Individuals</span><a class="self-link" href="#sheet-5-third-party-individuals"></a></h3>
+   <h3 class="heading settled" data-level="2.5" id="sheet-5-third-party-individuals"><span class="secno">2.5. </span><span class="content">5 Third Party Individuals</span><a class="self-link" href="#sheet-5-third-party-individuals"></a></h3>
    <p><b>Significance.</b> Natural persons who are the account holder but not the beneficial owner (third parties), stating in what capacity they hold for the beneficial owner (trustee, pledgor or grantor of usufruct).</p>
    <p><b>Cardinality.</b> Third-party persons total up to 5 per RequestId, counted across this sheet and '6 Third Party Legal Persons'.</p>
    <p><b>When to fill.</b> Only when the account holder is not the beneficial owner AND the beneficial owner is disclosed. Otherwise leave empty.</p>
@@ -3234,7 +2984,7 @@ marked <code>Optional</code> MAY be omitted.</p>
       <td>Text (max 35)
       <td class="long">If no German tax id number has been assigned yet: Tax identification attribute awarded by the country of residence.
    </table>
-   <h3 class="heading settled" data-level="4.6" id="sheet-6-third-party-legal-persons"><span class="secno">4.6. </span><span class="content">6 Third Party Legal Persons</span><a class="self-link" href="#sheet-6-third-party-legal-persons"></a></h3>
+   <h3 class="heading settled" data-level="2.6" id="sheet-6-third-party-legal-persons"><span class="secno">2.6. </span><span class="content">6 Third Party Legal Persons</span><a class="self-link" href="#sheet-6-third-party-legal-persons"></a></h3>
    <p><b>Significance.</b> Non-natural third parties (account holders that are not the beneficial owner) with name, address and legal-person tax identification, including the special investment-funds tax number where relevant.</p>
    <p><b>Cardinality.</b> Counts towards the up-to-5 third-party persons per RequestId (shared with '5 Third Party Individuals').</p>
    <p><b>When to fill.</b> Same condition as '5 Third Party Individuals', when the third party is a legal person.</p>
@@ -3368,7 +3118,7 @@ marked <code>Optional</code> MAY be omitted.</p>
       <td>Text (max 35)
       <td class="long">Tax identification number assigned to the tax voucher person by its country of tax residency.
    </table>
-   <h3 class="heading settled" data-level="4.7" id="sheet-7-custody-chain"><span class="secno">4.7. </span><span class="content">7 Custody Chain</span><a class="self-link" href="#sheet-7-custody-chain"></a></h3>
+   <h3 class="heading settled" data-level="2.7" id="sheet-7-custody-chain"><span class="secno">2.7. </span><span class="content">7 Custody Chain</span><a class="self-link" href="#sheet-7-custody-chain"></a></h3>
    <p><b>Significance.</b> The ordered chain of custodians / intermediaries between the beneficiary and the German paying agent. Each link carries its name, address, tax identification, BIC, account number, account type and the nominal held.</p>
    <p><b>Cardinality.</b> 0..20 rows per RequestId, ordered by NumberInChain (1 = the custodian closest to the beneficiary).</p>
    <p><b>When to fill.</b> Required for Request records; add one row per intermediary link in the custody chain.</p>
@@ -3514,7 +3264,7 @@ marked <code>Optional</code> MAY be omitted.</p>
       <td>Text (max 35)
       <td class="long">Tax identification number assigned to the tax voucher person by its country of tax residency.
    </table>
-   <h3 class="heading settled" data-level="4.8" id="sheet-8-fifo-trades"><span class="secno">4.8. </span><span class="content">8 FIFO Trades</span><a class="self-link" href="#sheet-8-fifo-trades"></a></h3>
+   <h3 class="heading settled" data-level="2.8" id="sheet-8-fifo-trades"><span class="secno">2.8. </span><span class="content">8 FIFO Trades</span><a class="self-link" href="#sheet-8-fifo-trades"></a></h3>
    <p><b>Significance.</b> Receipts and deliveries within the relevant window, already reduced with FiFo (first-in-first-out) calculation by the submitter. Receipts and deliveries share this sheet and are distinguished by the Direction column.</p>
    <p><b>Cardinality.</b> Up to 1000 Receipt rows and up to 1000 Delivery rows per RequestId.</p>
    <p><b>When to fill.</b> Only when ReceiptsAndDeliveriesMode = FiFo. Leave empty when the mode = All.</p>
@@ -3588,7 +3338,7 @@ marked <code>Optional</code> MAY be omitted.</p>
       <td>Text (max 45)
       <td class="long">Transaction reference German Paying Agent.
    </table>
-   <h3 class="heading settled" data-level="4.9" id="sheet-9-raw-transactions-all"><span class="secno">4.9. </span><span class="content">9 Raw Transactions All</span><a class="self-link" href="#sheet-9-raw-transactions-all"></a></h3>
+   <h3 class="heading settled" data-level="2.9" id="sheet-9-raw-transactions-all"><span class="secno">2.9. </span><span class="content">9 Raw Transactions All</span><a class="self-link" href="#sheet-9-raw-transactions-all"></a></h3>
    <p><b>Significance.</b> The full, unreduced ledger of receipts and deliveries (no FiFo applied); the German paying agent performs the FiFo calculation. The opening balance is captured on the Security Related Information sheet; every movement is one row here.</p>
    <p><b>Cardinality.</b> Unbounded rows per RequestId.</p>
    <p><b>When to fill.</b> Only when ReceiptsAndDeliveriesMode = All. Leave empty when the mode = FiFo.</p>
@@ -3668,9 +3418,9 @@ marked <code>Optional</code> MAY be omitted.</p>
       <td>Text (max 45)
       <td class="long">Transaction reference German Paying Agent.
    </table>
-   <h2 class="heading settled" data-level="5" id="enumerations"><span class="secno">5. </span><span class="content">Enumerations</span><a class="self-link" href="#enumerations"></a></h2>
+   <h2 class="heading settled" data-level="3" id="enumerations"><span class="secno">3. </span><span class="content">Enumerations</span><a class="self-link" href="#enumerations"></a></h2>
    <p>Every value that an enum-typed field may carry, with its meaning and the fields that use it.</p>
-   <h3 class="heading settled" data-level="5.1" id="enum-boolean"><span class="secno">5.1. </span><span class="content">Boolean</span><a class="self-link" href="#enum-boolean"></a></h3>
+   <h3 class="heading settled" data-level="3.1" id="enum-boolean"><span class="secno">3.1. </span><span class="content">Boolean</span><a class="self-link" href="#enum-boolean"></a></h3>
    <p><em>Used in:</em> <code>1 Requests Master.IsCorrectionRequest</code>, <code>2 Security Related Information.IsDepositaryReceipt</code>, <code>2 Security Related Information.FifoReceiptsMoreThan1000Available</code>, <code>2 Security Related Information.FifoDeliveriesMoreThan1000Available</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3688,7 +3438,7 @@ marked <code>Optional</code> MAY be omitted.</p>
       <td><code>false</code>
       <td class="long">No - the condition does not apply.
    </table>
-   <h3 class="heading settled" data-level="5.2" id="enum-recordtype"><span class="secno">5.2. </span><span class="content">RecordType</span><a class="self-link" href="#enum-recordtype"></a></h3>
+   <h3 class="heading settled" data-level="3.2" id="enum-recordtype"><span class="secno">3.2. </span><span class="content">RecordType</span><a class="self-link" href="#enum-recordtype"></a></h3>
    <p><em>Used in:</em> <code>1 Requests Master.RecordType</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3706,7 +3456,7 @@ marked <code>Optional</code> MAY be omitted.</p>
       <td><code>Cancel</code>
       <td class="long">Cancellation of a previously submitted disclosure request; only the master cancellation fields are filled and the child sheets stay empty.
    </table>
-   <h3 class="heading settled" data-level="5.3" id="enum-requestedservice"><span class="secno">5.3. </span><span class="content">RequestedService</span><a class="self-link" href="#enum-requestedservice"></a></h3>
+   <h3 class="heading settled" data-level="3.3" id="enum-requestedservice"><span class="secno">3.3. </span><span class="content">RequestedService</span><a class="self-link" href="#enum-requestedservice"></a></h3>
    <p><em>Used in:</em> <code>1 Requests Master.RequestedService</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3727,7 +3477,7 @@ marked <code>Optional</code> MAY be omitted.</p>
       <td><code>Relief</code>
       <td class="long">The custodian provided relief at source and additional information gets provided via the request.
    </table>
-   <h3 class="heading settled" data-level="5.4" id="enum-requestedattestationtype"><span class="secno">5.4. </span><span class="content">RequestedAttestationType</span><a class="self-link" href="#enum-requestedattestationtype"></a></h3>
+   <h3 class="heading settled" data-level="3.4" id="enum-requestedattestationtype"><span class="secno">3.4. </span><span class="content">RequestedAttestationType</span><a class="self-link" href="#enum-requestedattestationtype"></a></h3>
    <p><em>Used in:</em> <code>1 Requests Master.RequestedAttestationType</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3748,7 +3498,7 @@ marked <code>Optional</code> MAY be omitted.</p>
       <td><code>SB</code>
       <td class="long">SB for collective tax voucher.
    </table>
-   <h3 class="heading settled" data-level="5.5" id="enum-accounttype"><span class="secno">5.5. </span><span class="content">AccountType</span><a class="self-link" href="#enum-accounttype"></a></h3>
+   <h3 class="heading settled" data-level="3.5" id="enum-accounttype"><span class="secno">3.5. </span><span class="content">AccountType</span><a class="self-link" href="#enum-accounttype"></a></h3>
    <p><em>Used in:</em> <code>1 Requests Master.AccountType</code>, <code>7 Custody Chain.AccountType</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3781,7 +3531,7 @@ marked <code>Optional</code> MAY be omitted.</p>
       <td><code>G</code>
       <td class="long">G – Other type of account
    </table>
-   <h3 class="heading settled" data-level="5.6" id="enum-accountrelationship"><span class="secno">5.6. </span><span class="content">AccountRelationship</span><a class="self-link" href="#enum-accountrelationship"></a></h3>
+   <h3 class="heading settled" data-level="3.6" id="enum-accountrelationship"><span class="secno">3.6. </span><span class="content">AccountRelationship</span><a class="self-link" href="#enum-accountrelationship"></a></h3>
    <p><em>Used in:</em> <code>1 Requests Master.AccountRelationship</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3802,7 +3552,7 @@ marked <code>Optional</code> MAY be omitted.</p>
       <td><code>Pledge</code>
       <td class="long">Pledged securities account
    </table>
-   <h3 class="heading settled" data-level="5.7" id="enum-typeofsecurity"><span class="secno">5.7. </span><span class="content">TypeOfSecurity</span><a class="self-link" href="#enum-typeofsecurity"></a></h3>
+   <h3 class="heading settled" data-level="3.7" id="enum-typeofsecurity"><span class="secno">3.7. </span><span class="content">TypeOfSecurity</span><a class="self-link" href="#enum-typeofsecurity"></a></h3>
    <p><em>Used in:</em> <code>2 Security Related Information.TypeOfSecurity</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3823,7 +3573,7 @@ marked <code>Optional</code> MAY be omitted.</p>
       <td><code>DepositaryReceipt</code>
       <td class="long">Depositary receipt (e.g. ADR, GDR). A certificate issued by a depositary bank representing shares of a foreign company held in custody. Capital income arises from the underlying dividend distributions of the foreign security.
    </table>
-   <h3 class="heading settled" data-level="5.8" id="enum-payouttype"><span class="secno">5.8. </span><span class="content">PayoutType</span><a class="self-link" href="#enum-payouttype"></a></h3>
+   <h3 class="heading settled" data-level="3.8" id="enum-payouttype"><span class="secno">3.8. </span><span class="content">PayoutType</span><a class="self-link" href="#enum-payouttype"></a></h3>
    <p><em>Used in:</em> <code>2 Security Related Information.PayoutType</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3841,7 +3591,7 @@ marked <code>Optional</code> MAY be omitted.</p>
       <td><code>Shares</code>
       <td class="long">Payment in Shares (stock dividend).
    </table>
-   <h3 class="heading settled" data-level="5.9" id="enum-receiptsanddeliveriesmode"><span class="secno">5.9. </span><span class="content">ReceiptsAndDeliveriesMode</span><a class="self-link" href="#enum-receiptsanddeliveriesmode"></a></h3>
+   <h3 class="heading settled" data-level="3.9" id="enum-receiptsanddeliveriesmode"><span class="secno">3.9. </span><span class="content">ReceiptsAndDeliveriesMode</span><a class="self-link" href="#enum-receiptsanddeliveriesmode"></a></h3>
    <p><em>Used in:</em> <code>2 Security Related Information.ReceiptsAndDeliveriesMode</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3859,7 +3609,7 @@ marked <code>Optional</code> MAY be omitted.</p>
       <td><code>All</code>
       <td class="long">Receipts and deliveries are declared WITHOUT FiFo (the German paying agent applies FiFo) - fill the Raw Transactions All sheet.
    </table>
-   <h3 class="heading settled" data-level="5.10" id="enum-tvrelationship"><span class="secno">5.10. </span><span class="content">TVRelationship</span><a class="self-link" href="#enum-tvrelationship"></a></h3>
+   <h3 class="heading settled" data-level="3.10" id="enum-tvrelationship"><span class="secno">3.10. </span><span class="content">TVRelationship</span><a class="self-link" href="#enum-tvrelationship"></a></h3>
    <p><em>Used in:</em> <code>3 Tax Voucher Individuals.Relationship</code>, <code>4 Tax Voucher Legal Persons.Relationship</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3877,7 +3627,7 @@ marked <code>Optional</code> MAY be omitted.</p>
       <td><code>AccountHolder</code>
       <td class="long">Account holder (not the beneficial owner).
    </table>
-   <h3 class="heading settled" data-level="5.11" id="enum-tprelationship"><span class="secno">5.11. </span><span class="content">TPRelationship</span><a class="self-link" href="#enum-tprelationship"></a></h3>
+   <h3 class="heading settled" data-level="3.11" id="enum-tprelationship"><span class="secno">3.11. </span><span class="content">TPRelationship</span><a class="self-link" href="#enum-tprelationship"></a></h3>
    <p><em>Used in:</em> <code>5 Third Party Individuals.Relationship</code>, <code>6 Third Party Legal Persons.Relationship</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3898,7 +3648,7 @@ marked <code>Optional</code> MAY be omitted.</p>
       <td><code>Grantor of usufruct</code>
       <td class="long">Grantor of usufruct.
    </table>
-   <h3 class="heading settled" data-level="5.12" id="enum-receivergrouptype"><span class="secno">5.12. </span><span class="content">ReceiverGroupType</span><a class="self-link" href="#enum-receivergrouptype"></a></h3>
+   <h3 class="heading settled" data-level="3.12" id="enum-receivergrouptype"><span class="secno">3.12. </span><span class="content">ReceiverGroupType</span><a class="self-link" href="#enum-receivergrouptype"></a></h3>
    <p><em>Used in:</em> <code>3 Tax Voucher Individuals.ReceiverGroupType</code>, <code>4 Tax Voucher Legal Persons.ReceiverGroupType</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3916,7 +3666,7 @@ marked <code>Optional</code> MAY be omitted.</p>
       <td><code>CommunityMember</code>
       <td class="long">One member of a community of up to 10 persons; all members share the same CommunityGroupId and together form one receiver.
    </table>
-   <h3 class="heading settled" data-level="5.13" id="enum-persontaxcategory"><span class="secno">5.13. </span><span class="content">PersonTaxCategory</span><a class="self-link" href="#enum-persontaxcategory"></a></h3>
+   <h3 class="heading settled" data-level="3.13" id="enum-persontaxcategory"><span class="secno">3.13. </span><span class="content">PersonTaxCategory</span><a class="self-link" href="#enum-persontaxcategory"></a></h3>
    <p><em>Used in:</em> <code>3 Tax Voucher Individuals.PersonTaxCategory</code>, <code>4 Tax Voucher Legal Persons.PersonTaxCategory</code>, <code>5 Third Party Individuals.PersonTaxCategory</code>, <code>6 Third Party Legal Persons.PersonTaxCategory</code>, <code>7 Custody Chain.PersonTaxCategory</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3934,7 +3684,7 @@ marked <code>Optional</code> MAY be omitted.</p>
       <td><code>NonGerman</code>
       <td class="long">Non-German person: provide foreign identifiers (ForeignTaxId, LEI, EUID, or legal form + date of foundation, as applicable).
    </table>
-   <h3 class="heading settled" data-level="5.14" id="enum-fifodirection"><span class="secno">5.14. </span><span class="content">FifoDirection</span><a class="self-link" href="#enum-fifodirection"></a></h3>
+   <h3 class="heading settled" data-level="3.14" id="enum-fifodirection"><span class="secno">3.14. </span><span class="content">FifoDirection</span><a class="self-link" href="#enum-fifodirection"></a></h3>
    <p><em>Used in:</em> <code>8 FIFO Trades.Direction</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3952,7 +3702,7 @@ marked <code>Optional</code> MAY be omitted.</p>
       <td><code>Delivery</code>
       <td class="long">Delivery trade: sales, book-entry transfers out (delivery out), securities lending, and repo transactions.
    </table>
-   <h3 class="heading settled" data-level="5.15" id="enum-fifotransactiontype"><span class="secno">5.15. </span><span class="content">FifoTransactionType</span><a class="self-link" href="#enum-fifotransactiontype"></a></h3>
+   <h3 class="heading settled" data-level="3.15" id="enum-fifotransactiontype"><span class="secno">3.15. </span><span class="content">FifoTransactionType</span><a class="self-link" href="#enum-fifotransactiontype"></a></h3>
    <p><em>Used in:</em> <code>8 FIFO Trades.TransactionType</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -3985,7 +3735,7 @@ marked <code>Optional</code> MAY be omitted.</p>
       <td><code>RP</code>
       <td class="long">Retransfer based on a repo transaction.
    </table>
-   <h3 class="heading settled" data-level="5.16" id="enum-rawtransactiontype"><span class="secno">5.16. </span><span class="content">RawTransactionType</span><a class="self-link" href="#enum-rawtransactiontype"></a></h3>
+   <h3 class="heading settled" data-level="3.16" id="enum-rawtransactiontype"><span class="secno">3.16. </span><span class="content">RawTransactionType</span><a class="self-link" href="#enum-rawtransactiontype"></a></h3>
    <p><em>Used in:</em> <code>9 Raw Transactions All.TransactionType</code></p>
    <table class="complex data enum-table longlastcol">
     <colgroup>
@@ -4027,42 +3777,6 @@ marked <code>Optional</code> MAY be omitted.</p>
       <td><code>Other</code>
       <td class="long">Other.
    </table>
-   <h2 class="heading settled" data-level="6" id="roadmap"><span class="secno">6. </span><span class="content">Planned work</span><a class="self-link" href="#roadmap"></a></h2>
-   <p>The following modules and improvements are planned. They are <em>not</em> part of
-the normative content of this document yet; they are recorded here to describe the
-intended direction of the OpenFASTER family.</p>
-   <h3 class="heading settled" data-level="6.1" id="roadmap-bulk"><span class="secno">6.1. </span><span class="content">Bulk disclosure template</span><a class="self-link" href="#roadmap-bulk"></a></h3>
-   <p>A revised template (and matching schema) in which an arbitrary number of
-beneficiaries, income lines, and related records can be entered, enabling
-mass/batch processing of disclosures rather than one disclosure at a time.</p>
-   <h3 class="heading settled" data-level="6.2" id="roadmap-vocabulary"><span class="secno">6.2. </span><span class="content">Published multilingual vocabulary</span><a class="self-link" href="#roadmap-vocabulary"></a></h3>
-   <p>A published <em>vocabulary</em> that fixes the (non-official) translations of the
-field names and their explanations into several languages, each validated by
-appropriate domain experts. This lets institutions across jurisdictions work
-against a shared, authoritative set of terms while the official German schema
-remains the legal reference.</p>
-   <h3 class="heading settled" data-level="6.3" id="roadmap-uuid-return"><span class="secno">6.3. </span><span class="content">UUID return format</span><a class="self-link" href="#roadmap-uuid-return"></a></h3>
-   <p>A format (an XSD plus an equivalent Excel representation) with which a reporting
-entity — for example Clearstream, or another reporting party — can report the
-assigned UUIDs back to the foreign banks that originated the disclosures, closing
-the loop between submission and acknowledgement.</p>
-   <h2 class="heading settled" data-level="7" id="versioning"><span class="secno">7. </span><span class="content">Versioning</span><a class="self-link" href="#versioning"></a></h2>
-   <p>OpenFASTER specifications use <a href="https://semver.org/">semantic versioning</a>
-(<code>MAJOR.MINOR.PATCH</code>). This document is version <b>1.0.0</b>.</p>
-   <ul>
-    <li data-md>
-     <p><b>MAJOR</b> — incompatible changes to the data model (for example, removing a
-field, or changing its meaning or requiredness).</p>
-    <li data-md>
-     <p><b>MINOR</b> — backwards-compatible additions (for example, new optional
-fields or new enumeration values).</p>
-    <li data-md>
-     <p><b>PATCH</b> — editorial or documentation-only corrections.</p>
-   </ul>
-   <p>The changelog is published at the top of this document
-(<a href="#changelog">Changelog</a>). It is maintained in
-<code>documentation/changelog.include.bs</code> and included automatically when
-the specification is built.</p>
   </main>
 <script>
 (function() {
@@ -4193,824 +3907,9 @@ the specification is built.</p>
 
 })();
 </script>
-  <h2 class="heading no-num no-ref settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
-  <h3 class="heading no-num no-ref settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
-  <ul class="index">
-   <li><a href="#certified-financial-intermediary">Certified Financial Intermediary</a><span>, in § 2</span>
-   <li><a href="#disclosure">disclosure</a><span>, in § 2</span>
-   <li><a href="#paying-agent">paying agent</a><span>, in § 2</span>
-   <li><a href="#requestid">RequestId</a><span>, in § 2</span>
-   <li><a href="#tax-voucher">tax voucher</a><span>, in § 2</span>
-   <li><a href="#vib">VIB</a><span>, in § 3.1</span>
-  </ul>
   <h2 class="heading no-num no-ref settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
-  <h3 class="heading no-num no-ref settled" id="informative"><span class="content">Non-Normative References</span><a class="self-link" href="#informative"></a></h3>
+  <h3 class="heading no-num no-ref settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
-   <dt id="biblio-faster">[FASTER]
-   <dd><a href="https://taxation-customs.ec.europa.eu/faster_en"><cite>Council Directive (EU) on Faster and Safer Relief of Excess Withholding Taxes (FASTER)</cite></a>. URL: <a href="https://taxation-customs.ec.europa.eu/faster_en">https://taxation-customs.ec.europa.eu/faster_en</a>
-   <dt id="biblio-mikadiv">[MIKADIV]
-   <dd><a href="https://www.bzst.de/"><cite>MiKaDiv – Mitteilungsverfahren für Kapitalerträge und Steuerabzug (§45b EStG)</cite></a>. URL: <a href="https://www.bzst.de/">https://www.bzst.de/</a>
+   <dt id="biblio-openfaster">[OPENFASTER]
+   <dd><a href="https://openfaster.org/about"><cite>About OpenFASTER</cite></a>. URL: <a href="https://openfaster.org/about">https://openfaster.org/about</a>
   </dl>
-<script>/* Boilerplate: script-dom-helper */
-"use strict";
-function query(sel) { return document.querySelector(sel); }
-
-function queryAll(sel) { return [...document.querySelectorAll(sel)]; }
-
-function iter(obj) {
-	if(!obj) return [];
-	var it = obj[Symbol.iterator];
-	if(it) return it;
-	return Object.entries(obj);
-}
-
-function mk(tagname, attrs, ...children) {
-	const el = document.createElement(tagname);
-	for(const [k,v] of iter(attrs)) {
-		if(k.slice(0,3) == "_on") {
-			const eventName = k.slice(3);
-			el.addEventListener(eventName, v);
-		} else if(k[0] == "_") {
-			// property, not attribute
-			el[k.slice(1)] = v;
-		} else {
-			if(v === false || v == null) {
-        continue;
-      } else if(v === true) {
-        el.setAttribute(k, "");
-        continue;
-      } else {
-  			el.setAttribute(k, v);
-      }
-		}
-	}
-	append(el, children);
-	return el;
-}
-
-/* Create shortcuts for every known HTML element */
-[
-  "a",
-  "abbr",
-  "acronym",
-  "address",
-  "applet",
-  "area",
-  "article",
-  "aside",
-  "audio",
-  "b",
-  "base",
-  "basefont",
-  "bdo",
-  "big",
-  "blockquote",
-  "body",
-  "br",
-  "button",
-  "canvas",
-  "caption",
-  "center",
-  "cite",
-  "code",
-  "col",
-  "colgroup",
-  "datalist",
-  "dd",
-  "del",
-  "details",
-  "dfn",
-  "dialog",
-  "div",
-  "dl",
-  "dt",
-  "em",
-  "embed",
-  "fieldset",
-  "figcaption",
-  "figure",
-  "font",
-  "footer",
-  "form",
-  "frame",
-  "frameset",
-  "head",
-  "header",
-  "h1",
-  "h2",
-  "h3",
-  "h4",
-  "h5",
-  "h6",
-  "hr",
-  "html",
-  "i",
-  "iframe",
-  "img",
-  "input",
-  "ins",
-  "kbd",
-  "label",
-  "legend",
-  "li",
-  "link",
-  "main",
-  "map",
-  "mark",
-  "meta",
-  "meter",
-  "nav",
-  "nobr",
-  "noscript",
-  "object",
-  "ol",
-  "optgroup",
-  "option",
-  "output",
-  "p",
-  "param",
-  "pre",
-  "progress",
-  "q",
-  "s",
-  "samp",
-  "script",
-  "section",
-  "select",
-  "small",
-  "source",
-  "span",
-  "strike",
-  "strong",
-  "style",
-  "sub",
-  "summary",
-  "sup",
-  "table",
-  "tbody",
-  "td",
-  "template",
-  "textarea",
-  "tfoot",
-  "th",
-  "thead",
-  "time",
-  "title",
-  "tr",
-  "u",
-  "ul",
-  "var",
-  "video",
-  "wbr",
-  "xmp",
-].forEach(tagname=>{
-	mk[tagname] = (...args) => mk(tagname, ...args);
-});
-
-function* nodesFromChildList(children) {
-	for(const child of children.flat(Infinity)) {
-		if(child instanceof Node) {
-			yield child;
-		} else {
-			yield new Text(child);
-		}
-	}
-}
-function append(el, ...children) {
-	for(const child of nodesFromChildList(children)) {
-		if(el instanceof Node) el.appendChild(child);
-		else el.push(child);
-	}
-	return el;
-}
-
-function insertAfter(el, ...children) {
-	for(const child of nodesFromChildList(children)) {
-		el.parentNode.insertBefore(child, el.nextSibling);
-	}
-	return el;
-}
-
-function clearContents(el) {
-	el.innerHTML = "";
-	return el;
-}
-
-function parseHTML(markup) {
-	if(markup.toLowerCase().trim().indexOf('<!doctype') === 0) {
-		const doc = document.implementation.createHTMLDocument("");
-		doc.documentElement.innerHTML = markup;
-		return doc;
-	} else {
-		const el = mk.template({});
-		el.innerHTML = markup;
-		return el.content;
-	}
-}</script>
-<script>/* Boilerplate: script-dfn-panel */
-"use strict";
-{
-let dfnPanelData = {
-"certified-financial-intermediary": {"dfnID":"certified-financial-intermediary","dfnText":"Certified Financial Intermediary","external":false,"refSections":[{"refs":[{"id":"ref-for-certified-financial-intermediary"}],"title":"1. Introduction"}],"url":"#certified-financial-intermediary"},
-"disclosure": {"dfnID":"disclosure","dfnText":"disclosure","external":false,"refSections":[{"refs":[{"id":"ref-for-disclosure"}],"title":"2. Terminology"},{"refs":[{"id":"ref-for-disclosure\u2460"}],"title":"3.2. Data model"},{"refs":[{"id":"ref-for-disclosure\u2461"}],"title":"3.4. Conformance requirements"},{"refs":[{"id":"ref-for-disclosure\u2462"}],"title":"4. Data dictionary"}],"url":"#disclosure"},
-"paying-agent": {"dfnID":"paying-agent","dfnText":"paying agent","external":false,"refSections":[{"refs":[{"id":"ref-for-paying-agent"}],"title":"3.1. Source schema"},{"refs":[{"id":"ref-for-paying-agent\u2460"}],"title":"3.2. Data model"}],"url":"#paying-agent"},
-"requestid": {"dfnID":"requestid","dfnText":"RequestId","external":false,"refSections":[{"refs":[{"id":"ref-for-requestid"}],"title":"2. Terminology"},{"refs":[{"id":"ref-for-requestid\u2460"}],"title":"3.2. Data model"},{"refs":[{"id":"ref-for-requestid\u2461"},{"id":"ref-for-requestid\u2462"}],"title":"3.3. Linking model"}],"url":"#requestid"},
-"tax-voucher": {"dfnID":"tax-voucher","dfnText":"tax voucher","external":false,"refSections":[{"refs":[{"id":"ref-for-tax-voucher"}],"title":"3.2. Data model"}],"url":"#tax-voucher"},
-"vib": {"dfnID":"vib","dfnText":"VIB","external":false,"refSections":[{"refs":[{"id":"ref-for-vib"}],"title":"3.1. Source schema"}],"url":"#vib"},
-};
-
-document.addEventListener("DOMContentLoaded", ()=>{
-    genAllDfnPanels();
-
-    document.body.addEventListener("click", (e) => {
-        // If not handled already, just hide all dfn panels.
-        hideAllDfnPanels();
-    });
-});
-
-window.addEventListener("resize", () => {
-    // Pin any visible dfn panel
-    queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(el=>positionDfnPanel(el));
-});
-
-function genAllDfnPanels() {
-    for(const panelData of Object.values(dfnPanelData)) {
-        const dfnID = panelData.dfnID;
-        const dfn = document.getElementById(dfnID);
-        if(!dfn) {
-            console.log(`Can't find dfn#${dfnID}.`, panelData);
-            continue;
-        }
-        dfn.panelData = panelData;
-        insertDfnPopupAction(dfn);
-    }
-}
-
-function genDfnPanel(dfn, { dfnID, url, dfnText, refSections, external }) {
-    const dfnPanel = mk.aside({
-        class: "dfn-panel on",
-        id: `infopanel-for-${dfnID}`,
-        "data-for": dfnID,
-        "aria-labelled-by":`infopaneltitle-for-${dfnID}`,
-        },
-        mk.span({id:`infopaneltitle-for-${dfnID}`, style:"display:none"},
-            `Info about the '${dfnText}' ${external?"external":""} reference.`),
-        mk.a({href:url, class:"dfn-link"}, url),
-        refSections.length == 0 ? [] :
-            mk.b({}, "Referenced in:"),
-            mk.ul({},
-                ...refSections.map(section=>
-                    mk.li({},
-                        ...section.refs.map((ref, refI)=>
-                            [
-                                mk.a({ href: `#${ref.id}` },
-                                    (refI == 0) ? section.title : `(${refI + 1})`
-                                ),
-                                " ",
-                            ]
-                        ),
-                    ),
-                ),
-            ),
-        genLinkingSyntaxes(dfn),
-    );
-
-    dfnPanel.addEventListener('click', (event) => {
-        if (event.target.nodeName == 'A') {
-            scrollToTargetAndHighlight(event);
-            pinDfnPanel(dfnPanel);
-        }
-        event.stopPropagation();
-        refocusOnTarget(event);
-    });
-    dfnPanel.addEventListener('keydown', (event) => {
-        if(event.keyCode == 27) { // Escape key
-            hideDfnPanel({dfnPanel});
-            event.stopPropagation();
-            event.preventDefault();
-        }
-    });
-
-    dfnPanel.dfn = dfn;
-    dfn.dfnPanel = dfnPanel;
-    return dfnPanel;
-}
-
-
-
-function hideAllDfnPanels() {
-    // Delete the currently-active dfn panel.
-    queryAll(".dfn-panel").forEach(dfnPanel=>hideDfnPanel({dfnPanel}));
-}
-
-function showDfnPanel(dfn) {
-    hideAllDfnPanels(); // Only display one at a time.
-
-    dfn.setAttribute("aria-expanded", "true");
-
-    const dfnPanel = genDfnPanel(dfn, dfn.panelData);
-
-    // Give the dfn a unique tabindex, and then
-    // give all the tabbable panel bits successive indexes.
-    let tabIndex = 100;
-    dfn.tabIndex = tabIndex++;
-    const tabbable = dfnPanel.querySelectorAll(":is(a, button)");
-    for (const el of tabbable) {
-        el.tabIndex = tabIndex++;
-    }
-
-    append(document.body, dfnPanel);
-    positionDfnPanel(dfnPanel);
-}
-
-function positionDfnPanel(dfnPanel) {
-    const dfn = dfnPanel.dfn;
-    const dfnPos = getBounds(dfn);
-    dfnPanel.style.top = dfnPos.bottom + "px";
-    dfnPanel.style.left = dfnPos.left + "px";
-
-    const panelPos = dfnPanel.getBoundingClientRect();
-    const panelMargin = 8;
-    const maxRight = document.body.parentNode.clientWidth - panelMargin;
-    if (panelPos.right > maxRight) {
-        const overflowAmount = panelPos.right - maxRight;
-        const newLeft = Math.max(panelMargin, dfnPos.left - overflowAmount);
-        dfnPanel.style.left = newLeft + "px";
-    }
-}
-
-function pinDfnPanel(dfnPanel) {
-    // Switch it to "activated" state, which pins it.
-    dfnPanel.classList.add("activated");
-    dfnPanel.style.position = "fixed";
-    dfnPanel.style.left = null;
-    dfnPanel.style.top = null;
-}
-
-function hideDfnPanel({dfn, dfnPanel}) {
-    if(!dfnPanel) dfnPanel = dfn.dfnPanel;
-    if(!dfn) dfn = dfnPanel.dfn;
-    dfn.dfnPanel = undefined;
-    dfnPanel.dfn = undefined;
-    dfn.setAttribute("aria-expanded", "false");
-    dfn.tabIndex = undefined;
-    dfnPanel.remove()
-}
-
-function toggleDfnPanel(dfn) {
-    if(dfn.dfnPanel) {
-        hideDfnPanel(dfn);
-    } else {
-        showDfnPanel(dfn);
-    }
-}
-
-function insertDfnPopupAction(dfn) {
-    dfn.setAttribute('role', 'button');
-    dfn.setAttribute('aria-expanded', 'false')
-    dfn.tabIndex = 0;
-    dfn.classList.add('has-dfn-panel');
-    dfn.addEventListener('click', (event) => {
-        toggleDfnPanel(dfn);
-        event.stopPropagation();
-    });
-    dfn.addEventListener('keypress', (event) => {
-        const kc = event.keyCode;
-        // 32->Space, 13->Enter
-        if(kc == 32 || kc == 13) {
-            toggleDfnPanel(dfn);
-            event.stopPropagation();
-            event.preventDefault();
-        }
-    });
-}
-
-function refocusOnTarget(event) {
-    const target = event.target;
-    setTimeout(() => {
-        // Refocus on the event.target element.
-        // This is needed after browser scrolls to the destination.
-        target.focus();
-    });
-}
-
-// TODO: shared util
-// Returns the root-level absolute position {left and top} of element.
-function getBounds(el, relativeTo=document.body) {
-    const relativeRect = relativeTo.getBoundingClientRect();
-    const elRect = el.getBoundingClientRect();
-    const top = elRect.top - relativeRect.top;
-    const left = elRect.left - relativeRect.left;
-    return {
-        top,
-        left,
-        bottom: top + elRect.height,
-        right: left + elRect.width,
-    }
-}
-
-function scrollToTargetAndHighlight(event) {
-    let hash = event.target.hash;
-    if (hash) {
-        hash = decodeURIComponent(hash.substring(1));
-        const dest = document.getElementById(hash);
-        if (dest) {
-            dest.classList.add('highlighted');
-            setTimeout(() => dest.classList.remove('highlighted'), 1000);
-        }
-    }
-}
-
-// Functions, divided by link type, that wrap an autolink's
-// contents with the appropriate outer syntax.
-// Alternately, a string naming another type they format
-// the same as.
-function needsFor(type) {
-    switch(type) {
-        case "descriptor":
-        case "value":
-        case "element-attr":
-        case "attr-value":
-        case "element-state":
-        case "method":
-        case "constructor":
-        case "argument":
-        case "attribute":
-        case "const":
-        case "dict-member":
-        case "event":
-        case "enum-value":
-        case "stringifier":
-        case "serializer":
-        case "iterator":
-        case "maplike":
-        case "setlike":
-        case "state":
-        case "mode":
-        case "context":
-        case "facet": return true;
-
-        default: return false;
-    }
-}
-function refusesFor(type) {
-    switch(type) {
-        case "property":
-        case "element":
-        case "interface":
-        case "namespace":
-        case "callback":
-        case "dictionary":
-        case "enum":
-        case "exception":
-        case "typedef":
-        case "http-header":
-        case "permission": return true;
-
-        default: return false;
-    }
-}
-function linkFormatterFromType(type) {
-    switch(type) {
-        case 'scheme':
-        case 'permission':
-        case 'dfn': return (text) => `[=${text}=]`;
-
-        case 'abstract-op': return (text) => `[\$${text}\$]`;
-
-        case 'function':
-        case 'at-rule':
-        case 'selector':
-        case 'value': return (text) => `''${text}''`;
-
-        case 'http-header': return (text) => `[:${text}:]`;
-
-        case 'interface':
-        case 'constructor':
-        case 'method':
-        case 'argument':
-        case 'attribute':
-        case 'callback':
-        case 'dictionary':
-        case 'dict-member':
-        case 'enum':
-        case 'enum-value':
-        case 'exception':
-        case 'const':
-        case 'typedef':
-        case 'stringifier':
-        case 'serializer':
-        case 'iterator':
-        case 'maplike':
-        case 'setlike':
-        case 'extended-attribute':
-        case 'event':
-        case 'idl': return (text) => `{{${text}}}`;
-
-        case 'element-state':
-        case 'element-attr':
-        case 'attr-value':
-        case 'element': return (element) => `<{${element}}>`;
-
-        case 'grammar': return (text) => `${text} (within a <pre class=prod>)`;
-
-        case 'type': return (text)=> `<<${text}>>`;
-
-        case 'descriptor':
-        case 'property': return (text) => `'${text}'`;
-
-        default: return;
-    };
-};
-
-function genLinkingSyntaxes(dfn) {
-    if(dfn.tagName != "DFN") return;
-
-    const type = dfn.getAttribute('data-dfn-type');
-    if(!type) {
-        console.log(`<dfn> doesn't have a data-dfn-type:`, dfn);
-        return [];
-    }
-
-    // Return a function that wraps link text based on the type
-    const linkFormatter = linkFormatterFromType(type);
-    if(!linkFormatter) {
-        console.log(`<dfn> has an unknown data-dfn-type:`, dfn);
-        return [];
-    }
-
-    let ltAlts;
-    if(dfn.hasAttribute('data-lt')) {
-        ltAlts = dfn.getAttribute('data-lt')
-            .split("|")
-            .map(x=>x.trim());
-    } else {
-        ltAlts = [dfn.textContent.trim()];
-    }
-    if(type == "type") {
-        // lt of "<foo>", but "foo" is the interior;
-        // <<foo/bar>> is how you write it with a for,
-        // not <foo/<bar>> or whatever.
-        for(var i = 0; i < ltAlts.length; i++) {
-            const lt = ltAlts[i];
-            const match = /<(.*)>/.exec(lt);
-            if(match) { ltAlts[i] = match[1]; }
-        }
-    }
-
-    let forAlts;
-    if(dfn.hasAttribute('data-dfn-for')) {
-        forAlts = dfn.getAttribute('data-dfn-for')
-            .split(",")
-            .map(x=>x.trim());
-    } else {
-        forAlts = [''];
-    }
-
-    let linkingSyntaxes = [];
-    if(!needsFor(type)) {
-        for(const lt of ltAlts) {
-            linkingSyntaxes.push(linkFormatter(lt));
-        }
-    }
-    if(!refusesFor(type)) {
-        for(const f of forAlts) {
-            linkingSyntaxes.push(linkFormatter(`${f}/${ltAlts[0]}`))
-        }
-    }
-    return [
-        mk.b({}, 'Possible linking syntaxes:'),
-        mk.ul({},
-            ...linkingSyntaxes.map(link => {
-                const copyLink = async () =>
-                    await navigator.clipboard.writeText(link);
-                return mk.li({},
-                    mk.div({ class: 'link-item' },
-                        mk.button({
-                            class: 'copy-icon', title: 'Copy',
-                            type: 'button',
-                            _onclick: copyLink,
-                            tabindex: 0,
-                        }, mk.span({ class: 'icon' }) ),
-                        mk.span({}, link)
-                    )
-                );
-            })
-        )
-    ];
-}
-}
-</script>
-<script>/* Boilerplate: script-ref-hints */
-"use strict";
-{
-let refsData = {
-"#certified-financial-intermediary": {"displayText":"certified financial intermediary","export":true,"for_":[],"level":"1","normative":true,"shortname":"openfaster","spec":"openfaster-1","status":"local","text":"certified financial intermediary","type":"dfn","url":"#certified-financial-intermediary"},
-"#disclosure": {"displayText":"disclosure","export":true,"for_":[],"level":"1","normative":true,"shortname":"openfaster","spec":"openfaster-1","status":"local","text":"disclosure","type":"dfn","url":"#disclosure"},
-"#paying-agent": {"displayText":"paying agent","export":true,"for_":[],"level":"1","normative":true,"shortname":"openfaster","spec":"openfaster-1","status":"local","text":"paying agent","type":"dfn","url":"#paying-agent"},
-"#requestid": {"displayText":"requestid","export":true,"for_":[],"level":"1","normative":true,"shortname":"openfaster","spec":"openfaster-1","status":"local","text":"requestid","type":"dfn","url":"#requestid"},
-"#tax-voucher": {"displayText":"tax voucher","export":true,"for_":[],"level":"1","normative":true,"shortname":"openfaster","spec":"openfaster-1","status":"local","text":"tax voucher","type":"dfn","url":"#tax-voucher"},
-"#vib": {"displayText":"vib","export":true,"for_":[],"level":"1","normative":true,"shortname":"openfaster","spec":"openfaster-1","status":"local","text":"vib","type":"dfn","url":"#vib"},
-};
-
-function mkRefHint(link, ref) {
-    const linkText = link.textContent;
-    let dfnTextElements = '';
-    if (ref.displayText.toLowerCase() != linkText.toLowerCase()) {
-        // Give the original term if it's being displayed in a different way.
-        // But allow casing differences, they're insignificant.
-        dfnTextElements =
-            mk.li({},
-                mk.b({}, "Term: "),
-                mk.span({}, ref.displayText)
-            );
-    }
-    const forList = ref.for_;
-    let forListElements;
-    if(forList.length == 0) {
-        forListElements = [];
-    } else if(forList.length == 1) {
-        forListElements = mk.li({},
-            mk.b({}, "For: "),
-            mk.span({}, forList[0]),
-        );
-    } else {
-        forListElements = mk.li({},
-            mk.b({}, "For: "),
-            mk.ul({},
-                ...forList.map(forItem =>
-                    mk.li({},
-                        mk.span({}, forItem)
-                    ),
-                ),
-            ),
-        );
-    }
-    const url = ref.url;
-    const safeUrl = encodeURIComponent(url);
-    const hintPanel = mk.aside({
-        class: "ref-hint",
-        id: `ref-hint-for-${safeUrl}`,
-        "data-for": url,
-        "aria-labelled-by": `ref-hint-for-${safeUrl}`,
-    },
-        mk.ul({},
-            dfnTextElements,
-            mk.li({},
-                mk.b({}, "URL: "),
-                mk.a({ href: url, class: "ref" }, url),
-            ),
-            mk.li({},
-                mk.b({}, "Type: "),
-                mk.span({}, `${ref.type}`),
-            ),
-            mk.li({},
-                mk.b({}, "Spec: "),
-                mk.span({}, `${ref.spec ? ref.spec : ''}`),
-            ),
-            forListElements
-        ),
-    );
-    hintPanel.forLink = link;
-    setupRefHintEventListeners(link, hintPanel);
-    return hintPanel;
-}
-
-function hideAllRefHints() {
-    queryAll(".ref-hint").forEach(el=>hideRefHint(el));
-}
-
-function hideRefHint(refHint) {
-    const link = refHint.forLink;
-    link.setAttribute("aria-expanded", "false");
-    if(refHint.teardownEventListeners) {
-        refHint.teardownEventListeners();
-    }
-    refHint.remove();
-}
-
-function showRefHint(link) {
-    if(link.classList.contains("dfn-link")) return;
-    const url = link.getAttribute("href");
-    const refHintKey = link.getAttribute("data-refhint-key");
-    let key = url;
-    if(refHintKey) {
-        key = refHintKey + "_" + url;
-    }
-    const ref = refsData[key];
-    if(!ref) return;
-
-    hideAllRefHints(); // Only display one at this time.
-
-    const refHint = mkRefHint(link, ref);
-    append(document.body, refHint);
-    link.setAttribute("aria-expanded", "true");
-    positionRefHint(refHint);
-}
-
-function setupRefHintEventListeners(link, refHint) {
-    if (refHint.teardownEventListeners) return;
-    // Add event handlers to hide the refHint after the user moves away
-    // from both the link and refHint, if not hovering either within one second.
-    let timeout = null;
-    const startHidingRefHint = (event) => {
-        if (timeout) {
-            clearTimeout(timeout);
-        }
-        timeout = setTimeout(() => {
-            hideRefHint(refHint);
-        }, 1000);
-    }
-    const resetHidingRefHint = (event) => {
-        if (timeout) clearTimeout(timeout);
-        timeout = null;
-    };
-    link.addEventListener("mouseleave", startHidingRefHint);
-    link.addEventListener("mouseenter", resetHidingRefHint);
-    link.addEventListener("blur", startHidingRefHint);
-    link.addEventListener("focus", resetHidingRefHint);
-    refHint.addEventListener("mouseleave", startHidingRefHint);
-    refHint.addEventListener("mouseenter", resetHidingRefHint);
-    refHint.addEventListener("blur", startHidingRefHint);
-    refHint.addEventListener("focus", resetHidingRefHint);
-
-    refHint.teardownEventListeners = () => {
-        // remove event listeners
-        resetHidingRefHint();
-        link.removeEventListener("mouseleave", startHidingRefHint);
-        link.removeEventListener("mouseenter", resetHidingRefHint);
-        link.removeEventListener("blur", startHidingRefHint);
-        link.removeEventListener("focus", resetHidingRefHint);
-        refHint.removeEventListener("mouseleave", startHidingRefHint);
-        refHint.removeEventListener("mouseenter", resetHidingRefHint);
-        refHint.removeEventListener("blur", startHidingRefHint);
-        refHint.removeEventListener("focus", resetHidingRefHint);
-    };
-}
-
-function positionRefHint(refHint) {
-    const link = refHint.forLink;
-    const linkPos = getBounds(link);
-    refHint.style.top = linkPos.bottom + "px";
-    refHint.style.left = linkPos.left + "px";
-
-    const panelPos = refHint.getBoundingClientRect();
-    const panelMargin = 8;
-    const maxRight = document.body.parentNode.clientWidth - panelMargin;
-    if (panelPos.right > maxRight) {
-        const overflowAmount = panelPos.right - maxRight;
-        const newLeft = Math.max(panelMargin, linkPos.left - overflowAmount);
-        refHint.style.left = newLeft + "px";
-    }
-}
-
-// TODO: shared util
-// Returns the root-level absolute position {left and top} of element.
-function getBounds(el, relativeTo=document.body) {
-    const relativeRect = relativeTo.getBoundingClientRect();
-    const elRect = el.getBoundingClientRect();
-    const top = elRect.top - relativeRect.top;
-    const left = elRect.left - relativeRect.left;
-    return {
-        top,
-        left,
-        bottom: top + elRect.height,
-        right: left + elRect.width,
-    }
-}
-
-function showRefHintListener(e) {
-    // If the target isn't in a link (or is a link),
-    // just ignore it.
-    let link = e.target.closest("a");
-    if(!link) return;
-
-    // If the target is in a ref-hint panel
-    // (aka a link in the already-open one),
-    // also just ignore it.
-    if(link.closest(".ref-hint")) return;
-
-    // Otherwise, show the panel for the link.
-    showRefHint(link);
-}
-
-function hideAllHintsListener(e) {
-    // If the click is inside a ref-hint panel, ignore it.
-    if(e.target.closest(".ref-hint")) return;
-    // Otherwise, close all the current panels.
-    hideAllRefHints();
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    document.body.addEventListener("mousedown", showRefHintListener);
-    document.body.addEventListener("focus", showRefHintListener);
-
-    document.body.addEventListener("click", hideAllHintsListener);
-});
-
-window.addEventListener("resize", () => {
-    // Hide any open ref hint.
-    hideAllRefHints();
-});
-}
-</script>

@@ -2,7 +2,7 @@
 
 <h2 id="data-dictionary">Data dictionary</h2>
 
-<p>The following field-level definitions are generated from <code>ThirdPartyDisclosureRequest.xsd</code>. Each group below corresponds to one sheet of the accompanying Excel template. The <code>RequestId</code> column links the groups of a single [=disclosure=] together.</p>
+<p>The following field-level definitions are generated from <code>ThirdPartyDisclosureRequest.xsd</code>. Each group below corresponds to one sheet of the accompanying Excel template. The <code>RequestId</code> column links the groups of a single [[openfaster#disclosure|disclosure]] together.</p>
 
 <h3 id="sheet-1-requests-master">1 Requests Master</h3>
 
