@@ -23,29 +23,15 @@
    Bikeshed positions its own #toc sidebar with `position: fixed; top: 0;`
    at the same "body.toc-sidebar"/"body:not(.toc-inline)" breakpoints,
    itself keyed by an #toc ID selector -- higher specificity than any class
-   selector here can match short of also using an ID or !important. Both
-   fixes below use !important rather than trying to out-specificity
-   Bikeshed's own rules, since that's the only mechanism guaranteed to win
+   selector here can match short of also using an ID or !important. The
+   color fix below uses !important rather than trying to out-specificity
+   Bikeshed's own rule, since that's the only mechanism guaranteed to win
    regardless of which of Bikeshed's internal rules is currently active. */
 
 .of-shell-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 10;
-  /* No explicit `width`: with `left: 0; right: 0` already given, width is
-     auto-derived from the containing block (the viewport, for a fixed
-     element) minus this box's own horizontal padding/border -- the standard
-     idiom for a full-bleed fixed header. An earlier version of this rule
-     also set `width: 100%`, which -- combined with box-sizing's default
-     `content-box` -- added the 1.5rem/side padding *on top of* a
-     already-100%-wide content box, overflowing the viewport by 2x1.5rem
-     (48px) and forcing unwanted horizontal scroll; confirmed via a real
-     getBoundingClientRect() showing the header 48px wider than
-     window.innerWidth before this fix. box-sizing: border-box below is a
-     second, independent safety net for the same class of bug. */
-  box-sizing: border-box;
+  /* Visual styling only here -- deliberately unscoped by media type, so it
+     renders identically (as an ordinary in-flow block) whether or not the
+     `@media screen` position:fixed block below applies. */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -65,33 +51,75 @@
   text-decoration: underline;
 }
 
-/* Push page content below the now-fixed header. Higher specificity
-   (body.h-entry, a class selector) than Bikeshed's own plain `body { padding:
-   1.6em 1.5em 2em calc(26px + 1.5em); }` shorthand rule wins this in a
-   browser regardless of source order (shorthand/longhand conflicts resolve
-   per-longhand-property by specificity, not by whole-rule order) -- but the
-   PDF pipeline (weasyprint --stylesheet documentation/print.css ...) loads
-   this file (via print.css's own @import chain, see site.css) as a CSS
-   "user origin" stylesheet, and in the cascade, *any* normal-weight author
-   rule beats *any* normal-weight user rule regardless of specificity --
-   confirmed by walking weasyprint's own computed style tree
-   (HTML(...).render().pages[0]) and finding body's padding_top still
-   resolved to Bikeshed's embedded ~1.6em rather than this value. `!important`
-   promotes this to "user !important", which *does* outrank normal-weight
-   author rules (including Bikeshed's inline stylesheet), fixing both the
-   browser and the PDF the same way. */
-body.h-entry {
-  padding-top: var(--of-shell-header-height) !important;
-}
+/* Sticky/fixed positioning -- and everything that exists only to compensate
+   for taking the header out of flow -- is screen-only. Verified directly
+   (WeasyPrint 66.0, isolated repro + this file's own `weasyprint
+   --stylesheet` build) that WeasyPrint's paginated rendering does NOT match
+   `@media screen`: an `@media screen { ... }` block is silently skipped
+   entirely, the same way a browser skips `@media print` on screen. This
+   matters because `position: fixed` is CSS Paged Media's mechanism for a
+   *running header repeated on every page* (WeasyPrint's own documented
+   behavior) -- appropriate for a scrolling HTML viewport's sticky header,
+   completely wrong for a paginated PDF: it previously repeated the header
+   on all 21 pages while `body`'s one-time padding-top compensation only
+   reserved space once, at the very top of the document's flow -- so real
+   content (a changelog table on page 2, a data-dictionary table header row
+   on page 8) rendered *underneath* the opaque header band on every page
+   after the first. Scoping both the position:fixed rule and its
+   body/#toc offset compensation to `@media screen` fixes this: WeasyPrint
+   now sees an ordinary static/flow `<header>` block, so it appears exactly
+   once, at the top of page 1, pushes the rest of page 1's content down by
+   its own natural (in-flow) height with no extra offset math needed, and
+   never appears on any later page -- while the screen/browser experience
+   (fixed, sticky, spanning every viewport width, offset-compensated) is
+   completely unchanged from the previous fix. */
+@media screen {
+  .of-shell-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    /* No explicit `width`: with `left: 0; right: 0` already given, width is
+       auto-derived from the containing block (the viewport, for a fixed
+       element) minus this box's own horizontal padding/border -- the
+       standard idiom for a full-bleed fixed header. An earlier version of
+       this rule also set `width: 100%`, which -- combined with
+       box-sizing's default `content-box` -- added the 1.5rem/side padding
+       *on top of* an already-100%-wide content box, overflowing the
+       viewport by 2x1.5rem (48px) and forcing unwanted horizontal scroll;
+       confirmed via a real getBoundingClientRect() showing the header 48px
+       wider than window.innerWidth before this fix. box-sizing: border-box
+       below is a second, independent safety net for the same class of bug. */
+    box-sizing: border-box;
+  }
 
-/* Keep Bikeshed's fixed/sidebar #toc (both its "body.toc-sidebar #toc" and
-   "body:not(.toc-inline) #toc" forms, screen-only, ID-selector specificity)
-   from starting underneath the fixed header. Harmless to apply unconditionally:
-   `top` has no effect on #toc while it's in normal static flow (narrower
-   viewports), so this only does anything once Bikeshed's own rules already
-   made #toc `position: fixed`. */
-#toc {
-  top: var(--of-shell-header-height) !important;
+  /* Push page content below the now-fixed header. Higher specificity
+     (body.h-entry, a class selector) than Bikeshed's own plain `body {
+     padding: 1.6em 1.5em 2em calc(26px + 1.5em); }` shorthand rule wins this
+     regardless of source order (shorthand/longhand conflicts resolve
+     per-longhand-property by specificity, not by whole-rule order). The
+     `!important` here is a leftover-safe default from when this rule wasn't
+     yet screen-scoped and had to also beat WeasyPrint's "user origin"
+     cascade tier for the PDF (see the fix-report history in this task's own
+     report doc) -- harmless to keep now that this whole block only runs on
+     screen, where normal specificity already wins outright. */
+  body.h-entry {
+    padding-top: var(--of-shell-header-height) !important;
+  }
+
+  /* Keep Bikeshed's fixed/sidebar #toc (both its "body.toc-sidebar #toc" and
+     "body:not(.toc-inline) #toc" forms, themselves already screen-only,
+     ID-selector specificity) from starting underneath the fixed header.
+     Harmless to apply unconditionally within this screen-scoped block: `top`
+     has no effect on #toc while it's in normal static flow (narrower
+     viewports), so this only does anything once Bikeshed's own rules already
+     made #toc `position: fixed`. Not needed for print/PDF at all -- Bikeshed
+     never makes #toc `position: fixed` outside `@media screen` either, so
+     there's nothing to offset there. */
+  #toc {
+    top: var(--of-shell-header-height) !important;
+  }
 }
 
 .of-shell-logo {
