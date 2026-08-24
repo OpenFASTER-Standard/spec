@@ -2,6 +2,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/openfaster.pdf", "destination": "/documentation/openfaster.pdf" }
+    { "source": "/openfaster.pdf", "destination": "/documentation/openfaster.pdf" },
+    { "source": "/about", "destination": "/documentation/about.html" }
   ]
 }

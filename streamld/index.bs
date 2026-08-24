@@ -1,0 +1,33 @@
+<pre class=metadata>
+Title: StreamLD
+Shortname: streamld
+Level: 1
+Status: w3c/CG-DRAFT
+URL: https://openfaster.org/streamld
+Local Boilerplate: header yes
+Editor: OpenFASTER Editors
+Abstract: StreamLD is a protocol for real-time, resumable Linked Data event
+    streaming, incubating within the <a href="/about">OpenFASTER</a> family.
+    This page indexes its four documents. The reference implementation is
+    <a href="https://github.com/OpenFASTER-Standard/riptide">Riptide</a>
+    (Elixir/Phoenix).
+Markup Shorthands: markdown yes, dfn yes, css no
+Boilerplate: omit conformance
+</pre>
+
+StreamLD {#streamld-module}
+============================
+
+StreamLD defines an append-only, per-stream Linked Data event log with
+real-time subscription. It is split into four documents:
+
+* [StreamLD Core](/streamld/core) — the event envelope and cursor model every
+    binding builds on.
+* [StreamLD Subscription and Discovery](/streamld/subscription) — how a
+    client discovers a stream's subscription endpoint(s).
+* [StreamLD SSE Binding](/streamld/binding-sse) — the Server-Sent Events
+    transport for server-to-client delivery.
+* [StreamLD WebSocket Replication Binding](/streamld/binding-websocket) — the
+    server-to-server replication transport.
+
+<p><a href="/">← Back to the OpenFASTER portal</a></p>

@@ -469,7 +469,7 @@ class Generator:
             f"<code>{esc(metadata['generatedFrom'])}</code>. Each group below "
             "corresponds to one sheet of the accompanying Excel template. The "
             f"<code>{esc(metadata['linkKey'])}</code> column links the groups "
-            "of a single [=disclosure=] together.</p>"
+            "of a single [[openfaster#disclosure|disclosure]] together.</p>"
         )
         add("")
 

@@ -1,5 +1,16 @@
 /* OpenFASTER site overrides (HTML + PDF via print.css @import). */
 
+/* Shared header/nav/footer shell. HTML pages link shell.css directly
+   (root-relative, alongside this file -- see header.template.include), but
+   the PDF pipeline (weasyprint --stylesheet documentation/print.css
+   index.html ...) only pulls in *this* file via print.css's own
+   `@import "site.css"` and never sees index.html's root-relative <link>
+   tags (those resolve against the filesystem root under file://, not the
+   repo root). Re-importing shell.css here, relatively, closes that gap so
+   the PDF gets shell styling too via the existing print.css -> site.css
+   import chain. */
+@import "shell.css";
+
 /* Specification version — shown under “This version” in the header metadata. */
 .head dl dd .spec-version {
   display: block;

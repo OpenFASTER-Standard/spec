@@ -1,0 +1,156 @@
+<pre class=metadata>
+Title: About OpenFASTER
+Shortname: openfaster
+Level: 1
+Status: DREAM
+URL: https://openfaster.org/about
+Repository: https://github.com/OpenFASTER-Standard/spec
+Text Macro: LONGSTATUS Vendor-independent, interoperable protocol standard for EU withholding tax and dividend reporting data exchange under MiKaDiv and FASTER
+Editor: Julian Nalenz, https://github.com/sigalor
+Editor: Alaa Eddine Cherif, https://github.com/AlaaCherif
+Abstract: OpenFASTER is a vendor-independent family of open standards for the
+    exchange of EU withholding-tax and dividend-reporting data under MiKaDiv
+    and FASTER. This document defines the family: its scope, shared
+    terminology, versioning policy, and planned direction. The family's
+    concrete modules -- currently MiKaDiv Third-Party Disclosure and StreamLD
+    -- are each specified in their own document; see
+    <a href="/">the OpenFASTER portal</a> for the full, current list.
+Markup Shorthands: markdown yes, dfn yes, css no
+Boilerplate: omit conformance
+Local Boilerplate: header yes
+Complain About: accidental-2119 yes, missing-example-ids yes
+</pre>
+
+<pre class=biblio>
+{
+  "MIKADIV": {
+    "title": "MiKaDiv – Mitteilungsverfahren für Kapitalerträge und Steuerabzug (§45b EStG)",
+    "publisher": "Bundeszentralamt für Steuern (BZSt)",
+    "href": "https://www.bzst.de/"
+  },
+  "FASTER": {
+    "title": "Council Directive (EU) on Faster and Safer Relief of Excess Withholding Taxes (FASTER)",
+    "publisher": "Council of the European Union",
+    "href": "https://taxation-customs.ec.europa.eu/faster_en"
+  }
+}
+</pre>
+
+Introduction {#intro}
+=====================
+
+OpenFASTER is a **vendor-independent family of open standards** for exchanging
+the data required for EU withholding-tax and dividend reporting. It is designed
+so that [=Certified Financial Intermediary|Certified Financial Intermediaries=]
+(CFIs) — banks, custodians, central securities depositories, and other reporting
+parties — can produce and exchange this data interoperably, regardless of which
+vendor or in-house system they use.
+
+
+Scope {#scope}
+--------------
+
+The scope of OpenFASTER is **purely operational**: defining the technical data
+model, vocabulary, and (in future modules) the exchange mechanics that make
+indirect reporting and the collection of supplementary data efficient and
+standardized across the EU.
+
+OpenFASTER deliberately does <em>not</em> address:
+
+* legislative or business-logic questions (for example, whether anonymous
+    reporting is permissible);
+* the internal calculation of tax positions; or
+* commercial or contractual arrangements between participants.
+
+Regulatory context {#regulatory-context}
+-----------------------------------------
+
+OpenFASTER is developed against the timeline of the EU [[FASTER]] initiative and
+the German [[MIKADIV]] reporting procedure.
+
+<table class="data">
+  <thead>
+    <tr><th>Milestone<th>Date
+  <tbody>
+    <tr><td>Standardized dividend reporting (MiKaDiv)<td>2027-01-01
+    <tr><td>Full regulatory reporting under FASTER<td>2030-01-01
+</table>
+
+The goals shared with these initiatives are harmonized dividend reporting,
+reduced withholding-tax fraud, greater transparency for tax authorities, and
+efficient cross-border tax-reclaim processing.
+
+
+Terminology {#terminology}
+==========================
+
+<dfn>Certified Financial Intermediary</dfn> (CFI)
+: A regulated party — such as a bank, custodian, or central securities
+    depository — that participates in withholding-tax and dividend reporting and
+    exchanges disclosure data with other participants.
+
+A <dfn>disclosure</dfn>
+: One complete third-party disclosure record for a single capital-income event,
+    identified and linked together by a single [=RequestId=].
+
+<dfn>RequestId</dfn>
+: The identifier that ties together all parts of one [=disclosure=]. It is a
+    linking key only: any value that is unique within the submission is valid, so
+    it need not be a UUID.
+
+<dfn>paying agent</dfn>
+: The German institution responsible for the withholding-tax reporting for a
+    given capital-income event.
+
+<dfn>tax voucher</dfn>
+: The tax certificate (Steuerbescheinigung) issued in respect of a
+    capital-income event.
+
+Planned work {#roadmap}
+=======================
+
+The following modules and improvements are planned. They are <em>not</em> part of
+the normative content of any published module yet; they are recorded here to
+describe the intended direction of the OpenFASTER family.
+
+Bulk disclosure template {#roadmap-bulk}
+----------------------------------------
+
+A revised template (and matching schema) in which an arbitrary number of
+beneficiaries, income lines, and related records can be entered, enabling
+mass/batch processing of disclosures rather than one disclosure at a time.
+
+Published multilingual vocabulary {#roadmap-vocabulary}
+-------------------------------------------------------
+
+A published <em>vocabulary</em> that fixes the (non-official) translations of the
+field names and their explanations into several languages, each validated by
+appropriate domain experts. This lets institutions across jurisdictions work
+against a shared, authoritative set of terms while the official German schema
+remains the legal reference.
+
+UUID return format {#roadmap-uuid-return}
+-----------------------------------------
+
+A format (an XSD plus an equivalent Excel representation) with which a reporting
+entity — for example Clearstream, or another reporting party — can report the
+assigned UUIDs back to the foreign banks that originated the disclosures, closing
+the loop between submission and acknowledgement.
+
+Versioning {#versioning}
+======================
+
+Each OpenFASTER module is versioned independently using
+[semantic versioning](https://semver.org/) (`MAJOR.MINOR.PATCH`):
+
+* <b>MAJOR</b> — incompatible changes to the data model (for example, removing a
+    field, or changing its meaning or requiredness).
+* <b>MINOR</b> — backwards-compatible additions (for example, new optional
+    fields or new enumeration values).
+* <b>PATCH</b> — editorial or documentation-only corrections.
+
+A module's own changelog is published at the top of its document. Every module
+publishes at a single, stable "latest" URL (e.g. `/mikadiv`, `/streamld`),
+updated in place as new versions are released — dated snapshot URLs for
+citing a frozen historical version are minted only once a module actually
+reaches a second version.

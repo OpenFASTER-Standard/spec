@@ -3,10 +3,13 @@ Title: StreamLD Core
 Shortname: streamld-core
 Level: 1
 Status: w3c/CG-DRAFT
-URL: https://openfaster.org/streamld/core.html
+URL: https://openfaster.org/streamld/core
+Local Boilerplate: header yes
 Editor: OpenFASTER Editors
-Abstract: StreamLD is a protocol for real-time, resumable Linked Data event streaming. This document defines the core event envelope and cursor model that every StreamLD transport binding builds on.
+Abstract: StreamLD is a protocol for real-time, resumable Linked Data event streaming. This document defines the core event envelope and cursor model that every StreamLD transport binding builds on. Part of the <a href="/streamld">StreamLD module</a>.
 </pre>
+
+<p><a href="/streamld">← Back to the StreamLD module index</a></p>
 
 # Introduction {#intro}
 

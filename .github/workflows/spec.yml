@@ -1,0 +1,78 @@
+name: Build OpenFASTER site
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install system dependencies (WeasyPrint's native libs)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz0b libfontconfig1 libcairo2
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -r documentation/requirements-spec.txt -r streamld/tests/requirements.txt
+          bikeshed update
+
+      - name: Build MiKaDiv (XSD -> generated include -> Excel template)
+        run: python generate_template.py
+
+      - name: Build StreamLD (SHACL -> generated include + JSON Schema)
+        run: PYTHONPATH=streamld python -m generator.generate_streamld_docs
+
+      - name: Regenerate header boilerplate (embeds the changelog)
+        run: python documentation/prepare_spec.py
+
+      - name: Build documentation/about.html
+        run: bikeshed --allow-nonlocal-files --die-on=link-error spec documentation/about.bs documentation/about.html
+
+      - name: Build mikadiv/index.html + PDF
+        run: |
+          bikeshed --allow-nonlocal-files --die-on=link-error spec mikadiv/index.bs mikadiv/index.html
+          weasyprint --stylesheet documentation/print.css mikadiv/index.html documentation/openfaster.pdf
+
+      - name: Build streamld/index.html
+        run: bikeshed --allow-nonlocal-files --die-on=link-error spec streamld/index.bs streamld/index.html
+
+      - name: Build StreamLD's 4 documents
+        run: |
+          bikeshed --allow-nonlocal-files --die-on=link-error spec streamld/core.bs streamld/core.html
+          bikeshed --allow-nonlocal-files --die-on=link-error spec streamld/subscription.bs streamld/subscription.html
+          bikeshed --allow-nonlocal-files --die-on=link-error spec streamld/binding-sse.bs streamld/binding-sse.html
+          bikeshed --allow-nonlocal-files --die-on=link-error spec streamld/binding-websocket.bs streamld/binding-websocket.html
+
+      - name: Run streamld's own test suite
+        run: |
+          pip install -r streamld/tests/requirements.txt
+          python -m pytest streamld/tests/
+
+      - name: Commit regenerated output (main branch only)
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.html mikadiv/index.html mikadiv/generated/ documentation/about.html documentation/header.include mikadiv/header.include streamld/header.include documentation/openfaster.pdf streamld/index.html streamld/core.html streamld/subscription.html streamld/binding-sse.html streamld/binding-websocket.html streamld/generated/
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: rebuild site [skip ci]"
+            git push
+          fi
