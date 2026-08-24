@@ -27,8 +27,7 @@ Every data sheet has four header rows; data entry begins on row 5.
 
 ### Linking model
 
-- **RequestId** is the key on `1 Requests Master` and the first column of every other sheet. It is only used to link the sheets, so any unique value works (it does not need to be a UUID).
-- **Cancellations:** set `RecordType = Cancel` on the master sheet, fill `PreviousRequestIdForCancellation` (and optionally `ReportSerialNumber`), and leave every other sheet empty for that RequestId.
+- **RequestId** is the key on `1 Requests Master` and the first column on every other sheet, used to join a request's data across all sheets. Per VIB's own schema, RequestId must stay unique even across files you submit later, not just within this one -- corrections and cancellations you submit afterward reference it by exact value.
 - **Community recipients:** capture a community tax-voucher receiver (up to 10 members) by setting `ReceiverGroupType = CommunityMember` on the tax voucher sheets and giving all members of one community the same `CommunityGroupId`.
 
 ## Sheets at a glance
