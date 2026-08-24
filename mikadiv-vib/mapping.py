@@ -50,10 +50,6 @@ DESC_MASTER_REQUESTID = (
     "every sheet together, so any unique value (e.g. a running number) is fine."
 )
 DESC_FK_REQUESTID = f"Foreign key. Must match a RequestId in the '{S_MASTER}' sheet."
-DESC_RECORDTYPE = (
-    "'Request' for a MiKaDiv reporting for income; 'Cancel' to cancel a previously "
-    "submitted request (leave the child sheets empty for cancellation rows)."
-)
 DESC_RAD_MODE = (
     f"Whether receipts/deliveries are declared with FiFo calculation (use the "
     f"'{S_FIFO}' sheet) or without (use the '{S_RAW}' sheet)."
@@ -86,11 +82,6 @@ SYNTHETIC_ENUMS: dict[str, tuple[list[str], dict[str, str]]] = {
         {"true": "Yes - the condition applies.",
          "false": "No - the condition does not apply."},
     ),
-    "RecordType": (
-        ["Request", "Cancel"],
-        {"Request": "A MiKaDiv reporting-for-income disclosure (a new or corrective submission).",
-         "Cancel": "Cancellation of a previously submitted disclosure request; only the master cancellation fields are filled and the child sheets stay empty."},
-    ),
     "ReceiptsAndDeliveriesMode": (
         ["FiFo", "All"],
         {"FiFo": "Receipts and deliveries are declared WITH FiFo calculation already applied by the submitter - fill the FIFO Trades sheet.",
@@ -115,7 +106,7 @@ SYNTHETIC_ENUMS: dict[str, tuple[list[str], dict[str, str]]] = {
 
 # Order of enums in the generated metadata/documentation.
 ENUM_ORDER = [
-    "Boolean", "RecordType", "RequestedService", "RequestedAttestationType",
+    "Boolean", "RequestedService", "RequestedAttestationType",
     "AccountType", "AccountRelationship", "TypeOfSecurity", "PayoutType",
     "ReceiptsAndDeliveriesMode", "TVRelationship", "TPRelationship",
     "ReceiverGroupType", "PersonTaxCategory", "FifoDirection",
@@ -232,7 +223,6 @@ def build_sheets(model: XsdModel) -> dict[str, list[tuple]]:
     req = "RequestMiKaDivReportingForIncomeType"
     sheets[S_MASTER] = [
         SYN("RequestId", DESC_MASTER_REQUESTID, LINK_ID, "Required"),
-        SYN("RecordType", DESC_RECORDTYPE, "Enum", "Required", "RecordType"),
         A(req, "AccountNumber", "Required"),
         A(req, "ClientReference"),
         A(req, "ClientContactpersonName"),
@@ -252,7 +242,6 @@ def build_sheets(model: XsdModel) -> dict[str, list[tuple]]:
         A(req, "TaxCertificateAlternativeRecipientEmail"),
         A(req, "EventType"),
         A(req, "FundId"),
-        A("CancelMiKaDivReportingForIncomeType", "PreviousRequestIdForCancellation", "Conditional"),
         E("AccountOwnersAndRepresentativeType", "SecuritiesAccountNumber", "Conditional"),
         E("AccountOwnersAndRepresentativeType", "AccountType", "Conditional", "AccountType"),
         E("AccountOwnersAndRepresentativeType", "AccountRelationship", "Optional", "AccountRelationship"),
@@ -426,8 +415,7 @@ LEGEND_ROWS = [
     ("Conditional", "Required only in certain cases (see the description in row 2)."),
     ("", ""),
     ("Linking the sheets", ""),
-    ("RequestId", f"The key on '{S_MASTER}' and the first column on every other sheet. It is only used to link the sheets, so any unique value works (it does not need to be a UUID). Use the same RequestId to join a request's data across all sheets."),
-    ("Request vs Cancel", f"Set RecordType on '{S_MASTER}'. For 'Cancel' rows, fill PreviousRequestIdForCancellation (and optionally ReportSerialNumber) and leave all other sheets empty for that RequestId."),
+    ("RequestId", f"The key on '{S_MASTER}' and the first column on every other sheet, used to join a request's data across all sheets. Per VIB's own schema, RequestId must stay unique even across files you submit later, not just within this one -- corrections and cancellations you submit afterward reference it by exact value."),
     ("", ""),
     ("Cardinality (rows per RequestId)", ""),
     (S_SECURITY, "0..1 (required for Request records). Includes the depositary-receipt fields, which are required when IsDepositaryReceipt = true."),
@@ -448,12 +436,12 @@ SHEET_INFO: dict[str, dict[str, str]] = {
     S_MASTER: {
         "significance": (
             "The parent record. One row per disclosure, holding administrative and "
-            "routing metadata, the record type (new request vs cancellation), the "
-            "directly-contracted securities account, the account type and the account "
-            "relationship. Every other sheet links back to this one through RequestId."
+            "routing metadata, the directly-contracted securities account, the account "
+            "type and the account relationship. Every other sheet links back to this "
+            "one through RequestId."
         ),
         "cardinality": "Exactly 1 row per RequestId (this sheet defines the RequestId).",
-        "whenToFill": "Always - every disclosure or cancellation starts here.",
+        "whenToFill": "Always - every disclosure starts here.",
     },
     S_SECURITY: {
         "significance": (
@@ -467,8 +455,8 @@ SHEET_INFO: dict[str, dict[str, str]] = {
         ),
         "cardinality": "0..1 row per RequestId.",
         "whenToFill": (
-            "Required when RecordType = Request. Leave empty for RecordType = Cancel. "
-            "Within this sheet, the depositary-receipt fields are required only when "
+            "Required for every disclosure. Within this sheet, the "
+            "depositary-receipt fields are required only when "
             "IsDepositaryReceipt = true."
         ),
     },

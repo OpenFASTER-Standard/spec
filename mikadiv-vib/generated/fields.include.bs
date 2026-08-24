@@ -6,9 +6,9 @@
 
 <h3 id="sheet-1-requests-master">1 Requests Master</h3>
 
-<p><b>Significance.</b> The parent record. One row per disclosure, holding administrative and routing metadata, the record type (new request vs cancellation), the directly-contracted securities account, the account type and the account relationship. Every other sheet links back to this one through RequestId.</p>
+<p><b>Significance.</b> The parent record. One row per disclosure, holding administrative and routing metadata, the directly-contracted securities account, the account type and the account relationship. Every other sheet links back to this one through RequestId.</p>
 <p><b>Cardinality.</b> Exactly 1 row per RequestId (this sheet defines the RequestId).</p>
-<p><b>When to fill.</b> Always - every disclosure or cancellation starts here.</p>
+<p><b>When to fill.</b> Always - every disclosure starts here.</p>
 
 <table class="complex data longlastcol dictionary">
   <colgroup>
@@ -21,30 +21,28 @@
   <thead><tr><th class="col-num">#<th>Field<th class="col-req">Requiredness<th>Type / Allowed values<th>Description</tr></thead>
   <tbody>
     <tr><td class="col-num">1<td><code>RequestId</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Identifier for the request, defined by you. Used only as the key that links every sheet together, so any unique value (e.g. a running number) is fine.</tr>
-    <tr><td class="col-num">2<td><code>RecordType</code><td class="col-req">Required<td>Enum (<a href="#enum-recordtype">RecordType</a>): <code>Request</code>, <code>Cancel</code><td class="long">'Request' for a MiKaDiv reporting for income; 'Cancel' to cancel a previously submitted request (leave the child sheets empty for cancellation rows).</tr>
-    <tr><td class="col-num">3<td><code>AccountNumber</code><td class="col-req">Required<td>Text (max 200)<td class="long">Account number of the requesting custodian.</tr>
-    <tr><td class="col-num">4<td><code>ClientReference</code><td class="col-req">Optional<td>Text (max 200)<td class="long">Custom reference data of the client.</tr>
-    <tr><td class="col-num">5<td><code>ClientContactpersonName</code><td class="col-req">Optional<td>Text (max 200)<td class="long">Name of the responsible foreign bank contact person.</tr>
-    <tr><td class="col-num">6<td><code>ClientContactpersonPhone</code><td class="col-req">Optional<td>Text (max 35)<td class="long">Telephone number of the responsible foreign bank contact person.</tr>
-    <tr><td class="col-num">7<td><code>ClientContactpersonEmail</code><td class="col-req">Optional<td>Text (max 200)<td class="long">E-mail address of the responsible foreign bank contact person.</tr>
-    <tr><td class="col-num">8<td><code>RequestedService</code><td class="col-req">Conditional<td>Enum (<a href="#enum-requestedservice">RequestedService</a>): <code>TaxReportAndCertificate</code>, <code>Reclaim</code>, <code>Relief</code><td class="long">Type of requested service.</tr>
-    <tr><td class="col-num">9<td><code>RequestedServiceReason</code><td class="col-req">Optional<td>Text (max 256)<td class="long">Reason for the requested service, especially for correction or cancellation.</tr>
-    <tr><td class="col-num">10<td><code>RequestedAttestationType</code><td class="col-req">Optional<td>Enum (<a href="#enum-requestedattestationtype">RequestedAttestationType</a>): <code>BV</code>, <code>PV</code>, <code>SB</code><td class="long">Type of requested tax voucher.</tr>
-    <tr><td class="col-num">11<td><code>IsCorrectionRequest</code><td class="col-req">Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">A correction is to be performed for a report. The data record contains a reference to the preceding request.</tr>
-    <tr><td class="col-num">12<td><code>PreviousRequestIdForCorrection</code><td class="col-req">Optional<td>UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)<td class="long">If the request is for correction of a previous request, then the RequestId of the previous request must be provided.</tr>
-    <tr><td class="col-num">13<td><code>ReportSerialNumber</code><td class="col-req">Optional<td>UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)<td class="long">Serial number (UUID) of an already submitted report, if provided previously by the German Paying agent. Used as a (additional) reference for correction.</tr>
-    <tr><td class="col-num">14<td><code>TaxCertificatePrintedContactpersonName</code><td class="col-req">Optional<td>Text (max 200)<td class="long">Name of the contact person for the customer, printed on the tax certificate or cover letter.</tr>
-    <tr><td class="col-num">15<td><code>TaxCertificatePrintedContactpersonPhone</code><td class="col-req">Optional<td>Text (max 35)<td class="long">Telephone number of the contact person for the customer, printed on the tax certificate or cover letter.</tr>
-    <tr><td class="col-num">16<td><code>TaxCertificatePrintedContactpersonEmail</code><td class="col-req">Optional<td>Text (max 200)<td class="long">E-mail address of the contact person for the customer, printed on the tax certificate or cover letter.</tr>
-    <tr><td class="col-num">17<td><code>TaxCertificateAlternativeRecipientName</code><td class="col-req">Optional<td>Text (max 200)<td class="long">Name of the alternative mailing address recipient.</tr>
-    <tr><td class="col-num">18<td><code>TaxCertificateAlternativeRecipientAddress</code><td class="col-req">Optional<td>Text (max 256)<td class="long">Address of the alternative mailing address recipient.</tr>
-    <tr><td class="col-num">19<td><code>TaxCertificateAlternativeRecipientEmail</code><td class="col-req">Optional<td>Text (max 256)<td class="long">E-mail address of the alternative mailing address recipient.</tr>
-    <tr><td class="col-num">20<td><code>EventType</code><td class="col-req">Optional<td>Text (max 20)<td class="long">Event designations of the German paying agent according to ISO 20022.</tr>
-    <tr><td class="col-num">21<td><code>FundId</code><td class="col-req">Optional<td>Text (max 20)<td class="long">Fund identifier (status certificate number).</tr>
-    <tr><td class="col-num">22<td><code>PreviousRequestIdForCancellation</code><td class="col-req">Conditional<td>UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)<td class="long">If the request is for cancellation of a previous request, then the RequestId of the previous request must be provided.</tr>
-    <tr><td class="col-num">23<td><code>SecuritiesAccountNumber</code><td class="col-req">Conditional<td>Text (max 200)<td class="long">Account number of the tax voucher person at the custodian to whom the tax voucher person is directly contracted.</tr>
-    <tr><td class="col-num">24<td><code>AccountType</code><td class="col-req">Conditional<td>Enum (<a href="#enum-accounttype">AccountType</a>): <code>A</code>, <code>B</code>, <code>Ct</code>, <code>D</code>, <code>E</code>, <code>F</code>, <code>G</code><td class="long">Account type.</tr>
-    <tr><td class="col-num">25<td><code>AccountRelationship</code><td class="col-req">Optional<td>Enum (<a href="#enum-accountrelationship">AccountRelationship</a>): <code>Trust</code>, <code>Usufruct</code>, <code>Pledge</code><td class="long">If the tax voucher person is not the beneficial owner (creditor), then the account relationship has to be specified.</tr>
+    <tr><td class="col-num">2<td><code>AccountNumber</code><td class="col-req">Required<td>Text (max 200)<td class="long">Account number of the requesting custodian.</tr>
+    <tr><td class="col-num">3<td><code>ClientReference</code><td class="col-req">Optional<td>Text (max 200)<td class="long">Custom reference data of the client.</tr>
+    <tr><td class="col-num">4<td><code>ClientContactpersonName</code><td class="col-req">Optional<td>Text (max 200)<td class="long">Name of the responsible foreign bank contact person.</tr>
+    <tr><td class="col-num">5<td><code>ClientContactpersonPhone</code><td class="col-req">Optional<td>Text (max 35)<td class="long">Telephone number of the responsible foreign bank contact person.</tr>
+    <tr><td class="col-num">6<td><code>ClientContactpersonEmail</code><td class="col-req">Optional<td>Text (max 200)<td class="long">E-mail address of the responsible foreign bank contact person.</tr>
+    <tr><td class="col-num">7<td><code>RequestedService</code><td class="col-req">Conditional<td>Enum (<a href="#enum-requestedservice">RequestedService</a>): <code>TaxReportAndCertificate</code>, <code>Reclaim</code>, <code>Relief</code><td class="long">Type of requested service.</tr>
+    <tr><td class="col-num">8<td><code>RequestedServiceReason</code><td class="col-req">Optional<td>Text (max 256)<td class="long">Reason for the requested service, especially for correction or cancellation.</tr>
+    <tr><td class="col-num">9<td><code>RequestedAttestationType</code><td class="col-req">Optional<td>Enum (<a href="#enum-requestedattestationtype">RequestedAttestationType</a>): <code>BV</code>, <code>PV</code>, <code>SB</code><td class="long">Type of requested tax voucher.</tr>
+    <tr><td class="col-num">10<td><code>IsCorrectionRequest</code><td class="col-req">Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">A correction is to be performed for a report. The data record contains a reference to the preceding request.</tr>
+    <tr><td class="col-num">11<td><code>PreviousRequestIdForCorrection</code><td class="col-req">Optional<td>UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)<td class="long">If the request is for correction of a previous request, then the RequestId of the previous request must be provided.</tr>
+    <tr><td class="col-num">12<td><code>ReportSerialNumber</code><td class="col-req">Optional<td>UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)<td class="long">Serial number (UUID) of an already submitted report, if provided previously by the German Paying agent. Used as a (additional) reference for correction.</tr>
+    <tr><td class="col-num">13<td><code>TaxCertificatePrintedContactpersonName</code><td class="col-req">Optional<td>Text (max 200)<td class="long">Name of the contact person for the customer, printed on the tax certificate or cover letter.</tr>
+    <tr><td class="col-num">14<td><code>TaxCertificatePrintedContactpersonPhone</code><td class="col-req">Optional<td>Text (max 35)<td class="long">Telephone number of the contact person for the customer, printed on the tax certificate or cover letter.</tr>
+    <tr><td class="col-num">15<td><code>TaxCertificatePrintedContactpersonEmail</code><td class="col-req">Optional<td>Text (max 200)<td class="long">E-mail address of the contact person for the customer, printed on the tax certificate or cover letter.</tr>
+    <tr><td class="col-num">16<td><code>TaxCertificateAlternativeRecipientName</code><td class="col-req">Optional<td>Text (max 200)<td class="long">Name of the alternative mailing address recipient.</tr>
+    <tr><td class="col-num">17<td><code>TaxCertificateAlternativeRecipientAddress</code><td class="col-req">Optional<td>Text (max 256)<td class="long">Address of the alternative mailing address recipient.</tr>
+    <tr><td class="col-num">18<td><code>TaxCertificateAlternativeRecipientEmail</code><td class="col-req">Optional<td>Text (max 256)<td class="long">E-mail address of the alternative mailing address recipient.</tr>
+    <tr><td class="col-num">19<td><code>EventType</code><td class="col-req">Optional<td>Text (max 20)<td class="long">Event designations of the German paying agent according to ISO 20022.</tr>
+    <tr><td class="col-num">20<td><code>FundId</code><td class="col-req">Optional<td>Text (max 20)<td class="long">Fund identifier (status certificate number).</tr>
+    <tr><td class="col-num">21<td><code>SecuritiesAccountNumber</code><td class="col-req">Conditional<td>Text (max 200)<td class="long">Account number of the tax voucher person at the custodian to whom the tax voucher person is directly contracted.</tr>
+    <tr><td class="col-num">22<td><code>AccountType</code><td class="col-req">Conditional<td>Enum (<a href="#enum-accounttype">AccountType</a>): <code>A</code>, <code>B</code>, <code>Ct</code>, <code>D</code>, <code>E</code>, <code>F</code>, <code>G</code><td class="long">Account type.</tr>
+    <tr><td class="col-num">23<td><code>AccountRelationship</code><td class="col-req">Optional<td>Enum (<a href="#enum-accountrelationship">AccountRelationship</a>): <code>Trust</code>, <code>Usufruct</code>, <code>Pledge</code><td class="long">If the tax voucher person is not the beneficial owner (creditor), then the account relationship has to be specified.</tr>
   </tbody>
 </table>
 
@@ -52,7 +50,7 @@
 
 <p><b>Significance.</b> The single capital-income event being disclosed: the security (ISIN, name, type), the corporate-action reference, payment details, the complete tax breakdown (gross/net, withholding tax, solidarity surcharge and the nominal quantities per holding category) and which receipts/deliveries mode is used. It also contains the depositary-receipt block (underlying German security, record date, issuance ratios, certificates held), which describes the depositary receipt (e.g. ADR/GDR) through which the income was received.</p>
 <p><b>Cardinality.</b> 0..1 row per RequestId.</p>
-<p><b>When to fill.</b> Required when RecordType = Request. Leave empty for RecordType = Cancel. Within this sheet, the depositary-receipt fields are required only when IsDepositaryReceipt = true.</p>
+<p><b>When to fill.</b> Required for every disclosure. Within this sheet, the depositary-receipt fields are required only when IsDepositaryReceipt = true.</p>
 
 <table class="complex data longlastcol dictionary">
   <colgroup>
@@ -379,22 +377,6 @@
   <tbody>
     <tr><td><code>true</code><td class="long">Yes - the condition applies.</tr>
     <tr><td><code>false</code><td class="long">No - the condition does not apply.</tr>
-  </tbody>
-</table>
-
-<h3 id="enum-recordtype">RecordType</h3>
-
-<p><em>Used in:</em> <code>1 Requests Master.RecordType</code></p>
-
-<table class="complex data longlastcol enum-table">
-  <colgroup>
-    <col style="width:18%">
-    <col style="width:82%">
-  </colgroup>
-  <thead><tr><th>Value<th>Meaning</tr></thead>
-  <tbody>
-    <tr><td><code>Request</code><td class="long">A MiKaDiv reporting-for-income disclosure (a new or corrective submission).</tr>
-    <tr><td><code>Cancel</code><td class="long">Cancellation of a previously submitted disclosure request; only the master cancellation fields are filled and the child sheets stay empty.</tr>
   </tbody>
 </table>
 
