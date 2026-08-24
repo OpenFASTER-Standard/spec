@@ -1,0 +1,30 @@
+<pre class=metadata>
+Title: MiKaDiv Third-Party Disclosure
+Shortname: mikadiv-vib
+Level: 1
+Status: DREAM
+URL: https://openfaster.org/mikadiv-vib
+Repository: https://github.com/OpenFASTER-Standard/spec
+Local Boilerplate: header yes
+Editor: Julian Nalenz, https://github.com/sigalor
+Abstract: MiKaDiv Third-Party Disclosure is a module of the
+    <a href="/about">OpenFASTER</a> family, mirroring the German MiKaDiv
+    (§45b EStG) capital-income disclosure schema. This page indexes its two
+    documents.
+Markup Shorthands: markdown yes, dfn yes, css no
+Boilerplate: omit conformance
+</pre>
+
+MiKaDiv Third-Party Disclosure {#mikadiv-vib-module}
+=======================================================
+
+MiKaDiv Third-Party Disclosure is split into two documents:
+
+* [Request](/mikadiv-vib/request) — the data model a bank or reporting
+    institute submits, with an accompanying Excel template and downloadable
+    PDF.
+* [Response](/mikadiv-vib/response) — what the platform receives back from
+    the German paying agent after processing a submission, for implementers
+    building a MiKaDiv integration.
+
+<p><a href="/">← Back to the OpenFASTER portal</a></p>
