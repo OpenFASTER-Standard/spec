@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>OpenFASTER</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="/documentation/site.css">
+  <link rel="stylesheet" href="/documentation/shell.css">
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; margin: 0; color: #1a1a1a; }
+    main { max-width: 52rem; margin: 0 auto; padding: 2rem 1.5rem; }
+    .of-portal-lede { font-size: 1.05rem; color: #333; margin-bottom: 2.5rem; }
+    .of-portal-lede a { color: #0b3d6e; }
+    .of-portal-section h2 { border-bottom: 1px solid #d8d8d8; padding-bottom: 0.4rem; }
+    .of-portal-item { display: flex; align-items: baseline; gap: 0.75rem; padding: 0.6rem 0; border-bottom: 1px solid #f0f0f0; }
+    .of-portal-item:last-child { border-bottom: none; }
+    .of-portal-item-name { font-weight: 700; min-width: 8rem; }
+    .of-portal-item-name a { color: #0b3d6e; text-decoration: none; }
+    .of-portal-item-name a:hover { text-decoration: underline; }
+    .of-portal-item-desc { flex: 1; color: #444; }
+    .of-portal-item-status { font-size: 0.8rem; padding: 0.15rem 0.5rem; border-radius: 0.75rem; background: #eef2f7; color: #0b3d6e; white-space: nowrap; }
+  </style>
+</head>
+<body class="h-entry">
+<header class="of-shell-header">
+  <a class="of-shell-logo" href="/">OpenFASTER</a>
+  <nav class="of-shell-nav">
+    <a href="#standards">Standards</a>
+    <a href="#implementations">Implementations</a>
+    <a href="/about">About</a>
+  </nav>
+</header>
+<main>
+  <p class="of-portal-lede">
+    OpenFASTER is a vendor-independent family of open standards for EU
+    withholding-tax and dividend-reporting data exchange under MiKaDiv and
+    FASTER. See <a href="/about">About OpenFASTER</a> for scope, terminology,
+    and versioning policy.
+  </p>
+
+  <section class="of-portal-section" id="standards">
+    <h2>Standards</h2>
+    <div class="of-portal-item">
+      <span class="of-portal-item-name"><a href="/mikadiv">MiKaDiv Third-Party Disclosure</a></span>
+      <span class="of-portal-item-desc">Data model for German MiKaDiv (§45b EStG) capital-income third-party disclosure.</span>
+      <span class="of-portal-item-status">v1.0.0</span>
+    </div>
+    <div class="of-portal-item">
+      <span class="of-portal-item-name"><a href="/streamld">StreamLD</a></span>
+      <span class="of-portal-item-desc">A protocol for real-time, resumable Linked Data event streaming.</span>
+      <span class="of-portal-item-status">CG-Draft</span>
+    </div>
+  </section>
+
+  <section class="of-portal-section" id="implementations">
+    <h2>Reference Implementations</h2>
+    <div class="of-portal-item">
+      <span class="of-portal-item-name"><a href="https://github.com/OpenFASTER-Standard/riptide">Riptide</a></span>
+      <span class="of-portal-item-desc">Elixir/Phoenix reference implementation of StreamLD -- an event-driven Solid/LDP-compatible pod server.</span>
+      <span class="of-portal-item-status">Reference impl.</span>
+    </div>
+  </section>
+</main>
+<footer class="of-shell-footer">
+  <p>OpenFASTER is licensed <a href="https://creativecommons.org/licenses/by/4.0/deed.en">CC BY 4.0</a>. Source at <a href="https://github.com/OpenFASTER-Standard/spec">github.com/OpenFASTER-Standard/spec</a>.</p>
+</footer>
+</body>
+</html>
