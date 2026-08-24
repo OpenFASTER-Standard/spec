@@ -1,3 +1,4 @@
 pyshacl==0.40.1
 rdflib>=7.0
 pytest>=7.0
+shacl2code==1.2.0
