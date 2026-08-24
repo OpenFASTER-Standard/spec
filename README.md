@@ -96,8 +96,8 @@ presentation stays controllable:
    enums). No hand-typed content. Shared by every module.
 2. **`mikadiv-vib/mapping.py`** (Layer 2) - declares the template *shape*: which
    sheets exist, their column order, how nested XSD choices flatten into columns,
-   and the few presentation-only helper columns (e.g. `RecordType`,
-   `PersonTaxCategory`) that model a schema choice as a flat column. It says
+   and the few presentation-only helper columns (e.g. `PersonTaxCategory`)
+   that model a schema choice as a flat column. It says
    *where* each column comes from, never *what it means*.
 3. **`engine/generator.py`** (Layer 3) - renders the workbook, metadata, docs
    and Bikeshed include from the merged model. Shared by every module;
@@ -260,7 +260,7 @@ reject values outside the allowed list.
 | Sheet | Rows per RequestId | Purpose |
 | --- | --- | --- |
 | `0 Legend Notes` | - | How to read the template, requiredness legend, cardinality, linking rules |
-| `1 Requests Master` | 1 | Request-level metadata; `RecordType` = Request or Cancel; account owner scalars |
+| `1 Requests Master` | 1 | Request-level metadata; account owner scalars |
 | `2 Security Related Information` | 0..1 | Security identification + income / tax information, incl. the conditional depositary-receipt (e.g. ADR) block (required for Request; DR fields required when `IsDepositaryReceipt` = true) |
 | `3 Tax Voucher Individuals` | up to 2 total (tax voucher) | Natural persons receiving tax vouchers |
 | `4 Tax Voucher Legal Persons` | up to 2 total (tax voucher) | Corporate / institutional tax-voucher recipients |
@@ -280,9 +280,6 @@ unique value works (it does not need to be a UUID). Use the same `RequestId`
 value to join a request's data across all sheets and reconstruct one full
 disclosure record.
 
-- **Cancellations:** set `RecordType = Cancel` on `1 Requests Master`, fill
-  `PreviousRequestIdForCancellation` (and optionally `ReportSerialNumber`), and
-  leave all other sheets empty for that `RequestId`.
 - **Community recipients:** a community tax-voucher receiver (up to 10 members)
   is captured by setting `ReceiverGroupType = CommunityMember` on the tax
   voucher sheets and giving all members of one community the same
