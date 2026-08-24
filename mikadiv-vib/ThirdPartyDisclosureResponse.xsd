@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://taxinfotransfer.org/tpd/1.0/ThirdPartyDisclosureResponse.xsd"
+           xmlns="http://taxinfotransfer.org/tpd/1.0/ThirdPartyDisclosureResponse.xsd"
+           xmlns:tpd="http://taxinfotransfer.org/tpd/1.0/ThirdPartyDisclosureResponse.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           version="1.0"
+           elementFormDefault="qualified">
+
+	<xs:element name="ThirdPartyDisclosureResponse">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Root element for resonse of custodian to disclosure of custodian accounts</xs:documentation>
+			<xs:documentation xml:lang="de">Wurzelelement für Rückmeldung der Verwahrstelle zur Offenlegung von Steuerinformationen für B-Depots</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ResponseToDisclosureForIncomeType" type="ResponseToDisclosureForIncomeType" maxOccurs="unbounded" ></xs:element>
+			</xs:sequence>	
+		</xs:complexType>		
+	</xs:element>
+
+	<xs:complexType name="ResponseToDisclosureForIncomeType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Base type for the disclosure of an income. Not for direct use.</xs:documentation>
+			<xs:documentation xml:lang="de">Basistyp für die Offenlegung eines Einkommens. Nicht für die direkte Verwendung gedacht.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ProcessingStatus">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Processing status.</xs:documentation>
+					<xs:documentation xml:lang="de">Status der Verarbeitung.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="Receive" />
+						<xs:enumeration value="StructureValidation" />
+						<xs:enumeration value="ContentValidation" />
+						<xs:enumeration value="Plausibilization" />
+						<xs:enumeration value="Reporting" />
+						<xs:enumeration value="TaxCertification" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ProcessingResult">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Processing result.</xs:documentation>
+					<xs:documentation xml:lang="de">Ergebnis der Verarbeitung.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="Success" />
+						<xs:enumeration value="Error" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ProcessingCompleted" type="xs:boolean" />
+			<xs:element name="Messages">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Message"  minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Code" type="xs:string" minOccurs="0" />
+									<xs:element name="Text" type="xs:string" />
+									<xs:element name="Level">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Information" />
+												<xs:enumeration value="Warning" />
+												<xs:enumeration value="Error" />
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element name="Reference" type="xs:string" minOccurs="0" />
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Records">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Record" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Content" type="xs:string" />
+									<xs:element name="RecordType">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="TaxDocumentIdentifier" />
+												<xs:enumeration value="Other" />
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element name="RecordTypeInfo" type="xs:string" />
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Documents">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Document"  minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="FilePath" type="xs:string" />
+									<xs:element name="ContentMimeType" type="xs:string" />
+									<xs:element name="DocumentType">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="TaxCertificate" />
+												<xs:enumeration value="Information" />
+												<xs:enumeration value="Other" />
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element name="Reference" type="xs:string" minOccurs="0" />
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="ResponseId" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">Unique identifier for the response. Must be unique even over subsequent files. To be defined by the custodian.</xs:documentation>
+				<xs:documentation xml:lang="de">Eindeutiger Identifier für die Antwort. Muss auch über folgende Dateien eindeutig sein. Ist von der Verwahrstelle festzulegen.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="RequestId" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">Unique identifier for the request that was sent to the custodian and is target of the response.</xs:documentation>
+				<xs:documentation xml:lang="de">Eindeutiger Identifier für die Anfrage die an die Verwahrstelle gesendet wurde und Ziel der Antwort ist.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ResponseDate" type="xs:date" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">Date at which the response was generated.</xs:documentation>
+				<xs:documentation xml:lang="de">Datum an dem die Antwort erzeugt wurde.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+
+		
+	</xs:complexType>
+	
+</xs:schema>
