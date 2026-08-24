@@ -1,0 +1,48 @@
+/* OpenFASTER shared site shell -- header/nav/footer, used on every page
+   (Bikeshed-built module docs via header.template.include, and the
+   hand-authored root portal by direct duplication -- see the portal task's
+   own note on why this isn't further templated). */
+
+.of-shell-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  background: #0b3d6e;
+  color: #fff;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.of-shell-header a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.of-shell-header a:hover {
+  text-decoration: underline;
+}
+
+.of-shell-logo {
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: 0.01em;
+}
+
+.of-shell-nav {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.of-shell-footer {
+  margin-top: 3rem;
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid #d8d8d8;
+  color: #555;
+  font-size: 0.85rem;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.of-shell-footer a {
+  color: #0b3d6e;
+}
