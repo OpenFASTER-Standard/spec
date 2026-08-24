@@ -1,9 +1,9 @@
 <pre class=metadata>
 Title: MiKaDiv Third-Party Disclosure
-Shortname: mikadiv
+Shortname: mikadiv-vib
 Level: 1
 Status: DREAM
-URL: https://openfaster.org/mikadiv
+URL: https://openfaster.org/mikadiv-vib
 Repository: https://github.com/OpenFASTER-Standard/spec
 Text Macro: LONGSTATUS MiKaDiv Third-Party Disclosure -- a module of the OpenFASTER family
 Text Macro: DOCVERSION 1.0.0
@@ -31,7 +31,7 @@ Complain About: accidental-2119 yes, missing-example-ids yes
 }
 </pre>
 
-The MiKaDiv Third-Party Disclosure module {#mikadiv-module}
+The MiKaDiv Third-Party Disclosure module {#mikadiv-vib-module}
 ===========================================================
 
 The MiKaDiv (§45b EStG) **third-party disclosure** module defines the data

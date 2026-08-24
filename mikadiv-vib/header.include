@@ -4,7 +4,7 @@
      is set): Bikeshed looks for header.include next to the .bs SOURCE FILE
      being compiled (os.path.dirname of that file's own path), never
      relative to the CWD `bikeshed` is invoked from -- so each of
-     documentation/, mikadiv/, streamld/ needs its own local header.include
+     documentation/, mikadiv-vib/, streamld/ needs its own local header.include
      copy sitting beside its .bs file(s). -->
 <!DOCTYPE html>
 <html lang="en">
