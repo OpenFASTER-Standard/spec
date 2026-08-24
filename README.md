@@ -22,21 +22,31 @@ and the documentation/specification kept separate:
 ├── mikadiv/                       # the MiKaDiv Third-Party Disclosure module
 │   ├── ThirdPartyDisclosureRequest.xsd   # schema (machine source of truth)
 │   ├── mapping.py                 #   Layer 2: template shape for this module
+│   ├── index.bs                   #   Bikeshed source; built to index.html, served at /mikadiv
 │   └── generated/                 #   generated artifacts (do not edit by hand)
 │       ├── MiKaDiv_ThirdPartyDisclosure_Template.xlsx
 │       ├── template_metadata.json
 │       ├── TEMPLATE_FIELDS.md
 │       └── fields.include.bs
-├── documentation/                 # the specification / site
-│   ├── index.bs                   #   Bikeshed source (includes the module include)
+├── documentation/                 # family-wide "About" page + shared build assets
+│   ├── about.bs                   #   Bikeshed source; built to about.html, served at /about
+│   ├── prepare_spec.py            #   embeds the changelog into header boilerplate
 │   ├── requirements-spec.txt      #   spec build deps (bikeshed, weasyprint)
 │   ├── print.css                  #   PDF stylesheet
 │   └── openfaster.pdf             #   built (generated)
-├── index.html                     # built spec (generated); served at site root
-├── generate_template.py           # build entry point (wires engine + modules)
+├── streamld/                      # the StreamLD module: a landing page + 4 documents
+│   ├── index.bs                   #   module landing page; built to index.html, served at /streamld
+│   ├── core.bs                    #   built to core.html, served at /streamld/core
+│   ├── subscription.bs            #   built to subscription.html, served at /streamld/subscription
+│   ├── binding-sse.bs             #   built to binding-sse.html, served at /streamld/binding-sse
+│   ├── binding-websocket.bs       #   built to binding-websocket.html, served at /streamld/binding-websocket
+│   ├── generator/                 #   SHACL -> generated include + JSON Schema
+│   └── generated/                 #   generated artifacts (do not edit by hand)
+├── index.html                     # hand-authored portal (NOT Bikeshed-compiled); served at site root
+├── generate_template.py           # MiKaDiv build entry point (wires engine + module)
 ├── requirements.txt               # engine deps (openpyxl, xmlschema)
-├── Dockerfile                     # reproducible spec + PDF build
-└── vercel.json
+├── .github/workflows/spec.yml     # CI: rebuilds every output on push/PR, auto-commits on push to main
+└── vercel.json                    # deploy routing (clean URLs, rewrites)
 ```
 
 Adding a future module (e.g. FASTER) means adding a sibling module folder with
@@ -103,40 +113,53 @@ by [Bikeshed](https://speced.github.io/bikeshed/) to HTML, and rendered to PDF.
 ### Option A - local Python
 
 ```bash
-python -m pip install -r requirements.txt -r documentation/requirements-spec.txt
+python -m pip install -r requirements.txt -r documentation/requirements-spec.txt -r streamld/tests/requirements.txt
 bikeshed update            # first run only, fetches Bikeshed data files
-python generate_template.py                       # refresh the generated include
+
+python generate_template.py                                  # MiKaDiv: XSD -> generated include + Excel template
+PYTHONPATH=streamld python -m generator.generate_streamld_docs   # StreamLD: SHACL -> generated include + JSON Schema
+
 python documentation/prepare_spec.py              # embed changelog into header boilerplate
-bikeshed --allow-nonlocal-files --die-on=link-error spec documentation/index.bs index.html
-weasyprint --stylesheet documentation/print.css index.html documentation/openfaster.pdf   # PDF (see note)
+
+bikeshed --allow-nonlocal-files --die-on=link-error spec documentation/about.bs documentation/about.html
+
+bikeshed --allow-nonlocal-files --die-on=link-error spec mikadiv/index.bs mikadiv/index.html
+weasyprint --stylesheet documentation/print.css mikadiv/index.html documentation/openfaster.pdf   # PDF (see note)
+
+bikeshed --allow-nonlocal-files --die-on=link-error spec streamld/index.bs streamld/index.html
+bikeshed --allow-nonlocal-files --die-on=link-error spec streamld/core.bs streamld/core.html
+bikeshed --allow-nonlocal-files --die-on=link-error spec streamld/subscription.bs streamld/subscription.html
+bikeshed --allow-nonlocal-files --die-on=link-error spec streamld/binding-sse.bs streamld/binding-sse.html
+bikeshed --allow-nonlocal-files --die-on=link-error spec streamld/binding-websocket.bs streamld/binding-websocket.html
+
+python -m pytest streamld/tests/          # StreamLD's own test suite
 ```
+
+`index.html` at the repo root is hand-authored (not built from a `.bs`
+source) and needs no build step - it's just the static portal page.
 
 > Note: WeasyPrint needs native libraries (Pango/Cairo/HarfBuzz). These are
-> present on Linux/CI but awkward on Windows - use Option B there for the PDF.
+> present on Linux/CI; on Windows, installing them is more involved (see
+> WeasyPrint's own install docs) - the PDF step can be skipped locally if
+> you only need the HTML.
 
-### Option B - Docker (reproducible, recommended on Windows)
+### Option B - CI
 
-```bash
-docker build -t openfaster-spec .
-docker run --rm -v "${PWD}:/spec" openfaster-spec
-```
-
-This regenerates the data dictionary, builds `index.html`, and
-renders `documentation/openfaster.pdf` back into the mounted directory.
-
-### Option C - CI
-
-[`.github/workflows/spec.yml`](.github/workflows/spec.yml) runs the full build on
-every push, uploads `index.html` + `documentation/openfaster.pdf`
-as an artifact, and (on `main`) publishes them to GitHub Pages - so
-openfaster.org always reflects `documentation/index.bs`.
+[`.github/workflows/spec.yml`](.github/workflows/spec.yml) runs the exact
+sequence above (MiKaDiv, StreamLD, `about.html`, `mikadiv/index.html` + PDF,
+`streamld/index.html` + its 4 documents, then the StreamLD test suite) on
+every push to `main` and every PR against `main`. On `push` to `main`
+specifically, it also commits any changed generated output back to the
+branch (`chore: rebuild site [skip ci]`). It does not deploy anywhere itself
+- see "Deploying to openfaster.org" below.
 
 ## Deploying to openfaster.org
 
-Author here, then publish the built artifacts. You do **not** need to edit the
-live site directly: copy `index.html` (and
-`documentation/openfaster.pdf`) to the openfaster.org host, or let the CI
-workflow deploy them to GitHub Pages.
+openfaster.org is deployed on Vercel, which serves whatever is currently
+committed to `main` (routing governed by [`vercel.json`](vercel.json)). You
+do **not** need to edit the live site directly: author the `.bs`/mapping/SHACL
+sources, build the outputs (Option A above, or let CI do it - see Option B),
+commit the result, and Vercel picks it up automatically on the next deploy.
 
 ## Editing conventions
 
