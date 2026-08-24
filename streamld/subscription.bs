@@ -3,17 +3,20 @@ Title: StreamLD Subscription and Discovery
 Shortname: streamld-subscription
 Level: 1
 Status: w3c/CG-DRAFT
-URL: https://openfaster.org/streamld/subscription.html
+URL: https://openfaster.org/streamld/subscription
+Local Boilerplate: header yes
 Editor: OpenFASTER Editors
-Abstract: Defines how a client discovers a stream's subscription endpoint(s), independent of which transport binding (<a href="binding-sse.html">StreamLD SSE Binding</a> or <a href="binding-websocket.html">StreamLD WebSocket Replication Binding</a>) it then uses.
+Abstract: Defines how a client discovers a stream's subscription endpoint(s), independent of which transport binding (<a href="binding-sse">StreamLD SSE Binding</a> or <a href="binding-websocket">StreamLD WebSocket Replication Binding</a>) it then uses. Part of the <a href="/streamld">StreamLD module</a>.
 </pre>
+
+<p><a href="/streamld">← Back to the StreamLD module index</a></p>
 
 # Overview # {#overview}
 
 This document separates *discovering* a stream's subscribable endpoint from
 *subscribing* to it over a specific transport — the same separation
-<a href="binding-sse.html">StreamLD SSE Binding</a> and
-<a href="binding-websocket.html">StreamLD WebSocket Replication Binding</a> rely on, and the same one
+<a href="binding-sse">StreamLD SSE Binding</a> and
+<a href="binding-websocket">StreamLD WebSocket Replication Binding</a> rely on, and the same one
 AsyncAPI draws between its Channel and Operation objects.
 
 # Discovery # {#discovery}

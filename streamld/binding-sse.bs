@@ -3,10 +3,13 @@ Title: StreamLD SSE Binding
 Shortname: streamld-sse
 Level: 1
 Status: w3c/CG-DRAFT
-URL: https://openfaster.org/streamld/binding-sse.html
+URL: https://openfaster.org/streamld/binding-sse
+Local Boilerplate: header yes
 Editor: OpenFASTER Editors
-Abstract: Defines how StreamLD's cursor-based subscription model (see <a href="core.html">StreamLD Core</a>) is carried over Server-Sent Events, for server-to-client delivery.
+Abstract: Defines how StreamLD's cursor-based subscription model (see <a href="core">StreamLD Core</a>) is carried over Server-Sent Events, for server-to-client delivery. Part of the <a href="/streamld">StreamLD module</a>.
 </pre>
+
+<p><a href="/streamld">← Back to the StreamLD module index</a></p>
 
 # Overview # {#overview}
 
@@ -16,7 +19,7 @@ avoid the six-connections-per-origin limit HTTP/1.1 imposes on `EventSource`.
 
 # Resumption # {#resumption}
 
-The StreamLD cursor (see <a href="core.html#cursor">StreamLD Core, The Cursor</a>) is carried directly as the
+The StreamLD cursor (see <a href="core#cursor">StreamLD Core, The Cursor</a>) is carried directly as the
 SSE `id` field of each event. A reconnecting client's browser automatically
 resends the last-seen `id` as the `Last-Event-ID` request header; a
 conformant server MUST treat an incoming `Last-Event-ID` header as the
@@ -24,7 +27,7 @@ conformant server MUST treat an incoming `Last-Event-ID` header as the
 
 # Gap responses # {#gap-responses}
 
-If the requested cursor cannot be satisfied (see <a href="core.html#gap-handling">StreamLD Core, Gap handling</a>),
+If the requested cursor cannot be satisfied (see <a href="core#gap-handling">StreamLD Core, Gap handling</a>),
 the server MUST respond with HTTP status 409
 and a JSON body matching the `streamld:GapSignal` shape, and MUST NOT begin an
 `text/event-stream` response in that case.
