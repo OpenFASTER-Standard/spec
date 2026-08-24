@@ -32,8 +32,11 @@ jobs:
           pip install -r requirements.txt -r documentation/requirements-spec.txt -r streamld/tests/requirements.txt
           bikeshed update
 
-      - name: Build MiKaDiv-VIB (XSD -> generated include -> Excel template)
+      - name: Build MiKaDiv-VIB Request (XSD -> generated include -> Excel template)
         run: python generate_template.py
+
+      - name: Build MiKaDiv-VIB Response (XSD -> generated include)
+        run: PYTHONPATH=. python mikadiv-vib/generate_response_docs.py
 
       - name: Build StreamLD (SHACL -> generated include + JSON Schema)
         run: PYTHONPATH=streamld python -m generator.generate_streamld_docs
@@ -46,12 +49,18 @@ jobs:
 
       - name: Read MiKaDiv-VIB version
         id: mikadiv_vib_version
-        run: echo "version=$(python -m engine.version mikadiv-vib/index.bs)" >> "$GITHUB_OUTPUT"
+        run: echo "version=$(python -m engine.version mikadiv-vib/request.bs)" >> "$GITHUB_OUTPUT"
 
-      - name: Build mikadiv-vib/index.html + PDF
+      - name: Build mikadiv-vib/index.html
+        run: bikeshed --allow-nonlocal-files --die-on=link-error spec mikadiv-vib/index.bs mikadiv-vib/index.html
+
+      - name: Build mikadiv-vib/request.html + PDF
         run: |
-          bikeshed --allow-nonlocal-files --die-on=link-error spec mikadiv-vib/index.bs mikadiv-vib/index.html
-          weasyprint --stylesheet documentation/print.css mikadiv-vib/index.html mikadiv-vib/generated/mikadiv-vib-v${{ steps.mikadiv_vib_version.outputs.version }}.pdf
+          bikeshed --allow-nonlocal-files --die-on=link-error spec mikadiv-vib/request.bs mikadiv-vib/request.html
+          weasyprint --stylesheet documentation/print.css mikadiv-vib/request.html mikadiv-vib/generated/mikadiv-vib-v${{ steps.mikadiv_vib_version.outputs.version }}.pdf
+
+      - name: Build mikadiv-vib/response.html
+        run: bikeshed --allow-nonlocal-files --die-on=link-error spec mikadiv-vib/response.bs mikadiv-vib/response.html
 
       - name: Build streamld/index.html
         run: bikeshed --allow-nonlocal-files --die-on=link-error spec streamld/index.bs streamld/index.html
@@ -73,7 +82,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.html 404.html mikadiv-vib/index.html mikadiv-vib/generated/ documentation/about.html documentation/header.include mikadiv-vib/header.include streamld/header.include streamld/index.html streamld/core.html streamld/subscription.html streamld/binding-sse.html streamld/binding-websocket.html streamld/generated/
+          git add index.html 404.html mikadiv-vib/index.html mikadiv-vib/request.html mikadiv-vib/response.html mikadiv-vib/generated/ documentation/about.html documentation/header.include mikadiv-vib/header.include streamld/header.include streamld/index.html streamld/core.html streamld/subscription.html streamld/binding-sse.html streamld/binding-websocket.html streamld/generated/
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
