@@ -69,8 +69,8 @@ flowchart LR
   model --> gen
   gen --> meta["mikadiv/generated/template_metadata.json"]
   meta --> incl["mikadiv/generated/fields.include.bs"]
-  incl --> bs["documentation/index.bs"]
-  bs --> html["index.html"]
+  incl --> bs["mikadiv/index.bs"]
+  bs --> html["mikadiv/index.html"]
   bs --> pdf["documentation/openfaster.pdf"]
   meta --> xlsx["mikadiv/generated/…Template.xlsx"]
 ```
@@ -94,7 +94,7 @@ presentation stays controllable:
 | File | Role | Edited by hand? |
 | --- | --- | --- |
 | [`mikadiv/ThirdPartyDisclosureRequest.xsd`](mikadiv/ThirdPartyDisclosureRequest.xsd) | Schema; machine source for all field content | Yes (the schema) |
-| [`documentation/index.bs`](documentation/index.bs) | Bikeshed specification source (prose, structure, roadmap) | Yes |
+| [`mikadiv/index.bs`](mikadiv/index.bs) | Bikeshed specification source (prose, structure, roadmap) | Yes |
 | [`engine/xsd_model.py`](engine/xsd_model.py) | Layer 1: XSD extractor (via `xmlschema`) | Yes |
 | [`mikadiv/mapping.py`](mikadiv/mapping.py) | Layer 2: template shape + presentation-only columns | Yes |
 | [`engine/generator.py`](engine/generator.py) | Layer 3: renders metadata, docs, Bikeshed include, and Excel template | Yes |
@@ -103,7 +103,9 @@ presentation stays controllable:
 | `mikadiv/generated/fields.include.bs` | Data dictionary + enumerations, pulled into `index.bs` | Generated |
 | `mikadiv/generated/TEMPLATE_FIELDS.md` | Human-readable field reference | Generated |
 | `mikadiv/generated/MiKaDiv_ThirdPartyDisclosure_Template.xlsx` | Fillable Excel template | Generated |
-| `index.html` / `documentation/openfaster.pdf` | Built specification (deployed to openfaster.org) | Generated |
+| `mikadiv/index.html` | Built HTML spec, compiled from `mikadiv/index.bs` | Generated |
+| `documentation/openfaster.pdf` | Built PDF, rendered from `mikadiv/index.html` (deployed to openfaster.org) | Generated |
+| `index.html` | Hand-authored site portal (NOT Bikeshed-compiled); served at site root | Yes (hand-authored, not built) |
 
 ## Building the specification
 
@@ -198,7 +200,7 @@ This writes, into `mikadiv/generated/`:
 - `MiKaDiv_ThirdPartyDisclosure_Template.xlsx` - the fillable template.
 - `template_metadata.json` - the field metadata store (source for docs + spec).
 - `TEMPLATE_FIELDS.md` - a human-readable field reference.
-- `fields.include.bs` - the Bikeshed include consumed by `documentation/index.bs`.
+- `fields.include.bs` - the Bikeshed include consumed by `mikadiv/index.bs`.
 
 Re-run any time to regenerate everything (for example after the XSD changes).
 
