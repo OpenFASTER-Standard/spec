@@ -20,6 +20,7 @@ from pathlib import Path
 from types import ModuleType
 
 from engine.generator import Generator, ModuleConfig
+from engine.version import read_docversion
 
 ROOT = Path(__file__).resolve().parent
 
@@ -40,13 +41,14 @@ def _load_module(name: str, path: Path) -> ModuleType:
 
 
 mikadiv_vib_mapping = _load_module("mikadiv_vib_mapping", ROOT / "mikadiv-vib" / "mapping.py")
+MIKADIV_VIB_VERSION = read_docversion(ROOT / "mikadiv-vib" / "index.bs")
 
 MODULES: list[ModuleConfig] = [
     ModuleConfig(
         title=mikadiv_vib_mapping.LEGEND_TITLE,
         xsd_path=ROOT / "mikadiv-vib" / "ThirdPartyDisclosureRequest.xsd",
         output_dir=ROOT / "mikadiv-vib" / "generated",
-        xlsx_name="MiKaDiv_ThirdPartyDisclosure_Template.xlsx",
+        xlsx_name=f"mikadiv-vib-v{MIKADIV_VIB_VERSION}.xlsx",
         json_name="template_metadata.json",
         doc_name="TEMPLATE_FIELDS.md",
         bs_name="fields.include.bs",
@@ -57,6 +59,9 @@ MODULES: list[ModuleConfig] = [
         build_sheets=mikadiv_vib_mapping.build_sheets,
         sheet_info=mikadiv_vib_mapping.SHEET_INFO,
         legend_rows=mikadiv_vib_mapping.LEGEND_ROWS,
+        slug="mikadiv-vib",
+        version=MIKADIV_VIB_VERSION,
+        spec_url="https://openfaster.org/mikadiv-vib",
     ),
 ]
 
