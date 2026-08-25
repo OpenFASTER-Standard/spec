@@ -1,7 +1,7 @@
 <!doctype html><html lang="en">
  <head>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-  <title>MiKaDiv Third-Party Disclosure</title>
+  <title>MiKaDiv Third-Party Disclosure — Response</title>
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <link href="/documentation/site.css" rel="stylesheet">
   <link href="/documentation/shell.css" rel="stylesheet">
@@ -1491,8 +1491,8 @@ Possible extra rowspan handling
 	}
 </style>
   <meta content="Bikeshed version d113b2e81, updated Tue Jun 9 14:57:55 2026 -0700" name="generator">
-  <link href="https://openfaster.org/mikadiv-vib" rel="canonical">
-  <meta content="07165e0cff0350c2a17ea2cd6111ad13abacffce" name="revision">
+  <link href="https://openfaster.org/mikadiv-vib/response" rel="canonical">
+  <meta content="ef5016a6cd871ff8a12360b50a93abb8b9b7f7fa" name="revision">
   <meta content="dark light" name="color-scheme">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
@@ -1912,13 +1912,13 @@ dfn > a.self-link::before      { content: "#"; }
   </header>
   <div class="head">
    <p data-fill-with="logo"></p>
-   <h1 class="no-ref p-name" id="title">MiKaDiv Third-Party Disclosure</h1>
+   <h1 class="no-ref p-name" id="title">MiKaDiv Third-Party Disclosure — Response</h1>
    <h2 class="heading no-num no-ref no-toc settled" id="profile-and-date"><span class="content">A Collection of Interesting Ideas,
     <time class="dt-updated" datetime="2026-08-24">24 August 2026</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
-     <dd><a class="u-url" href="https://openfaster.org/mikadiv-vib">https://openfaster.org/mikadiv-vib</a>
+     <dd><a class="u-url" href="https://openfaster.org/mikadiv-vib/response">https://openfaster.org/mikadiv-vib/response</a>
      <dt>Issue Tracking:
      <dd><a href="https://github.com/OpenFASTER-Standard/spec/issues/">GitHub</a>
      <dt class="editor">Editor:
@@ -1939,10 +1939,11 @@ Parts of this work may be from another specification document.  If so, those par
   </div>
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="heading no-num no-ref no-toc settled" id="abstract"><span class="content">Abstract</span></h2>
-   <p>MiKaDiv Third-Party Disclosure is a module of the
-<a href="/about">OpenFASTER</a> family, mirroring the German MiKaDiv
-(§45b EStG) capital-income disclosure schema. This page indexes its two
-documents.</p>
+   <p>This document is for developers implementing a MiKaDiv integration
+against this platform -- banks never see this raw response directly. It
+documents the format the German paying agent (via the custodian, VIB) uses
+to acknowledge, confirm, or reject a submitted
+<a href="/mikadiv-vib/request">MiKaDiv disclosure request</a>.</p>
   </div>
   <div data-fill-with="at-risk"></div>
   <section class="changelog-top" id="changelog">
@@ -1970,23 +1971,343 @@ documents.</p>
   <nav data-fill-with="table-of-contents" id="toc">
    <h2 class="no-num no-ref no-toc" id="contents">Table of Contents</h2>
    <ol class="toc">
-    <li><a href="#mikadiv-vib-module"><span class="secno">1</span> <span class="content">MiKaDiv Third-Party Disclosure</span></a>
+    <li>
+     <a href="#mikadiv-vib-response-module"><span class="secno">1</span> <span class="content">The MiKaDiv Third-Party Disclosure Response format</span></a>
+     <ol class="toc">
+      <li><a href="#source-schema"><span class="secno">1.1</span> <span class="content">Source schema</span></a>
+      <li><a href="#response-identifiers"><span class="secno">1.2</span> <span class="content">Identifiers</span></a>
+      <li><a href="#processing-status"><span class="secno">1.3</span> <span class="content">Processing status and result</span></a>
+     </ol>
+    <li>
+     <a href="#response-fields"><span class="secno">2</span> <span class="content">Response fields</span></a>
+     <ol class="toc">
+      <li><a href="#response-envelope"><span class="secno">2.1</span> <span class="content">Response envelope</span></a>
+      <li><a href="#messages"><span class="secno">2.2</span> <span class="content">Messages</span></a>
+      <li><a href="#records"><span class="secno">2.3</span> <span class="content">Records</span></a>
+      <li><a href="#documents"><span class="secno">2.4</span> <span class="content">Documents</span></a>
+     </ol>
+    <li>
+     <a href="#response-enumerations"><span class="secno">3</span> <span class="content">Enumerations</span></a>
+     <ol class="toc">
+      <li><a href="#enum-processingstatus"><span class="secno">3.1</span> <span class="content">ProcessingStatus</span></a>
+      <li><a href="#enum-processingresult"><span class="secno">3.2</span> <span class="content">ProcessingResult</span></a>
+      <li><a href="#enum-message-level"><span class="secno">3.3</span> <span class="content">Message.Level</span></a>
+      <li><a href="#enum-record-recordtype"><span class="secno">3.4</span> <span class="content">Record.RecordType</span></a>
+      <li><a href="#enum-document-documenttype"><span class="secno">3.5</span> <span class="content">Document.DocumentType</span></a>
+      <li><a href="#response-known-gaps"><span class="secno">3.6</span> <span class="content">Known gaps in this schema</span></a>
+     </ol>
    </ol>
   </nav>
   <main>
-   <h2 class="heading settled" data-level="1" id="mikadiv-vib-module"><span class="secno">1. </span><span class="content">MiKaDiv Third-Party Disclosure</span><a class="self-link" href="#mikadiv-vib-module"></a></h2>
-   <p>MiKaDiv Third-Party Disclosure is split into two documents:</p>
+   <h2 class="heading settled" data-level="1" id="mikadiv-vib-response-module"><span class="secno">1. </span><span class="content">The MiKaDiv Third-Party Disclosure Response format</span><a class="self-link" href="#mikadiv-vib-response-module"></a></h2>
+   <p>VIB publishes a second schema, <code>ThirdPartyDisclosureResponse.xsd</code>, for the
+message a custodian sends back after processing a submitted
+<a href="/mikadiv-vib/request">request</a>. One response file can batch
+responses for multiple requests: each <code>ResponseToDisclosureForIncomeType</code>
+entry answers exactly one prior request, correlated by RequestId.</p>
+   <h3 class="heading settled" data-level="1.1" id="source-schema"><span class="secno">1.1. </span><span class="content">Source schema</span><a class="self-link" href="#source-schema"></a></h3>
+   <p>This document’s field definitions, requiredness, and enumerations are
+generated directly from VIB’s published <code>ThirdPartyDisclosureResponse.xsd</code>,
+the same way the <a href="/mikadiv-vib/request">Request document</a> is
+generated from <code>ThirdPartyDisclosureRequest.xsd</code> — regenerating from the
+updated XSD keeps this document in lock-step with the VIB source.</p>
+   <p>Unlike the Request side, <code>ResponseId</code> and <code>RequestId</code> are typed as plain text
+in this schema, not the UUID-pattern-constrained type the Request side’s own
+<code>RequestId</code> uses — the wire format doesn’t itself enforce a UUID shape on
+either identifier here, even though VIB’s own real sample data uses
+UUID-looking values for both.</p>
+   <h3 class="heading settled" data-level="1.2" id="response-identifiers"><span class="secno">1.2. </span><span class="content">Identifiers</span><a class="self-link" href="#response-identifiers"></a></h3>
+   <p>A response carries three separate identifiers, with no formal relationship
+declared between them by the schema:</p>
    <ul>
     <li data-md>
-     <p><a href="/mikadiv-vib/request">Request</a> — the data model a bank or reporting
-institute submits, with an accompanying Excel template and downloadable
-PDF.</p>
+     <p><b><code>ResponseId</code></b> — assigned by the custodian, must stay unique even
+across subsequent files.</p>
     <li data-md>
-     <p><a href="/mikadiv-vib/response">Response</a> — what the platform receives back from
-the German paying agent after processing a submission, for implementers
-building a MiKaDiv integration.</p>
+     <p><b><code>RequestId</code></b> — correlates this response back to the request it
+answers.</p>
+    <li data-md>
+     <p><b>A <code>Record</code> of <code>RecordType</code> = <code>TaxDocumentIdentifier</code></b> — the tax
+certificate’s own official reference number (the "Ordnungsnummer"),
+unrelated to either of the two identifiers above.</p>
    </ul>
-   <p><a href="/">← Back to the OpenFASTER portal</a></p>
+   <h3 class="heading settled" data-level="1.3" id="processing-status"><span class="secno">1.3. </span><span class="content">Processing status and result</span><a class="self-link" href="#processing-status"></a></h3>
+   <p><code>ProcessingStatus</code> and <code>ProcessingResult</code> are independent fields, not one
+combined status. <code>ProcessingStatus</code> names a 6-stage pipeline (<code>Receive</code> →
+<code>StructureValidation</code> → <code>ContentValidation</code> → <code>Plausibilization</code> → <code>Reporting</code>
+→ <code>TaxCertification</code>); a response can be emitted after <em>any</em> stage, not only
+the last, so an early-stage <code>Error</code> represents a structural/format rejection,
+distinct from a later business-rule rejection or a final
+certificate-issuance failure. <code>ProcessingCompleted</code> is the schema’s actual
+mechanism for expressing an in-progress vs. final state — a stage can
+succeed (<code>ProcessingResult</code> = <code>Success</code>) while <code>ProcessingCompleted</code> = <code>false</code>,
+signaling that further responses are still to come. There is no explicit
+<code>Pending</code> or <code>Rejected</code> value anywhere in this schema; both are inferred by
+combining <code>ProcessingStatus</code>, <code>ProcessingResult</code>, and <code>ProcessingCompleted</code>,
+never read off one field alone.</p>
+   <h2 class="heading settled" data-level="2" id="response-fields"><span class="secno">2. </span><span class="content">Response fields</span><a class="self-link" href="#response-fields"></a></h2>
+   <p>Every response batches one or more <code>ResponseToDisclosureForIncomeType</code> entries, each answering one prior request. Fields below are grouped by where they appear in that structure.</p>
+   <h3 class="heading settled" data-level="2.1" id="response-envelope"><span class="secno">2.1. </span><span class="content">Response envelope</span><a class="self-link" href="#response-envelope"></a></h3>
+   <table class="complex data dictionary longlastcol">
+    <colgroup>
+     <col style="width:18%">
+     <col style="width:12%">
+     <col style="width:20%">
+     <col style="width:50%">
+    <thead>
+     <tr>
+      <th>Field
+      <th class="col-req">Requiredness
+      <th>Type / Allowed values
+      <th>Description
+    <tbody>
+     <tr>
+      <td><code>ResponseId</code>
+      <td class="col-req">Required
+      <td>Text
+      <td class="long">Unique identifier for the response. Must be unique even over subsequent files. To be defined by the custodian.
+     <tr>
+      <td><code>RequestId</code>
+      <td class="col-req">Required
+      <td>Text
+      <td class="long">Unique identifier for the request that was sent to the custodian and is target of the response.
+     <tr>
+      <td><code>ResponseDate</code>
+      <td class="col-req">Required
+      <td>Date (YYYY-MM-DD)
+      <td class="long">Date at which the response was generated.
+     <tr>
+      <td><code>ProcessingStatus</code>
+      <td class="col-req">Required
+      <td>Text
+      <td class="long">Processing status.
+     <tr>
+      <td><code>ProcessingResult</code>
+      <td class="col-req">Required
+      <td>Text
+      <td class="long">Processing result.
+     <tr>
+      <td><code>ProcessingCompleted</code>
+      <td class="col-req">Required
+      <td>Boolean (true / false)
+      <td class="long">Whether processing of this item is fully finished (true) or further responses covering later stages are still to follow (false). Independent of ProcessingResult: a stage can succeed with ProcessingCompleted=false, meaning more responses are still to come.
+   </table>
+   <h3 class="heading settled" data-level="2.2" id="messages"><span class="secno">2.2. </span><span class="content">Messages</span><a class="self-link" href="#messages"></a></h3>
+   <table class="complex data dictionary longlastcol">
+    <colgroup>
+     <col style="width:18%">
+     <col style="width:12%">
+     <col style="width:20%">
+     <col style="width:50%">
+    <thead>
+     <tr>
+      <th>Field
+      <th class="col-req">Requiredness
+      <th>Type / Allowed values
+      <th>Description
+    <tbody>
+     <tr>
+      <td><code>Code</code>
+      <td class="col-req">Optional
+      <td>Text
+      <td class="long">
+     <tr>
+      <td><code>Text</code>
+      <td class="col-req">Required
+      <td>Text
+      <td class="long">
+     <tr>
+      <td><code>Level</code>
+      <td class="col-req">Required
+      <td>Text
+      <td class="long">
+     <tr>
+      <td><code>Reference</code>
+      <td class="col-req">Optional
+      <td>Text
+      <td class="long">
+   </table>
+   <h3 class="heading settled" data-level="2.3" id="records"><span class="secno">2.3. </span><span class="content">Records</span><a class="self-link" href="#records"></a></h3>
+   <table class="complex data dictionary longlastcol">
+    <colgroup>
+     <col style="width:18%">
+     <col style="width:12%">
+     <col style="width:20%">
+     <col style="width:50%">
+    <thead>
+     <tr>
+      <th>Field
+      <th class="col-req">Requiredness
+      <th>Type / Allowed values
+      <th>Description
+    <tbody>
+     <tr>
+      <td><code>Content</code>
+      <td class="col-req">Required
+      <td>Text
+      <td class="long">
+     <tr>
+      <td><code>RecordType</code>
+      <td class="col-req">Required
+      <td>Text
+      <td class="long">
+     <tr>
+      <td><code>RecordTypeInfo</code>
+      <td class="col-req">Required
+      <td>Text
+      <td class="long">
+   </table>
+   <h3 class="heading settled" data-level="2.4" id="documents"><span class="secno">2.4. </span><span class="content">Documents</span><a class="self-link" href="#documents"></a></h3>
+   <table class="complex data dictionary longlastcol">
+    <colgroup>
+     <col style="width:18%">
+     <col style="width:12%">
+     <col style="width:20%">
+     <col style="width:50%">
+    <thead>
+     <tr>
+      <th>Field
+      <th class="col-req">Requiredness
+      <th>Type / Allowed values
+      <th>Description
+    <tbody>
+     <tr>
+      <td><code>FilePath</code>
+      <td class="col-req">Required
+      <td>Text
+      <td class="long">
+     <tr>
+      <td><code>ContentMimeType</code>
+      <td class="col-req">Required
+      <td>Text
+      <td class="long">
+     <tr>
+      <td><code>DocumentType</code>
+      <td class="col-req">Required
+      <td>Text
+      <td class="long">
+     <tr>
+      <td><code>Reference</code>
+      <td class="col-req">Optional
+      <td>Text
+      <td class="long">
+   </table>
+   <h2 class="heading settled" data-level="3" id="response-enumerations"><span class="secno">3. </span><span class="content">Enumerations</span><a class="self-link" href="#response-enumerations"></a></h2>
+   <p>Every value that an enum-typed field in the response may carry, with its meaning.</p>
+   <h3 class="heading settled" data-level="3.1" id="enum-processingstatus"><span class="secno">3.1. </span><span class="content">ProcessingStatus</span><a class="self-link" href="#enum-processingstatus"></a></h3>
+   <table class="complex data enum-table longlastcol">
+    <colgroup>
+     <col style="width:18%">
+     <col style="width:82%">
+    <thead>
+     <tr>
+      <th>Value
+      <th>Meaning
+    <tbody>
+     <tr>
+      <td><code>Receive</code>
+      <td class="long">
+     <tr>
+      <td><code>StructureValidation</code>
+      <td class="long">
+     <tr>
+      <td><code>ContentValidation</code>
+      <td class="long">
+     <tr>
+      <td><code>Plausibilization</code>
+      <td class="long">
+     <tr>
+      <td><code>Reporting</code>
+      <td class="long">
+     <tr>
+      <td><code>TaxCertification</code>
+      <td class="long">
+   </table>
+   <h3 class="heading settled" data-level="3.2" id="enum-processingresult"><span class="secno">3.2. </span><span class="content">ProcessingResult</span><a class="self-link" href="#enum-processingresult"></a></h3>
+   <table class="complex data enum-table longlastcol">
+    <colgroup>
+     <col style="width:18%">
+     <col style="width:82%">
+    <thead>
+     <tr>
+      <th>Value
+      <th>Meaning
+    <tbody>
+     <tr>
+      <td><code>Success</code>
+      <td class="long">
+     <tr>
+      <td><code>Error</code>
+      <td class="long">
+   </table>
+   <h3 class="heading settled" data-level="3.3" id="enum-message-level"><span class="secno">3.3. </span><span class="content">Message.Level</span><a class="self-link" href="#enum-message-level"></a></h3>
+   <table class="complex data enum-table longlastcol">
+    <colgroup>
+     <col style="width:18%">
+     <col style="width:82%">
+    <thead>
+     <tr>
+      <th>Value
+      <th>Meaning
+    <tbody>
+     <tr>
+      <td><code>Information</code>
+      <td class="long">
+     <tr>
+      <td><code>Warning</code>
+      <td class="long">
+     <tr>
+      <td><code>Error</code>
+      <td class="long">
+   </table>
+   <h3 class="heading settled" data-level="3.4" id="enum-record-recordtype"><span class="secno">3.4. </span><span class="content">Record.RecordType</span><a class="self-link" href="#enum-record-recordtype"></a></h3>
+   <table class="complex data enum-table longlastcol">
+    <colgroup>
+     <col style="width:18%">
+     <col style="width:82%">
+    <thead>
+     <tr>
+      <th>Value
+      <th>Meaning
+    <tbody>
+     <tr>
+      <td><code>TaxDocumentIdentifier</code>
+      <td class="long">
+     <tr>
+      <td><code>Other</code>
+      <td class="long">
+   </table>
+   <h3 class="heading settled" data-level="3.5" id="enum-document-documenttype"><span class="secno">3.5. </span><span class="content">Document.DocumentType</span><a class="self-link" href="#enum-document-documenttype"></a></h3>
+   <table class="complex data enum-table longlastcol">
+    <colgroup>
+     <col style="width:18%">
+     <col style="width:82%">
+    <thead>
+     <tr>
+      <th>Value
+      <th>Meaning
+    <tbody>
+     <tr>
+      <td><code>TaxCertificate</code>
+      <td class="long">
+     <tr>
+      <td><code>Information</code>
+      <td class="long">
+     <tr>
+      <td><code>Other</code>
+      <td class="long">
+   </table>
+   <h3 class="heading settled" data-level="3.6" id="response-known-gaps"><span class="secno">3.6. </span><span class="content">Known gaps in this schema</span><a class="self-link" href="#response-known-gaps"></a></h3>
+   <p>Worth disclosing rather than silently working around: <code>ResponseToDisclosureForIncomeType</code>
+is documented in the XSD itself as "Not for direct use" (a base type,
+presumably meant to be subtyped per income category), yet no derived subtype
+exists and the schema’s own root element references this exact type
+directly — in practice, this base type is the only one ever used. Also, the
+only real sample VIB has published for this schema
+(<code>Sample1-TaxCertificateSuccess.xml</code>) demonstrates the full-success path only
+— there is no published example of an <code>Error</code> or a <code>ProcessingCompleted</code> =
+<code>false</code> response, so this document’s coverage of those states is derived from
+the schema’s own structure, not confirmed against a real example.</p>
   </main>
 <script>
 (function() {

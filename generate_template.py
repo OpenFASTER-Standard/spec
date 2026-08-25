@@ -41,7 +41,7 @@ def _load_module(name: str, path: Path) -> ModuleType:
 
 
 mikadiv_vib_mapping = _load_module("mikadiv_vib_mapping", ROOT / "mikadiv-vib" / "mapping.py")
-MIKADIV_VIB_VERSION = read_docversion(ROOT / "mikadiv-vib" / "index.bs")
+MIKADIV_VIB_VERSION = read_docversion(ROOT / "mikadiv-vib" / "request.bs")
 
 MODULES: list[ModuleConfig] = [
     ModuleConfig(

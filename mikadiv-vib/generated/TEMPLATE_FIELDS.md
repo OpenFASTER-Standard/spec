@@ -27,16 +27,15 @@ Every data sheet has four header rows; data entry begins on row 5.
 
 ### Linking model
 
-- **RequestId** is the key on `1 Requests Master` and the first column of every other sheet. It is only used to link the sheets, so any unique value works (it does not need to be a UUID).
-- **Cancellations:** set `RecordType = Cancel` on the master sheet, fill `PreviousRequestIdForCancellation` (and optionally `ReportSerialNumber`), and leave every other sheet empty for that RequestId.
+- **RequestId** is the key on `1 Requests Master` and the first column on every other sheet, used to join a request's data across all sheets. Per VIB's own schema, RequestId must stay unique even across files you submit later, not just within this one -- corrections and cancellations you submit afterward reference it by exact value.
 - **Community recipients:** capture a community tax-voucher receiver (up to 10 members) by setting `ReceiverGroupType = CommunityMember` on the tax voucher sheets and giving all members of one community the same `CommunityGroupId`.
 
 ## Sheets at a glance
 
 | Sheet | Fields | Cardinality (rows per RequestId) | When to fill |
 | --- | --- | --- | --- |
-| [1 Requests Master](#1-requests-master) | 25 | Exactly 1 row per RequestId (this sheet defines the RequestId). | Always - every disclosure or cancellation starts here. |
-| [2 Security Related Information](#2-security-related-information) | 38 | 0..1 row per RequestId. | Required when RecordType = Request. Leave empty for RecordType = Cancel. Within this sheet, the depositary-receipt fields are required only when IsDepositaryReceipt = true. |
+| [1 Requests Master](#1-requests-master) | 23 | Exactly 1 row per RequestId (this sheet defines the RequestId). | Always - every disclosure starts here. |
+| [2 Security Related Information](#2-security-related-information) | 38 | 0..1 row per RequestId. | Required for every disclosure. Within this sheet, the depositary-receipt fields are required only when IsDepositaryReceipt = true. |
 | [3 Tax Voucher Individuals](#3-tax-voucher-individuals) | 22 | Tax-voucher receivers total up to 2 per RequestId, counted across this sheet and '4 Tax Voucher Legal Persons'. A community counts as ONE receiver and may span up to 10 member rows that share one CommunityGroupId. | For Request records at least one tax-voucher receiver is required (here or on the legal-persons sheet). Add one row per natural-person receiver or community member. |
 | [4 Tax Voucher Legal Persons](#4-tax-voucher-legal-persons) | 22 | Counts towards the up-to-2 tax-voucher receivers per RequestId (shared with '3 Tax Voucher Individuals'). | For Request records, use when a tax-voucher receiver (or community member) is a legal person. |
 | [5 Third Party Individuals](#5-third-party-individuals) | 20 | Third-party persons total up to 5 per RequestId, counted across this sheet and '6 Third Party Legal Persons'. | Only when the account holder is not the beneficial owner AND the beneficial owner is disclosed. Otherwise leave empty. |
@@ -49,39 +48,37 @@ Every data sheet has four header rows; data entry begins on row 5.
 
 ### 1 Requests Master
 
-**Significance.** The parent record. One row per disclosure, holding administrative and routing metadata, the record type (new request vs cancellation), the directly-contracted securities account, the account type and the account relationship. Every other sheet links back to this one through RequestId.
+**Significance.** The parent record. One row per disclosure, holding administrative and routing metadata, the directly-contracted securities account, the account type and the account relationship. Every other sheet links back to this one through RequestId.
 
 **Cardinality.** Exactly 1 row per RequestId (this sheet defines the RequestId).
 
-**When to fill.** Always - every disclosure or cancellation starts here.
+**When to fill.** Always - every disclosure starts here.
 
 | # | Field | Requiredness | Type / Allowed values | Description |
 | --- | --- | --- | --- | --- |
 | 1 | `RequestId` | Required | Text (identifier used to link the sheets; any unique value) | Identifier for the request, defined by you. Used only as the key that links every sheet together, so any unique value (e.g. a running number) is fine. |
-| 2 | `RecordType` | Required | Enum [`RecordType`](#recordtype): `Request`, `Cancel` | 'Request' for a MiKaDiv reporting for income; 'Cancel' to cancel a previously submitted request (leave the child sheets empty for cancellation rows). |
-| 3 | `AccountNumber` | Required | Text (max 200) | Account number of the requesting custodian. |
-| 4 | `ClientReference` | Optional | Text (max 200) | Custom reference data of the client. |
-| 5 | `ClientContactpersonName` | Optional | Text (max 200) | Name of the responsible foreign bank contact person. |
-| 6 | `ClientContactpersonPhone` | Optional | Text (max 35) | Telephone number of the responsible foreign bank contact person. |
-| 7 | `ClientContactpersonEmail` | Optional | Text (max 200) | E-mail address of the responsible foreign bank contact person. |
-| 8 | `RequestedService` | Conditional | Enum [`RequestedService`](#requestedservice): `TaxReportAndCertificate`, `Reclaim`, `Relief` | Type of requested service. |
-| 9 | `RequestedServiceReason` | Optional | Text (max 256) | Reason for the requested service, especially for correction or cancellation. |
-| 10 | `RequestedAttestationType` | Optional | Enum [`RequestedAttestationType`](#requestedattestationtype): `BV`, `PV`, `SB` | Type of requested tax voucher. |
-| 11 | `IsCorrectionRequest` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | A correction is to be performed for a report. The data record contains a reference to the preceding request. |
-| 12 | `PreviousRequestIdForCorrection` | Optional | UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx) | If the request is for correction of a previous request, then the RequestId of the previous request must be provided. |
-| 13 | `ReportSerialNumber` | Optional | UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx) | Serial number (UUID) of an already submitted report, if provided previously by the German Paying agent. Used as a (additional) reference for correction. |
-| 14 | `TaxCertificatePrintedContactpersonName` | Optional | Text (max 200) | Name of the contact person for the customer, printed on the tax certificate or cover letter. |
-| 15 | `TaxCertificatePrintedContactpersonPhone` | Optional | Text (max 35) | Telephone number of the contact person for the customer, printed on the tax certificate or cover letter. |
-| 16 | `TaxCertificatePrintedContactpersonEmail` | Optional | Text (max 200) | E-mail address of the contact person for the customer, printed on the tax certificate or cover letter. |
-| 17 | `TaxCertificateAlternativeRecipientName` | Optional | Text (max 200) | Name of the alternative mailing address recipient. |
-| 18 | `TaxCertificateAlternativeRecipientAddress` | Optional | Text (max 256) | Address of the alternative mailing address recipient. |
-| 19 | `TaxCertificateAlternativeRecipientEmail` | Optional | Text (max 256) | E-mail address of the alternative mailing address recipient. |
-| 20 | `EventType` | Optional | Text (max 20) | Event designations of the German paying agent according to ISO 20022. |
-| 21 | `FundId` | Optional | Text (max 20) | Fund identifier (status certificate number). |
-| 22 | `PreviousRequestIdForCancellation` | Conditional | UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx) | If the request is for cancellation of a previous request, then the RequestId of the previous request must be provided. |
-| 23 | `SecuritiesAccountNumber` | Conditional | Text (max 200) | Account number of the tax voucher person at the custodian to whom the tax voucher person is directly contracted. |
-| 24 | `AccountType` | Conditional | Enum [`AccountType`](#accounttype): `A`, `B`, `Ct`, `D`, `E`, `F`, `G` | Account type. |
-| 25 | `AccountRelationship` | Optional | Enum [`AccountRelationship`](#accountrelationship): `Trust`, `Usufruct`, `Pledge` | If the tax voucher person is not the beneficial owner (creditor), then the account relationship has to be specified. |
+| 2 | `AccountNumber` | Required | Text (max 200) | Account number of the requesting custodian. |
+| 3 | `ClientReference` | Optional | Text (max 200) | Custom reference data of the client. |
+| 4 | `ClientContactpersonName` | Optional | Text (max 200) | Name of the responsible foreign bank contact person. |
+| 5 | `ClientContactpersonPhone` | Optional | Text (max 35) | Telephone number of the responsible foreign bank contact person. |
+| 6 | `ClientContactpersonEmail` | Optional | Text (max 200) | E-mail address of the responsible foreign bank contact person. |
+| 7 | `RequestedService` | Conditional | Enum [`RequestedService`](#requestedservice): `TaxReportAndCertificate`, `Reclaim`, `Relief` | Type of requested service. |
+| 8 | `RequestedServiceReason` | Optional | Text (max 256) | Reason for the requested service, especially for correction or cancellation. |
+| 9 | `RequestedAttestationType` | Optional | Enum [`RequestedAttestationType`](#requestedattestationtype): `BV`, `PV`, `SB` | Type of requested tax voucher. |
+| 10 | `IsCorrectionRequest` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | A correction is to be performed for a report. The data record contains a reference to the preceding request. |
+| 11 | `PreviousRequestIdForCorrection` | Optional | UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx) | If the request is for correction of a previous request, then the RequestId of the previous request must be provided. |
+| 12 | `ReportSerialNumber` | Optional | UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx) | Serial number (UUID) of an already submitted report, if provided previously by the German Paying agent. Used as a (additional) reference for correction. |
+| 13 | `TaxCertificatePrintedContactpersonName` | Optional | Text (max 200) | Name of the contact person for the customer, printed on the tax certificate or cover letter. |
+| 14 | `TaxCertificatePrintedContactpersonPhone` | Optional | Text (max 35) | Telephone number of the contact person for the customer, printed on the tax certificate or cover letter. |
+| 15 | `TaxCertificatePrintedContactpersonEmail` | Optional | Text (max 200) | E-mail address of the contact person for the customer, printed on the tax certificate or cover letter. |
+| 16 | `TaxCertificateAlternativeRecipientName` | Optional | Text (max 200) | Name of the alternative mailing address recipient. |
+| 17 | `TaxCertificateAlternativeRecipientAddress` | Optional | Text (max 256) | Address of the alternative mailing address recipient. |
+| 18 | `TaxCertificateAlternativeRecipientEmail` | Optional | Text (max 256) | E-mail address of the alternative mailing address recipient. |
+| 19 | `EventType` | Optional | Text (max 20) | Event designations of the German paying agent according to ISO 20022. |
+| 20 | `FundId` | Optional | Text (max 20) | Fund identifier (status certificate number). |
+| 21 | `SecuritiesAccountNumber` | Conditional | Text (max 200) | Account number of the tax voucher person at the custodian to whom the tax voucher person is directly contracted. |
+| 22 | `AccountType` | Conditional | Enum [`AccountType`](#accounttype): `A`, `B`, `Ct`, `D`, `E`, `F`, `G` | Account type. |
+| 23 | `AccountRelationship` | Optional | Enum [`AccountRelationship`](#accountrelationship): `Trust`, `Usufruct`, `Pledge` | If the tax voucher person is not the beneficial owner (creditor), then the account relationship has to be specified. |
 
 ### 2 Security Related Information
 
@@ -89,7 +86,7 @@ Every data sheet has four header rows; data entry begins on row 5.
 
 **Cardinality.** 0..1 row per RequestId.
 
-**When to fill.** Required when RecordType = Request. Leave empty for RecordType = Cancel. Within this sheet, the depositary-receipt fields are required only when IsDepositaryReceipt = true.
+**When to fill.** Required for every disclosure. Within this sheet, the depositary-receipt fields are required only when IsDepositaryReceipt = true.
 
 | # | Field | Requiredness | Type / Allowed values | Description |
 | --- | --- | --- | --- | --- |
@@ -345,15 +342,6 @@ Every value that can be chosen from a dropdown, with its meaning and the fields 
 | --- | --- |
 | `true` | Yes - the condition applies. |
 | `false` | No - the condition does not apply. |
-
-### RecordType
-
-*Used in:* `1 Requests Master.RecordType`
-
-| Value | Meaning |
-| --- | --- |
-| `Request` | A MiKaDiv reporting-for-income disclosure (a new or corrective submission). |
-| `Cancel` | Cancellation of a previously submitted disclosure request; only the master cancellation fields are filled and the child sheets stay empty. |
 
 ### RequestedService
 

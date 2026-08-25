@@ -354,13 +354,10 @@ class Generator:
         add("")
         add(
             f"- **{metadata['linkKey']}** is the key on `{metadata['sheets'][0]['name']}` "
-            "and the first column of every other sheet. It is only used to link the sheets, "
-            "so any unique value works (it does not need to be a UUID)."
-        )
-        add(
-            "- **Cancellations:** set `RecordType = Cancel` on the master sheet, fill "
-            "`PreviousRequestIdForCancellation` (and optionally `ReportSerialNumber`), and "
-            "leave every other sheet empty for that RequestId."
+            "and the first column on every other sheet, used to join a request's data "
+            "across all sheets. Per VIB's own schema, RequestId must stay unique even "
+            "across files you submit later, not just within this one -- corrections and "
+            "cancellations you submit afterward reference it by exact value."
         )
         add(
             "- **Community recipients:** capture a community tax-voucher receiver (up to 10 "

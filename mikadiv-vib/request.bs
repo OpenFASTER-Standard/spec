@@ -1,0 +1,140 @@
+<pre class=metadata>
+Title: MiKaDiv Third-Party Disclosure — Request
+Shortname: mikadiv-vib-request
+Level: 1
+Status: DREAM
+URL: https://openfaster.org/mikadiv-vib/request
+Repository: https://github.com/OpenFASTER-Standard/spec
+Text Macro: LONGSTATUS MiKaDiv Third-Party Disclosure Request -- a module of the OpenFASTER family
+Text Macro: DOCVERSION 1.0.0
+Metadata Order: This version, Issue Tracking, Editor, *
+!This version: <p class="spec-version">Version <strong>[DOCVERSION]</strong></p>
+Editor: Julian Nalenz, https://github.com/sigalor
+Abstract: This document is for banks and other reporting institutes
+    submitting MiKaDiv disclosures. The MiKaDiv Third-Party Disclosure Request
+    format is a module of the <a href="/about">OpenFASTER</a> family: a
+    self-documenting data model (with an accompanying Excel template) that
+    mirrors the German MiKaDiv (§45b EStG) capital-income disclosure request
+    schema. See <a href="/mikadiv-vib/response">the Response document</a> for
+    what a submission receives back.
+Markup Shorthands: markdown yes, dfn yes, css no
+Boilerplate: omit conformance
+Local Boilerplate: header yes
+Complain About: accidental-2119 yes, missing-example-ids yes
+</pre>
+
+Downloads {#downloads}
+=======================
+
+<a href="https://raw.githubusercontent.com/OpenFASTER-Standard/spec/main/mikadiv-vib/generated/mikadiv-vib-v[DOCVERSION].pdf">Specification PDF</a> ·
+<a href="https://raw.githubusercontent.com/OpenFASTER-Standard/spec/main/mikadiv-vib/generated/mikadiv-vib-v[DOCVERSION].xlsx">Excel template</a>
+
+The MiKaDiv Third-Party Disclosure Request module {#mikadiv-vib-request-module}
+=================================================================================
+
+The MiKaDiv (§45b EStG) **third-party disclosure request** format defines the
+data required to describe a capital-income event, the securities involved,
+every party in the chain, and the receipts and deliveries that support a
+first-in-first-out (FIFO) determination. An accompanying self-documenting
+Excel template is published alongside this specification (see
+[[#downloads|Downloads]] above); each sheet mirrors one logical group below,
+with every field's English description, type constraints, and requiredness in
+the header rows.
+
+Source schema {#source-schema}
+------------------------------
+
+The data model of this module is derived from the XML Schema Definition (XSD)
+produced by the VIB (Verband Internationaler Banken e.V.), the
+association representing internationally active banks in Germany. The VIB is
+developing this schema to standardize the electronic exchange of MiKaDiv
+third-party disclosure data between banks and towards the German paying
+agent.
+
+OpenFASTER treats the VIB XSD as the machine source of truth: the field
+definitions, requiredness, enumerations, the [[#data-dictionary|data dictionary]]
+in this document, and the accompanying Excel template are all generated directly
+from it. As the VIB schema evolves, regenerating from the updated XSD keeps this
+specification and the template in lock-step with the VIB source.
+
+Data model {#data-model}
+------------------------
+
+A disclosure is decomposed into several
+logical groups (rendered as separate sheets in the Excel template). Every
+group carries the RequestId so that the
+groups can be recombined into one record.
+
+<table class="data">
+  <thead>
+    <tr><th>Group<th>Rows per RequestId<th>Purpose
+  <tbody>
+    <tr><td>Requests Master<td>1<td>Request-level metadata; account owner scalars.
+    <tr><td>Security Related Information<td>0..1<td>The capital-income event, security identification, tax breakdown, and depositary-receipt block.
+    <tr><td>Tax Voucher Individuals / Legal Persons<td>up to 2 receivers total<td>The recipients of the tax voucher.
+    <tr><td>Third Party Individuals / Legal Persons<td>up to 5 total<td>The fiduciary counterpart (trustee, pledgor, or grantor of usufruct) tied to the beneficial owner, when the account holder is not the beneficial owner themselves.
+    <tr><td>Custody Chain<td>up to 20<td>The ordered intermediary chain, closest-to-beneficiary first.
+    <tr><td>FIFO Trades<td>up to 1000 each way<td>Receipts and deliveries with FIFO already applied by the submitter.
+    <tr><td>Raw Transactions All<td>unbounded<td>The unreduced ledger when the paying agent performs the FIFO calculation.
+</table>
+
+When the raw ledger is supplied, the German paying agent performs the FIFO
+determination; when the submitter applies FIFO itself, the reduced trades are
+supplied directly.
+
+Linking model {#linking-model}
+------------------------------
+
+The RequestId is the key on the *Requests
+Master* group and the first column of every other group, used to join a
+request's data across the groups. Per the VIB schema, a RequestId must stay
+unique even across subsequent files — not just within one submission — since
+later corrections and cancellations reference it by exact value.
+
+Every submission through this Excel template is a New Report; the platform
+constructs Corrections and Cancellations directly from records already on
+file, without a further Excel round-trip (see [[#lifecycle|Lifecycle]] below
+for how VIB's wire format expresses those two actions).
+
+* <b>Community recipients.</b> A community tax-voucher receiver (up to 10
+    members) is captured by setting `ReceiverGroupType` = `CommunityMember` on
+    the tax-voucher groups and giving all members of one community the same
+    `CommunityGroupId`. A community counts as one receiver. (`ReceiverGroupType`
+    and `CommunityGroupId` are OpenFASTER's own presentation-layer field names
+    for this template, not present in the VIB XSD itself — they flatten a
+    schema-level choice into two Excel columns.)
+
+Lifecycle {#lifecycle}
+-----------------------
+
+Beyond a New Report, the VIB schema defines two further request types.
+Neither is constructed through this Excel template — the platform generates
+both directly from a report already on file — but both are documented here as
+part of the complete wire format:
+
+* <b>Correction.</b> A full resubmission of the entire report, with
+    `IsCorrectionRequest` set to `true` and `PreviousRequestIdForCorrection` set
+    to the RequestId being corrected. Every group is repeated in full; there is
+    no delta/patch format. An optional `ReportSerialNumber` gives an additional
+    reference to an already-submitted report, once the German paying agent has
+    assigned one.
+* <b>Cancellation.</b> A minimal message carrying no report data at all — only
+    a reference. `PreviousRequestIdForCancellation` (required) identifies the
+    RequestId being cancelled; `ReportSerialNumber` (optional) is the same kind
+    of additional paying-agent-issued reference as for corrections.
+
+Conformance requirements {#module-conformance}
+----------------------------------------------
+
+A conforming producer MUST populate every field marked `Required` for each group
+it emits. Fields marked `Conditional` MUST be populated when the condition stated
+in their description holds, and MUST otherwise be omitted or left empty. Fields
+marked `Optional` MAY be omitted.
+
+Enum-typed fields MUST carry one of the values enumerated for that field in
+[[#enumerations|Enumerations]]. A conforming consumer MUST reject a
+disclosure whose enum-typed field carries a value outside the enumerated set.
+
+<pre class=include>
+path: generated/fields.include.bs
+</pre>
