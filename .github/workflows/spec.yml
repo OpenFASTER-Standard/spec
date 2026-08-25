@@ -116,3 +116,55 @@ jobs:
             git commit -m "chore: rebuild site [skip ci]"
             git push
           fi
+
+  check-generated-up-to-date:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install system dependencies (WeasyPrint's native libs)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz0b libfontconfig1 libcairo2
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -r documentation/requirements-spec.txt -r streamld/tests/requirements.txt
+          bikeshed update
+
+      - name: Check generated output is up to date
+        id: check
+        run: |
+          if ci/check-generated-up-to-date.sh; then
+            echo "stale=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "stale=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Auto-commit regenerated output onto this PR branch
+        if: steps.check.outputs.stale == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: regenerate build output to match source changes"
+          commit_user_name: github-actions[bot]
+          commit_user_email: github-actions[bot]@users.noreply.github.com
+
+      - name: Report result
+        run: |
+          if [ "${{ steps.check.outputs.stale }}" = "true" ]; then
+            echo "::warning::Generated output was stale relative to this PR's source changes -- it has been auto-corrected in a new commit on this branch. Pull the latest commit before merging."
+          else
+            echo "Generated output already matches source. Nothing to do."
+          fi
