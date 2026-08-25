@@ -108,13 +108,13 @@ six may be true together; `IntOrg` is mutually exclusive with all of them
 `2101`), not expressible as a plain XSD constraint, so it is stated here
 rather than left implicit.
 
-`KapArt` (type of capital income) is an 11-value enum on each individual
-`Ertrag`, describing what kind of capital income that specific line
-concerns (dividends, distributions from non-listed corporations, various
-profit-participation-right forms, convertible bonds, life insurance, and
-others — see [[#enumerations|Enumerations]] for the full list and
-meanings). This is a per-income-line classification, not a
-submission-level type.
+`CapitalIncome` (type of capital income) is an 11-value enum
+(`KapitalertragArt`) on each individual `Ertrag`, describing what kind of
+capital income that specific line concerns (dividends, distributions from
+non-listed corporations, various profit-participation-right forms,
+convertible bonds, life insurance, and others — see
+[[#enumerations|Enumerations]] for the full list and meanings). This is a
+per-income-line classification, not a submission-level type.
 
 <b>Note on `AntragPar11InvStG`.</b> A conforming producer will notice a
 boolean field named `AntragPar11InvStG` on the Creditors Juridical sheet.
@@ -155,7 +155,7 @@ submitter's own `AntragId`), either a `RegistrierNr` (a 9-character
 BZSt-assigned case number, present only when that application was
 accepted) or a `ValidierungsergebnisListe` (present only when it was
 rejected — one or more `StatusCode`/`Hinweis` pairs identifying exactly
-what failed; see [[#status-codes-section|Status and error codes]] below
+what failed; see [[#status-codes|Status and error codes]] below
 for the full catalog). This receipt is documented here, in the Request
 document, rather than in the Response document — it is the synchronous
 half of what a bank directly experiences submitting data, unlike the
@@ -164,9 +164,6 @@ asynchronous KAFE-VA decision notice.
 <pre class=include>
 path: generated/rm.include.bs
 </pre>
-
-Status and error codes {#status-codes-section}
----------------------------------------------------
 
 Every code BZSt's `ValidierungsergebnisListe` may report, grouped by the
 same numeric ranges the official handbook itself uses. A submitter's own
@@ -178,8 +175,93 @@ catalog, not a curated subset.
 path: generated/status-codes.include.bs
 </pre>
 
+Section 50j EStG {#section-50j}
+================================
+
+Section 50j EStG (a German anti-cum-ex/securities-lending abuse rule)
+requires additional data for capital income falling within its scope,
+captured on each `Ertrag` via the optional `Par50jEStG` block and, for the
+transaction ledger specifically, on the [[#data-dictionary|Transaction
+Data]] sheet. Almost every field in this block is `minOccurs="0"` in the
+raw XSD — real conditional-mandatory logic (country- and legal-form
+dependent) lives entirely in the [[#status-codes|status-code
+catalog]] above, not in the schema's structure, so this specification
+marks these fields `Conditional` rather than `Optional` even though the
+XSD alone would suggest otherwise.
+
+<b>Holding period (`Haltedauer`).</b> The minimum holding period is 45
+days, measured within a window beginning 45 days before and ending 45
+days after the income's due date, using FIFO. `HaltedauerMin45T` counts
+shares held at least 45 days uninterrupted within that window;
+`HaltedauerMin1J` (conditional on `HaltedauerMin45T` &gt; 0, and never
+exceeding it) counts, of those, shares also held at least one year;
+`HaltedauerKuerzer45T` counts shares held less than 45 days;
+`AnteilePar50jEStG` is `HaltedauerMin45T` minus `HaltedauerMin1J`.
+
+<b>Minimum value-change-risk retention (`MinWertAendRisiko`).</b> Only
+relevant for shares that meet the minimum holding-period requirement
+under section 50j(1) but are not already covered by section 50j(4)
+sentence 2. `GegenlAnsprueche` records whether there were offsetting
+claims during the minimum holding period; when true, `RisikoMin70`
+(conditional) records the number of shares for which the applicant bore
+at least 70% of the value-change risk during that period.
+`GegenlAnspruecheAndere` asks the same offsetting-claims question at the
+level of the entire share class, not just the section-50j-scoped shares.
+
+<b>Forwarding obligation (`WeiterlVerpflichtung`).</b> `WeiterlVerpfl`
+records whether there was a direct or indirect obligation to pass on the
+capital income; when true, `WeiterlVerpflAnteile` (conditional) gives the
+affected share count. `WeiterlVerpflAndere` asks the same question beyond
+the section-50j-scoped shares.
+
+<b>Return obligation (`RueckgabeVerpflichtung`).</b> Applies when capital
+income derives from shares transferred under civil law on or before the
+dividend date — securities loans, repurchase agreements (repos), and
+comparable spot contracts must be specified. `RueckgabeVerpfl` records
+whether such an obligation existed; when true, `RueckgabeVerpflAnteile`
+(conditional) gives the affected share count.
+
+<b>Per-depot transaction ledger (`Transaktionsdaten`).</b> For every depot
+holding shares of the security, the full development of the holding —
+including all position changes and loan transactions — must be reported
+for the period from one year before the income's inflow date to two
+months after it: `Anfangsbestand`/`AnfangsbestandDatum` (opening balance,
+dated exactly one year before the inflow date), every `Transaktion` in
+between (each carrying `Handelstag` [trade date], `Transaktionsart`
+[`ZUGANG`/inflow or `ABGANG`/outflow], `Geschaeft` [transaction type —
+`PO` purchase, `SO` sale, `TL` transfer due to securities lending, `RL`
+retransfer due to securities lending, `TP` transfer due to repo, `RP`
+retransfer due to repo], `Stueckzahl` [share count], and both an agreed
+and an actual settlement date), and `Endbestand`/`EndbestandDatum`
+(closing balance, dated exactly two months after the inflow date — BZSt's
+own worked example: an inflow date of 2023-04-25 requires an
+`EndbestandDatum` of exactly 2023-06-25). `TransaktionId` must be
+sequential and non-gapped starting at 1 within each depot — not globally
+across depots or across the whole application — per BZSt's own validation
+rule (status code `7601`); if no transactions occurred for a depot in the
+reporting window, a single "shell" transaction carrying only depot
+information, and none of the trade-specific fields, is required instead
+of an empty transaction list.
+
+Conformance requirements {#module-conformance}
+================================================
+
+A conforming producer MUST populate every field marked `Required` for
+each group it emits. Fields marked `Conditional` MUST be populated when
+the condition stated in their description holds, and MUST otherwise be
+omitted or left empty. Fields marked `Optional` MAY be omitted.
+
+Enum-typed fields MUST carry one of the values enumerated for that field
+in [[#enumerations|Enumerations]]. A conforming consumer MUST reject an
+application whose enum-typed field carries a value outside the enumerated
+set.
+
+<pre class=include>
+path: generated/fields.include.bs
+</pre>
+
 Version history {#version-history}
---------------------------------------
+====================================
 
 Divizend has published and maintained this interface specification since
 2023; the following table is the complete version history, carried
@@ -230,7 +312,9 @@ forward from the specification's prior, hand-maintained form.
       <td>3.0.0
       <td>2024-05-22
       <td><b>MAJOR changes (action required):</b> Use version 3 in the "meta"
-          sheet. Make sure to use the updated templates. Removed the field
+          sheet. Make sure to use the updated templates. (The original entry
+          also noted: "Find updated templates with demo data here" — a link,
+          no longer live in this restructured document.) Removed the field
           "CreditorNat/General_Data/Nationality" from the "creditorsNatural" sheet
           and this documentation, because it is not needed by the BOP anymore.
           <b>MAJOR changes (incompatibilities with version 2):</b> Added a section
@@ -296,8 +380,9 @@ forward from the specification's prior, hand-maintained form.
           income worksheets. Changed the claim grouping to no longer separate
           claims containing depositary receipts but rather split claims by
           certificate of residence validity. Introduced new documents to upload.
-          <b>MINOR changes:</b> Removed the section on Robotic Process Automation
-          and renamed a section to "Divizend's DIP implementation". Updated the
+          <b>MINOR changes:</b> Removed section "Robotic Process Automation" and
+          renamed section "Divizend's RPA interface for BOP's KaFE form
+          submissions" to "Divizend's DIP implementation". Updated the
           limitations concerning file sizing.
     </tr>
     <tr>
@@ -305,9 +390,11 @@ forward from the specification's prior, hand-maintained form.
       <td>2025-01-17
       <td><b>PATCH changes:</b> Added a note about section 11 InvStG to the
           introduction. Fixed typos in the requirement conditions for fields
-          "CreditorNat/German_TaxOffice/TaxNumber", "CreditorJur/German_TaxOffice/
-          TaxNumber", "CreditorJur/OptingUnderCorpTaxAct/TaxAuthority" and
-          "CreditorJur/OptingUnderCorpTaxAct/FileNumber". Minor formatting fixes.
+          "CreditorNat/German_TaxOffice/TaxNumber" and "CreditorJur/German_TaxOffice/
+          TaxNumber" (both corrected to "./German_TaxOffice"), and
+          "CreditorJur/OptingUnderCorpTaxAct/TaxAuthority" and
+          "CreditorJur/OptingUnderCorpTaxAct/FileNumber" (both corrected to
+          "./OptionKStG"). Minor formatting fixes.
     </tr>
     <tr>
       <td>4.1.0
@@ -326,9 +413,9 @@ forward from the specification's prior, hand-maintained form.
           dividends after 2026-12-31 instead of 2024-12-31. Applicants from
           Singapore wishing to submit applications for inflows that happened
           before 2021-12-31 no longer have to provide section 50j EStG data.
-          <b>PATCH changes:</b> Removed a document-attachment note that was no
-          longer relevant. Added unrequired address fields that were previously
-          missing.
+          <b>PATCH changes:</b> Removed the "Other possibly requested documents"
+          note in section 5.8 as it was no longer relevant. Added unrequired
+          address fields that were previously missing.
     </tr>
     <tr>
       <td>4.2.0
@@ -336,7 +423,7 @@ forward from the specification's prior, hand-maintained form.
       <td><b>MINOR changes:</b> Fixed spelling mistakes in field
           "TaxPrivileges/StructuralConnectionToGermany/TaxPriviligedPurposesDE".
           Fixed spelling mistakes for "AuthorizedRep" (previously
-          "AuthroizedRep") and "District" (previously "Distrcti"). Changed the
+          "AuthroizedRep") and "District" (previously "Distrcit"). Changed the
           condition for the "ISIN" field. Changed the conditions for providing a
           confirmation of tax payment. Replaced prose attachment-requirement
           sections with a table. Changed legal representative
@@ -382,87 +469,3 @@ forward from the specification's prior, hand-maintained form.
   </tbody>
 </table>
 
-Section 50j EStG {#section-50j}
------------------------------------
-
-Section 50j EStG (a German anti-cum-ex/securities-lending abuse rule)
-requires additional data for capital income falling within its scope,
-captured on each `Ertrag` via the optional `Par50jEStG` block and, for the
-transaction ledger specifically, on the [[#data-dictionary|Transaction
-Data]] sheet. Almost every field in this block is `minOccurs="0"` in the
-raw XSD — real conditional-mandatory logic (country- and legal-form
-dependent) lives entirely in the [[#status-codes-section|status-code
-catalog]] above, not in the schema's structure, so this specification
-marks these fields `Conditional` rather than `Optional` even though the
-XSD alone would suggest otherwise.
-
-<b>Holding period (`Haltedauer`).</b> The minimum holding period is 45
-days, measured within a window beginning 45 days before and ending 45
-days after the income's due date, using FIFO. `HaltedauerMin45T` counts
-shares held at least 45 days uninterrupted within that window;
-`HaltedauerMin1J` (conditional on `HaltedauerMin45T` &gt; 0, and never
-exceeding it) counts, of those, shares also held at least one year;
-`HaltedauerKuerzer45T` counts shares held less than 45 days;
-`AnteilePar50jEStG` is `HaltedauerMin45T` minus `HaltedauerMin1J`.
-
-<b>Minimum value-change-risk retention (`MinWertAendRisiko`).</b> Only
-relevant for shares that meet the minimum holding-period requirement
-under section 50j(1) but are not already covered by section 50j(4)
-sentence 2. `GegenlAnsprueche` records whether there were offsetting
-claims during the minimum holding period; when true, `RisikoMin70`
-(conditional) records the number of shares for which the applicant bore
-at least 70% of the value-change risk during that period.
-`GegenlAnspruecheAndere` asks the same offsetting-claims question at the
-level of the entire share class, not just the section-50j-scoped shares.
-
-<b>Forwarding obligation (`WeiterlVerpflichtung`).</b> `WeiterlVerpfl`
-records whether there was a direct or indirect obligation to pass on the
-capital income; when true, `WeiterlVerpflAnteile` (conditional) gives the
-affected share count. `WeiterlVerpflAndere` asks the same question beyond
-the section-50j-scoped shares.
-
-<b>Return obligation (`RueckgabeVerpflichtung`).</b> Applies when capital
-income derives from shares transferred under civil law on or before the
-dividend date — securities loans, repurchase agreements (repos), and
-comparable spot contracts must be specified. `RueckgabeVerpfl` records
-whether such an obligation existed; when true, `RueckgabeVerpflAnteile`
-(conditional) gives the affected share count.
-
-<b>Per-depot transaction ledger (`Transaktionsdaten`).</b> For every depot
-holding shares of the security, the full development of the holding —
-including all position changes and loan transactions — must be reported
-for the period from one year before the income's inflow date to two
-months after it: `Anfangsbestand`/`AnfangsbestandDatum` (opening balance,
-dated exactly one year before the inflow date), every `Transaktion` in
-between (each carrying `Handelstag` [trade date], `Transaktionsart`
-[`ZUGANG`/inflow or `ABGANG`/outflow], `Geschaeft` [transaction type —
-`PO` purchase, `SO` sale, `TL` transfer due to securities lending, `RL`
-retransfer due to securities lending, `TP` transfer due to repo, `RP`
-retransfer due to repo], `Stueckzahl` [share count], and both an agreed
-and an actual settlement date), and `Endbestand`/`EndbestandDatum`
-(closing balance, dated exactly two months after the inflow date — BZSt's
-own worked example: an inflow date of 2023-04-25 requires an
-`EndbestandDatum` of exactly 2023-06-25). `TransaktionId` must be
-sequential and non-gapped starting at 1 within each depot — not globally
-across depots or across the whole application — per BZSt's own validation
-rule (status code `7601`); if no transactions occurred for a depot in the
-reporting window, a single "shell" transaction carrying only depot
-information, and none of the trade-specific fields, is required instead
-of an empty transaction list.
-
-Conformance requirements {#module-conformance}
-----------------------------------------------
-
-A conforming producer MUST populate every field marked `Required` for
-each group it emits. Fields marked `Conditional` MUST be populated when
-the condition stated in their description holds, and MUST otherwise be
-omitted or left empty. Fields marked `Optional` MAY be omitted.
-
-Enum-typed fields MUST carry one of the values enumerated for that field
-in [[#enumerations|Enumerations]]. A conforming consumer MUST reject an
-application whose enum-typed field carries a value outside the enumerated
-set.
-
-<pre class=include>
-path: generated/fields.include.bs
-</pre>
