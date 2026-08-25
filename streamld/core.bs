@@ -11,14 +11,14 @@ Abstract: StreamLD is a protocol for real-time, resumable Linked Data event stre
 
 <p><a href="/streamld">← Back to the StreamLD module index</a></p>
 
-# Introduction {#intro}
+# Introduction # {#intro}
 
 StreamLD defines an append-only, per-stream event log. Each event is assigned a
 *sequence number* by the server at write time: a strictly increasing, per-stream
 integer starting at 1. Sequence numbers are the sole ordering primitive — StreamLD
 defines no timestamp-based ordering.
 
-# The Event Envelope {#envelope}
+# The Event Envelope # {#envelope}
 
 Every StreamLD event is a `streamld:EventEnvelope`. Its normative field list is
 defined by the SHACL shape at `streamld/model/envelope.ttl` and summarized below.
@@ -33,14 +33,14 @@ the SHACL shape and regenerate.
 path: generated/fields.include.bs
 </pre>
 
-# The Cursor {#cursor}
+# The Cursor # {#cursor}
 
 A StreamLD *cursor* is a sequence number: the position of the last event a
 subscriber has already received. A subscription request of the form "everything
 after cursor C" MUST be interpreted as "all events with sequence number greater
 than C, in ascending sequence order."
 
-## Gap handling {#gap-handling}
+## Gap handling ## {#gap-handling}
 
 If a server can no longer satisfy a subscription request because the requested
 cursor has aged out of the stream's retention window, it MUST respond with a
@@ -48,7 +48,7 @@ cursor has aged out of the stream's retention window, it MUST respond with a
 client that receives a `streamld:GapSignal` MUST perform a full historical read
 of the stream before re-subscribing live.
 
-# Conformance {#conformance}
+# Conformance # {#conformance}
 
 A StreamLD-conformant server MUST:
 
