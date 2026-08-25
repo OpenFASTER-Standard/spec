@@ -4,7 +4,7 @@
 
 <p>The following field-level definitions are generated from <code>ThirdPartyDisclosureRequest.xsd</code>. Each group below corresponds to one sheet of the accompanying Excel template. The <code>RequestId</code> column links the groups of a single disclosure together.</p>
 
-<h3 id="sheet-1-requests-master">1 Requests Master</h3>
+<h3 id="sheet-1-requests-master">Requests Master</h3>
 
 <p><b>Significance.</b> The parent record. One row per disclosure, holding administrative and routing metadata, the directly-contracted securities account, the account type and the account relationship. Every other sheet links back to this one through RequestId.</p>
 <p><b>Cardinality.</b> Exactly 1 row per RequestId (this sheet defines the RequestId).</p>
@@ -46,7 +46,7 @@
   </tbody>
 </table>
 
-<h3 id="sheet-2-security-related-information">2 Security Related Information</h3>
+<h3 id="sheet-2-security-related-information">Security Related Information</h3>
 
 <p><b>Significance.</b> The single capital-income event being disclosed: the security (ISIN, name, type), the corporate-action reference, payment details, the complete tax breakdown (gross/net, withholding tax, solidarity surcharge and the nominal quantities per holding category) and which receipts/deliveries mode is used. It also contains the depositary-receipt block (underlying German security, record date, issuance ratios, certificates held), which describes the depositary receipt (e.g. ADR/GDR) through which the income was received.</p>
 <p><b>Cardinality.</b> 0..1 row per RequestId.</p>
@@ -104,7 +104,7 @@
   </tbody>
 </table>
 
-<h3 id="sheet-3-tax-voucher-individuals">3 Tax Voucher Individuals</h3>
+<h3 id="sheet-3-tax-voucher-individuals">Tax Voucher Individuals</h3>
 
 <p><b>Significance.</b> Natural persons who receive the tax certificate (voucher) - either as beneficial owner (Creditor) or as account holder - with their name, registration address and tax identification. Community members are recorded here as well.</p>
 <p><b>Cardinality.</b> Tax-voucher receivers total up to 2 per RequestId, counted across this sheet and '4 Tax Voucher Legal Persons'. A community counts as ONE receiver and may span up to 10 member rows that share one CommunityGroupId.</p>
@@ -145,7 +145,7 @@
   </tbody>
 </table>
 
-<h3 id="sheet-4-tax-voucher-legal-persons">4 Tax Voucher Legal Persons</h3>
+<h3 id="sheet-4-tax-voucher-legal-persons">Tax Voucher Legal Persons</h3>
 
 <p><b>Significance.</b> Non-natural tax-certificate receivers (companies, funds, partnerships) with name, registration address and the detailed legal-person tax identification.</p>
 <p><b>Cardinality.</b> Counts towards the up-to-2 tax-voucher receivers per RequestId (shared with '3 Tax Voucher Individuals').</p>
@@ -186,7 +186,7 @@
   </tbody>
 </table>
 
-<h3 id="sheet-5-third-party-individuals">5 Third Party Individuals</h3>
+<h3 id="sheet-5-third-party-individuals">Third Party Individuals</h3>
 
 <p><b>Significance.</b> Natural persons who are the account holder but not the beneficial owner (third parties), stating in what capacity they hold for the beneficial owner (trustee, pledgor or grantor of usufruct).</p>
 <p><b>Cardinality.</b> Third-party persons total up to 5 per RequestId, counted across this sheet and '6 Third Party Legal Persons'.</p>
@@ -225,7 +225,7 @@
   </tbody>
 </table>
 
-<h3 id="sheet-6-third-party-legal-persons">6 Third Party Legal Persons</h3>
+<h3 id="sheet-6-third-party-legal-persons">Third Party Legal Persons</h3>
 
 <p><b>Significance.</b> Non-natural third parties (account holders that are not the beneficial owner) with name, address and legal-person tax identification, including the special investment-funds tax number where relevant.</p>
 <p><b>Cardinality.</b> Counts towards the up-to-5 third-party persons per RequestId (shared with '5 Third Party Individuals').</p>
@@ -263,7 +263,7 @@
   </tbody>
 </table>
 
-<h3 id="sheet-7-custody-chain">7 Custody Chain</h3>
+<h3 id="sheet-7-custody-chain">Custody Chain</h3>
 
 <p><b>Significance.</b> The ordered chain of custodians / intermediaries between the beneficiary and the German paying agent. Each link carries its name, address, tax identification, BIC, account number, account type and the nominal held.</p>
 <p><b>Cardinality.</b> 0..20 rows per RequestId, ordered by NumberInChain (1 = the custodian closest to the beneficiary).</p>
@@ -303,7 +303,7 @@
   </tbody>
 </table>
 
-<h3 id="sheet-8-fifo-trades">8 FIFO Trades</h3>
+<h3 id="sheet-8-fifo-trades">FIFO Trades</h3>
 
 <p><b>Significance.</b> Receipts and deliveries within the relevant window, already reduced with FiFo (first-in-first-out) calculation by the submitter. Receipts and deliveries share this sheet and are distinguished by the Direction column.</p>
 <p><b>Cardinality.</b> Up to 1000 Receipt rows and up to 1000 Delivery rows per RequestId.</p>
@@ -331,7 +331,7 @@
   </tbody>
 </table>
 
-<h3 id="sheet-9-raw-transactions-all">9 Raw Transactions All</h3>
+<h3 id="sheet-9-raw-transactions-all">Raw Transactions All</h3>
 
 <p><b>Significance.</b> The full, unreduced ledger of receipts and deliveries (no FiFo applied); the German paying agent performs the FiFo calculation. The opening balance is captured on the Security Related Information sheet; every movement is one row here.</p>
 <p><b>Cardinality.</b> Unbounded rows per RequestId.</p>

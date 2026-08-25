@@ -23,6 +23,7 @@ this module only lays it out.
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable
@@ -243,7 +244,8 @@ class Generator:
         usage = self._enum_usage()
 
         sheets = []
-        for order, (sheet_name, fields) in enumerate(self.sheets.items(), start=1):
+        for order, sheet_name in enumerate(self.c.sheet_order, start=1):
+            fields = self.sheets[sheet_name]
             field_list = []
             for position, (name, desc, type_str, req, enum_key) in enumerate(fields, start=1):
                 field_list.append({
@@ -450,6 +452,14 @@ class Generator:
         return "-".join("".join(keep).split())
 
     @staticmethod
+    def _display_title(text_value: str) -> str:
+        """Strip a leading numeric xlsx-tab ordinal (e.g. '3 Certificates Of
+        Residence' -> 'Certificates Of Residence') before using a sheet's title
+        as a heading, so heading-numbering tools (e.g. Bikeshed's own
+        auto-numbering) aren't doubled up with the xlsx tab's own ordinal."""
+        return re.sub(r"^\d+\s+", "", text_value)
+
+    @staticmethod
     def _html_escape(value: str) -> str:
         return (
             value.replace("&", "&amp;")
@@ -490,7 +500,7 @@ class Generator:
 
         for sheet in metadata["sheets"]:
             anchor = f"sheet-{slug(sheet['name'])}"
-            add(f'<h3 id="{anchor}">{esc(sheet["name"])}</h3>')
+            add(f'<h3 id="{anchor}">{esc(self._display_title(sheet["name"]))}</h3>')
             add("")
             if sheet["significance"]:
                 add(f"<p><b>Significance.</b> {esc(sheet['significance'])}</p>")
