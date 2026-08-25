@@ -122,17 +122,30 @@ Add a new job triggered on `pull_request` (targeting `main`) that:
    merge ref) using the **default `GITHUB_TOKEN`** — no new PAT/secret.
 
 **Why the default token, not a PAT (a real design choice, not an
-oversight):** research confirmed `GITHUB_TOKEN`-authored pushes never
-retrigger any workflow (GitHub's own built-in behavior) — this makes an
-infinite auto-commit loop structurally impossible, with no extra
-actor-guard logic needed, at the cost of the auto-commit not
-re-triggering *other* required checks on the new commit. Since this
-repo currently has **no branch protection and no required checks on
-`main` at all**, that cost is zero today. The trade-off: this is a
-soft-enforced guarantee (the merger must wait for the `pull_request`
-workflow to finish, so the auto-commit lands, before merging) rather
-than a hard-blocking one. In this repo's actual practice, PRs are
-authored and merged by an agent that already watches CI to green before
+oversight):** confirmed via a real live test (Task 3 of this plan's
+implementation — see PR #16, run `32856864966`) rather than documentation
+alone: a `GITHUB_TOKEN`-authored push from a `pull_request`-triggered
+workflow does create a new run object for that event, but GitHub gates
+it in a built-in, non-configurable "approval-required" state that never
+auto-executes — a human with write access has to explicitly approve it
+before any job runs. (This refines an earlier, less precise research
+claim that such pushes "never retrigger any workflow" — that holds for
+`push`-triggered workflows, but for `pull_request`-triggered ones,
+specifically, a gated-but-inert run is created instead of no run at
+all.) The practical effect is the same either way — no infinite
+auto-commit loop, no extra actor-guard logic needed — and is actually
+reinforced by a second, independent property: even if that gated run
+were manually approved, the check would find nothing left to fix (the
+first run already corrected it) and no-op, since the fix is
+self-terminating by construction, not just by the approval gate. The
+cost: the auto-commit does not re-trigger *other* required checks on
+the new commit. Since this repo currently has **no branch protection
+and no required checks on `main` at all**, that cost is zero today. The
+trade-off: this is a soft-enforced guarantee (the merger must wait for
+the `pull_request` workflow to finish, so the auto-commit lands, before
+merging) rather than a hard-blocking one. In this repo's actual
+practice, PRs are authored and merged by an agent that already watches
+CI to green before
 every merge (established pattern this session) — so the soft
 enforcement matches how merges actually happen here. If that practice
 ever changes, revisit with a PAT + branch protection (documented as a
