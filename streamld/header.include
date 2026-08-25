@@ -40,41 +40,5 @@
 <div class="p-summary" data-fill-with="abstract"></div>
 <div data-fill-with="at-risk"></div>
 
-<section class="changelog-top" id="changelog">
-  <h2 class="heading no-num no-ref no-toc settled" id="changelog-heading"><span class="content">Changelog</span></h2>
-<table class="data changelog">
-  <thead>
-    <tr><th>Version<th>Date<th>Summary of changes</tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1.2.0
-      <td>2026-08-25
-      <td>Added the KaFE Refund Application module (v4.3.2): mirrors the German
-          KaFE (§50c(3) EStG) capital income tax refund schema, covering the
-          request submission data model (with accompanying Excel template and
-          downloadable PDF) and the provisional response/status model.
-    </tr>
-    <tr>
-      <td>1.1.0
-      <td>2026-08-24
-      <td>Added the StreamLD module (incubating): a protocol for real-time,
-          resumable Linked Data event streaming, covering the core event
-          envelope and cursor model, subscription semantics, and the SSE and
-          WebSocket binding conformance requirements.
-    </tr>
-    <tr>
-      <td>1.0.0
-      <td>2026-07-05
-      <td>Initial version. Defines the OpenFASTER family and specifies the
-          MiKaDiv Third-Party Disclosure module: data model, linking model,
-          conformance requirements, and the full data dictionary and
-          enumerations generated from the VIB MiKaDiv XSD, with an accompanying
-          self-documenting Excel template.
-    </tr>
-  </tbody>
-</table>
-</section>
-
 <nav data-fill-with="table-of-contents" id="toc"></nav>
 <main>
