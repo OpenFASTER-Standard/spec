@@ -138,3 +138,27 @@ disclosure whose enum-typed field carries a value outside the enumerated set.
 <pre class=include>
 path: generated/fields.include.bs
 </pre>
+
+Version history {#version-history}
+====================================
+
+This module was built fresh for OpenFASTER, with no prior legacy document to
+carry a history forward from; the following table is its complete version
+history to date.
+
+<table class="data changelog">
+  <thead>
+    <tr><th>Version<th>Date<th>Summary of changes</tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1.0.0
+      <td>2026-08-24
+      <td>Initial release. Defines the MiKaDiv Third-Party Disclosure Request
+          data model, linking model, and conformance requirements, together
+          with the full data dictionary and enumerations generated from the
+          VIB MiKaDiv XSD, and an accompanying self-documenting Excel
+          template.
+    </tr>
+  </tbody>
+</table>
