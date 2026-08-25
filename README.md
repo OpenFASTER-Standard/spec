@@ -35,6 +35,30 @@ and the documentation/specification kept separate:
 │       ├── template_metadata.json
 │       ├── TEMPLATE_FIELDS.md
 │       └── fields.include.bs
+├── kafe/                          # the KaFE Refund Application module
+│   ├── kafe.xsd                   # Request schema (machine source of truth)
+│   ├── kafe-rm.xsd                #   RM (submission receipt) schema
+│   ├── kafe-va.xsd                #   VA (decision notice) schema (Response)
+│   ├── kafe-standardtypes.xsd     #   shared base types, included by the above
+│   ├── kafe-statustypes.xsd       #   StatusCode_ENUM type, included by kafe-rm.xsd
+│   ├── kafe-isotypes.xsd          #   ISO country/currency enumerations, included by the above
+│   ├── status_codes.py            #   hand-transcribed 213-code status/error catalog (no XSD source)
+│   ├── mapping.py                 #   Layer 2: Request template shape
+│   ├── generate_rm_docs.py        #   builds the Request doc's RM receipt section from kafe-rm.xsd
+│   ├── generate_va_docs.py        #   builds the Response doc's data from kafe-va.xsd (no Excel)
+│   ├── generate_status_codes_docs.py  # renders status_codes.py into a Bikeshed include
+│   ├── index.bs                   #   landing page; built to index.html, served at /kafe
+│   ├── request.bs                 #   Bikeshed source; built to request.html, served at /kafe/request
+│   ├── response.bs                #   Bikeshed source; built to response.html, served at /kafe/response
+│   └── generated/                 #   generated artifacts (do not edit by hand)
+│       ├── kafe-v<version>.xlsx
+│       ├── kafe-v<version>.pdf
+│       ├── rm.include.bs
+│       ├── status-codes.include.bs
+│       ├── va.include.bs
+│       ├── template_metadata.json
+│       ├── TEMPLATE_FIELDS.md
+│       └── fields.include.bs
 ├── documentation/                 # family-wide "About" page + shared build assets
 │   ├── about.bs                   #   Bikeshed source; built to about.html, served at /about
 │   ├── prepare_spec.py            #   embeds the changelog into header boilerplate
@@ -50,7 +74,7 @@ and the documentation/specification kept separate:
 │   └── generated/                 #   generated artifacts (do not edit by hand)
 ├── index.html                     # hand-authored portal (NOT Bikeshed-compiled); served at site root
 ├── 404.html                       # hand-authored fallback (NOT Bikeshed-compiled); redirects to site root
-├── generate_template.py           # MiKaDiv-VIB build entry point (wires engine + module)
+├── generate_template.py           # MiKaDiv-VIB + KaFE build entry point (wires engine + modules)
 ├── requirements.txt               # engine deps (openpyxl, xmlschema)
 ├── .github/workflows/spec.yml     # CI: rebuilds every output on push/PR, auto-commits on push to main
 └── vercel.json                    # deploy routing (clean URLs, rewrites)
@@ -85,6 +109,27 @@ flowchart LR
   rgen --> rincl["mikadiv-vib/generated/response.include.bs"]
   rincl --> rbs["mikadiv-vib/response.bs"]
   rbs --> rhtml["mikadiv-vib/response.html"]
+
+  kxsd["kafe/kafe.xsd"] --> model
+  kmap["kafe/mapping.py (template shape)"] --> gen
+  gen --> kmeta["kafe/generated/template_metadata.json"]
+  kmeta --> kincl["kafe/generated/fields.include.bs"]
+  kincl --> kbs["kafe/request.bs"]
+  kbs --> khtml["kafe/request.html"]
+  kbs --> kpdf["kafe/generated/kafe-v<version>.pdf"]
+  kmeta --> kxlsx["kafe/generated/kafe-v<version>.xlsx"]
+  krmxsd["kafe/kafe-rm.xsd"] --> model
+  model --> krmgen["kafe/generate_rm_docs.py"]
+  krmgen --> krmincl["kafe/generated/rm.include.bs"]
+  krmincl --> kbs
+  kstatus["kafe/status_codes.py"] --> kstatusgen["kafe/generate_status_codes_docs.py"]
+  kstatusgen --> kstatusincl["kafe/generated/status-codes.include.bs"]
+  kstatusincl --> kbs
+  kvaxsd["kafe/kafe-va.xsd"] --> model
+  model --> kvagen["kafe/generate_va_docs.py"]
+  kvagen --> kvaincl["kafe/generated/va.include.bs"]
+  kvaincl --> krbs["kafe/response.bs"]
+  krbs --> krhtml["kafe/response.html"]
 ```
 
 Generation is layered so the schema stays authoritative while the template's
@@ -125,6 +170,31 @@ presentation stays controllable:
 | `mikadiv-vib/request.html` | Built HTML spec, compiled from `mikadiv-vib/request.bs` | Generated |
 | `mikadiv-vib/response.html` | Built HTML spec, compiled from `mikadiv-vib/response.bs` | Generated |
 | `mikadiv-vib/generated/mikadiv-vib-v<version>.pdf` | Built PDF, rendered from `mikadiv-vib/request.html` (downloadable via GitHub raw link, see `mikadiv-vib/request.bs`'s Downloads section) | Generated |
+| [`kafe/kafe.xsd`](kafe/kafe.xsd) | Request schema; machine source for all Request field content | Yes (the schema) |
+| [`kafe/kafe-rm.xsd`](kafe/kafe-rm.xsd) | RM (submission receipt) schema; machine source for the Request doc's receipt section | Yes (the schema) |
+| [`kafe/kafe-va.xsd`](kafe/kafe-va.xsd) | VA (decision notice) schema; machine source for all Response field content | Yes (the schema) |
+| [`kafe/kafe-standardtypes.xsd`](kafe/kafe-standardtypes.xsd) | Shared base types, included by `kafe.xsd`/`kafe-rm.xsd`/`kafe-va.xsd` | Yes (the schema) |
+| [`kafe/kafe-statustypes.xsd`](kafe/kafe-statustypes.xsd) | `StatusCode_ENUM` type definition, included by `kafe-rm.xsd` | Yes (the schema) |
+| [`kafe/kafe-isotypes.xsd`](kafe/kafe-isotypes.xsd) | ISO country/currency code enumerations, included by the other KaFE schemas | Yes (the schema) |
+| [`kafe/status_codes.py`](kafe/status_codes.py) | Hand-transcribed 213-code status/error catalog (from the BZSt handbook PDF; no XSD source) | Yes (the one hand-authored data file) |
+| [`kafe/mapping.py`](kafe/mapping.py) | Layer 2: Request template shape + presentation-only columns | Yes |
+| [`kafe/generate_rm_docs.py`](kafe/generate_rm_docs.py) | Renders the Request doc's RM receipt section as a Bikeshed include (no Excel) | Yes |
+| [`kafe/generate_va_docs.py`](kafe/generate_va_docs.py) | Renders the Response document's Bikeshed include (no Excel) | Yes |
+| [`kafe/generate_status_codes_docs.py`](kafe/generate_status_codes_docs.py) | Renders `status_codes.py`'s catalog into a Bikeshed include | Yes |
+| [`kafe/index.bs`](kafe/index.bs) | Landing page linking the Request and Response documents | Yes |
+| [`kafe/request.bs`](kafe/request.bs) | Bikeshed specification source for the Request format (prose, structure) | Yes |
+| [`kafe/response.bs`](kafe/response.bs) | Bikeshed specification source for the Response format (prose, structure) | Yes |
+| `kafe/generated/template_metadata.json` | Machine-readable Request field metadata store | Generated |
+| `kafe/generated/fields.include.bs` | Request data dictionary + enumerations, pulled into `request.bs` | Generated |
+| `kafe/generated/rm.include.bs` | RM receipt field catalog, pulled into `request.bs` | Generated |
+| `kafe/generated/status-codes.include.bs` | Status/error-code appendix, pulled into `request.bs` | Generated |
+| `kafe/generated/va.include.bs` | Response (VA) field catalog + enumerations, pulled into `response.bs` | Generated |
+| `kafe/generated/TEMPLATE_FIELDS.md` | Human-readable Request field reference | Generated |
+| `kafe/generated/kafe-v<version>.xlsx` | Fillable Excel template (Request only) | Generated |
+| `kafe/index.html` | Built HTML landing page, compiled from `kafe/index.bs` | Generated |
+| `kafe/request.html` | Built HTML spec, compiled from `kafe/request.bs` | Generated |
+| `kafe/response.html` | Built HTML spec, compiled from `kafe/response.bs` | Generated |
+| `kafe/generated/kafe-v<version>.pdf` | Built PDF, rendered from `kafe/request.html` (downloadable via GitHub raw link, see `kafe/request.bs`'s Downloads section) | Generated |
 | `index.html` | Hand-authored site portal (NOT Bikeshed-compiled); served at site root | Yes (hand-authored, not built) |
 | `404.html` | Hand-authored fallback (NOT Bikeshed-compiled); redirects unmatched paths to site root | Yes (hand-authored, not built) |
 
@@ -139,7 +209,7 @@ by [Bikeshed](https://speced.github.io/bikeshed/) to HTML, and rendered to PDF.
 python -m pip install -r requirements.txt -r documentation/requirements-spec.txt -r streamld/tests/requirements.txt
 bikeshed update            # first run only, fetches Bikeshed data files
 
-python generate_template.py                                  # MiKaDiv-VIB Request: XSD -> generated include + Excel template
+python generate_template.py                                  # MiKaDiv-VIB + KaFE Request: XSD -> generated include + Excel template (both modules, one run)
 PYTHONPATH=streamld python -m generator.generate_streamld_docs   # StreamLD: SHACL -> generated include + JSON Schema
 
 python documentation/prepare_spec.py              # embed changelog into header boilerplate
@@ -152,6 +222,15 @@ MIKADIV_VIB_VERSION=$(python -m engine.version mikadiv-vib/request.bs)
 weasyprint --stylesheet documentation/print.css mikadiv-vib/request.html mikadiv-vib/generated/mikadiv-vib-v${MIKADIV_VIB_VERSION}.pdf   # PDF (see note)
 PYTHONPATH=. python mikadiv-vib/generate_response_docs.py
 bikeshed --allow-nonlocal-files --die-on=link-error spec mikadiv-vib/response.bs mikadiv-vib/response.html
+
+python -m kafe.generate_rm_docs               # KaFE RM (submission receipt): kafe-rm.xsd -> generated include (module form, no PYTHONPATH needed - kafe/ has no hyphen)
+python -m kafe.generate_status_codes_docs     # KaFE status-code appendix: status_codes.py -> generated include
+python -m kafe.generate_va_docs               # KaFE VA (decision notice): kafe-va.xsd -> generated include (no Excel)
+bikeshed --allow-nonlocal-files --die-on=link-error spec kafe/index.bs kafe/index.html
+bikeshed --allow-nonlocal-files --die-on=link-error spec kafe/request.bs kafe/request.html
+KAFE_VERSION=$(python -m engine.version kafe/request.bs)
+weasyprint --stylesheet documentation/print.css kafe/request.html kafe/generated/kafe-v${KAFE_VERSION}.pdf   # PDF (see note)
+bikeshed --allow-nonlocal-files --die-on=link-error spec kafe/response.bs kafe/response.html
 
 bikeshed --allow-nonlocal-files --die-on=link-error spec streamld/index.bs streamld/index.html
 bikeshed --allow-nonlocal-files --die-on=link-error spec streamld/core.bs streamld/core.html
@@ -173,9 +252,11 @@ source) and need no build step - they're just static pages.
 ### Option B - CI
 
 [`.github/workflows/spec.yml`](.github/workflows/spec.yml) runs the exact
-sequence above (MiKaDiv-VIB Request + Response, StreamLD, `about.html`,
+sequence above (MiKaDiv-VIB Request + Response, KaFE Request (Excel + RM
+receipt + status-code appendix) + Response (VA), StreamLD, `about.html`,
 `mikadiv-vib/index.html`, `mikadiv-vib/request.html` + PDF,
-`mikadiv-vib/response.html`, `streamld/index.html` + its 4 documents, then
+`mikadiv-vib/response.html`, `kafe/index.html`, `kafe/request.html` + PDF,
+`kafe/response.html`, `streamld/index.html` + its 4 documents, then
 the StreamLD test suite) on every push to `main` and every PR against
 `main`. On `push` to `main` specifically, it also commits any changed
 generated output back to the branch (`chore: rebuild site [skip ci]`). It
@@ -207,6 +288,18 @@ a column, adjust a presentation-only helper column), edit
 `mikadiv-vib/ThirdPartyDisclosureResponse.xsd` and re-run
 `PYTHONPATH=. python mikadiv-vib/generate_response_docs.py`. Never edit anything under
 `mikadiv-vib/generated/` by hand.
+
+The same pattern applies to **KaFE**. To change **Request field content**, edit
+`kafe/kafe.xsd` and re-run `generate_template.py`; to change the **RM
+receipt section** (the Request doc's submission-acknowledgement content),
+edit `kafe/kafe-rm.xsd` and re-run `python -m kafe.generate_rm_docs`. To
+change the **Request template shape**, edit `kafe/mapping.py`. To change
+**Response field content**, edit `kafe/kafe-va.xsd` and re-run
+`python -m kafe.generate_va_docs`. To change the **status-code catalog**,
+edit `kafe/status_codes.py` directly (it has no XSD/PDF auto-sync —
+re-transcribe from the handbook by hand if BZSt revises it) and re-run
+`python -m kafe.generate_status_codes_docs`. Never edit anything under
+`kafe/generated/` by hand.
 
 ---
 

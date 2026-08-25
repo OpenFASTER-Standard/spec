@@ -1,0 +1,2407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- bearbeitet mit XMLSpy v2024 (x64) (http://www.altova.com) von Informationstechnikzentrum Bund (ITZBund) (Informationstechnikzentrum Bund (ITZBund)) -->
+<!-- Mit XMLSpy v2022 rel. 2 (x64) (http://www.altova.com) von Informationstechnikzentrum Bund (Informationstechnikzentrum Bund) bearbeitet -->
+<xs:schema xmlns:kafe="urn:bzst:kafe:ozg:v1" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:bzst:kafe:ozg:v1" elementFormDefault="qualified"
+		   attributeFormDefault="unqualified" version="1.3.0">
+	<!--
+		Version	Datum		Änderung
+		===============================================================================================
+		1.3.0	04.12.2025	Überarbeitung:
+							- Neue Elemente Anrechnungsbetrag_Type, Anrechnungsnachweis hingefügt
+							- Gruendungsstaat von Pflichtfeld ins bedingte Pflichtfeld umgewandelt und entsprechende
+		===============================================================================================
+		1.2.0	30.10.2024	Überarbeitung:
+							- Anspruch: Par32Abs6KStG sowie SteuerbeguenstigteZwecke wurdenn neu 
+							  aufgenommen.
+							- StaatsangehoerigkeitDE wurde neu aufgenommen.
+							- Angaben zu wesentlichen Beteiligungen wurden neu strukturiert und
+							  erweitert.
+							- Angaben zur unbeschränkten Steuerpflicht (SteuerpflichtDE) wurden
+							  erweitert. Gleiche Fragen im Bereich SchweizFragen sind dadurch
+							  entfallen.
+		===============================================================================================
+		1.1.0	29.02.2024	Überarbeitung:
+							- Anspruch: Art63AEUV sowie BegruendungArt63AEUV wurden neu aufgenommen.
+							- Registereintragung: Angaben zur Registereintragung sind bedingt 
+							  verpflichtend.
+							- Statusbescheinigung: Die Statusbescheinigung ist nicht mehr beizufügen.
+							- BeteiligungHoehe ist entfallen.
+							- Kapitalertragsteuer und Solidaritätszuschlag sind entfallen. Stattdessen 
+							  wurde das Element "Abzugssteuer" eingefügt.
+							- Par50jEStG wurde vollständig überarbeitet.
+		===============================================================================================
+		1.0.2	20.11.2023	Überarbeitung:
+							- Legal Entity Identifier (LEI): Neuer simpleType "LEI_Type".
+							- Registriernummer: Neuer simpleType "RegistrierNr_Type".
+							- Anhang: Element "DateiTyp" ist entfallen.
+		===============================================================================================
+		1.0.1	31.07.2023	Überarbeitung:
+							- Attribut "schemaVersion": Wurde vom DIP-Header in das KAFE-Schema 
+							  verschoben. 
+							- Vollmacht: Diese ist nun Bestandteil des einzelnen Erstattungsantrages, 
+							  nicht mehr des Bevollmächtigten. Das beim Bevollmächtigten enthaltene 
+							  Element wurde umbenannt.
+							- Börsenhandel: Die Elemente sind nur noch bei bestimmten Rechtsformen 
+							  anzugeben.
+							- Ansässigkeitsbescheinigung: Die Angabe des Gültigkeitszeitraums ist nun 
+							  verpflichtend.
+							- Mittelbare Beteiligungen: Für Gemeinschaftsdepots von Ehegatten wurde 
+							  eine Vereinfachung eingeführt, so dass Angaben zur Beteiligungskette 
+							  entbehrlich werden. Hierzu wurde ein neues Element eingefügt. Die 
+							  Bedingungen wurden entsprechend geändert.
+							- Mittelbare Beteiligungen: Die Ansässigkeitsbescheinigung der Beteiligung 
+							  ist entfallen.
+							- Verwendungszweck: Die Länge darf 35 Zeichen nicht übersteigen.
+		===============================================================================================
+		1.0.0	30.06.2023	Initiale Erstellung
+	-->
+	<xs:include schemaLocation="kafe-isotypes.xsd"/>
+	<xs:complexType name="Adresse_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Adresse</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Adressergaenzung" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Adressergänzung</xs:documentation>
+					<xs:documentation xml:lang="en">Additional address details</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="80"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Strasse">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Straße</xs:documentation>
+					<xs:documentation xml:lang="en">Street</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="120"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Hausnummer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Hausnummer</xs:documentation>
+					<xs:documentation xml:lang="en">Street number</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="20"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Wohnung" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Wohnungsbezeichnung</xs:documentation>
+					<xs:documentation xml:lang="en">Apartment number</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="40"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Etage" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Etagenbezeichnung</xs:documentation>
+					<xs:documentation xml:lang="en">Floor</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="40"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Verwaltungsbezirk" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Verwaltungsbezirk</xs:documentation>
+					<xs:documentation xml:lang="en">District</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="80"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Postleitzahl" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Postleitzahl</xs:documentation>
+					<xs:documentation xml:lang="en">Postcode</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="20"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Ort">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ort</xs:documentation>
+					<xs:documentation xml:lang="en">City</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="120"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Bundesstaat" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Bundesstaat/Bundesland</xs:documentation>
+					<xs:documentation xml:lang="en">State or province</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="120"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Staat" type="kafe:CountryISOAlpha2_ENUM">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Staat</xs:documentation>
+					<xs:documentation xml:lang="en">Country</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Anhang_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Anhang</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="DateiId" type="kafe:UUID_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">UUID, die die Datei eindeutig bezeichnet. Die UUID ist als Dateiname zu verwenden.</xs:documentation>
+					<xs:documentation xml:lang="en">UUID that uniquely identifies the file. The UUID is to be used as the file name.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DateiBeschreibung">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Kurze Beschreibung des Dateiinhalts (z. B. Ansässigkeitsbescheinigung)</xs:documentation>
+					<xs:documentation xml:lang="en">Short description of the file content (e.g. certificate of residence).</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="120"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="AnsaessBescheinigung_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Ansässigkeitsbescheinigung</xs:documentation>
+			<xs:documentation xml:lang="en">Certificate of residence</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Ausstellungsbehoerde">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ausstellungsbehörde</xs:documentation>
+					<xs:documentation xml:lang="en">Issuing authority</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="80"/>
+						<xs:minLength value="5"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Ausstellungsdatum">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ausstellungsdatum</xs:documentation>
+					<xs:documentation xml:lang="en">Date of issue</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:date">
+						<xs:minInclusive value="1980-01-01"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="GueltigVon" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">gültig von</xs:documentation>
+					<xs:documentation xml:lang="en">Valid from</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GueltigBis" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">gültig bis</xs:documentation>
+					<xs:documentation xml:lang="en">Valid until</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Ansaessigkeitsbescheinigung" type="kafe:Anhang_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ansässigkeitsbescheinigung beigefügt</xs:documentation>
+					<xs:documentation xml:lang="en">Certificate of residence is enclosed</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Ansprechperson_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Ansprechperson für Rückfragen</xs:documentation>
+			<xs:documentation xml:lang="en">Contact for queries</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Vorname" type="kafe:Vorname_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Vorname</xs:documentation>
+					<xs:documentation xml:lang="en">First and middle name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Nachname" type="kafe:Nachname_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Nachname</xs:documentation>
+					<xs:documentation xml:lang="en">Last name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Organisation" type="kafe:OrganisationName_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Organisation</xs:documentation>
+					<xs:documentation xml:lang="en">Organisation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Telefon" type="kafe:Telefon_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Telefonnummer (Vorwahl/Rufnummer)</xs:documentation>
+					<xs:documentation xml:lang="en">Telephone number (area code/phone number)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="E-Mail" type="kafe:EMail_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">E-Mail-Adresse</xs:documentation>
+					<xs:documentation xml:lang="en">E-mail address</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Anspruch_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Anspruchsgrundlage(n) auswählen</xs:documentation>
+			<xs:documentation xml:lang="en">Select the legal basis of claim</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Abkommen" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Doppelbesteuerungsabkommen (DBA) oder andere bilaterale Abkommen</xs:documentation>
+					<xs:documentation xml:lang="en">Double taxation agreements (DTAs) or other bilateral agreements</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Par43bEStG" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">§ 43b EStG (Richtlinie 2011/96/EU)</xs:documentation>
+					<xs:documentation xml:lang="en">Section 43b German Income Tax Act (Directive 2011/96/EU)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Par44aEStG" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">§ 44a Absatz 9 EStG</xs:documentation>
+					<xs:documentation xml:lang="en">Section 44a (9) German Income Tax Act</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Par50gEStG" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">§ 50g EStG</xs:documentation>
+					<xs:documentation xml:lang="en">Section 50g German Income Tax Act</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Par32Abs6KStG" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">§ 32 Absatz 6 KStG</xs:documentation>
+					<xs:documentation xml:lang="en">Section 32 (6) German Corporate Tax Act</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Art63AEUV" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Behaupteter Anspruch nach Art. 63 des Vertrages über die Arbeitsweise der Europäischen Union (AEUV)
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Asserted claim under Article 63 of the Treaty on the Functioning of the European Union (TFEU)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IntOrg" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Abkommen bzw. Übereinkommen für internationale Organisationen und zwischenstaatliche Einrichtungen
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Agreements or conventions for international organisations and intergovernmental organisations
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Bankverbindung_Struct">
+		<xs:sequence>
+			<xs:element name="Kontoinhaber">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Name der kontoinhabenden Person bzw. Organisation</xs:documentation>
+					<xs:documentation xml:lang="en">Name of the the account holder</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="70"/>
+						<xs:pattern value="[A-Za-z0-9/\-?:().,'+ ]*"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="IBAN" type="kafe:IBAN_Type">
+					<xs:annotation>
+						<xs:documentation xml:lang="de">IBAN</xs:documentation>
+						<xs:documentation xml:lang="en">IBAN</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Kontonummer">
+					<xs:annotation>
+						<xs:documentation xml:lang="de">Angabe der Kontonummer, falls keine IBAN vorhanden ist.</xs:documentation>
+						<xs:documentation xml:lang="en">Indication of the account number, if no IBAN available</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:minLength value="1"/>
+							<xs:maxLength value="40"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="BIC" type="kafe:BIC_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">BIC/SWIFT-Code</xs:documentation>
+					<xs:documentation xml:lang="en">BIC/SWIFT code</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GeldinstitutName">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Name des Geldinstituts</xs:documentation>
+					<xs:documentation xml:lang="en">Name of the bank</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="70"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="GeldinstitutOrt">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ort des Geldinstituts</xs:documentation>
+					<xs:documentation xml:lang="en">City</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="70"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Befugnis_Struct">
+		<xs:sequence>
+			<xs:element name="StBerBerufe" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ich bestätige, dass ich den steuerberatenden Berufen im Sinne der §§ 3 oder 4 Nummer 11 des
+						Steuerberatungsgesetzes (StBerG) angehöre.
+					</xs:documentation>
+					<xs:documentation xml:lang="en">I confirm that I am a member of the tax advisory professions within the meaning of sections 3 or 4 number 11
+						German Tax Advisory Act.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AndereGruende" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ich bestätige, dass ich aus anderen Gründen zur Hilfeleistung in Steuersachen befugt bin.</xs:documentation>
+					<xs:documentation xml:lang="en">I confirm that I am authorised to provide assistance in tax matters for other reasons.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Beteiligung_Struct">
+		<xs:sequence>
+			<xs:element name="OrganisationName" type="kafe:OrganisationName_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Name der Gesellschaft</xs:documentation>
+					<xs:documentation xml:lang="en">Company name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Rechtsform">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Rechtsform</xs:documentation>
+					<xs:documentation xml:lang="en">Legal form</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="80"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="BeteiligungHoehe" type="kafe:Prozentzahl_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Höhe der Beteiligung (in Prozent)</xs:documentation>
+					<xs:documentation xml:lang="en">Size of the ownership in interest (in %)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AnsaessigkeitDE" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ist die Gesellschaft in Deutschland ansässig?</xs:documentation>
+					<xs:documentation xml:lang="en">Is the company resident in Germany?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Stnr" type="kafe:Stnr_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Steuernummer</xs:documentation>
+					<xs:documentation xml:lang="en">Tax number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Ansaessigkeitsstaat" type="kafe:CountryISOAlpha2_ENUM" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ansässigkeitsstaat</xs:documentation>
+					<xs:documentation xml:lang="en">Country of residence</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TIN" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ausländische Steueridentifikationsnummer</xs:documentation>
+					<xs:documentation xml:lang="en">Foreign tax identification number</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="40"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Vermoegensverwaltung" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ist die Gesellschaft ausschließlich vermögensverwaltend tätig?</xs:documentation>
+					<xs:documentation xml:lang="en">Is the company exclusively engaged in asset management?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Beteiligungsnachweis" type="kafe:Anhang_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Beteiligungsnachweis ist beigefügt</xs:documentation>
+					<xs:documentation xml:lang="en">proof of the ownership interest is enclosed</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="BeteiligungsId" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="de">Laufende Nummer der Beteiligung. Von der beschränkt Steuerpflichtigen Person zur Schuldnerin / ausschüttenden
+					Gesellschaft, beginnend bei 1.
+				</xs:documentation>
+				<xs:documentation xml:lang="en">Sequence number of the holding. From the person subject of limited taxation to the debtor oft he capital income
+					/ distributing company, starting at 1.
+				</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:minInclusive value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="Beteiligungskette_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Beteiligungskette</xs:documentation>
+			<xs:documentation xml:lang="en">Chain of companies</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Beteiligung" type="kafe:Beteiligung_Struct" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Beteiligung</xs:documentation>
+					<xs:documentation xml:lang="en">Ownership interest</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MittelbBeteiligungProzent" type="kafe:Prozentzahl_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Höhe der mittelbaren Beteiligung (in Prozent)</xs:documentation>
+					<xs:documentation xml:lang="en">Size of the indirect holding (in %)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Boersenhandel_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Börsenhandel</xs:documentation>
+			<xs:documentation xml:lang="en">Börsenhandel</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Boersenhandel" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Findet mit der Hauptgattung der Anteile der beschränkt steuerpflichtigen Person ein wesentlicher und
+						regelmäßiger Handel an einer anerkannten Börse statt?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Are the principal class of shares belonging to the person subject to limited tax liability subject to
+						substantial and regular trading on a recognised stock exchange?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ISIN" type="kafe:ISIN_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">ISIN (12-stellig)</xs:documentation>
+					<xs:documentation xml:lang="en">ISIN (12-digit)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Boersenplatz" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Börse, an welcher die Anteile gehandelt werden.</xs:documentation>
+					<xs:documentation xml:lang="en">Stock exchange on which the stocks are traded.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="120"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Depot_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Depot</xs:documentation>
+			<xs:documentation xml:lang="en">Deposit</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Depotnummer">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Konto-/Depotnummer</xs:documentation>
+					<xs:documentation xml:lang="en">Account / deposit number</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="40"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Anfangsbestand" type="kafe:StueckzahlNull_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Anfangsbestand (Stückzahl)</xs:documentation>
+					<xs:documentation xml:lang="en">Opening balance (number of shares)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AnfangsbestandDatum" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Datum des angegebenen Anfangsbestandes</xs:documentation>
+					<xs:documentation xml:lang="en">Date of the specified opening balance</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Transaktionen" type="kafe:Transaktionen_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Transaktionen</xs:documentation>
+					<xs:documentation xml:lang="en">Transactions</xs:documentation>
+				</xs:annotation>
+				<xs:unique name="unique-TransaktionId">
+					<xs:selector xpath="kafe:Transaktion"/>
+					<xs:field xpath="@TransaktionId"/>
+				</xs:unique>
+			</xs:element>
+			<xs:element name="Endbestand" type="kafe:StueckzahlNull_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Endbestand zwei Monate nach dem Zuflussdatum (Stückzahl)</xs:documentation>
+					<xs:documentation xml:lang="en">Closing balance two months after the inflow date (number of shares)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EndbestandDatum" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Datum des angegebenen Endbestandes</xs:documentation>
+					<xs:documentation xml:lang="en">Date of the specified closing balance</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FinanzamtDE_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Angaben zum deutschen Finanzamt</xs:documentation>
+			<xs:documentation xml:lang="en">Details of the German tax office</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="FinanzamtDE" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Wird die beschränkt steuerpflichtige Person bei einem deutschen Finanzamt geführt?</xs:documentation>
+					<xs:documentation xml:lang="en">Is the person with limited tax liability registered with a German tax office?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Stnr" type="kafe:Stnr_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Steuernummer (13-stellig)</xs:documentation>
+					<xs:documentation xml:lang="en">Tax number (13 digits)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SteuerpflichtDE" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">War die beschränkt steuerpflichtige Person in Deutschland unbeschränkt einkommensteuerpflichtig und hat
+						diese Steuerpflicht im Fälligkeitsjahr oder in den letzten zehn Kalenderjahren geendet, die dem im Antrag enthaltenen jüngsten Zufluss
+						vorangegangen sind?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Was the person with limited tax liability subject to unlimited income tax liability and did this tax
+						liability end in the year the tax was due or during the ten calendar years preceding the most recent inflow indicated in the
+						application?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SteuerpflichtDE5J" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">War die beschränkt steuerpflichtige Person innerhalb der letzten zehn Jahre, die dem Ende der unbeschränkten
+						Steuerpflicht vorangegangen sind, mindestens fünf Jahre in Deutschland unbeschränkt steuerpflichtig?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Was the person with limited tax liability subject to unlimited tax liability in Germany for at least five
+						years during the ten years preceding the end of the unlimited tax liability?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SteuerpflichtDEEndeJahr" type="xs:gYear" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">In welchem Kalenderjahr endete die unbeschränkte Steuerpflicht?</xs:documentation>
+					<xs:documentation xml:lang="en">In which calendar year did the unlimited tax liability end?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GemeinnuetzigeZwecke_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Angaben zu gemeinnützigen Zwecken</xs:documentation>
+			<xs:documentation xml:lang="en">Information on the public benefit purposes</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ZweckNr1" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">1. die Förderung von Wissenschaft und Forschung</xs:documentation>
+					<xs:documentation xml:lang="en">1. the advancement of science and research</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZweckNr2" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">2. die Förderung der Religion</xs:documentation>
+					<xs:documentation xml:lang="en">2. the advancement of religion</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZweckNr3" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">3. die Förderung des öffentlichen Gesundheitswesens und der öffentlichen Gesundheitspflege, insbesondere die
+						Verhütung und Bekämpfung von übertragbaren Krankheiten, auch durch Krankenhäuser im Sinne des § 67, und von Tierseuchen
+					</xs:documentation>
+					<xs:documentation xml:lang="en">3. the advancement of public health and of public hygiene, in particular the prevention and control of
+						communicable diseases, also by hospitals within the meaning of section 67, and of epizootic diseases
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZweckNr4" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">4. die Förderung der Jugend- und Altenhilfe</xs:documentation>
+					<xs:documentation xml:lang="en">4. the advancement of assistance to young and old people</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZweckNr5" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">5. die Förderung von Kunst und Kultur</xs:documentation>
+					<xs:documentation xml:lang="en">5. the advancement of art and culture</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZweckNr6" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">6. die Förderung des Denkmalschutzes und der Denkmalpflege</xs:documentation>
+					<xs:documentation xml:lang="en">6. the advancement of the protection and preservation of historical monuments</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZweckNr7" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">7. die Förderung der Erziehung, Volks- und Berufsbildung einschließlich der Studentenhilfe
+					</xs:documentation>
+					<xs:documentation xml:lang="en">7. the advancement of upbringing, adult education and vocational training including assistance for
+						students
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZweckNr8" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">8. die Förderung des Naturschutzes und der Landschaftspflege im Sinne des Bundesnaturschutzgesetzes und der
+						Naturschutzgesetze der Länder, des Umweltschutzes, einschließlich des Klimaschutzes, des Küstenschutzes und des Hochwasserschutzes
+					</xs:documentation>
+					<xs:documentation xml:lang="en">8. the advancement of nature conservation and of Landscape management within the meaning of the Federal
+						Nature Conservation Act and the nature conservation acts of the federal states, of environmental protection, including climate
+						protection, of coastal defence and of flood defence
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZweckNr9" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">9. die Förderung des Wohlfahrtswesens, insbesondere der Zwecke der amtlich anerkannten Verbände der freien
+						Wohlfahrtspflege (§ 23 der Umsatzsteuer-Durchführungsverordnung), ihrer Unterverbände und ihrer angeschlossenen Einrichtungen und
+						Anstalten
+					</xs:documentation>
+					<xs:documentation xml:lang="en">9. the advancement of public welfare, in particular of the purposes of the officially recognised voluntary
+						welfare associations (section 23 of the VAT Implementing Ordinance), their subsidiary associations and their affiliated organizations
+						and institutions
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZweckNr10" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">10. die Förderung der Hilfe für politisch, rassistisch oder religiös Verfolgte, für Flüchtlinge,
+						Vertriebene, Aussiedler, Spätaussiedler, Kriegsopfer, Kriegshinterbliebene, Kriegsbeschädigte und Kriegsgefangene, Zivilbeschädigte und
+						Behinderte sowie Hilfe für Opfer von Straftaten; Förderung des Andenkens an Verfolgte, Kriegs- und Katastrophenopfer; Förderung des
+						Suchdienstes für Vermisste, Förderung der Hilfe für Menschen, die auf Grund ihrer geschlechtlichen Identität oder ihrer geschlechtlichen
+						Orientierung diskriminiert werden
+					</xs:documentation>
+					<xs:documentation xml:lang="en">10. the advancement of relief for people persecuted on political, racial or religious grounds, for refugees,
+						expellees, ethnic German repatriates who migrated to the Germany between 1950 and 1 January 1993, ethnic German repatriates migrating to
+						Germany after 1 January 1993, war victims, dependents of deceased war victims, war disabled and prisoners of war, civilian war disabled
+						and people with disabilities as well as relief for victims of crime; the advancement of the commemoration of persecutees, war and
+						disaster victims; the advancement of the tracing service for missing persons, the advancement of help for people who are discriminated
+						against on the basis of their gender identity or gender orientation
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZweckNr11" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">11. die Förderung der Rettung aus Lebensgefahr</xs:documentation>
+					<xs:documentation xml:lang="en">11. the advancement of life saving</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZweckNr12" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">12. die Förderung des Feuer-, Arbeits-, Katastrophen- und Zivilschutzes sowie Unfallverhütung
+					</xs:documentation>
+					<xs:documentation xml:lang="en">12. the advancement of fire prevention, occupational health and safety, disaster control and civil defence
+						as well as of accident prevention
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZweckNr13" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">13. die Förderung internationaler Gesinnung, der Toleranz auf allen Gebieten der Kultur und des
+						Völkerverständigungsgedankens
+					</xs:documentation>
+					<xs:documentation xml:lang="en">13. the advancement of internationalism, of tolerance in all areas of culture and of the concept of
+						international understanding
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZweckNr14" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">14. die Förderung des Tierschutzes</xs:documentation>
+					<xs:documentation xml:lang="en">14. the advancement of the protection of animals</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZweckNr15" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">15. die Förderung der Entwicklungszusammenarbeit</xs:documentation>
+					<xs:documentation xml:lang="en">15. the advancement of development cooperation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZweckNr16" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">16. die Förderung von Verbraucherberatung und Verbraucherschutz</xs:documentation>
+					<xs:documentation xml:lang="en">16. the advancement of consumer counselling and consumer protection</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZweckNr17" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">17. die Förderung der Fürsorge für Strafgefangene und ehemalige Strafgefangene</xs:documentation>
+					<xs:documentation xml:lang="en">17. the advancement of welfare for prisoners and former prisoners</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZweckNr18" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">18. die Förderung der Gleichberechtigung von Frauen und Männern</xs:documentation>
+					<xs:documentation xml:lang="en">18. the advancement of equal rights for women and men</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZweckNr19" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">19. die Förderung des Schutzes von Ehe und Familie</xs:documentation>
+					<xs:documentation xml:lang="en">19. the advancement of the protection of marriage and the family</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZweckNr20" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">20. die Förderung der Kriminalprävention</xs:documentation>
+					<xs:documentation xml:lang="en">20. the advancement of crime prevention</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZweckNr21" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">21. die Förderung des Sports (Schach gilt als Sport)</xs:documentation>
+					<xs:documentation xml:lang="en">21. the advancement of sport (chess shall be considered to be a sport)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZweckNr22" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">22. die Förderung der Heimatpflege, Heimatkunde und der Ortsverschönerung</xs:documentation>
+					<xs:documentation xml:lang="en">22. the advancement of local heritage, local traditions and local embellishment</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZweckNr23" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">23. die Förderung der Tierzucht, der Pflanzenzucht, der Kleingärtnerei, des traditionellen Brauchtums
+						einschließlich des Karnevals, der Fastnacht und des Faschings, der Soldaten- und Reservistenbetreuung, des Amateurfunkens, des
+						Freifunks, des Modellflugs und des Hundesports
+					</xs:documentation>
+					<xs:documentation xml:lang="en">23. the advancement of animal husbandry, of plant cultivation, of allotment gardening, of traditional
+						customs including regional carnival, of the welfare of servicemen and reservists, of amateur radio, of Freifunk (free wireless
+						networking), of aeromodelling and of dog sports
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZweckNr24" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">24. die Förderung des demokratischen Staatswesens im Geltungsbereich dieses Gesetzes; hierzu gehören nicht
+						Bestrebungen, die nur bestimmte Einzelinteressen staatsbürgerlicher Art verfolgen oder die auf den kommunalpolitischen Bereich
+						beschränkt sind
+					</xs:documentation>
+					<xs:documentation xml:lang="en">24. the general advancement of democratic government in the territory of application of this Code; this
+						shall not include endeavours which are solely in pursuit of specific individual interests of a civic nature or which are restricted to
+						the local-government level
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZweckNr25" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">25. die Förderung des bürgerschaftlichen Engagements zugunsten gemeinnütziger, mildtätiger und kirchlicher
+						Zwecke
+					</xs:documentation>
+					<xs:documentation xml:lang="en">25. the advancement of active citizenship in support of public-benefit, charitable or religious purposes
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZweckNr26" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">26. die Förderung der Unterhaltung und Pflege von Friedhöfen und die Förderung der Unterhaltung von
+						Gedenkstätten für nichtbestattungspflichtige Kinder und Föten
+					</xs:documentation>
+					<xs:documentation xml:lang="en">26. the advancement of the preservation and maintenance of cemeteries and the advancement of the
+						preservation of memorials for children and foetuses not requiring burial
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Geschaeftsleitung_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Geschäftsleitung</xs:documentation>
+			<xs:documentation xml:lang="en">Management</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="GeschaeftsleitungAbw" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Weicht der Ort der tatsächlichen Geschäftsleitung von der angegebenen Adresse der beschränkt
+						steuerpflichtigen Person ab?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Weicht der Ort der tatsächlichen Geschäftsleitung von der angegebenen Adresse ab?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GeschaeftsleitungOrt" type="kafe:Adresse_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ort der tatsächlichen Geschäftsleitung</xs:documentation>
+					<xs:documentation xml:lang="en">Place of effective management</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GesetzlicheVertretung_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Gesetzliche Vertretung</xs:documentation>
+			<xs:documentation xml:lang="en">Legal representative</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="NatuerlichePerson" type="kafe:NatP_Struct">
+					<xs:annotation>
+						<xs:documentation xml:lang="de">Natürliche Person</xs:documentation>
+						<xs:documentation xml:lang="en">Natural person</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="NichtNatuerlichePerson" type="kafe:NichtNatP_Struct">
+					<xs:annotation>
+						<xs:documentation xml:lang="de">Nicht natürliche Person</xs:documentation>
+						<xs:documentation xml:lang="en">Non-natural person</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="GVAdresse" type="kafe:Adresse_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Adresse der gesetzlichen Vertretung</xs:documentation>
+					<xs:documentation xml:lang="en">Address of the legal representative</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Haltedauer_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Haltedauer</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="HaltedauerMin45T" type="kafe:StueckzahlNull_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Anzahl der Anteile, die innerhalb des Mindesthaltezeitraums an mindestens 45 Tagen ohne Unterbrechung
+						gehalten wurden (§ 50j Absatz 4 Satz 2 EStG).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="HaltedauerMin1J" type="kafe:StueckzahlNull_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Davon Anzahl der Anteile, die im Zeitpunkt des Zuflusses mindestens ein Jahr ohne Unterbrechung gehalten
+						wurden (§ 50j Absatz 4 Satz 2 EStG).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="HaltedauerKuerzer45T" type="kafe:StueckzahlNull_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Anzahl der Anteile, die kürzer 45 Tage gehalten wurden.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AnteilePar50jEStG" type="kafe:StueckzahlNull_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Anzahl der Anteile im Sinne des § 50j EStG.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Inlandsbezug_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Struktureller Inlandsbezug (§ 52 Absatz 2 AO)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="VerwirklichungDE" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Verwirklicht die beschränkt steuerpflichtige Person die steuerbegünstigten Zwecke - zumindest zum Teil - in
+						Deutschland?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Is the person with limited tax liability pursuing the tax-privileged purposes at least partly in Germany?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FoerderungDE" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Werden natürliche Personen, die ihren Wohnsitz oder ihren gewöhnlichen Aufenthalt in Deutschland haben,
+						gefördert?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Are natural persons who have their place of residence or habitual abode in Germany being advanced?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AnsehenDE" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Trägt die Tätigkeit der steuerpflichtigen Person zum Ansehen der Bundesrepublik Deutschland im Ausland
+						bei?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Does the activity carried out by the taxpayer contribute to the reputation of the Federal Republic of
+						Germany abroad?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Erlaeuterung">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Erläuterung, wie der Inlandsbezug verwirklicht wird</xs:documentation>
+					<xs:documentation xml:lang="en">Specification how the connection to Germany is manifested</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="5000"/>
+						<xs:minLength value="10"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Nachweis" type="kafe:Anhang_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Nachweis zum strukturellen Inlandsbezug</xs:documentation>
+					<xs:documentation xml:lang="en">Evidence of structural connection to Germany</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InvStG_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Investmentfondsbezogene Fragen</xs:documentation>
+			<xs:documentation xml:lang="en">Investment fund related issues</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Statusbescheinigung" type="kafe:Statusbescheinigung_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Statusbescheinigung</xs:documentation>
+					<xs:documentation xml:lang="en">Status certificate</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SpezialInvestmentfonds" type="kafe:SpezialInvestmentfonds_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Spezial-Investmentfonds</xs:documentation>
+					<xs:documentation xml:lang="en">Special investment fund</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MinWertAendRisiko_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Mindestwertänderungsrisiko</xs:documentation>
+			<xs:documentation xml:lang="en">Minimum risk of change</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="GegenlAnsprueche" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Hatte die beschränkt steuerpflichtige Person oder eine ihr nahestehende Person während der Mindesthaltedauer
+						gegenläufige Ansprüche?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RisikoMin70" type="kafe:StueckzahlNull_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Anzahl der Anteile, für die die beschränkt steuerpflichtige Person das Wertänderungsrisiko während der
+						Mindesthaltedauer zu mindestens 70% getragen hat. (Bezogen auf die Anteile im Sinne des § 50j EStG)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GegenlAnspruecheAndere" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Waren während der Mindesthaltedauer gegenläufige Ansprüche vorhanden, die nicht vollständig den Anteilen im
+						Sinne des § 50j EStG (Haltedauer mindestens 45 Tage, jedoch kürzer als 1 Jahr) zugeordnet waren? (Die Frage bezieht sich auf den
+						gesamten Bestand der Anteils- oder Genussscheingattung.)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Nachweis_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Angaben zur Steuerbescheinigung / zum sonstigen Beleg</xs:documentation>
+			<xs:documentation xml:lang="en">Details of the tax certificate / other document</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Ordnungsnummer" type="kafe:UUID_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ordnungsnummer</xs:documentation>
+					<xs:documentation xml:lang="en">Serial number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Abzugssteuer" type="kafe:Betrag_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Deutsche Abzugssteuer (in Euro)</xs:documentation>
+					<xs:documentation xml:lang="en">Withheld German capital income tax (in Euro)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Steuerbescheinigung" type="kafe:Anhang_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Steuerbescheinigung / Sonstiger Beleg ist beigefügt</xs:documentation>
+					<xs:documentation xml:lang="en">Tax certificate / other receipt is enclosed</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BPBericht" type="kafe:Anhang_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Betriebsprüfungsbericht (Auszug) oder anderer geeigneter Nachweis ist beigefügt</xs:documentation>
+					<xs:documentation xml:lang="en">Tax audit report (extract) or other suitable proof is enclosed</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="WPProspekt_Vertrag" type="kafe:Anhang_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Wertpapierprospekt oder Vertrag ist beigefügt</xs:documentation>
+					<xs:documentation xml:lang="en">Securities prospectus or contract is enclosed</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZahlungsnachweisFA" type="kafe:Anhang_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Bestätigung des für die Schuldnerin zuständigen Betriebsstättenfinanzamts über die Zahlung der Steuer ist
+						beigefügt
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Confirmation of payment of the tax from the tax office responsible for the debtor’s business premises is
+						enclosed
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Anrechnungsnachweis" type="kafe:Anhang_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Nachweis der ausländischen Finanzbehörde ist beigefügt</xs:documentation>
+					<xs:documentation xml:lang="en">Proof from the foreign tax authority</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NatP_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Natürliche Person</xs:documentation>
+			<xs:documentation xml:lang="en">Natural person</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Anrede" type="kafe:Anrede_ENUM">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Anrede</xs:documentation>
+					<xs:documentation xml:lang="en">Form of address</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Titel" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Titel</xs:documentation>
+					<xs:documentation xml:lang="en">Title</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="40"/>
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Vorname" type="kafe:Vorname_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Vorname</xs:documentation>
+					<xs:documentation xml:lang="en">First and middle name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Nachname" type="kafe:Nachname_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Nachname</xs:documentation>
+					<xs:documentation xml:lang="en">Last name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NichtNatP_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Nicht natürliche Person</xs:documentation>
+			<xs:documentation xml:lang="en">Non-natural person</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="OrganisationName" type="kafe:OrganisationName_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Name der Organisation/Gesellschaft</xs:documentation>
+					<xs:documentation xml:lang="en">Legal name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Organisationseinheit" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Organisationseinheit</xs:documentation>
+					<xs:documentation xml:lang="en">Department</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="80"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OptionKStG_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Option gemäß § 1a KStG</xs:documentation>
+			<xs:documentation xml:lang="en">Option pursuant to section 1a German Corporate Income Tax Act</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="OptionKStG" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Wurde die Option zur Körperschaftsbesteuerung gemäß § 1a KStG ausgeübt?</xs:documentation>
+					<xs:documentation xml:lang="en">Has the option to be treated like a corporation for tax purposes pursuant to section 1a German Corporate
+						Income Tax Act been exercised?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Steuerbehoerde" type="kafe:Steuerbehoerden_ENUM" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Steuerbehörde</xs:documentation>
+					<xs:documentation xml:lang="en">Tax authority</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Aktenzeichen" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Aktenzeichen / Steuernummer</xs:documentation>
+					<xs:documentation xml:lang="en">File number / tax number</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="13"/>
+						<xs:maxLength value="30"/>
+						<xs:pattern value="[A-Za-z0-9 \-/]+"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Par50jEStG_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Zusatzangaben nach § 50j EStG</xs:documentation>
+			<xs:documentation xml:lang="en">Additional information according to section 50j German Income Tax Act</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Haltedauer" type="kafe:Haltedauer_Struct">
+				<xs:annotation>
+					<xs:documentation>Haltedauer</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MinWertAendRisiko" type="kafe:MinWertAendRisiko_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Mindestwertänderungsrisiko</xs:documentation>
+					<xs:documentation xml:lang="en">Minimum risk of change</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="WeiterlVerpflichtung" type="kafe:WeiterlVerpflichtung_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Weiterleitungsverpflichtung</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RueckgabeVerpflichtung" type="kafe:RueckgabeVerpflichtung_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rückgabeverpflichtung</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Transaktionsdaten" type="kafe:Transaktionsdaten_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Transaktionsdaten</xs:documentation>
+					<xs:documentation xml:lang="en">Transaction data</xs:documentation>
+				</xs:annotation>
+				<xs:unique name="unique-Depot">
+					<xs:selector xpath="kafe:Depot"/>
+					<xs:field xpath="kafe:Depotnummer"/>
+				</xs:unique>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Registereintragung_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Registereintragung</xs:documentation>
+			<xs:documentation xml:lang="en"/>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Register" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ist die beschränkt steuerpflichtige Person in ein Register (z. B. Unternehmens-, Handels-,
+						Stiftungsregister) eingetragen?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Is the person with limited tax liability entered in a register (e.g. company register, commercial register,
+						foundation register)?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Registerbehoerde" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Registerbehörde</xs:documentation>
+					<xs:documentation xml:lang="en">Registry authority</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="80"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Registernummer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Registernummer</xs:documentation>
+					<xs:documentation xml:lang="en">Registration number</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="40"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Registerauszug" type="kafe:Anhang_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Registerauszug beifügen</xs:documentation>
+					<xs:documentation xml:lang="en">Register exerpt is enclosed</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RueckgabeVerpflichtung_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Rückgabeverpflichtung</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="RueckgabeVerpfl" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Lagen Rückgabeverpflichtungen ohne Dividendenberechtigung für mit Dividendenberechtigung erworbene Anteile
+						vor? (Bezogen auf den gesamten Bestand der Anteils- oder Genussscheingattung.)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RueckgabeVerpflAnteile" type="kafe:StueckzahlNull_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Anzahl der Anteile, für die eine Rückgabeverpflichtung ohne Dividendenberechtigung für mit
+						Dividendenberechtigung erworbene Anteile vorlag.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Satzung_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Satzung (§ 60 AO)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="LetzteAenderung" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Datum, an dem die Satzung zuletzt geändert wurde</xs:documentation>
+					<xs:documentation xml:lang="en">Date on which the statutes were last changed</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Nachweis" type="kafe:Anhang_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Satzung, Gesellschaftsvertrag oder vergleichbaren Errichtungsakt hochladen</xs:documentation>
+					<xs:documentation xml:lang="en">Upload statutes, articles of association or comparable instrument of incorporation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SchweizFragen_Struct">
+		<xs:annotation>
+			<xs:documentation>Fragen für in der Schweiz ansässige Personen</xs:documentation>
+			<xs:documentation xml:lang="en">Questions for Swiss residents (questions according to DTA Switzerland)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SteuerpflichtCH" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Hat die beschränkt steuerpflichtige Person mit allen allgemein steuerpflichtigen Einkünften aus Deutschland
+						den allgemein erhobenen Steuern in der Schweiz (Bund, Kanton, Gemeinde) unterlegen?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Has the person with limited tax liability been subject to the generally levied taxes in Switzerland
+						(federal, cantonal, municipal) with all generally taxable income from Germany?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SteuerpflichtDE" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">War die beschränkt steuerpflichtige Person mindestens fünf Jahre in Deutschland unbeschränkt
+						steuerpflichtig?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Was the person with limited tax liability subject to unlimited tax liability in Germany for at least five
+						years?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StpflDE5Jahre" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Hat die unbeschränkte Steuerpflicht in Deutschland im Fälligkeitsjahr oder in den fünf Kalenderjahren
+						geendet, die dem im Antrag enthaltenen ältesten Zufluss vorangegangen sind?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Did the unlimited tax liability in Germany end in the due year or in the five calendar years preceding the
+						oldest inflow included in the application?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UnselbstArbeit" type="kafe:UnselbstArbeit_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Unselbständige Arbeit</xs:documentation>
+					<xs:documentation xml:lang="en">Details of the dependent personal services</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SpezialInvestmentfonds_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Spezial-Investmentfonds</xs:documentation>
+			<xs:documentation xml:lang="en">Special investment funds</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SpezialInvestmentfonds" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Handelt es sich um einen Spezial-Investmentfonds im Sinne des § 26 InvStG?</xs:documentation>
+					<xs:documentation xml:lang="en">Is this a special investment fund within the meaning of section 26 Investment Tax Act?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Transparenzoption" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Wurde die Transparenzoption ausgeübt?</xs:documentation>
+					<xs:documentation xml:lang="en">Has the transparency option been exercised?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Statusbescheinigung_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Statusbescheinigung</xs:documentation>
+			<xs:documentation xml:lang="en">Status certificate</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="StatusbescheinigungBeantragt" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Wurde eine Statusbescheinigung nach § 7 Absatz 3 InvStG erteilt oder beantragt?</xs:documentation>
+					<xs:documentation xml:lang="en">Has a status certificate pursuant to section 7 (3) Investment Tax Act been issued or applied for?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Steuerbehoerde" type="kafe:Steuerbehoerden_ENUM" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ausstellungsbehörde bzw. Behörde, bei der die Statusbescheinigung beantragt wurde</xs:documentation>
+					<xs:documentation xml:lang="en">Issuing authority or authority to which the status certificate was applied for</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Aktenzeichen" type="kafe:Stnr_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ordnungsnummer / Steuernummer (sofern erteilt)</xs:documentation>
+					<xs:documentation xml:lang="en">Ordinal number / tax number (if issued)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GueltigVon" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Gültig von</xs:documentation>
+					<xs:documentation xml:lang="en">Valid from</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:date">
+						<xs:minInclusive value="2018-01-01"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="GueltigBis" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Gültig bis</xs:documentation>
+					<xs:documentation xml:lang="en">Valid until</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:date">
+						<xs:minInclusive value="2018-01-01"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SteuerbeguenstigteZwecke_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Steuerbegünstigte Zwecke</xs:documentation>
+			<xs:documentation xml:lang="en">Tax-privileged purposes</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ZER" type="kafe:ZER_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Zuwendungsempfängerregister</xs:documentation>
+					<xs:documentation xml:lang="en">Register of non-profit organisations authorised to issue donation receipts (Zuwendungsempfängerregister)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Zwecke" type="kafe:Zwecke_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Angaben zu den steuerbegünstigten Zwecken (§§ 52-54 AO)</xs:documentation>
+					<xs:documentation xml:lang="en">Information on the tax-privileged purposes (sections 52-54 of the Fiscal Code)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Satzung" type="kafe:Satzung_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Satzung (§ 60 AO)</xs:documentation>
+					<xs:documentation xml:lang="en">Statutes (section 60 of the Fiscal Code)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Inlandsbezug" type="kafe:Inlandsbezug_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Struktureller Inlandsbezug (§ 52 Absatz 2 AO)</xs:documentation>
+					<xs:documentation xml:lang="en">Structural connection to Germany (section 51 (2) of the Fiscal Code)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Vermoegensbindung" type="kafe:Vermoegensbindung_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Satzungsmäßige Vermögensbindung (§ 61 AO)</xs:documentation>
+					<xs:documentation xml:lang="en">Dedication of assets in the statutes (section 61 of the Fiscal Code)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Geschaeftsfuehrung" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ist die tatsächliche Geschäftsführung ausschließlich und unmittelbar auf die Erfüllung der
+						steuerbegünstigten Zwecke gerichtet und entspricht den Satzungsbestimmungen?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Is the actual management directed exclusively and directly towards achieving the tax-privileged purposes and
+						does it conform to the provisions on the requirements for tax privileges contained in the statutes?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Verfassungstreue" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Fördert die beschränkt steuerpflichtige Person Bestrebungen gegen die freiheitlich demokratische
+						Grundordnung oder den Bestand oder die Sicherheit der Bundesrepublik Deutschland oder ihrer Länder?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Does the person with limited tax liability advance efforts directed against the liberal democratic basic
+						order (freiheitliche demokratische Grundordnung) or against the existence or security of the Federal Republic of Germany or its Länder?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Taetigkeitsbericht" type="kafe:Anhang_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Tätigkeitsbericht oder vergleichbare Nachweise</xs:documentation>
+					<xs:documentation xml:lang="en">Activity report or comparable proof</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EinnahmenAusgaben" type="kafe:Anhang_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Aufstellung der Einnahmen und Ausgaben oder Kassenberichte</xs:documentation>
+					<xs:documentation xml:lang="en">Statments showing revenue and expenditure or cash statements</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Vermoegen" type="kafe:Anhang_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Vermögensübersicht mit Nachweisen über die Bildung und Entwicklung der Rücklagen</xs:documentation>
+					<xs:documentation xml:lang="en">Statement of assets and liabilities with proof of the creation and accumulation of reserves
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Protokolle" type="kafe:Anhang_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Vorstandsprotokolle und Protokolle von Mitglieder- oder Gesellschafterversammlungen</xs:documentation>
+					<xs:documentation xml:lang="en">Board minutes and minutes from general or shareholder meetings</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="StpflNatP_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Natürliche Person</xs:documentation>
+			<xs:documentation xml:lang="en">Natural person</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NatP" type="kafe:NatP_Struct"/>
+			<xs:element name="Geburtsdatum">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Geburtsdatum</xs:documentation>
+					<xs:documentation xml:lang="en">Date of birth</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:date">
+						<xs:minInclusive value="1900-01-01"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="StaatsangehoerigkeitDE" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Besitzt die beschränkt steuerpflichtige Person die deutsche Staatsangehörigkeit?</xs:documentation>
+					<xs:documentation xml:lang="en">Does the person with limited tax liability have German citizenship?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StaatsangehoerigkeitKW" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Besitzt die beschränkt steuerpflichtige Person die kuwaitische Staatsangehörigkeit?</xs:documentation>
+					<xs:documentation xml:lang="en">Does the person with limited tax liability have Kuwaiti citizenship?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StaatsangehoerigkeitCH" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Besitzt die beschränkt steuerpflichtige Person die schweizerische Staatsangehörigkeit?</xs:documentation>
+					<xs:documentation xml:lang="en">Does the person with limited tax liability have Swiss citizenship?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="StpflNichtNatP_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Nicht natürliche Person</xs:documentation>
+			<xs:documentation xml:lang="en">Non-natural person</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NichtNatP" type="kafe:NichtNatP_Struct"/>
+			<xs:element name="Gruendungsdatum">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Gründungsdatum</xs:documentation>
+					<xs:documentation xml:lang="en">Date of incorporation</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:date">
+						<xs:minInclusive value="1800-01-01"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="RechtsformAuspraegung">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ausprägung der Rechtsform</xs:documentation>
+					<xs:documentation xml:lang="en">specific legal form</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="80"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Gruendungsstaat" type="kafe:CountryISOAlpha2_ENUM" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Staat, nach dessen Recht die Organisation/Gesellschaft gegründet wurde.</xs:documentation>
+					<xs:documentation xml:lang="en">Country under whose law the organisation/company is incorporated</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Geschaeftsleitung" type="kafe:Geschaeftsleitung_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Geschäftsleitung</xs:documentation>
+					<xs:documentation xml:lang="en">Management</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LEI" type="kafe:LEI_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Legal Entity Identifier (LEI)</xs:documentation>
+					<xs:documentation xml:lang="en">Legal Entity Identifier (LEI)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Register" type="kafe:Registereintragung_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Registereintragung</xs:documentation>
+					<xs:documentation xml:lang="en">Entry in the register</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Boerse" type="kafe:Boersenhandel_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Börsenhandel</xs:documentation>
+					<xs:documentation xml:lang="en">Stock exchange trading details</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="StpflPerson_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Angaben zur beschränkt steuerpflichtigen Person</xs:documentation>
+			<xs:documentation xml:lang="en">Details of the person subject to limited tax liability</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="NatuerlichePerson" type="kafe:StpflNatP_Struct">
+					<xs:annotation>
+						<xs:documentation xml:lang="de">Natürliche Person</xs:documentation>
+						<xs:documentation xml:lang="en">Natural person</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="NichtNatuerlichePerson" type="kafe:StpflNichtNatP_Struct">
+					<xs:annotation>
+						<xs:documentation xml:lang="de">Nicht natürliche Person</xs:documentation>
+						<xs:documentation xml:lang="en">Non-natural person</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="StpflAdresse" type="kafe:Adresse_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Adresse der steuerpflichtigen Person</xs:documentation>
+					<xs:documentation xml:lang="en">Address of the person subject to limited tax liability</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Transaktion_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Transaktion</xs:documentation>
+			<xs:documentation xml:lang="en">Transaction</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Handelstag" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Handelstag</xs:documentation>
+					<xs:documentation xml:lang="en">Trading day</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Transaktionsart" type="kafe:TransaktionArt_ENUM">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Zugang / Abgang</xs:documentation>
+					<xs:documentation xml:lang="en">Inflow / Outflow</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Geschaeft" type="kafe:TransaktionGeschaeft_ENUM">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Transaktion</xs:documentation>
+					<xs:documentation xml:lang="en">Transaction</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Stueckzahl" type="kafe:Stueckzahl_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Stückzahl</xs:documentation>
+					<xs:documentation xml:lang="en">Number of shares</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="VereinbAbwicklungstag" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Vereinbarter Abwicklungstag</xs:documentation>
+					<xs:documentation xml:lang="en">Agreed settlement date</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TatsaechlAbwicklungstag" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Tatsächlicher Abwicklungstag</xs:documentation>
+					<xs:documentation xml:lang="en">Actual settlement date</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="TransaktionId" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="de">Laufende Nummer der Transaktion, beginnend bei 1</xs:documentation>
+				<xs:documentation xml:lang="en">Sequence number of the transaction, starting with 1</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:minInclusive value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="Transaktionen_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Transaktionen</xs:documentation>
+			<xs:documentation xml:lang="en">Transactions</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Transaktion" type="kafe:Transaktion_Struct" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Transaktion</xs:documentation>
+					<xs:documentation xml:lang="en">Transaction</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Transaktionsdaten_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Transaktionsdaten</xs:documentation>
+			<xs:documentation xml:lang="en">Transaction data</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Depot" type="kafe:Depot_Struct" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Depot</xs:documentation>
+					<xs:documentation xml:lang="en">Deposit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UnselbstArbeit_Struct">
+		<xs:sequence>
+			<xs:element name="UnselbstArbeit" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ist die beschränkt steuerpflichtige Person in der Schweiz ansässig geworden, um dort eine echte
+						unselbständige Arbeit auszuüben?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Has the person with limited tax liability become resident in Switzerland, in order to pursue genuine
+						employment there?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Arbeitgeber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Name und Anschrift des Arbeitgebers</xs:documentation>
+					<xs:documentation xml:lang="en">Name and address of the employer</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="500"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Arbeitgeberbescheinigung" type="kafe:Anhang_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Bestätigung des Arbeitgebers über die echte unselbständige Arbeit beigefügt</xs:documentation>
+					<xs:documentation xml:lang="en">Employer’s confirmation of genuine dependent employment is enclosed</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InteresseArbeitgeber" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ist die beschränkt steuerpflichtige Person am Arbeitgeber beteiligt oder in anderer Weise wirtschaftlich
+						wesentlich interessiert (z. B. partiarisches Darlehen)?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Does the person with limited tax liability have an interest in the employer or another significant economic
+						interest (e.g. a participating loan)?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="InteresseBeschreibung" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Bitte beschreiben</xs:documentation>
+					<xs:documentation xml:lang="en">Please describe</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="500"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Zuzugsdatum" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Wann erfolgte der Zuzug in die Schweiz?</xs:documentation>
+					<xs:documentation xml:lang="en">When did the move to Switzerland take place?</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:date">
+						<xs:minInclusive value="1900-01-01"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Zuzugsgruende" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Aus welchen Gründen erfolgte der Zuzug in die Schweiz?</xs:documentation>
+					<xs:documentation xml:lang="en">What were the reasons for moving to Switzerland?</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="500"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Vermoegensbindung_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Satzungsmäßige Vermögensbindung (§ 61 AO)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="KoerperschaftDE" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Das Vermögen fällt im Falle der Auflösung oder Aufhebung der beschränkt steuerpflichtigen Person oder bei
+						Wegfall ihres bisherigen Zwecks - zumindest zum Teil - einer in Deutschland ansässigen steuerbegünstigten Körperschaft für
+						steuerbegünstigte Zwecke zu.
+					</xs:documentation>
+					<xs:documentation xml:lang="en">If the person with limited tax liabiliy is dissolved or liquidated or if its former purpose ceases, the
+						assets accrue - at least in part - to a tax-privileged corporation resident in Germany for tax-privileged purposes.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="KoerperschaftKStG" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Das Vermögen fällt im Falle der Auflösung oder Aufhebung der beschränkt steuerpflichtigen Person oder bei
+						Wegfall ihres bisherigen Zwecks - zumindest zum Teil - einer in § 5 Absatz 2 Nr. 2 KStG genannten Körperschaft für steuerbegünstigte
+						Zwecke zu.
+					</xs:documentation>
+					<xs:documentation xml:lang="en">If the person with limited tax liabiliy is dissolved or liquidated or if its former purpose ceases, the
+						assets accrue - at least in part - to one of the corporations listed in section 5 (2) of the Corporation Tax Act for tax-privileged
+						purposes.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="KoerperschaftOeRecht" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Das Vermögen fällt im Falle der Auflösung oder Aufhebung der beschränkt steuerpflichtigen Person oder bei
+						Wegfall ihres bisherigen Zwecks - zumindest zum Teil - einer juristischen Person des öffentlichen Rechts für steuerbegünstigte Zwecke
+						zu.
+					</xs:documentation>
+					<xs:documentation xml:lang="en">If the person with limited tax liabiliy is dissolved or liquidated or if its former purpose ceases,the
+						assets accrue - at least in part - to a legal person under public law for tax-privileged purposes.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Andere" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Das Vermögen fällt im Falle der Auflösung oder Aufhebung der beschränkt steuerpflichtigen Person oder bei
+						Wegfall ihres bisherigen Zwecks - zumindest zum Teil - einer anderen Person zu.
+					</xs:documentation>
+					<xs:documentation xml:lang="en">If the person with limited tax liabiliy is dissolved or liquidated or if its former purpose ceases,the
+						assets accrue - at least in part - to another person.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WeiterlVerpflichtung_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Weiterleitungsverpflichtung</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="WeiterlVerpfl" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Lag eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der Kapitalerträge vor?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="WeiterlVerpflAnteile" type="kafe:StueckzahlNull_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Anzahl der Anteile, für die eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der
+						Kapitalerträge vorlag. (Bezogen auf die Anteile im Sinne des § 50j EStG)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="WeiterlVerpflAndere" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Lag eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der Kapitalerträge vor, die über die
+						Anteile im Sinne des § 50j EStG (Haltedauer mindestens 45 Tage, jedoch kürzer als 1 Jahr) hinausgeht? (Bezogen auf den gesamten Bestand
+						der Anteils- oder Genussscheingattung.)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WesentlicheBeteiligung_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Angaben zur wesentlichen Beteiligung</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="WesentlBeteiligung" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Handelt es sich um eine wesentliche Beteiligung (mindestens 10 Prozent)?</xs:documentation>
+					<xs:documentation xml:lang="en">Is it a substential holding (at least 10 %)?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="WesentlBeteiligungHoehe" type="kafe:Prozentzahl_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Höhe der Beteiligung (in Prozent)</xs:documentation>
+					<xs:documentation xml:lang="en">Size of the ownership interest (in %)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Beteiligungsdauer18M" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Wurde die Beteiligung für eine Dauer von mindestens 18 Monaten gehalten?</xs:documentation>
+					<xs:documentation xml:lang="en">Has the investment been held for a period of at least 18 months?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Beteiligungsdauer12M" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Wurde die Beteiligung für eine Dauer von mindestens einem Jahr gehalten?</xs:documentation>
+					<xs:documentation xml:lang="en">Has the investment been held for a period of at least one year?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Beteiligungsdauer6M" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Wurde die Beteiligung für eine Dauer von mindestens 6 Monaten gehalten?</xs:documentation>
+					<xs:documentation xml:lang="en">Has the investment been held for a period of at least 6 months?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ZER_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Zuwendungsempfängerregister</xs:documentation>
+			<xs:documentation xml:lang="en">Register of non-profit organisations authorised to issue donation receipts (Zuwendungsempfängerregister)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Eintrag" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ist die beschränkt steuerpflichtige Person in das deutsche Zuwendungsempfängerregister (ZER) eingetragen?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Is the person with limited tax liability recorded in the German register of non-profit organisations
+						authorised to issue donation receipts (Zuwendungsempfängerregister)?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Referenznummer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Referenznummer</xs:documentation>
+					<xs:documentation xml:lang="en">Reference number</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="36"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Zwecke_Struct">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Angaben zu den steuerbegünstigten Zwecken</xs:documentation>
+			<xs:documentation xml:lang="en">Information on the tax-privileged purposes</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Gemeinnuetzig" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Die beschränkt steuerpflichtige Person verfolgt gemeinnützige Zwecke (§ 52 AO).</xs:documentation>
+					<xs:documentation xml:lang="en">The person with limited tax liability pursues public benefit purposes (section 52 of the Fiscal Code).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Mildtaetig" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Die beschränkt steuerpflichtige Person verfolgt mildtätige Zwecke (§ 53 AO).</xs:documentation>
+					<xs:documentation xml:lang="en">The person with limited tax liability pursues charitable purposes (section 53 of the Fiscal Code).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Kirchlich" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Die beschränkt steuerpflichtige Person verfolgt kirchliche Zwecke (§ 54 AO).</xs:documentation>
+					<xs:documentation xml:lang="en">The person with limited tax liability pursues ecclesiastical purposes (section 54 of the Fiscal Code).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GemeinnuetzigeZwecke" type="kafe:GemeinnuetzigeZwecke_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Angaben zu gemeinnützigen Zwecken</xs:documentation>
+					<xs:documentation xml:lang="en">Information on the public benefit purposes</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NachweisAnerkennung" type="kafe:Anhang_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Nachweis der Anerkennung der steuerbegünstigten Zwecke im Ansässigkeitsstaat</xs:documentation>
+					<xs:documentation xml:lang="en">Upload proof of recognition of the tax-privileged purposes in the country of residence</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Ausschliesslich" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Verfolgt die beschränkt steuerpflichtige Person ausschließlich und unmittelbar ihre steuerbegünstigten
+						satzungsmäßigen Zwecke (siehe §§ 56 und 57 AO)?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Does the person with limited tax liability serve directly and exclusively tax-privileged purposes (see
+						sections 56 and 57 of the Fiscal Code)?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Beginn" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Beginn der gemeinnützigen, mildtätigen oder kirchlichen Tätigkeit</xs:documentation>
+					<xs:documentation xml:lang="en">Start of the public-benefit, charitable or ecclesiastical activity</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="Anrede_ENUM">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="FRAU">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Frau</xs:documentation>
+					<xs:documentation xml:lang="en">Ms</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HERR">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Herr</xs:documentation>
+					<xs:documentation xml:lang="en">Mr</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KEINE_ANREDE">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">keine Anrede</xs:documentation>
+					<xs:documentation xml:lang="en">No form of address/no indication</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="KapitalertragArt_ENUM">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DIVIDENDEN">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Dividenden aus börsennotierten Aktien</xs:documentation>
+					<xs:documentation xml:lang="en">Dividends from listed shares</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AUSSCH_KAPG">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ausschüttungen nicht börsennotierter Kapitalgesellschaften (z. B. GmbH)</xs:documentation>
+					<xs:documentation xml:lang="en">Distributions from non-listed company (e.g. GmbH)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GENUSSR_ML">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Einnahmen aus Genussrechten mit Beteiligung am Liquidationserlös</xs:documentation>
+					<xs:documentation xml:lang="en">Income from profit participation rights with participation in liquidation proceeds</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GENUSSR_OL">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Einnahmen aus Genussrechten ohne Beteiligung am Liquidationserlös</xs:documentation>
+					<xs:documentation xml:lang="en">Income from profit participation rights without participation in liquidation proceeds</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="WANDELANL">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Einnahmen aus Wandelanleihen</xs:documentation>
+					<xs:documentation xml:lang="en">Income from convertible bonds</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LEBENSVERS">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Einnahmen aus Lebensversicherungen (§ 20 Absatz 1 Nr. 6 EStG)</xs:documentation>
+					<xs:documentation xml:lang="en">Income from life insurance (section 20 [1] no 6 Income Tax Act)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EINN_STILLG">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Einnahmen aus einer typisch stillen Beteiligung</xs:documentation>
+					<xs:documentation xml:lang="en">Income from a shareholding in a business as a silent partner</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PART_DARL">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Einnahmen aus partiarischen Darlehen</xs:documentation>
+					<xs:documentation xml:lang="en">Income from loans with an interest rate linked to the borrower's profit (partiarisches Darlehen)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GEWINNOBL">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Einnahmen aus Gewinnobligationen</xs:documentation>
+					<xs:documentation xml:lang="en">Income from participation bonds</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GRENZKW">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Einnahmen aus einem Grenzkraftwerk am Rhein</xs:documentation>
+					<xs:documentation xml:lang="en">Income from a border power station on the Rhine</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SONSTIGE">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Sonstige Erträge</xs:documentation>
+					<xs:documentation xml:lang="en">Other income</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Rechtsformen_ENUM">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NATP">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Natürliche Person</xs:documentation>
+					<xs:documentation xml:lang="en">Natural person</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KAPG">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Kapitalgesellschaft</xs:documentation>
+					<xs:documentation xml:lang="en">Corporation</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SOJP">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Sonstige juristische Person</xs:documentation>
+					<xs:documentation xml:lang="en">Other legal entity</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="INVF">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Investmentfonds</xs:documentation>
+					<xs:documentation xml:lang="en">Investment fund</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PENF">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Pensionsfonds/Altersvorsorgeeinrichtung</xs:documentation>
+					<xs:documentation xml:lang="en">Pension fund/retirement provision institution</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GSTF">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Gemeinnützige Einrichtung/Steuerbefreite Organisation</xs:documentation>
+					<xs:documentation xml:lang="en">Non-profit institution/tax-exempt organisation</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HHTR">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Hoheitsträger oder vergleichbare Einrichtung</xs:documentation>
+					<xs:documentation xml:lang="en">Sovereign entity or comparable institution</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PGES">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Personengesellschaft</xs:documentation>
+					<xs:documentation xml:lang="en">Partnership</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Steuerbehoerden_ENUM">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="FA">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Finanzamt</xs:documentation>
+					<xs:documentation xml:lang="en">Tax office</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BZST">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Bundeszentralamt für Steuern</xs:documentation>
+					<xs:documentation xml:lang="en">Federal Central Tax Office</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TransaktionArt_ENUM">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ZUGANG">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Zugang</xs:documentation>
+					<xs:documentation xml:lang="en">Inflow</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ABGANG">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Abgang</xs:documentation>
+					<xs:documentation xml:lang="en">Outflow</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TransaktionGeschaeft_ENUM">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PO">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Anschaffung</xs:documentation>
+					<xs:documentation xml:lang="en">Purchase</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SO">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Veräußerung</xs:documentation>
+					<xs:documentation xml:lang="en">Sale</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TL">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Übertragung wegen Wertpapierleihe</xs:documentation>
+					<xs:documentation xml:lang="en">Transfer due to securities lending</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RL">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Rückübertragung wegen Wertpapierleihe</xs:documentation>
+					<xs:documentation xml:lang="en">Retransfer due to securities lending</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TP">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Übertragung wegen Wertpapierpensionsgeschäft</xs:documentation>
+					<xs:documentation xml:lang="en">Transfer due to repurchase agreement</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RP">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Rückübertragung wegen Wertpapierpensionsgeschäft</xs:documentation>
+					<xs:documentation xml:lang="en">Retransfer due to repurchase agreement</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Betrag_Type">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="2"/>
+			<xs:minInclusive value="0.01"/>
+			<xs:maxInclusive value="999999999999999.99"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BetragNull_Type">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="2"/>
+			<xs:minInclusive value="0.00"/>
+			<xs:maxInclusive value="999999999999999.99"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BIC_Type">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="8"/>
+			<xs:maxLength value="11"/>
+			<xs:pattern value="[A-Z]{4}([A-Z]{2})[0-9A-Z]{2}([0-9A-Z]{3})?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EMail_Type">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="6"/>
+			<xs:maxLength value="254"/>
+			<xs:pattern value="[a-zA-Z0-9\.!#$%'\*\+/=\?\^_`\{\|\}~\-]+@[a-zA-Z0-9\.\-]+\.[a-zA-Z0-9\-]+"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IBAN_Type">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="14"/>
+			<xs:maxLength value="34"/>
+			<xs:pattern value="[A-Z]{2,2}[0-9]{2,2}[A-Z0-9]{10,30}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IdNr_Type">
+		<xs:restriction base="xs:string">
+			<xs:length value="11"/>
+			<xs:whiteSpace value="replace"/>
+			<xs:pattern value="[0-9]{11,11}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ISIN_Type">
+		<xs:restriction base="xs:string">
+			<xs:length value="12"/>
+			<xs:whiteSpace value="replace"/>
+			<xs:pattern value="[A-Z]{2,2}[0-9A-Z]{10,10}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="KennNr_Type">
+		<xs:restriction base="xs:string">
+			<xs:length value="8"/>
+			<xs:pattern value="[0-9]{8,8}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LEI_Type">
+		<xs:restriction base="xs:string">
+			<xs:length value="20"/>
+			<xs:whiteSpace value="replace"/>
+			<xs:pattern value="[0-9A-Z]{18,18}[0-9]{2,2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Nachname_Type">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="120"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OrganisationName_Type">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="256"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Prozentzahl_Type">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="4"/>
+			<xs:minInclusive value="0.0001"/>
+			<xs:maxInclusive value="100.0000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RegistrierNr_Type">
+		<xs:restriction base="xs:string">
+			<xs:length value="9"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Stnr_Type">
+		<xs:restriction base="xs:string">
+			<xs:length value="13"/>
+			<xs:pattern value="[0-9]{13,13}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Stueckzahl_Type">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="4"/>
+			<xs:minInclusive value="0.0001"/>
+			<xs:maxInclusive value="999999999999999.9999"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="StueckzahlNull_Type">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="4"/>
+			<xs:minInclusive value="0.0000"/>
+			<xs:maxInclusive value="999999999999999.9999"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Anrechnungsbetrag_Type">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="2"/>
+			<xs:minInclusive value="0.00"/>
+			<xs:maxInclusive value="999999999999999.99"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Telefon_Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="21"/>
+			<xs:minLength value="5"/>
+			<xs:pattern value="([\+][ ]?)?[0-9 /\-]+"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TransferticketId_Type">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="170"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UUID_Type">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Fa-f0-9]{8}\-[A-Fa-f0-9]{4}\-[1-5][A-Fa-f0-9]{3}\-[ABab89][A-Fa-f0-9]{3}\-[A-Fa-f0-9]{12}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Vorname_Type">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="80"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="WIdNr_Type">
+		<xs:restriction base="xs:string">
+			<xs:length value="16"/>
+			<xs:pattern value="[A-Z]{2,2}[0-9]{14,14}"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

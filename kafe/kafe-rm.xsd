@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mit XMLSpy v2022 rel. 2 (x64) (http://www.altova.com) von Informationstechnikzentrum Bund (Informationstechnikzentrum Bund) bearbeitet -->
+<xs:schema xmlns:kafe="urn:bzst:kafe:ozg:v1" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:bzst:kafe:ozg:v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.4.0">
+	<!--
+		Version		Veröffentlichung		Änderung
+		===============================================================================================
+		1.4.0	04.12.2025				Überarbeitung:
+										- Der StatusCode_ENUM wurde ergänzt und in eigener Xsd extrahiert.
+		===============================================================================================
+		1.3.0		04.11.2025			Umbenennung:
+										- Das Element KAFE-RM_CType wurde von KAFE-RM auf KAFERMCType umbenannt
+		===============================================================================================
+		1.2.0		30.10.2024			Ergänzung:
+										- Der StatusCode_ENUM wurden ergänzt.
+		===============================================================================================
+		1.1.1		20.06.2024			Ergänzung:
+										- Element DateiFehler wurde ergänzt.
+		===============================================================================================
+		1.1.0		29.02.2024			Ergänzung:
+										- Der StatusCode_ENUM wurde ergänzt.
+		===============================================================================================
+		1.0.0		20.11.2023			Initiale Erstellung
+	-->
+	<xs:include schemaLocation="kafe-standardtypes.xsd"/>
+	<xs:include schemaLocation="kafe-statustypes.xsd"/>
+	<xs:element name="KAFERMCType" type="kafe:KAFE-RM_CType">
+		<xs:unique name="unique-AntragId">
+			<xs:selector xpath="kafe:Antrag"/>
+			<xs:field xpath="@AntragId"/>
+		</xs:unique>
+	</xs:element>
+	<xs:complexType name="Antrag_CType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">In der Lieferung enthaltene Anträge.</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="RegistrierNr" type="kafe:RegistrierNr_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Aktenzeichen unter der der Antrag beim BZSt registriert wurde (Registriernummer).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValidierungsergebnisListe" type="kafe:ValErgebnisListe_CType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Liste der bei der Validierung des Antrages festgestellten Fehler.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+		<xs:attribute name="AntragId" type="kafe:UUID_Type" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="de">In der Lieferung angegebene UUID des Antrages.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="KAFE-RM_CType">
+		<xs:sequence>
+			<xs:element name="Eingangsdatum" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Eingangsdatum der Lieferung</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="DateiFehler" type="kafe:ValErgebnisListe_CType"/>
+				<xs:element name="Antrag" type="kafe:Antrag_CType" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation xml:lang="de">In der Lieferung enthaltene Anträge.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="schemaVersion" use="required" fixed="1.4.0">
+			<xs:annotation>
+				<xs:documentation xml:lang="de">Version des verfahrensspezifischen XML-Schemas für KaFE-RM.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ValErgebnis_CType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Validierungsergebnis</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="StatusCode" type="kafe:StatusCode_ENUM">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Statuscode des Validierungsergebnisses (0000 = OK).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Hinweis" type="xs:string">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Hinweis zum Validierungsergebnis.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ValErgebnisListe_CType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Liste der bei der Validierung des Antrages festgestellten Fehler.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Validierungsergebnis" type="kafe:ValErgebnis_CType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Validierungsergebnis</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,89 @@
+<pre class=metadata>
+Title: KaFE Refund Application -- Response
+Shortname: kafe-response
+Level: 1
+Status: DREAM
+URL: https://openfaster.org/kafe/response
+Repository: https://github.com/OpenFASTER-Standard/spec
+Editor: Julian Nalenz, https://github.com/sigalor
+Abstract: This document is for developers implementing a KaFE integration
+    against this platform -- banks never see this raw decision notice
+    directly. It documents kafe-va.xsd, the payload BZSt uses to
+    communicate the actual tax-assessment decision (approval or clawback)
+    on a submitted <a href="/kafe/request">KaFE refund application</a>.
+    <b>This document describes payload shape only, not a working
+    retrieval flow</b> -- see the disclosure below.
+Markup Shorthands: markdown yes, dfn yes, css no
+Boilerplate: omit conformance
+Local Boilerplate: header yes
+Complain About: accidental-2119 yes, missing-example-ids yes
+</pre>
+
+Not yet retrievable: a disclosure {#not-yet-retrievable}
+=============================================================
+
+<p><b>BZSt has not yet published the transport for this payload.</b> Per
+the official DIP-KAFE v1.4.0 communication handbook, section 6.2: <q>The
+DIP envelope scheme for the notification of administrative files is not available yet.</q>
+Only <code>kafe-va.xsd</code>'s payload shape is
+published (schemaVersion 1.0.0, unrevised since its 2023-11-20 creation,
+even as the request-side schema has gone through five revisions). This
+document describes that payload shape so implementers know what to expect
+once retrieval becomes possible -- it is not a working integration
+today.</p>
+
+The KaFE Refund Application Response format {#kafe-response-module}
+========================================================================
+
+One KAFE-VA delivery batches one or more `Steuerbescheid` (decision
+notice) entries; each answers exactly one prior <a
+href="/kafe/request">Erstattungsantrag</a>, correlated via the
+`Bezugsantrag` back-reference block — four distinct fields
+(`TransferticketId`, `AntragId`, `RegistrierNr`, `KennNr`), a richer
+correlation than KAFE-RM's own single-`AntragId` correlation documented
+in the Request document.
+
+Source schema {#source-schema}
+------------------------------
+
+This document's field definitions and enumerations are generated directly
+from BZSt's published `kafe-va.xsd` — regenerating from an updated XSD
+keeps this document in lock-step with the BZSt source, the same way <a
+href="/kafe/request#source-schema">the Request document</a> is generated
+from `kafe.xsd`.
+
+Approval and clawback semantics {#approval-and-clawback}
+-------------------------------------------------------------
+
+`SummeAbrechnung`'s sign carries the decision: a positive amount is a
+refund in the applicant's favour; a negative amount is a payment debit
+(clawback). `Faelligkeit` (a due date) is only present when the amount is
+negative — BZSt's own documentation warns that late-payment penalties
+apply if the debit isn't settled by that date. `BescheidArt` distinguishes
+a first decision (`ERSTBESCHEID`) from a corrected one (`KORREKTUR`) for
+the same application, but is not chained to the specific earlier notice it
+corrects — only back to the original `Erstattungsantrag`, via
+`Bezugsantrag`. `Hinweise` is only a boolean flag recording whether the
+notice carries additional remarks; the substantive legal reasoning for any
+decision, in every case, exists only inside `BescheidPdf` (a
+base64-encoded PDF) — never as structured XML.
+
+<pre class=include>
+path: generated/va.include.bs
+</pre>
+
+Known gaps in this schema {#response-known-gaps}
+----------------------------------------------------
+
+Worth disclosing rather than silently working around: `kafe-va.xsd`'s own
+`schemaVersion` has been fixed at `1.0.0` since its creation on
+2023-11-20, unrevised even as the request-side `kafe.xsd` has gone through
+five revisions (through 1.4.0). There is no `PreviousBescheidId`-style
+field chaining a `KORREKTUR` notice to the specific earlier `Bescheid` it
+corrects — only `Bezugsantrag`'s reference back to the original
+application. And unlike <a
+href="/mikadiv-vib/response#response-known-gaps">MiKaDiv's own Response
+document</a>, which at least had one real sample XML to verify against, no
+real `BescheidPdf`/`Steuerbescheid` sample has been examined during this
+module's research — this document's coverage is derived entirely from the
+schema's own structure, not confirmed against a real example.

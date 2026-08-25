@@ -1,0 +1,30 @@
+<pre class=metadata>
+Title: KaFE Refund Application
+Shortname: kafe
+Level: 1
+Status: DREAM
+URL: https://openfaster.org/kafe
+Repository: https://github.com/OpenFASTER-Standard/spec
+Local Boilerplate: header yes
+Editor: Julian Nalenz, https://github.com/sigalor
+Abstract: KaFE Refund Application is a module of the
+    <a href="/about">OpenFASTER</a> family, mirroring the German KaFE
+    (section 50c(3) EStG) capital income tax refund schema. This page
+    indexes its two documents.
+Markup Shorthands: markdown yes, dfn yes, css no
+Boilerplate: omit conformance
+</pre>
+
+KaFE Refund Application {#kafe-module}
+=========================================
+
+KaFE Refund Application is split into two documents:
+
+* [Request](/kafe/request) -- the data model a bank or reporting
+    institute submits, with an accompanying Excel template and downloadable
+    PDF.
+* [Response](/kafe/response) -- what the platform will receive back from
+    BZSt after processing a submission, for implementers building a KaFE
+    integration. Currently provisional -- see the document itself for why.
+
+<p><a href="/">← Back to the OpenFASTER portal</a></p>
