@@ -134,6 +134,65 @@ Expected: FAIL — `ci/normalize_xlsx.py` doesn't exist yet (this step's numberi
 Run: `cd /work/openfaster-spec && .venv312/bin/python -m pytest ci/tests/test_normalize_xlsx.py -v`
 Expected: PASS, both tests.
 
+- [ ] **Step 4.5: Stop Bikeshed from embedding a per-build git revision hash in every page**
+
+Bikeshed's `document-revision` boilerplate (`addSpecVersion` in its own
+`boilerplate.py`) runs `git rev-parse HEAD` **at build time** and embeds
+that literal commit hash into a `<meta name="revision">` tag in every
+compiled page's `<head>` — confirmed by reading Bikeshed's own source
+(only effect: this one non-visible meta tag, no other content). Since this
+repo's workflow always builds output *then* commits it, the embedded hash
+is structurally always the *parent* of whatever commit ends up containing
+the file — a permanent mismatch, unrelated to whether the page's real
+content is stale, that would make Step 8's "fresh tree" check below always
+report a false-positive diff. Fix at the source: add
+`Boilerplate: omit document-revision` to all 12 `.bs` files so Bikeshed
+stops embedding this meaningless field entirely (a real quality
+improvement independent of this task — the field could never have been
+correct in this repo's own build-then-commit workflow anyway).
+
+8 files already have a `Boilerplate: omit conformance` line — append to
+the same line (Bikeshed's `Boilerplate:` value is comma-separated, e.g.
+`Boilerplate: omit conformance, omit document-revision` — confirmed via
+Bikeshed's own `parseBoilerplate()`):
+
+```bash
+cd /work/openfaster-spec
+for f in kafe/index.bs mikadiv-vib/response.bs streamld/index.bs \
+         kafe/response.bs mikadiv-vib/index.bs mikadiv-vib/request.bs \
+         documentation/about.bs kafe/request.bs; do
+  sed -i 's/^Boilerplate: omit conformance$/Boilerplate: omit conformance, omit document-revision/' "$f"
+done
+```
+
+The other 4 files (`streamld/core.bs`, `streamld/subscription.bs`,
+`streamld/binding-sse.bs`, `streamld/binding-websocket.bs`) have no
+`Boilerplate:` line at all today; add one. Insert it immediately after
+each file's `Local Boilerplate: header yes` line (every `.bs` file in
+this repo has that line; use it as the anchor so the new line lands
+inside the metadata block, not after it):
+
+```bash
+for f in streamld/core.bs streamld/subscription.bs \
+         streamld/binding-sse.bs streamld/binding-websocket.bs; do
+  sed -i '/^Local Boilerplate: header yes$/a Boilerplate: omit document-revision' "$f"
+done
+```
+
+Verify all 12 files now have it:
+```bash
+grep -c "omit document-revision" documentation/about.bs kafe/index.bs kafe/request.bs kafe/response.bs mikadiv-vib/index.bs mikadiv-vib/request.bs mikadiv-vib/response.bs streamld/index.bs streamld/core.bs streamld/subscription.bs streamld/binding-sse.bs streamld/binding-websocket.bs
+```
+Expected: `1` for every one of the 12 files listed (this repo has 12
+`.bs` files total: `documentation/about.bs` + 3 `kafe/*.bs` + 3
+`mikadiv-vib/*.bs` + 5 `streamld/*.bs` — some earlier prose elsewhere in
+this plan/spec says "11", an undercount; use this command's real file
+list as ground truth).
+
+Commit this alongside the rest of Task 1's work in Step 10 below (not a
+separate commit) — it's a prerequisite the staleness script's own
+correctness depends on, not a separate concern.
+
 - [ ] **Step 5: Write `ci/check-generated-up-to-date.sh`**
 
 ```bash
@@ -258,7 +317,7 @@ Activate the local venv first (this script needs `bikeshed`/`weasyprint`/`shacl2
 source .venv312/bin/activate
 ```
 
-Stage a real stale case: edit `kafe/status_codes.py`'s `_RAW` list to append a harmless new tuple (e.g. `("9999", "Test staleness detection.")`) WITHOUT regenerating `kafe/generated/status-codes.include.bs` to match, then run the script:
+Stage a real stale case: edit `kafe/status_codes.py`'s `_RAW` list to append a harmless new tuple (`("1999", "Test staleness detection.")` — first digit `1` so it maps cleanly through `_range_for()`'s existing 1-7 dispatch; a first digit outside 1-7, e.g. `9`, isn't handled at all and crashes the build with `KeyError` before the script ever reaches its diff logic — confirmed by direct testing, don't substitute a different leading digit) WITHOUT regenerating `kafe/generated/status-codes.include.bs` to match, then run the script:
 
 ```bash
 cd /work/openfaster-spec
@@ -266,7 +325,7 @@ python3 -c "
 import re
 p = 'kafe/status_codes.py'
 s = open(p).read()
-s = s.replace('_RAW: list[tuple[str, str]] = [', '_RAW: list[tuple[str, str]] = [\n    (\"9999\", \"Test staleness detection.\"),', 1)
+s = s.replace('_RAW: list[tuple[str, str]] = [', '_RAW: list[tuple[str, str]] = [\n    (\"1999\", \"Test staleness detection.\"),', 1)
 open(p, 'w').write(s)
 "
 ci/check-generated-up-to-date.sh; echo "exit code: $?"
@@ -409,7 +468,7 @@ git push -u origin deploy-consistency-fix
 python3 -c "
 p = 'kafe/status_codes.py'
 s = open(p).read()
-s = s.replace('_RAW: list[tuple[str, str]] = [', '_RAW: list[tuple[str, str]] = [\n    (\"9998\", \"End-to-end staleness test -- Task 3.\"),', 1)
+s = s.replace('_RAW: list[tuple[str, str]] = [', '_RAW: list[tuple[str, str]] = [\n    (\"1998\", \"End-to-end staleness test -- Task 3.\"),', 1)
 open(p, 'w').write(s)
 "
 git add kafe/status_codes.py
@@ -422,7 +481,7 @@ git push origin deploy-consistency-fix
 ```bash
 gh pr create --repo OpenFASTER-Standard/spec --base main --head deploy-consistency-fix \
   --title "Fix deploy-consistency race + add pre-merge self-consistency check" \
-  --body "See docs/superpowers/specs/2026-08-25-deploy-consistency-fix-design.md. Includes a deliberately-staged staleness case (kafe/status_codes.py's new 9998 entry, not yet regenerated into kafe/generated/status-codes.include.bs) to real-world-verify the new pre-merge check actually catches and auto-corrects it -- see the plan's Task 3."
+  --body "See docs/superpowers/specs/2026-08-25-deploy-consistency-fix-design.md. Includes a deliberately-staged staleness case (kafe/status_codes.py's new 1998 entry, not yet regenerated into kafe/generated/status-codes.include.bs) to real-world-verify the new pre-merge check actually catches and auto-corrects it -- see the plan's Task 3."
 gh pr checks --repo OpenFASTER-Standard/spec <PR-number> --watch --interval 15
 ```
 
@@ -433,9 +492,9 @@ Expected: the `check-generated-up-to-date` job runs, its "Check generated output
 ```bash
 git fetch origin deploy-consistency-fix
 git log --oneline origin/deploy-consistency-fix -5
-git show origin/deploy-consistency-fix:kafe/generated/status-codes.include.bs | grep -c "9998"
+git show origin/deploy-consistency-fix:kafe/generated/status-codes.include.bs | grep -c "1998"
 ```
-Expected: a new commit authored by `github-actions[bot]` (message: "chore: regenerate build output to match source changes") appears on top of your Step 2 commit, and the regenerated `status-codes.include.bs` now contains the `9998` test entry — real, git-verified proof the mechanism works, not an assumption.
+Expected: a new commit authored by `github-actions[bot]` (message: "chore: regenerate build output to match source changes") appears on top of your Step 2 commit, and the regenerated `status-codes.include.bs` now contains the `1998` test entry — real, git-verified proof the mechanism works, not an assumption.
 
 - [ ] **Step 5: Pull the auto-commit locally and remove the test staleness case**
 
@@ -444,20 +503,20 @@ git pull origin deploy-consistency-fix
 python3 -c "
 p = 'kafe/status_codes.py'
 s = open(p).read()
-s = s.replace('    (\"9998\", \"End-to-end staleness test -- Task 3.\"),\n', '', 1)
+s = s.replace('    (\"1998\", \"End-to-end staleness test -- Task 3.\"),\n', '', 1)
 open(p, 'w').write(s)
 "
 source .venv312/bin/activate
 ci/check-generated-up-to-date.sh
 ```
-Expected: the script now reports STALE again (since removing the 9998 entry from source, without regenerating, is itself a fresh staleness case) — confirm this, then actually regenerate and commit the reversion properly:
+Expected: the script now reports STALE again (since removing the 1998 entry from source, without regenerating, is itself a fresh staleness case) — confirm this, then actually regenerate and commit the reversion properly:
 ```bash
 python generate_template.py
 python -m kafe.generate_rm_docs
 python -m kafe.generate_status_codes_docs
 python -m kafe.generate_va_docs
 git add kafe/status_codes.py kafe/generated/
-git status --short  # confirm only the 9998-removal-related files changed
+git status --short  # confirm only the 1998-removal-related files changed
 git commit -m "test: remove Task 3's staged staleness test case now that end-to-end verification is complete"
 git push origin deploy-consistency-fix
 ```
