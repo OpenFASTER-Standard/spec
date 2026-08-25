@@ -3,5 +3,13 @@
   "trailingSlash": false,
   "rewrites": [
     { "source": "/about", "destination": "/documentation/about" }
+  ],
+  "headers": [
+    {
+      "source": "/:path((?!.*\\.(xlsx|pdf)$).*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    }
   ]
 }
