@@ -1,0 +1,19 @@
+<pre class=metadata>
+Title: KaFE Refund Application -- Request
+Shortname: kafe-request
+Level: 1
+Status: DREAM
+URL: https://openfaster.org/kafe/request
+Repository: https://github.com/OpenFASTER-Standard/spec
+Text Macro: DOCVERSION 4.3.2
+Editor: Julian Nalenz, https://github.com/sigalor
+Abstract: placeholder, replaced in full by Task 5.
+Markup Shorthands: markdown yes, dfn yes, css no
+Boilerplate: omit conformance
+Local Boilerplate: header yes
+</pre>
+
+Placeholder {#placeholder}
+===========================
+
+Replaced in full by Task 5.
