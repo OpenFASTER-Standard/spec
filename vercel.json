@@ -6,7 +6,7 @@
   ],
   "headers": [
     {
-      "source": "/:path((?!.*\\.(xlsx|pdf)$).*)",
+      "source": "/((?!.*\\.(?:xlsx|pdf)$).*)",
       "headers": [
         { "key": "Cache-Control", "value": "no-store" }
       ]
