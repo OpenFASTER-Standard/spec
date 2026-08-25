@@ -205,7 +205,7 @@ its meaning), edit `mikadiv-vib/ThirdPartyDisclosureRequest.xsd` and re-run
 a column, adjust a presentation-only helper column), edit
 `mikadiv-vib/mapping.py`. To change **Response field content**, edit
 `mikadiv-vib/ThirdPartyDisclosureResponse.xsd` and re-run
-`mikadiv-vib/generate_response_docs.py`. Never edit anything under
+`PYTHONPATH=. python mikadiv-vib/generate_response_docs.py`. Never edit anything under
 `mikadiv-vib/generated/` by hand.
 
 ---
@@ -261,7 +261,7 @@ reject values outside the allowed list.
 | --- | --- | --- |
 | `0 Legend Notes` | - | How to read the template, requiredness legend, cardinality, linking rules |
 | `1 Requests Master` | 1 | Request-level metadata; account owner scalars |
-| `2 Security Related Information` | 0..1 | Security identification + income / tax information, incl. the conditional depositary-receipt (e.g. ADR) block (required for Request; DR fields required when `IsDepositaryReceipt` = true) |
+| `2 Security Related Information` | 0..1 | Security identification + income / tax information, incl. the conditional depositary-receipt (e.g. ADR) block (required for every disclosure; DR fields required when `IsDepositaryReceipt` = true) |
 | `3 Tax Voucher Individuals` | up to 2 total (tax voucher) | Natural persons receiving tax vouchers |
 | `4 Tax Voucher Legal Persons` | up to 2 total (tax voucher) | Corporate / institutional tax-voucher recipients |
 | `5 Third Party Individuals` | up to 5 total (third party) | Natural persons serving as third-party owners |
@@ -275,10 +275,11 @@ A hidden `_Lists` sheet backs any long dropdown lists.
 ## Linking model
 
 `RequestId` is the key on `1 Requests Master` and appears as the first column on
-every other sheet. It is used **only** to link the sheets together, so any
-unique value works (it does not need to be a UUID). Use the same `RequestId`
-value to join a request's data across all sheets and reconstruct one full
-disclosure record.
+every other sheet, used to join a request's data across all sheets and
+reconstruct one full disclosure record. Per VIB's own schema, `RequestId` must
+stay unique even across files you submit later, not just within this one —
+corrections and cancellations you submit afterward reference it by exact
+value.
 
 - **Community recipients:** a community tax-voucher receiver (up to 10 members)
   is captured by setting `ReceiverGroupType = CommunityMember` on the tax
