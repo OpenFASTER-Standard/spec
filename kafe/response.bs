@@ -3,6 +3,7 @@ Title: KaFE Refund Application -- Response
 Shortname: kafe-response
 Level: 1
 Status: DREAM
+Text Macro: LONGSTATUS KaFE Refund Application Response -- a module of the OpenFASTER family
 URL: https://openfaster.org/kafe/response
 Repository: https://github.com/OpenFASTER-Standard/spec
 Editor: Julian Nalenz, https://github.com/sigalor
@@ -73,7 +74,7 @@ path: generated/va.include.bs
 </pre>
 
 Known gaps in this schema {#response-known-gaps}
-----------------------------------------------------
+====================================================
 
 Worth disclosing rather than silently working around: `kafe-va.xsd`'s own
 `schemaVersion` has been fixed at `1.0.0` since its creation on

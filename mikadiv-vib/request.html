@@ -1492,7 +1492,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version d113b2e81, updated Tue Jun 9 14:57:55 2026 -0700" name="generator">
   <link href="https://openfaster.org/mikadiv-vib/request" rel="canonical">
-  <meta content="00bc0b0980c97b90b18972d83a6bc05bfd6337c2" name="revision">
+  <meta content="0b68626a588588392f264d738ede439a6d923a19" name="revision">
   <meta content="dark light" name="color-scheme">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
@@ -1959,6 +1959,26 @@ what a submission receives back.</p>
       <th>Summary of changes
     <tbody>
      <tr>
+      <td>1.2.0
+      
+      <td>2026-08-25
+      
+      <td>Added the KaFE Refund Application module (v4.3.2): mirrors the German
+          KaFE (§50c(3) EStG) capital income tax refund schema, covering the
+          request submission data model (with accompanying Excel template and
+          downloadable PDF) and the provisional response/status model.
+    
+     <tr>
+      <td>1.1.0
+      
+      <td>2026-08-24
+      
+      <td>Added the StreamLD module (incubating): a protocol for real-time,
+          resumable Linked Data event streaming, covering the core event
+          envelope and cursor model, subscription semantics, and the SSE and
+          WebSocket binding conformance requirements.
+    
+     <tr>
       <td>1.0.0
       
       <td>2026-07-05
@@ -1987,15 +2007,15 @@ what a submission receives back.</p>
     <li>
      <a href="#data-dictionary"><span class="secno">3</span> <span class="content">Data dictionary</span></a>
      <ol class="toc">
-      <li><a href="#sheet-1-requests-master"><span class="secno">3.1</span> <span class="content">1 Requests Master</span></a>
-      <li><a href="#sheet-2-security-related-information"><span class="secno">3.2</span> <span class="content">2 Security Related Information</span></a>
-      <li><a href="#sheet-3-tax-voucher-individuals"><span class="secno">3.3</span> <span class="content">3 Tax Voucher Individuals</span></a>
-      <li><a href="#sheet-4-tax-voucher-legal-persons"><span class="secno">3.4</span> <span class="content">4 Tax Voucher Legal Persons</span></a>
-      <li><a href="#sheet-5-third-party-individuals"><span class="secno">3.5</span> <span class="content">5 Third Party Individuals</span></a>
-      <li><a href="#sheet-6-third-party-legal-persons"><span class="secno">3.6</span> <span class="content">6 Third Party Legal Persons</span></a>
-      <li><a href="#sheet-7-custody-chain"><span class="secno">3.7</span> <span class="content">7 Custody Chain</span></a>
-      <li><a href="#sheet-8-fifo-trades"><span class="secno">3.8</span> <span class="content">8 FIFO Trades</span></a>
-      <li><a href="#sheet-9-raw-transactions-all"><span class="secno">3.9</span> <span class="content">9 Raw Transactions All</span></a>
+      <li><a href="#sheet-1-requests-master"><span class="secno">3.1</span> <span class="content">Requests Master</span></a>
+      <li><a href="#sheet-2-security-related-information"><span class="secno">3.2</span> <span class="content">Security Related Information</span></a>
+      <li><a href="#sheet-3-tax-voucher-individuals"><span class="secno">3.3</span> <span class="content">Tax Voucher Individuals</span></a>
+      <li><a href="#sheet-4-tax-voucher-legal-persons"><span class="secno">3.4</span> <span class="content">Tax Voucher Legal Persons</span></a>
+      <li><a href="#sheet-5-third-party-individuals"><span class="secno">3.5</span> <span class="content">Third Party Individuals</span></a>
+      <li><a href="#sheet-6-third-party-legal-persons"><span class="secno">3.6</span> <span class="content">Third Party Legal Persons</span></a>
+      <li><a href="#sheet-7-custody-chain"><span class="secno">3.7</span> <span class="content">Custody Chain</span></a>
+      <li><a href="#sheet-8-fifo-trades"><span class="secno">3.8</span> <span class="content">FIFO Trades</span></a>
+      <li><a href="#sheet-9-raw-transactions-all"><span class="secno">3.9</span> <span class="content">Raw Transactions All</span></a>
      </ol>
     <li>
      <a href="#enumerations"><span class="secno">4</span> <span class="content">Enumerations</span></a>
@@ -2144,7 +2164,7 @@ marked <code>Optional</code> MAY be omitted.</p>
 disclosure whose enum-typed field carries a value outside the enumerated set.</p>
    <h2 class="heading settled" data-level="3" id="data-dictionary"><span class="secno">3. </span><span class="content">Data dictionary</span><a class="self-link" href="#data-dictionary"></a></h2>
    <p>The following field-level definitions are generated from <code>ThirdPartyDisclosureRequest.xsd</code>. Each group below corresponds to one sheet of the accompanying Excel template. The <code>RequestId</code> column links the groups of a single disclosure together.</p>
-   <h3 class="heading settled" data-level="3.1" id="sheet-1-requests-master"><span class="secno">3.1. </span><span class="content">1 Requests Master</span><a class="self-link" href="#sheet-1-requests-master"></a></h3>
+   <h3 class="heading settled" data-level="3.1" id="sheet-1-requests-master"><span class="secno">3.1. </span><span class="content">Requests Master</span><a class="self-link" href="#sheet-1-requests-master"></a></h3>
    <p><b>Significance.</b> The parent record. One row per disclosure, holding administrative and routing metadata, the directly-contracted securities account, the account type and the account relationship. Every other sheet links back to this one through RequestId.</p>
    <p><b>Cardinality.</b> Exactly 1 row per RequestId (this sheet defines the RequestId).</p>
    <p><b>When to fill.</b> Always - every disclosure starts here.</p>
@@ -2302,7 +2322,7 @@ disclosure whose enum-typed field carries a value outside the enumerated set.</p
       <td>Enum (<a href="#enum-accountrelationship">AccountRelationship</a>): <code>Trust</code>, <code>Usufruct</code>, <code>Pledge</code>
       <td class="long">If the tax voucher person is not the beneficial owner (creditor), then the account relationship has to be specified.
    </table>
-   <h3 class="heading settled" data-level="3.2" id="sheet-2-security-related-information"><span class="secno">3.2. </span><span class="content">2 Security Related Information</span><a class="self-link" href="#sheet-2-security-related-information"></a></h3>
+   <h3 class="heading settled" data-level="3.2" id="sheet-2-security-related-information"><span class="secno">3.2. </span><span class="content">Security Related Information</span><a class="self-link" href="#sheet-2-security-related-information"></a></h3>
    <p><b>Significance.</b> The single capital-income event being disclosed: the security (ISIN, name, type), the corporate-action reference, payment details, the complete tax breakdown (gross/net, withholding tax, solidarity surcharge and the nominal quantities per holding category) and which receipts/deliveries mode is used. It also contains the depositary-receipt block (underlying German security, record date, issuance ratios, certificates held), which describes the depositary receipt (e.g. ADR/GDR) through which the income was received.</p>
    <p><b>Cardinality.</b> 0..1 row per RequestId.</p>
    <p><b>When to fill.</b> Required for every disclosure. Within this sheet, the depositary-receipt fields are required only when IsDepositaryReceipt = true.</p>
@@ -2551,7 +2571,7 @@ disclosure whose enum-typed field carries a value outside the enumerated set.</p
       <td>DateTime (YYYY-MM-DDThh:mm:ss)
       <td class="long">Date of the initial holdings evaluation.
    </table>
-   <h3 class="heading settled" data-level="3.3" id="sheet-3-tax-voucher-individuals"><span class="secno">3.3. </span><span class="content">3 Tax Voucher Individuals</span><a class="self-link" href="#sheet-3-tax-voucher-individuals"></a></h3>
+   <h3 class="heading settled" data-level="3.3" id="sheet-3-tax-voucher-individuals"><span class="secno">3.3. </span><span class="content">Tax Voucher Individuals</span><a class="self-link" href="#sheet-3-tax-voucher-individuals"></a></h3>
    <p><b>Significance.</b> Natural persons who receive the tax certificate (voucher) - either as beneficial owner (Creditor) or as account holder - with their name, registration address and tax identification. Community members are recorded here as well.</p>
    <p><b>Cardinality.</b> Tax-voucher receivers total up to 2 per RequestId, counted across this sheet and '4 Tax Voucher Legal Persons'. A community counts as ONE receiver and may span up to 10 member rows that share one CommunityGroupId.</p>
    <p><b>When to fill.</b> For Request records at least one tax-voucher receiver is required (here or on the legal-persons sheet). Add one row per natural-person receiver or community member.</p>
@@ -2703,7 +2723,7 @@ disclosure whose enum-typed field carries a value outside the enumerated set.</p
       <td>Text (max 35)
       <td class="long">If no German tax id number has been assigned yet: Tax identification attribute awarded by the country of residence.
    </table>
-   <h3 class="heading settled" data-level="3.4" id="sheet-4-tax-voucher-legal-persons"><span class="secno">3.4. </span><span class="content">4 Tax Voucher Legal Persons</span><a class="self-link" href="#sheet-4-tax-voucher-legal-persons"></a></h3>
+   <h3 class="heading settled" data-level="3.4" id="sheet-4-tax-voucher-legal-persons"><span class="secno">3.4. </span><span class="content">Tax Voucher Legal Persons</span><a class="self-link" href="#sheet-4-tax-voucher-legal-persons"></a></h3>
    <p><b>Significance.</b> Non-natural tax-certificate receivers (companies, funds, partnerships) with name, registration address and the detailed legal-person tax identification.</p>
    <p><b>Cardinality.</b> Counts towards the up-to-2 tax-voucher receivers per RequestId (shared with '3 Tax Voucher Individuals').</p>
    <p><b>When to fill.</b> For Request records, use when a tax-voucher receiver (or community member) is a legal person.</p>
@@ -2855,7 +2875,7 @@ disclosure whose enum-typed field carries a value outside the enumerated set.</p
       <td>Date (YYYY-MM-DD)
       <td class="long">Date when the entity was established / founded / incorporated / launched.
    </table>
-   <h3 class="heading settled" data-level="3.5" id="sheet-5-third-party-individuals"><span class="secno">3.5. </span><span class="content">5 Third Party Individuals</span><a class="self-link" href="#sheet-5-third-party-individuals"></a></h3>
+   <h3 class="heading settled" data-level="3.5" id="sheet-5-third-party-individuals"><span class="secno">3.5. </span><span class="content">Third Party Individuals</span><a class="self-link" href="#sheet-5-third-party-individuals"></a></h3>
    <p><b>Significance.</b> Natural persons who are the account holder but not the beneficial owner (third parties), stating in what capacity they hold for the beneficial owner (trustee, pledgor or grantor of usufruct).</p>
    <p><b>Cardinality.</b> Third-party persons total up to 5 per RequestId, counted across this sheet and '6 Third Party Legal Persons'.</p>
    <p><b>When to fill.</b> Only when the account holder is not the beneficial owner AND the beneficial owner is disclosed. Otherwise leave empty.</p>
@@ -2995,7 +3015,7 @@ disclosure whose enum-typed field carries a value outside the enumerated set.</p
       <td>Text (max 35)
       <td class="long">If no German tax id number has been assigned yet: Tax identification attribute awarded by the country of residence.
    </table>
-   <h3 class="heading settled" data-level="3.6" id="sheet-6-third-party-legal-persons"><span class="secno">3.6. </span><span class="content">6 Third Party Legal Persons</span><a class="self-link" href="#sheet-6-third-party-legal-persons"></a></h3>
+   <h3 class="heading settled" data-level="3.6" id="sheet-6-third-party-legal-persons"><span class="secno">3.6. </span><span class="content">Third Party Legal Persons</span><a class="self-link" href="#sheet-6-third-party-legal-persons"></a></h3>
    <p><b>Significance.</b> Non-natural third parties (account holders that are not the beneficial owner) with name, address and legal-person tax identification, including the special investment-funds tax number where relevant.</p>
    <p><b>Cardinality.</b> Counts towards the up-to-5 third-party persons per RequestId (shared with '5 Third Party Individuals').</p>
    <p><b>When to fill.</b> Same condition as '5 Third Party Individuals', when the third party is a legal person.</p>
@@ -3129,7 +3149,7 @@ disclosure whose enum-typed field carries a value outside the enumerated set.</p
       <td>Text (max 35)
       <td class="long">Tax identification number assigned to the tax voucher person by its country of tax residency.
    </table>
-   <h3 class="heading settled" data-level="3.7" id="sheet-7-custody-chain"><span class="secno">3.7. </span><span class="content">7 Custody Chain</span><a class="self-link" href="#sheet-7-custody-chain"></a></h3>
+   <h3 class="heading settled" data-level="3.7" id="sheet-7-custody-chain"><span class="secno">3.7. </span><span class="content">Custody Chain</span><a class="self-link" href="#sheet-7-custody-chain"></a></h3>
    <p><b>Significance.</b> The ordered chain of custodians / intermediaries between the beneficiary and the German paying agent. Each link carries its name, address, tax identification, BIC, account number, account type and the nominal held.</p>
    <p><b>Cardinality.</b> 0..20 rows per RequestId, ordered by NumberInChain (1 = the custodian closest to the beneficiary).</p>
    <p><b>When to fill.</b> Required for Request records; add one row per intermediary link in the custody chain.</p>
@@ -3275,7 +3295,7 @@ disclosure whose enum-typed field carries a value outside the enumerated set.</p
       <td>Text (max 35)
       <td class="long">Tax identification number assigned to the tax voucher person by its country of tax residency.
    </table>
-   <h3 class="heading settled" data-level="3.8" id="sheet-8-fifo-trades"><span class="secno">3.8. </span><span class="content">8 FIFO Trades</span><a class="self-link" href="#sheet-8-fifo-trades"></a></h3>
+   <h3 class="heading settled" data-level="3.8" id="sheet-8-fifo-trades"><span class="secno">3.8. </span><span class="content">FIFO Trades</span><a class="self-link" href="#sheet-8-fifo-trades"></a></h3>
    <p><b>Significance.</b> Receipts and deliveries within the relevant window, already reduced with FiFo (first-in-first-out) calculation by the submitter. Receipts and deliveries share this sheet and are distinguished by the Direction column.</p>
    <p><b>Cardinality.</b> Up to 1000 Receipt rows and up to 1000 Delivery rows per RequestId.</p>
    <p><b>When to fill.</b> Only when ReceiptsAndDeliveriesMode = FiFo. Leave empty when the mode = All.</p>
@@ -3349,7 +3369,7 @@ disclosure whose enum-typed field carries a value outside the enumerated set.</p
       <td>Text (max 45)
       <td class="long">Transaction reference German Paying Agent.
    </table>
-   <h3 class="heading settled" data-level="3.9" id="sheet-9-raw-transactions-all"><span class="secno">3.9. </span><span class="content">9 Raw Transactions All</span><a class="self-link" href="#sheet-9-raw-transactions-all"></a></h3>
+   <h3 class="heading settled" data-level="3.9" id="sheet-9-raw-transactions-all"><span class="secno">3.9. </span><span class="content">Raw Transactions All</span><a class="self-link" href="#sheet-9-raw-transactions-all"></a></h3>
    <p><b>Significance.</b> The full, unreduced ledger of receipts and deliveries (no FiFo applied); the German paying agent performs the FiFo calculation. The opening balance is captured on the Security Related Information sheet; every movement is one row here.</p>
    <p><b>Cardinality.</b> Unbounded rows per RequestId.</p>
    <p><b>When to fill.</b> Only when ReceiptsAndDeliveriesMode = All. Leave empty when the mode = FiFo.</p>

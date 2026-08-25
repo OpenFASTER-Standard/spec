@@ -1,30 +1,42 @@
 <!-- Generated from streamld/model/envelope.ttl. Do not edit by hand. -->
 
-## EventEnvelope ## {#eventenvelope-fields}
+<h3 id="eventenvelope-fields">EventEnvelope</h3>
 
-| Field | Type | Required |
-| --- | --- | --- |
-| `isSnapshot` | boolean | Yes |
-| `payload` | (node) | Yes |
-| `sequence` | integer | Yes |
-| `streamId` | string | Yes |
+<table class="complex data longlastcol dictionary">
+  <thead><tr><th>Field<th>Type<th>Required</tr></thead>
+  <tbody>
+    <tr><td><code>isSnapshot</code><td>boolean<td>Yes</tr>
+    <tr><td><code>payload</code><td>(node)<td>Yes</tr>
+    <tr><td><code>sequence</code><td>integer<td>Yes</tr>
+    <tr><td><code>streamId</code><td>string<td>Yes</tr>
+  </tbody>
+</table>
 
-## ReplicationFrame ## {#replicationframe-fields}
+<h3 id="replicationframe-fields">ReplicationFrame</h3>
 
-| Field | Type | Required |
-| --- | --- | --- |
-| `cursor` | integer | Yes |
-| `event` | (node) | Yes |
+<table class="complex data longlastcol dictionary">
+  <thead><tr><th>Field<th>Type<th>Required</tr></thead>
+  <tbody>
+    <tr><td><code>cursor</code><td>integer<td>Yes</tr>
+    <tr><td><code>event</code><td>(node)<td>Yes</tr>
+  </tbody>
+</table>
 
-## SubscriptionRequest ## {#subscriptionrequest-fields}
+<h3 id="subscriptionrequest-fields">SubscriptionRequest</h3>
 
-| Field | Type | Required |
-| --- | --- | --- |
-| `after` | integer | No |
-| `stream` | (node) | Yes |
+<table class="complex data longlastcol dictionary">
+  <thead><tr><th>Field<th>Type<th>Required</tr></thead>
+  <tbody>
+    <tr><td><code>after</code><td>integer<td>No</tr>
+    <tr><td><code>stream</code><td>(node)<td>Yes</tr>
+  </tbody>
+</table>
 
-## GapSignal ## {#gapsignal-fields}
+<h3 id="gapsignal-fields">GapSignal</h3>
 
-| Field | Type | Required |
-| --- | --- | --- |
-| `oldestAvailable` | integer | No |
+<table class="complex data longlastcol dictionary">
+  <thead><tr><th>Field<th>Type<th>Required</tr></thead>
+  <tbody>
+    <tr><td><code>oldestAvailable</code><td>integer<td>No</tr>
+  </tbody>
+</table>

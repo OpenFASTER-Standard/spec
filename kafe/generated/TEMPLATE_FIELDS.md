@@ -27,161 +27,21 @@ Every data sheet has four header rows; data entry begins on row 5.
 
 ### Linking model
 
-- **creditorId** is the key on `3 Certificates Of Residence` and the first column on every other sheet, used to join a request's data across all sheets. Per VIB's own schema, RequestId must stay unique even across files you submit later, not just within this one -- corrections and cancellations you submit afterward reference it by exact value.
+- **creditorId** is the key on `1 Creditors Natural` and the first column on every other sheet, used to join a request's data across all sheets. Per VIB's own schema, RequestId must stay unique even across files you submit later, not just within this one -- corrections and cancellations you submit afterward reference it by exact value.
 - **Community recipients:** capture a community tax-voucher receiver (up to 10 members) by setting `ReceiverGroupType = CommunityMember` on the tax voucher sheets and giving all members of one community the same `CommunityGroupId`.
 
 ## Sheets at a glance
 
 | Sheet | Fields | Cardinality (rows per RequestId) | When to fill |
 | --- | --- | --- | --- |
+| [1 Creditors Natural](#1-creditors-natural) | 114 | Exactly 1 row per creditor (this sheet defines that creditor's id). | Always, for every creditor who is a natural person. |
+| [2 Creditors Juridical](#2-creditors-juridical) | 131 | Exactly 1 row per creditor (this sheet defines that creditor's id). | Always, for every creditor who is a juridical person. |
 | [3 Certificates Of Residence](#3-certificates-of-residence) | 6 | 0..n rows per creditorId. | Whenever an income on the Income sheet references it via CertificateOfResidenceId. |
 | [4 Income](#4-income) | 46 | 1..n rows per creditorId. | Always -- every application needs at least one taxed income. |
 | [5 Investment Chain](#5-investment-chain) | 10 | 0..n rows per (creditorId, incomeId) pair, ordered by SequenceNumber. | Only when the corresponding income's IndirectHolding/IndirectHolding = true. |
 | [6 Transaction Data](#6-transaction-data) | 14 | 0..n rows per (creditorId, incomeId) pair, grouped by DepotNumber. | Only when the corresponding income's Par50jEStG block applies. |
-| [1 Creditors Natural](#1-creditors-natural) | 114 | Exactly 1 row per creditor (this sheet defines that creditor's id). | Always, for every creditor who is a natural person. |
-| [2 Creditors Juridical](#2-creditors-juridical) | 131 | Exactly 1 row per creditor (this sheet defines that creditor's id). | Always, for every creditor who is a juridical person. |
 
 ## Detailed sheet reference
-
-### 3 Certificates Of Residence
-
-**Significance.** One row per certificate of residence (Ansässigkeitsbescheinigung): issuing authority, issue date and validity period.
-
-**Cardinality.** 0..n rows per creditorId.
-
-**When to fill.** Whenever an income on the Income sheet references it via CertificateOfResidenceId.
-
-| # | Field | Requiredness | Type / Allowed values | Description |
-| --- | --- | --- | --- | --- |
-| 1 | `creditorId` | Required | Text (identifier used to link the sheets; any unique value) | Foreign key. Must match an id value on the '1 Creditors Natural' or '2 Creditors Juridical' sheet (whichever this creditor is a natural or juridical person). |
-| 2 | `id` | Required | Text (identifier used to link the sheets; any unique value) | Identifier for this certificate of residence, defined by you. Referenced by the CertificateOfResidenceId column on the Income sheet. |
-| 3 | `Issuer` | Required | Text (max 80) | Issuing authority |
-| 4 | `IssuedAt` | Required | Date (YYYY-MM-DD) | Date of issue |
-| 5 | `ValidFrom` | Required | Date (YYYY-MM-DD) | Valid from |
-| 6 | `ValidUntil` | Required | Date (YYYY-MM-DD) | Valid until |
-
-### 4 Income
-
-**Significance.** One row per taxed capital income event: type of income, security identification, the debtor, the amount and date of inflow, the tax certificate/other-document details, the beneficial-ownership and residency questions, the indirect-holding and substantial-holding questions, the remittance-base clause, and (where section 50j German Income Tax Act applies) the Par50jEStG holding-period / risk / forwarding / return-obligation block.
-
-**Cardinality.** 1..n rows per creditorId.
-
-**When to fill.** Always -- every application needs at least one taxed income.
-
-| # | Field | Requiredness | Type / Allowed values | Description |
-| --- | --- | --- | --- | --- |
-| 1 | `creditorId` | Required | Text (identifier used to link the sheets; any unique value) | Foreign key. Must match an id value on the '1 Creditors Natural' or '2 Creditors Juridical' sheet (whichever this creditor is a natural or juridical person). |
-| 2 | `incomeId` | Required | Integer | Sequence number of the income, starting with 1 (KaFE's own ErtragId). Also serves, together with creditorId, as the linking key referenced by the '5 Investment Chain' and '6 Transaction Data' sheets. |
-| 3 | `CertificateOfResidenceId` | Required | Text (identifier used to link the sheets; any unique value) | Foreign key. Must match an id value on the '3 Certificates Of Residence' sheet -- identifies which certificate of residence supports this income. |
-| 4 | `CapitalIncome` | Required | Enum [`KapitalertragArt`](#kapitalertragart): `DIVIDENDEN`, `AUSSCH_KAPG`, `GENUSSR_ML`, `GENUSSR_OL`, `WANDELANL`, `LEBENSVERS`, `EINN_STILLG`, `PART_DARL`, `GEWINNOBL`, `GRENZKW`, `SONSTIGE` | Type of capital income |
-| 5 | `Stocks_ConvertibleBonds/ISIN` | Optional | ISIN (12-digit) | ISIN (12-digit) |
-| 6 | `Stocks_ConvertibleBonds/NumberOfShares` | Optional | Decimal (4 decimals) | Number of shares/bonds |
-| 7 | `SubstantialHolding/IsSubstantial` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Is it a substential holding (at least 10 %)? |
-| 8 | `SubstantialHolding/Ownership` | Optional | Decimal (4 decimals) | Size of the ownership interest (in %) |
-| 9 | `SubstantialHolding/HoldingPeriod18M` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Has the investment been held for a period of at least 18 months? |
-| 10 | `SubstantialHolding/HoldingPeriod12M` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Has the investment been held for a period of at least one year? |
-| 11 | `SubstantialHolding/HoldingPeriod6M` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Has the investment been held for a period of at least 6 months? |
-| 12 | `IndirectHolding/IndirectHolding` | Required | Enum [`Boolean`](#boolean): `true`, `false` | Is it a joint deposit/account or another form of indirect holding? |
-| 13 | `IndirectHolding/CompanyOfSpouses` | Optional | Enum [`Boolean`](#boolean): `true`, `false` |  |
-| 14 | `IndirectHolding/SizeOfIndirectHolding` | Required | Decimal (4 decimals) | Size of the indirect holding (in %) |
-| 15 | `Debtor/Name` | Required | Text (max 256) | Debtor of the capital income / distributing company |
-| 16 | `Debtor/TaxNumber` | Optional | Text (max 13) | Tax number |
-| 17 | `NonResidency_DE` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Was the person with limited tax liability a resident of the specified country of residence at the time of
-						the inflow and did not have its registered office or place of management in Germany at that time? |
-| 18 | `DateOfReceiptOfCapitalIncome` | Required | Date (YYYY-MM-DD) | Date of receipt of capital income |
-| 19 | `GrossIncomeFromCapitalReceived` | Required | Decimal (2 decimals) | Gross income from capital received (in Euro) |
-| 20 | `Withheld_Taxes` | Required | Decimal (2 decimals) | Withheld German capital income tax (in Euro) |
-| 21 | `Requested_Refund` | Optional | Decimal | The refund amount being claimed for this income (informational; BZSt itself computes the actual refund from the withheld tax and the applicable treaty/statutory rate -- this is not a real KaFE XSD field). |
-| 22 | `DocumentDescription` | Required | Text (max 120) | Short description of the file content (e.g. certificate of residence). |
-| 23 | `DocumentProof/TaxCertificateNumber` | Optional | UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx) | Serial number |
-| 24 | `Hidden_ProfitDistribution/ConstructiveDividend` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Does it concern a constructive dividend? |
-| 25 | `Economic_Ownership/Ownership_and_Right_To_Use` | Required | Enum [`Boolean`](#boolean): `true`, `false` | Did the person with limited tax liability hold the beneficial ownership (right to use the income) at the
-						time of the inflow? |
-| 26 | `TaxExemption` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Was the person with limited tax liability fully (or partially) exempt from tax in the specified country of
-						residence at the time of the inflow? |
-| 27 | `LifeInsurancePolicyNumber` | Optional | Text (max 40) | Policy number of the life insurance |
-| 28 | `Depositary_Receipts/Is_DR` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Are they depositary receipts? e.g. American Depositary Receipts (ADR). |
-| 29 | `Depositary_Receipts/ISIN_DR` | Optional | ISIN (12-digit) | ISIN of the underlying (12-digit) |
-| 30 | `RemittanceBase/IsSubject` | Required | Enum [`Boolean`](#boolean): `true`, `false` | Werden die Erträge im angegebenen Ansässigkeitsstaat nur dann der Besteuerung unterworfen, wenn sie dorthin
-						überwiesen oder dort bezogen worden sind (Überweisungsklausel)? |
-| 31 | `RemittanceBase/Amount` | Optional | Decimal (2 decimals) | Betrag, der in den Ansässigkeitsstaat überwiesen oder dort bezogen wurde. |
-| 32 | `Business_Establishment/Business_Establishment_DE` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Has the capital income distributed to a permanent establishment / fixed entity located in Germany of the
-						person subject to limited taxation? |
-| 33 | `UnlimitedForeignCorporateTaxLiability` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Was the person with limited tax liability subject to unlimited corporate
-						income tax liability or a comparable tax liability in their country of residence without any option to choose? |
-| 34 | `CreditAmount` | Optional | Decimal (2 decimals) | To what extent was the German capital gains tax credited in full or in
-						part against taxation in the country of residence or deducted from the tax base, or is it possible
-						to carry this forward to future tax periods (tax credit carryforward)? |
-| 35 | `Questions_for_50j/HoldingPeriod/HoldingMore45D` | Conditional | Decimal (4 decimals) | Anzahl der Anteile, die innerhalb des Mindesthaltezeitraums an mindestens 45 Tagen ohne Unterbrechung
-						gehalten wurden (§ 50j Absatz 4 Satz 2 EStG). |
-| 36 | `Questions_for_50j/HoldingPeriod/HoldingMore1Y` | Conditional | Decimal (4 decimals) | Davon Anzahl der Anteile, die im Zeitpunkt des Zuflusses mindestens ein Jahr ohne Unterbrechung gehalten
-						wurden (§ 50j Absatz 4 Satz 2 EStG). |
-| 37 | `Questions_for_50j/HoldingPeriod/HoldingLess45D` | Conditional | Decimal (4 decimals) | Anzahl der Anteile, die kürzer 45 Tage gehalten wurden. |
-| 38 | `Questions_for_50j/HoldingPeriod/SharesPar50jEStG` | Conditional | Decimal (4 decimals) | Anzahl der Anteile im Sinne des § 50j EStG. |
-| 39 | `Questions_for_50j/MinValueChangeRisk/OpposingClaims` | Conditional | Enum [`Boolean`](#boolean): `true`, `false` | Hatte die beschränkt steuerpflichtige Person oder eine ihr nahestehende Person während der Mindesthaltedauer
-						gegenläufige Ansprüche? |
-| 40 | `Questions_for_50j/MinValueChangeRisk/RiskMin70` | Conditional | Decimal (4 decimals) | Anzahl der Anteile, für die die beschränkt steuerpflichtige Person das Wertänderungsrisiko während der
-						Mindesthaltedauer zu mindestens 70% getragen hat. (Bezogen auf die Anteile im Sinne des § 50j EStG) |
-| 41 | `Questions_for_50j/MinValueChangeRisk/OtherOpposingClaims` | Conditional | Enum [`Boolean`](#boolean): `true`, `false` | Waren während der Mindesthaltedauer gegenläufige Ansprüche vorhanden, die nicht vollständig den Anteilen im
-						Sinne des § 50j EStG (Haltedauer mindestens 45 Tage, jedoch kürzer als 1 Jahr) zugeordnet waren? (Die Frage bezieht sich auf den
-						gesamten Bestand der Anteils- oder Genussscheingattung.) |
-| 42 | `Questions_for_50j/ForwardingObligation/ForwardingObligation` | Conditional | Enum [`Boolean`](#boolean): `true`, `false` | Lag eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der Kapitalerträge vor? |
-| 43 | `Questions_for_50j/ForwardingObligation/NumberOfShares` | Conditional | Decimal (4 decimals) | Anzahl der Anteile, für die eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der
-						Kapitalerträge vorlag. (Bezogen auf die Anteile im Sinne des § 50j EStG) |
-| 44 | `Questions_for_50j/ForwardingObligation/FurtherForwardingObligation` | Conditional | Enum [`Boolean`](#boolean): `true`, `false` | Lag eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der Kapitalerträge vor, die über die
-						Anteile im Sinne des § 50j EStG (Haltedauer mindestens 45 Tage, jedoch kürzer als 1 Jahr) hinausgeht? (Bezogen auf den gesamten Bestand
-						der Anteils- oder Genussscheingattung.) |
-| 45 | `Questions_for_50j/ReturnObligation/ReturnObligation` | Conditional | Enum [`Boolean`](#boolean): `true`, `false` | Lagen Rückgabeverpflichtungen ohne Dividendenberechtigung für mit Dividendenberechtigung erworbene Anteile
-						vor? (Bezogen auf den gesamten Bestand der Anteils- oder Genussscheingattung.) |
-| 46 | `Questions_for_50j/ReturnObligation/NumberOfShares` | Conditional | Decimal (4 decimals) | Anzahl der Anteile, für die eine Rückgabeverpflichtung ohne Dividendenberechtigung für mit
-						Dividendenberechtigung erworbene Anteile vorlag. |
-
-### 5 Investment Chain
-
-**Significance.** The chain of companies through which an indirect holding (MittelbareBeteiligung) is held: each link's organisation, legal form, ownership percentage, country of residence, tax number/TIN, and whether it is exclusively asset-managing.
-
-**Cardinality.** 0..n rows per (creditorId, incomeId) pair, ordered by SequenceNumber.
-
-**When to fill.** Only when the corresponding income's IndirectHolding/IndirectHolding = true.
-
-| # | Field | Requiredness | Type / Allowed values | Description |
-| --- | --- | --- | --- | --- |
-| 1 | `creditorId` | Required | Text (identifier used to link the sheets; any unique value) | Foreign key. Must match an id value on the '1 Creditors Natural' or '2 Creditors Juridical' sheet (whichever this creditor is a natural or juridical person). |
-| 2 | `incomeId` | Required | Text (identifier used to link the sheets; any unique value) | Foreign key. Must match an incomeId value on the '4 Income' sheet for this creditorId. |
-| 3 | `SequenceNumber` | Required | Integer | Sequence number of the holding. From the person subject of limited taxation to the debtor oft he capital income
-					/ distributing company, starting at 1. |
-| 4 | `OrganizationName` | Required | Text (max 256) | Company name |
-| 5 | `LegalForm` | Required | Text (max 80) | Legal form |
-| 6 | `Ownership` | Required | Decimal (4 decimals) | Size of the ownership in interest (in %) |
-| 7 | `Country` | Optional | Enum [`CountryISOAlpha2`](#countryisoalpha2): `AD`, `AE`, `AF`, `AG`, `AI`, `AL`, `AM`, `AO`, `AQ`, `AR`, `AS`, `AT`, `AU`, `AW`, `AX`, `AZ`, `BA`, `BB`, `BD`, `BE`, `BF`, `BG`, `BH`, `BI`, `BJ`, `BL`, `BM`, `BN`, `BO`, `BQ`, `BR`, `BS`, `BT`, `BV`, `BW`, `BY`, `BZ`, `CA`, `CC`, `CD`, `CF`, `CG`, `CH`, `CI`, `CK`, `CL`, `CM`, `CN`, `CO`, `CP`, `CR`, `CU`, `CV`, `CW`, `CX`, `CY`, `CZ`, `DE`, `DJ`, `DK`, `DM`, `DO`, `DZ`, `EC`, `EE`, `EG`, `EH`, `ER`, `ES`, `ET`, `FI`, `FJ`, `FK`, `FM`, `FO`, `FR`, `GA`, `GB`, `GD`, `GE`, `GF`, `GG`, `GH`, `GI`, `GL`, `GM`, `GN`, `GP`, `GQ`, `GR`, `GS`, `GT`, `GU`, `GW`, `GY`, `HK`, `HM`, `HN`, `HR`, `HT`, `HU`, `ID`, `IE`, `IL`, `IM`, `IN`, `IO`, `IQ`, `IR`, `IS`, `IT`, `JE`, `JM`, `JO`, `JP`, `KE`, `KG`, `KH`, `KI`, `KM`, `KN`, `KP`, `KR`, `KW`, `KY`, `KZ`, `LA`, `LB`, `LC`, `LI`, `LK`, `LR`, `LS`, `LT`, `LU`, `LV`, `LY`, `MA`, `MC`, `MD`, `ME`, `MF`, `MG`, `MH`, `MK`, `ML`, `MM`, `MN`, `MO`, `MP`, `MQ`, `MR`, `MS`, `MT`, `MU`, `MV`, `MW`, `MX`, `MY`, `MZ`, `NA`, `NC`, `NE`, `NF`, `NG`, `NI`, `NL`, `NO`, `NP`, `NR`, `NU`, `NZ`, `OM`, `PA`, `PE`, `PF`, `PG`, `PH`, `PK`, `PL`, `PM`, `PN`, `PR`, `PS`, `PT`, `PW`, `PY`, `QA`, `RE`, `RO`, `RS`, `RU`, `RW`, `SA`, `SB`, `SC`, `SD`, `SE`, `SG`, `SH`, `SI`, `SJ`, `SK`, `SL`, `SM`, `SN`, `SO`, `SR`, `SS`, `ST`, `SV`, `SX`, `SY`, `SZ`, `TC`, `TD`, `TF`, `TG`, `TH`, `TJ`, `TK`, `TL`, `TM`, `TN`, `TO`, `TR`, `TT`, `TV`, `TW`, `TZ`, `UA`, `UG`, `UM`, `US`, `UY`, `UZ`, `VA`, `VC`, `VE`, `VG`, `VI`, `VN`, `VU`, `WF`, `WS`, `XK`, `YE`, `YT`, `ZA`, `ZM`, `ZW` | Country of residence |
-| 8 | `GermanTaxNumber` | Optional | Text (max 13) | Tax number |
-| 9 | `TIN` | Optional | Text (max 40) | Foreign tax identification number |
-| 10 | `AssetManagement` | Required | Enum [`Boolean`](#boolean): `true`, `false` | Is the company exclusively engaged in asset management? |
-
-### 6 Transaction Data
-
-**Significance.** The per-depot transaction ledger required by section 50j German Income Tax Act: opening/closing balance (repeated per transaction row), each transaction's direction, business type, share count, trading day and settlement dates.
-
-**Cardinality.** 0..n rows per (creditorId, incomeId) pair, grouped by DepotNumber.
-
-**When to fill.** Only when the corresponding income's Par50jEStG block applies.
-
-| # | Field | Requiredness | Type / Allowed values | Description |
-| --- | --- | --- | --- | --- |
-| 1 | `creditorId` | Required | Text (identifier used to link the sheets; any unique value) | Foreign key. Must match an id value on the '1 Creditors Natural' or '2 Creditors Juridical' sheet (whichever this creditor is a natural or juridical person). |
-| 2 | `incomeId` | Required | Text (identifier used to link the sheets; any unique value) | Foreign key. Must match an incomeId value on the '4 Income' sheet for this creditorId. |
-| 3 | `TransactionNumber` | Required | Integer | Sequence number of the transaction, starting with 1 |
-| 4 | `DepotNumber` | Required | Text (max 40) | Account / deposit number |
-| 5 | `Depot/OpeningBalance` | Required | Decimal (4 decimals) | Opening balance (number of shares) |
-| 6 | `Depot/DateOfOpeningBalance` | Required | Date (YYYY-MM-DD) | Date of the specified opening balance |
-| 7 | `Depot/ClosingBalance` | Required | Decimal (4 decimals) | Closing balance two months after the inflow date (number of shares) |
-| 8 | `Depot/DateOfClosingBalance` | Required | Date (YYYY-MM-DD) | Date of the specified closing balance |
-| 9 | `TransactionDirection` | Required | Enum [`TransaktionArt`](#transaktionart): `ZUGANG`, `ABGANG` | Inflow / Outflow |
-| 10 | `TradingDay` | Required | Date (YYYY-MM-DD) | Trading day |
-| 11 | `TransactionType` | Required | Enum [`TransaktionGeschaeft`](#transaktiongeschaeft): `PO`, `SO`, `TL`, `RL`, `TP`, `RP` | Transaction |
-| 12 | `NumberOfShares` | Required | Decimal (4 decimals) | Number of shares |
-| 13 | `AgreedSettlementDate` | Required | Date (YYYY-MM-DD) | Agreed settlement date |
-| 14 | `ActualSettlementDate` | Required | Date (YYYY-MM-DD) | Actual settlement date |
 
 ### 1 Creditors Natural
 
@@ -489,6 +349,146 @@ Every data sheet has four header rows; data entry begins on row 5.
 						does it conform to the provisions on the requirements for tax privileges contained in the statutes? |
 | 131 | `TaxPrivileges/ConstitutionLoyalty` | Required | Enum [`Boolean`](#boolean): `true`, `false` | Does the person with limited tax liability advance efforts directed against the liberal democratic basic
 						order (freiheitliche demokratische Grundordnung) or against the existence or security of the Federal Republic of Germany or its Länder? |
+
+### 3 Certificates Of Residence
+
+**Significance.** One row per certificate of residence (Ansässigkeitsbescheinigung): issuing authority, issue date and validity period.
+
+**Cardinality.** 0..n rows per creditorId.
+
+**When to fill.** Whenever an income on the Income sheet references it via CertificateOfResidenceId.
+
+| # | Field | Requiredness | Type / Allowed values | Description |
+| --- | --- | --- | --- | --- |
+| 1 | `creditorId` | Required | Text (identifier used to link the sheets; any unique value) | Foreign key. Must match an id value on the '1 Creditors Natural' or '2 Creditors Juridical' sheet (whichever this creditor is a natural or juridical person). |
+| 2 | `id` | Required | Text (identifier used to link the sheets; any unique value) | Identifier for this certificate of residence, defined by you. Referenced by the CertificateOfResidenceId column on the Income sheet. |
+| 3 | `Issuer` | Required | Text (max 80) | Issuing authority |
+| 4 | `IssuedAt` | Required | Date (YYYY-MM-DD) | Date of issue |
+| 5 | `ValidFrom` | Required | Date (YYYY-MM-DD) | Valid from |
+| 6 | `ValidUntil` | Required | Date (YYYY-MM-DD) | Valid until |
+
+### 4 Income
+
+**Significance.** One row per taxed capital income event: type of income, security identification, the debtor, the amount and date of inflow, the tax certificate/other-document details, the beneficial-ownership and residency questions, the indirect-holding and substantial-holding questions, the remittance-base clause, and (where section 50j German Income Tax Act applies) the Par50jEStG holding-period / risk / forwarding / return-obligation block.
+
+**Cardinality.** 1..n rows per creditorId.
+
+**When to fill.** Always -- every application needs at least one taxed income.
+
+| # | Field | Requiredness | Type / Allowed values | Description |
+| --- | --- | --- | --- | --- |
+| 1 | `creditorId` | Required | Text (identifier used to link the sheets; any unique value) | Foreign key. Must match an id value on the '1 Creditors Natural' or '2 Creditors Juridical' sheet (whichever this creditor is a natural or juridical person). |
+| 2 | `incomeId` | Required | Integer | Sequence number of the income, starting with 1 (KaFE's own ErtragId). Also serves, together with creditorId, as the linking key referenced by the '5 Investment Chain' and '6 Transaction Data' sheets. |
+| 3 | `CertificateOfResidenceId` | Required | Text (identifier used to link the sheets; any unique value) | Foreign key. Must match an id value on the '3 Certificates Of Residence' sheet -- identifies which certificate of residence supports this income. |
+| 4 | `CapitalIncome` | Required | Enum [`KapitalertragArt`](#kapitalertragart): `DIVIDENDEN`, `AUSSCH_KAPG`, `GENUSSR_ML`, `GENUSSR_OL`, `WANDELANL`, `LEBENSVERS`, `EINN_STILLG`, `PART_DARL`, `GEWINNOBL`, `GRENZKW`, `SONSTIGE` | Type of capital income |
+| 5 | `Stocks_ConvertibleBonds/ISIN` | Optional | ISIN (12-digit) | ISIN (12-digit) |
+| 6 | `Stocks_ConvertibleBonds/NumberOfShares` | Optional | Decimal (4 decimals) | Number of shares/bonds |
+| 7 | `SubstantialHolding/IsSubstantial` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Is it a substential holding (at least 10 %)? |
+| 8 | `SubstantialHolding/Ownership` | Optional | Decimal (4 decimals) | Size of the ownership interest (in %) |
+| 9 | `SubstantialHolding/HoldingPeriod18M` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Has the investment been held for a period of at least 18 months? |
+| 10 | `SubstantialHolding/HoldingPeriod12M` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Has the investment been held for a period of at least one year? |
+| 11 | `SubstantialHolding/HoldingPeriod6M` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Has the investment been held for a period of at least 6 months? |
+| 12 | `IndirectHolding/IndirectHolding` | Required | Enum [`Boolean`](#boolean): `true`, `false` | Is it a joint deposit/account or another form of indirect holding? |
+| 13 | `IndirectHolding/CompanyOfSpouses` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Handelt es sich um eine Gesellschaft von Ehegatten, die jeweils zu 50% beteiligt sind? |
+| 14 | `IndirectHolding/SizeOfIndirectHolding` | Required | Decimal (4 decimals) | Size of the indirect holding (in %) |
+| 15 | `Debtor/Name` | Required | Text (max 256) | Debtor of the capital income / distributing company |
+| 16 | `Debtor/TaxNumber` | Optional | Text (max 13) | Tax number |
+| 17 | `NonResidency_DE` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Was the person with limited tax liability a resident of the specified country of residence at the time of
+						the inflow and did not have its registered office or place of management in Germany at that time? |
+| 18 | `DateOfReceiptOfCapitalIncome` | Required | Date (YYYY-MM-DD) | Date of receipt of capital income |
+| 19 | `GrossIncomeFromCapitalReceived` | Required | Decimal (2 decimals) | Gross income from capital received (in Euro) |
+| 20 | `Withheld_Taxes` | Required | Decimal (2 decimals) | Withheld German capital income tax (in Euro) |
+| 21 | `Requested_Refund` | Optional | Decimal | The refund amount being claimed for this income (informational; BZSt itself computes the actual refund from the withheld tax and the applicable treaty/statutory rate -- this is not a real KaFE XSD field). |
+| 22 | `DocumentDescription` | Required | Text (max 120) | Short description of the file content (e.g. certificate of residence). |
+| 23 | `DocumentProof/TaxCertificateNumber` | Optional | UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx) | Serial number |
+| 24 | `Hidden_ProfitDistribution/ConstructiveDividend` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Does it concern a constructive dividend? |
+| 25 | `Economic_Ownership/Ownership_and_Right_To_Use` | Required | Enum [`Boolean`](#boolean): `true`, `false` | Did the person with limited tax liability hold the beneficial ownership (right to use the income) at the
+						time of the inflow? |
+| 26 | `TaxExemption` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Was the person with limited tax liability fully (or partially) exempt from tax in the specified country of
+						residence at the time of the inflow? |
+| 27 | `LifeInsurancePolicyNumber` | Optional | Text (max 40) | Policy number of the life insurance |
+| 28 | `Depositary_Receipts/Is_DR` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Are they depositary receipts? e.g. American Depositary Receipts (ADR). |
+| 29 | `Depositary_Receipts/ISIN_DR` | Optional | ISIN (12-digit) | ISIN of the underlying (12-digit) |
+| 30 | `RemittanceBase/IsSubject` | Required | Enum [`Boolean`](#boolean): `true`, `false` | Werden die Erträge im angegebenen Ansässigkeitsstaat nur dann der Besteuerung unterworfen, wenn sie dorthin
+						überwiesen oder dort bezogen worden sind (Überweisungsklausel)? |
+| 31 | `RemittanceBase/Amount` | Optional | Decimal (2 decimals) | Betrag, der in den Ansässigkeitsstaat überwiesen oder dort bezogen wurde. |
+| 32 | `Business_Establishment/Business_Establishment_DE` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Has the capital income distributed to a permanent establishment / fixed entity located in Germany of the
+						person subject to limited taxation? |
+| 33 | `UnlimitedForeignCorporateTaxLiability` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Was the person with limited tax liability subject to unlimited corporate
+						income tax liability or a comparable tax liability in their country of residence without any option to choose? |
+| 34 | `CreditAmount` | Optional | Decimal (2 decimals) | To what extent was the German capital gains tax credited in full or in
+						part against taxation in the country of residence or deducted from the tax base, or is it possible
+						to carry this forward to future tax periods (tax credit carryforward)? |
+| 35 | `Questions_for_50j/HoldingPeriod/HoldingMore45D` | Conditional | Decimal (4 decimals) | Anzahl der Anteile, die innerhalb des Mindesthaltezeitraums an mindestens 45 Tagen ohne Unterbrechung
+						gehalten wurden (§ 50j Absatz 4 Satz 2 EStG). |
+| 36 | `Questions_for_50j/HoldingPeriod/HoldingMore1Y` | Conditional | Decimal (4 decimals) | Davon Anzahl der Anteile, die im Zeitpunkt des Zuflusses mindestens ein Jahr ohne Unterbrechung gehalten
+						wurden (§ 50j Absatz 4 Satz 2 EStG). |
+| 37 | `Questions_for_50j/HoldingPeriod/HoldingLess45D` | Conditional | Decimal (4 decimals) | Anzahl der Anteile, die kürzer 45 Tage gehalten wurden. |
+| 38 | `Questions_for_50j/HoldingPeriod/SharesPar50jEStG` | Conditional | Decimal (4 decimals) | Anzahl der Anteile im Sinne des § 50j EStG. |
+| 39 | `Questions_for_50j/MinValueChangeRisk/OpposingClaims` | Conditional | Enum [`Boolean`](#boolean): `true`, `false` | Hatte die beschränkt steuerpflichtige Person oder eine ihr nahestehende Person während der Mindesthaltedauer
+						gegenläufige Ansprüche? |
+| 40 | `Questions_for_50j/MinValueChangeRisk/RiskMin70` | Conditional | Decimal (4 decimals) | Anzahl der Anteile, für die die beschränkt steuerpflichtige Person das Wertänderungsrisiko während der
+						Mindesthaltedauer zu mindestens 70% getragen hat. (Bezogen auf die Anteile im Sinne des § 50j EStG) |
+| 41 | `Questions_for_50j/MinValueChangeRisk/OtherOpposingClaims` | Conditional | Enum [`Boolean`](#boolean): `true`, `false` | Waren während der Mindesthaltedauer gegenläufige Ansprüche vorhanden, die nicht vollständig den Anteilen im
+						Sinne des § 50j EStG (Haltedauer mindestens 45 Tage, jedoch kürzer als 1 Jahr) zugeordnet waren? (Die Frage bezieht sich auf den
+						gesamten Bestand der Anteils- oder Genussscheingattung.) |
+| 42 | `Questions_for_50j/ForwardingObligation/ForwardingObligation` | Conditional | Enum [`Boolean`](#boolean): `true`, `false` | Lag eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der Kapitalerträge vor? |
+| 43 | `Questions_for_50j/ForwardingObligation/NumberOfShares` | Conditional | Decimal (4 decimals) | Anzahl der Anteile, für die eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der
+						Kapitalerträge vorlag. (Bezogen auf die Anteile im Sinne des § 50j EStG) |
+| 44 | `Questions_for_50j/ForwardingObligation/FurtherForwardingObligation` | Conditional | Enum [`Boolean`](#boolean): `true`, `false` | Lag eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der Kapitalerträge vor, die über die
+						Anteile im Sinne des § 50j EStG (Haltedauer mindestens 45 Tage, jedoch kürzer als 1 Jahr) hinausgeht? (Bezogen auf den gesamten Bestand
+						der Anteils- oder Genussscheingattung.) |
+| 45 | `Questions_for_50j/ReturnObligation/ReturnObligation` | Conditional | Enum [`Boolean`](#boolean): `true`, `false` | Lagen Rückgabeverpflichtungen ohne Dividendenberechtigung für mit Dividendenberechtigung erworbene Anteile
+						vor? (Bezogen auf den gesamten Bestand der Anteils- oder Genussscheingattung.) |
+| 46 | `Questions_for_50j/ReturnObligation/NumberOfShares` | Conditional | Decimal (4 decimals) | Anzahl der Anteile, für die eine Rückgabeverpflichtung ohne Dividendenberechtigung für mit
+						Dividendenberechtigung erworbene Anteile vorlag. |
+
+### 5 Investment Chain
+
+**Significance.** The chain of companies through which an indirect holding (MittelbareBeteiligung) is held: each link's organisation, legal form, ownership percentage, country of residence, tax number/TIN, and whether it is exclusively asset-managing.
+
+**Cardinality.** 0..n rows per (creditorId, incomeId) pair, ordered by SequenceNumber.
+
+**When to fill.** Only when the corresponding income's IndirectHolding/IndirectHolding = true.
+
+| # | Field | Requiredness | Type / Allowed values | Description |
+| --- | --- | --- | --- | --- |
+| 1 | `creditorId` | Required | Text (identifier used to link the sheets; any unique value) | Foreign key. Must match an id value on the '1 Creditors Natural' or '2 Creditors Juridical' sheet (whichever this creditor is a natural or juridical person). |
+| 2 | `incomeId` | Required | Text (identifier used to link the sheets; any unique value) | Foreign key. Must match an incomeId value on the '4 Income' sheet for this creditorId. |
+| 3 | `SequenceNumber` | Required | Integer | Sequence number of the holding. From the person subject of limited taxation to the debtor oft he capital income
+					/ distributing company, starting at 1. |
+| 4 | `OrganizationName` | Required | Text (max 256) | Company name |
+| 5 | `LegalForm` | Required | Text (max 80) | Legal form |
+| 6 | `Ownership` | Required | Decimal (4 decimals) | Size of the ownership in interest (in %) |
+| 7 | `Country` | Optional | Enum [`CountryISOAlpha2`](#countryisoalpha2): `AD`, `AE`, `AF`, `AG`, `AI`, `AL`, `AM`, `AO`, `AQ`, `AR`, `AS`, `AT`, `AU`, `AW`, `AX`, `AZ`, `BA`, `BB`, `BD`, `BE`, `BF`, `BG`, `BH`, `BI`, `BJ`, `BL`, `BM`, `BN`, `BO`, `BQ`, `BR`, `BS`, `BT`, `BV`, `BW`, `BY`, `BZ`, `CA`, `CC`, `CD`, `CF`, `CG`, `CH`, `CI`, `CK`, `CL`, `CM`, `CN`, `CO`, `CP`, `CR`, `CU`, `CV`, `CW`, `CX`, `CY`, `CZ`, `DE`, `DJ`, `DK`, `DM`, `DO`, `DZ`, `EC`, `EE`, `EG`, `EH`, `ER`, `ES`, `ET`, `FI`, `FJ`, `FK`, `FM`, `FO`, `FR`, `GA`, `GB`, `GD`, `GE`, `GF`, `GG`, `GH`, `GI`, `GL`, `GM`, `GN`, `GP`, `GQ`, `GR`, `GS`, `GT`, `GU`, `GW`, `GY`, `HK`, `HM`, `HN`, `HR`, `HT`, `HU`, `ID`, `IE`, `IL`, `IM`, `IN`, `IO`, `IQ`, `IR`, `IS`, `IT`, `JE`, `JM`, `JO`, `JP`, `KE`, `KG`, `KH`, `KI`, `KM`, `KN`, `KP`, `KR`, `KW`, `KY`, `KZ`, `LA`, `LB`, `LC`, `LI`, `LK`, `LR`, `LS`, `LT`, `LU`, `LV`, `LY`, `MA`, `MC`, `MD`, `ME`, `MF`, `MG`, `MH`, `MK`, `ML`, `MM`, `MN`, `MO`, `MP`, `MQ`, `MR`, `MS`, `MT`, `MU`, `MV`, `MW`, `MX`, `MY`, `MZ`, `NA`, `NC`, `NE`, `NF`, `NG`, `NI`, `NL`, `NO`, `NP`, `NR`, `NU`, `NZ`, `OM`, `PA`, `PE`, `PF`, `PG`, `PH`, `PK`, `PL`, `PM`, `PN`, `PR`, `PS`, `PT`, `PW`, `PY`, `QA`, `RE`, `RO`, `RS`, `RU`, `RW`, `SA`, `SB`, `SC`, `SD`, `SE`, `SG`, `SH`, `SI`, `SJ`, `SK`, `SL`, `SM`, `SN`, `SO`, `SR`, `SS`, `ST`, `SV`, `SX`, `SY`, `SZ`, `TC`, `TD`, `TF`, `TG`, `TH`, `TJ`, `TK`, `TL`, `TM`, `TN`, `TO`, `TR`, `TT`, `TV`, `TW`, `TZ`, `UA`, `UG`, `UM`, `US`, `UY`, `UZ`, `VA`, `VC`, `VE`, `VG`, `VI`, `VN`, `VU`, `WF`, `WS`, `XK`, `YE`, `YT`, `ZA`, `ZM`, `ZW` | Country of residence |
+| 8 | `GermanTaxNumber` | Optional | Text (max 13) | Tax number |
+| 9 | `TIN` | Optional | Text (max 40) | Foreign tax identification number |
+| 10 | `AssetManagement` | Required | Enum [`Boolean`](#boolean): `true`, `false` | Is the company exclusively engaged in asset management? |
+
+### 6 Transaction Data
+
+**Significance.** The per-depot transaction ledger required by section 50j German Income Tax Act: opening/closing balance (repeated per transaction row), each transaction's direction, business type, share count, trading day and settlement dates.
+
+**Cardinality.** 0..n rows per (creditorId, incomeId) pair, grouped by DepotNumber.
+
+**When to fill.** Only when the corresponding income's Par50jEStG block applies.
+
+| # | Field | Requiredness | Type / Allowed values | Description |
+| --- | --- | --- | --- | --- |
+| 1 | `creditorId` | Required | Text (identifier used to link the sheets; any unique value) | Foreign key. Must match an id value on the '1 Creditors Natural' or '2 Creditors Juridical' sheet (whichever this creditor is a natural or juridical person). |
+| 2 | `incomeId` | Required | Text (identifier used to link the sheets; any unique value) | Foreign key. Must match an incomeId value on the '4 Income' sheet for this creditorId. |
+| 3 | `TransactionNumber` | Required | Integer | Sequence number of the transaction, starting with 1 |
+| 4 | `DepotNumber` | Required | Text (max 40) | Account / deposit number |
+| 5 | `Depot/OpeningBalance` | Required | Decimal (4 decimals) | Opening balance (number of shares) |
+| 6 | `Depot/DateOfOpeningBalance` | Required | Date (YYYY-MM-DD) | Date of the specified opening balance |
+| 7 | `Depot/ClosingBalance` | Required | Decimal (4 decimals) | Closing balance two months after the inflow date (number of shares) |
+| 8 | `Depot/DateOfClosingBalance` | Required | Date (YYYY-MM-DD) | Date of the specified closing balance |
+| 9 | `TransactionDirection` | Required | Enum [`TransaktionArt`](#transaktionart): `ZUGANG`, `ABGANG` | Inflow / Outflow |
+| 10 | `TradingDay` | Required | Date (YYYY-MM-DD) | Trading day |
+| 11 | `TransactionType` | Required | Enum [`TransaktionGeschaeft`](#transaktiongeschaeft): `PO`, `SO`, `TL`, `RL`, `TP`, `RP` | Transaction |
+| 12 | `NumberOfShares` | Required | Decimal (4 decimals) | Number of shares |
+| 13 | `AgreedSettlementDate` | Required | Date (YYYY-MM-DD) | Agreed settlement date |
+| 14 | `ActualSettlementDate` | Required | Date (YYYY-MM-DD) | Actual settlement date |
 
 ## Enumerations reference
 

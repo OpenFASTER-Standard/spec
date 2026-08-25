@@ -4,179 +4,7 @@
 
 <p>The following field-level definitions are generated from <code>kafe.xsd</code>. Each group below corresponds to one sheet of the accompanying Excel template. The <code>creditorId</code> column links the groups of a single disclosure together.</p>
 
-<h3 id="sheet-3-certificates-of-residence">3 Certificates Of Residence</h3>
-
-<p><b>Significance.</b> One row per certificate of residence (Ansässigkeitsbescheinigung): issuing authority, issue date and validity period.</p>
-<p><b>Cardinality.</b> 0..n rows per creditorId.</p>
-<p><b>When to fill.</b> Whenever an income on the Income sheet references it via CertificateOfResidenceId.</p>
-
-<table class="complex data longlastcol dictionary">
-  <colgroup>
-    <col style="width:7%">
-    <col style="width:12%">
-    <col style="width:12%">
-    <col style="width:20%">
-    <col style="width:49%">
-  </colgroup>
-  <thead><tr><th class="col-num">#<th>Field<th class="col-req">Requiredness<th>Type / Allowed values<th>Description</tr></thead>
-  <tbody>
-    <tr><td class="col-num">1<td><code>creditorId</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match an id value on the '1 Creditors Natural' or '2 Creditors Juridical' sheet (whichever this creditor is a natural or juridical person).</tr>
-    <tr><td class="col-num">2<td><code>id</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Identifier for this certificate of residence, defined by you. Referenced by the CertificateOfResidenceId column on the Income sheet.</tr>
-    <tr><td class="col-num">3<td><code>Issuer</code><td class="col-req">Required<td>Text (max 80)<td class="long">Issuing authority</tr>
-    <tr><td class="col-num">4<td><code>IssuedAt</code><td class="col-req">Required<td>Date (YYYY-MM-DD)<td class="long">Date of issue</tr>
-    <tr><td class="col-num">5<td><code>ValidFrom</code><td class="col-req">Required<td>Date (YYYY-MM-DD)<td class="long">Valid from</tr>
-    <tr><td class="col-num">6<td><code>ValidUntil</code><td class="col-req">Required<td>Date (YYYY-MM-DD)<td class="long">Valid until</tr>
-  </tbody>
-</table>
-
-<h3 id="sheet-4-income">4 Income</h3>
-
-<p><b>Significance.</b> One row per taxed capital income event: type of income, security identification, the debtor, the amount and date of inflow, the tax certificate/other-document details, the beneficial-ownership and residency questions, the indirect-holding and substantial-holding questions, the remittance-base clause, and (where section 50j German Income Tax Act applies) the Par50jEStG holding-period / risk / forwarding / return-obligation block.</p>
-<p><b>Cardinality.</b> 1..n rows per creditorId.</p>
-<p><b>When to fill.</b> Always -- every application needs at least one taxed income.</p>
-
-<table class="complex data longlastcol dictionary">
-  <colgroup>
-    <col style="width:7%">
-    <col style="width:12%">
-    <col style="width:12%">
-    <col style="width:20%">
-    <col style="width:49%">
-  </colgroup>
-  <thead><tr><th class="col-num">#<th>Field<th class="col-req">Requiredness<th>Type / Allowed values<th>Description</tr></thead>
-  <tbody>
-    <tr><td class="col-num">1<td><code>creditorId</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match an id value on the '1 Creditors Natural' or '2 Creditors Juridical' sheet (whichever this creditor is a natural or juridical person).</tr>
-    <tr><td class="col-num">2<td><code>incomeId</code><td class="col-req">Required<td>Integer<td class="long">Sequence number of the income, starting with 1 (KaFE's own ErtragId). Also serves, together with creditorId, as the linking key referenced by the '5 Investment Chain' and '6 Transaction Data' sheets.</tr>
-    <tr><td class="col-num">3<td><code>CertificateOfResidenceId</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match an id value on the '3 Certificates Of Residence' sheet -- identifies which certificate of residence supports this income.</tr>
-    <tr><td class="col-num">4<td><code>CapitalIncome</code><td class="col-req">Required<td>Enum (<a href="#enum-kapitalertragart">KapitalertragArt</a>): <code>DIVIDENDEN</code>, <code>AUSSCH_KAPG</code>, <code>GENUSSR_ML</code>, <code>GENUSSR_OL</code>, <code>WANDELANL</code>, <code>LEBENSVERS</code>, <code>EINN_STILLG</code>, <code>PART_DARL</code>, <code>GEWINNOBL</code>, <code>GRENZKW</code>, <code>SONSTIGE</code><td class="long">Type of capital income</tr>
-    <tr><td class="col-num">5<td><code>Stocks_ConvertibleBonds/ISIN</code><td class="col-req">Optional<td>ISIN (12-digit)<td class="long">ISIN (12-digit)</tr>
-    <tr><td class="col-num">6<td><code>Stocks_ConvertibleBonds/NumberOfShares</code><td class="col-req">Optional<td>Decimal (4 decimals)<td class="long">Number of shares/bonds</tr>
-    <tr><td class="col-num">7<td><code>SubstantialHolding/IsSubstantial</code><td class="col-req">Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Is it a substential holding (at least 10 %)?</tr>
-    <tr><td class="col-num">8<td><code>SubstantialHolding/Ownership</code><td class="col-req">Optional<td>Decimal (4 decimals)<td class="long">Size of the ownership interest (in %)</tr>
-    <tr><td class="col-num">9<td><code>SubstantialHolding/HoldingPeriod18M</code><td class="col-req">Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Has the investment been held for a period of at least 18 months?</tr>
-    <tr><td class="col-num">10<td><code>SubstantialHolding/HoldingPeriod12M</code><td class="col-req">Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Has the investment been held for a period of at least one year?</tr>
-    <tr><td class="col-num">11<td><code>SubstantialHolding/HoldingPeriod6M</code><td class="col-req">Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Has the investment been held for a period of at least 6 months?</tr>
-    <tr><td class="col-num">12<td><code>IndirectHolding/IndirectHolding</code><td class="col-req">Required<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Is it a joint deposit/account or another form of indirect holding?</tr>
-    <tr><td class="col-num">13<td><code>IndirectHolding/CompanyOfSpouses</code><td class="col-req">Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long"></tr>
-    <tr><td class="col-num">14<td><code>IndirectHolding/SizeOfIndirectHolding</code><td class="col-req">Required<td>Decimal (4 decimals)<td class="long">Size of the indirect holding (in %)</tr>
-    <tr><td class="col-num">15<td><code>Debtor/Name</code><td class="col-req">Required<td>Text (max 256)<td class="long">Debtor of the capital income / distributing company</tr>
-    <tr><td class="col-num">16<td><code>Debtor/TaxNumber</code><td class="col-req">Optional<td>Text (max 13)<td class="long">Tax number</tr>
-    <tr><td class="col-num">17<td><code>NonResidency_DE</code><td class="col-req">Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Was the person with limited tax liability a resident of the specified country of residence at the time of
-						the inflow and did not have its registered office or place of management in Germany at that time?</tr>
-    <tr><td class="col-num">18<td><code>DateOfReceiptOfCapitalIncome</code><td class="col-req">Required<td>Date (YYYY-MM-DD)<td class="long">Date of receipt of capital income</tr>
-    <tr><td class="col-num">19<td><code>GrossIncomeFromCapitalReceived</code><td class="col-req">Required<td>Decimal (2 decimals)<td class="long">Gross income from capital received (in Euro)</tr>
-    <tr><td class="col-num">20<td><code>Withheld_Taxes</code><td class="col-req">Required<td>Decimal (2 decimals)<td class="long">Withheld German capital income tax (in Euro)</tr>
-    <tr><td class="col-num">21<td><code>Requested_Refund</code><td class="col-req">Optional<td>Decimal<td class="long">The refund amount being claimed for this income (informational; BZSt itself computes the actual refund from the withheld tax and the applicable treaty/statutory rate -- this is not a real KaFE XSD field).</tr>
-    <tr><td class="col-num">22<td><code>DocumentDescription</code><td class="col-req">Required<td>Text (max 120)<td class="long">Short description of the file content (e.g. certificate of residence).</tr>
-    <tr><td class="col-num">23<td><code>DocumentProof/TaxCertificateNumber</code><td class="col-req">Optional<td>UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)<td class="long">Serial number</tr>
-    <tr><td class="col-num">24<td><code>Hidden_ProfitDistribution/ConstructiveDividend</code><td class="col-req">Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Does it concern a constructive dividend?</tr>
-    <tr><td class="col-num">25<td><code>Economic_Ownership/Ownership_and_Right_To_Use</code><td class="col-req">Required<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Did the person with limited tax liability hold the beneficial ownership (right to use the income) at the
-						time of the inflow?</tr>
-    <tr><td class="col-num">26<td><code>TaxExemption</code><td class="col-req">Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Was the person with limited tax liability fully (or partially) exempt from tax in the specified country of
-						residence at the time of the inflow?</tr>
-    <tr><td class="col-num">27<td><code>LifeInsurancePolicyNumber</code><td class="col-req">Optional<td>Text (max 40)<td class="long">Policy number of the life insurance</tr>
-    <tr><td class="col-num">28<td><code>Depositary_Receipts/Is_DR</code><td class="col-req">Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Are they depositary receipts? e.g. American Depositary Receipts (ADR).</tr>
-    <tr><td class="col-num">29<td><code>Depositary_Receipts/ISIN_DR</code><td class="col-req">Optional<td>ISIN (12-digit)<td class="long">ISIN of the underlying (12-digit)</tr>
-    <tr><td class="col-num">30<td><code>RemittanceBase/IsSubject</code><td class="col-req">Required<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Werden die Erträge im angegebenen Ansässigkeitsstaat nur dann der Besteuerung unterworfen, wenn sie dorthin
-						überwiesen oder dort bezogen worden sind (Überweisungsklausel)?</tr>
-    <tr><td class="col-num">31<td><code>RemittanceBase/Amount</code><td class="col-req">Optional<td>Decimal (2 decimals)<td class="long">Betrag, der in den Ansässigkeitsstaat überwiesen oder dort bezogen wurde.</tr>
-    <tr><td class="col-num">32<td><code>Business_Establishment/Business_Establishment_DE</code><td class="col-req">Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Has the capital income distributed to a permanent establishment / fixed entity located in Germany of the
-						person subject to limited taxation?</tr>
-    <tr><td class="col-num">33<td><code>UnlimitedForeignCorporateTaxLiability</code><td class="col-req">Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Was the person with limited tax liability subject to unlimited corporate
-						income tax liability or a comparable tax liability in their country of residence without any option to choose?</tr>
-    <tr><td class="col-num">34<td><code>CreditAmount</code><td class="col-req">Optional<td>Decimal (2 decimals)<td class="long">To what extent was the German capital gains tax credited in full or in
-						part against taxation in the country of residence or deducted from the tax base, or is it possible
-						to carry this forward to future tax periods (tax credit carryforward)?</tr>
-    <tr><td class="col-num">35<td><code>Questions_for_50j/HoldingPeriod/HoldingMore45D</code><td class="col-req">Conditional<td>Decimal (4 decimals)<td class="long">Anzahl der Anteile, die innerhalb des Mindesthaltezeitraums an mindestens 45 Tagen ohne Unterbrechung
-						gehalten wurden (§ 50j Absatz 4 Satz 2 EStG).</tr>
-    <tr><td class="col-num">36<td><code>Questions_for_50j/HoldingPeriod/HoldingMore1Y</code><td class="col-req">Conditional<td>Decimal (4 decimals)<td class="long">Davon Anzahl der Anteile, die im Zeitpunkt des Zuflusses mindestens ein Jahr ohne Unterbrechung gehalten
-						wurden (§ 50j Absatz 4 Satz 2 EStG).</tr>
-    <tr><td class="col-num">37<td><code>Questions_for_50j/HoldingPeriod/HoldingLess45D</code><td class="col-req">Conditional<td>Decimal (4 decimals)<td class="long">Anzahl der Anteile, die kürzer 45 Tage gehalten wurden.</tr>
-    <tr><td class="col-num">38<td><code>Questions_for_50j/HoldingPeriod/SharesPar50jEStG</code><td class="col-req">Conditional<td>Decimal (4 decimals)<td class="long">Anzahl der Anteile im Sinne des § 50j EStG.</tr>
-    <tr><td class="col-num">39<td><code>Questions_for_50j/MinValueChangeRisk/OpposingClaims</code><td class="col-req">Conditional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Hatte die beschränkt steuerpflichtige Person oder eine ihr nahestehende Person während der Mindesthaltedauer
-						gegenläufige Ansprüche?</tr>
-    <tr><td class="col-num">40<td><code>Questions_for_50j/MinValueChangeRisk/RiskMin70</code><td class="col-req">Conditional<td>Decimal (4 decimals)<td class="long">Anzahl der Anteile, für die die beschränkt steuerpflichtige Person das Wertänderungsrisiko während der
-						Mindesthaltedauer zu mindestens 70% getragen hat. (Bezogen auf die Anteile im Sinne des § 50j EStG)</tr>
-    <tr><td class="col-num">41<td><code>Questions_for_50j/MinValueChangeRisk/OtherOpposingClaims</code><td class="col-req">Conditional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Waren während der Mindesthaltedauer gegenläufige Ansprüche vorhanden, die nicht vollständig den Anteilen im
-						Sinne des § 50j EStG (Haltedauer mindestens 45 Tage, jedoch kürzer als 1 Jahr) zugeordnet waren? (Die Frage bezieht sich auf den
-						gesamten Bestand der Anteils- oder Genussscheingattung.)</tr>
-    <tr><td class="col-num">42<td><code>Questions_for_50j/ForwardingObligation/ForwardingObligation</code><td class="col-req">Conditional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Lag eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der Kapitalerträge vor?</tr>
-    <tr><td class="col-num">43<td><code>Questions_for_50j/ForwardingObligation/NumberOfShares</code><td class="col-req">Conditional<td>Decimal (4 decimals)<td class="long">Anzahl der Anteile, für die eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der
-						Kapitalerträge vorlag. (Bezogen auf die Anteile im Sinne des § 50j EStG)</tr>
-    <tr><td class="col-num">44<td><code>Questions_for_50j/ForwardingObligation/FurtherForwardingObligation</code><td class="col-req">Conditional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Lag eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der Kapitalerträge vor, die über die
-						Anteile im Sinne des § 50j EStG (Haltedauer mindestens 45 Tage, jedoch kürzer als 1 Jahr) hinausgeht? (Bezogen auf den gesamten Bestand
-						der Anteils- oder Genussscheingattung.)</tr>
-    <tr><td class="col-num">45<td><code>Questions_for_50j/ReturnObligation/ReturnObligation</code><td class="col-req">Conditional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Lagen Rückgabeverpflichtungen ohne Dividendenberechtigung für mit Dividendenberechtigung erworbene Anteile
-						vor? (Bezogen auf den gesamten Bestand der Anteils- oder Genussscheingattung.)</tr>
-    <tr><td class="col-num">46<td><code>Questions_for_50j/ReturnObligation/NumberOfShares</code><td class="col-req">Conditional<td>Decimal (4 decimals)<td class="long">Anzahl der Anteile, für die eine Rückgabeverpflichtung ohne Dividendenberechtigung für mit
-						Dividendenberechtigung erworbene Anteile vorlag.</tr>
-  </tbody>
-</table>
-
-<h3 id="sheet-5-investment-chain">5 Investment Chain</h3>
-
-<p><b>Significance.</b> The chain of companies through which an indirect holding (MittelbareBeteiligung) is held: each link's organisation, legal form, ownership percentage, country of residence, tax number/TIN, and whether it is exclusively asset-managing.</p>
-<p><b>Cardinality.</b> 0..n rows per (creditorId, incomeId) pair, ordered by SequenceNumber.</p>
-<p><b>When to fill.</b> Only when the corresponding income's IndirectHolding/IndirectHolding = true.</p>
-
-<table class="complex data longlastcol dictionary">
-  <colgroup>
-    <col style="width:7%">
-    <col style="width:12%">
-    <col style="width:12%">
-    <col style="width:20%">
-    <col style="width:49%">
-  </colgroup>
-  <thead><tr><th class="col-num">#<th>Field<th class="col-req">Requiredness<th>Type / Allowed values<th>Description</tr></thead>
-  <tbody>
-    <tr><td class="col-num">1<td><code>creditorId</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match an id value on the '1 Creditors Natural' or '2 Creditors Juridical' sheet (whichever this creditor is a natural or juridical person).</tr>
-    <tr><td class="col-num">2<td><code>incomeId</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match an incomeId value on the '4 Income' sheet for this creditorId.</tr>
-    <tr><td class="col-num">3<td><code>SequenceNumber</code><td class="col-req">Required<td>Integer<td class="long">Sequence number of the holding. From the person subject of limited taxation to the debtor oft he capital income
-					/ distributing company, starting at 1.</tr>
-    <tr><td class="col-num">4<td><code>OrganizationName</code><td class="col-req">Required<td>Text (max 256)<td class="long">Company name</tr>
-    <tr><td class="col-num">5<td><code>LegalForm</code><td class="col-req">Required<td>Text (max 80)<td class="long">Legal form</tr>
-    <tr><td class="col-num">6<td><code>Ownership</code><td class="col-req">Required<td>Decimal (4 decimals)<td class="long">Size of the ownership in interest (in %)</tr>
-    <tr><td class="col-num">7<td><code>Country</code><td class="col-req">Optional<td>Enum (<a href="#enum-countryisoalpha2">CountryISOAlpha2</a>): <code>AD</code>, <code>AE</code>, <code>AF</code>, <code>AG</code>, <code>AI</code>, <code>AL</code>, <code>AM</code>, <code>AO</code>, <code>AQ</code>, <code>AR</code>, <code>AS</code>, <code>AT</code>, <code>AU</code>, <code>AW</code>, <code>AX</code>, <code>AZ</code>, <code>BA</code>, <code>BB</code>, <code>BD</code>, <code>BE</code>, <code>BF</code>, <code>BG</code>, <code>BH</code>, <code>BI</code>, <code>BJ</code>, <code>BL</code>, <code>BM</code>, <code>BN</code>, <code>BO</code>, <code>BQ</code>, <code>BR</code>, <code>BS</code>, <code>BT</code>, <code>BV</code>, <code>BW</code>, <code>BY</code>, <code>BZ</code>, <code>CA</code>, <code>CC</code>, <code>CD</code>, <code>CF</code>, <code>CG</code>, <code>CH</code>, <code>CI</code>, <code>CK</code>, <code>CL</code>, <code>CM</code>, <code>CN</code>, <code>CO</code>, <code>CP</code>, <code>CR</code>, <code>CU</code>, <code>CV</code>, <code>CW</code>, <code>CX</code>, <code>CY</code>, <code>CZ</code>, <code>DE</code>, <code>DJ</code>, <code>DK</code>, <code>DM</code>, <code>DO</code>, <code>DZ</code>, <code>EC</code>, <code>EE</code>, <code>EG</code>, <code>EH</code>, <code>ER</code>, <code>ES</code>, <code>ET</code>, <code>FI</code>, <code>FJ</code>, <code>FK</code>, <code>FM</code>, <code>FO</code>, <code>FR</code>, <code>GA</code>, <code>GB</code>, <code>GD</code>, <code>GE</code>, <code>GF</code>, <code>GG</code>, <code>GH</code>, <code>GI</code>, <code>GL</code>, <code>GM</code>, <code>GN</code>, <code>GP</code>, <code>GQ</code>, <code>GR</code>, <code>GS</code>, <code>GT</code>, <code>GU</code>, <code>GW</code>, <code>GY</code>, <code>HK</code>, <code>HM</code>, <code>HN</code>, <code>HR</code>, <code>HT</code>, <code>HU</code>, <code>ID</code>, <code>IE</code>, <code>IL</code>, <code>IM</code>, <code>IN</code>, <code>IO</code>, <code>IQ</code>, <code>IR</code>, <code>IS</code>, <code>IT</code>, <code>JE</code>, <code>JM</code>, <code>JO</code>, <code>JP</code>, <code>KE</code>, <code>KG</code>, <code>KH</code>, <code>KI</code>, <code>KM</code>, <code>KN</code>, <code>KP</code>, <code>KR</code>, <code>KW</code>, <code>KY</code>, <code>KZ</code>, <code>LA</code>, <code>LB</code>, <code>LC</code>, <code>LI</code>, <code>LK</code>, <code>LR</code>, <code>LS</code>, <code>LT</code>, <code>LU</code>, <code>LV</code>, <code>LY</code>, <code>MA</code>, <code>MC</code>, <code>MD</code>, <code>ME</code>, <code>MF</code>, <code>MG</code>, <code>MH</code>, <code>MK</code>, <code>ML</code>, <code>MM</code>, <code>MN</code>, <code>MO</code>, <code>MP</code>, <code>MQ</code>, <code>MR</code>, <code>MS</code>, <code>MT</code>, <code>MU</code>, <code>MV</code>, <code>MW</code>, <code>MX</code>, <code>MY</code>, <code>MZ</code>, <code>NA</code>, <code>NC</code>, <code>NE</code>, <code>NF</code>, <code>NG</code>, <code>NI</code>, <code>NL</code>, <code>NO</code>, <code>NP</code>, <code>NR</code>, <code>NU</code>, <code>NZ</code>, <code>OM</code>, <code>PA</code>, <code>PE</code>, <code>PF</code>, <code>PG</code>, <code>PH</code>, <code>PK</code>, <code>PL</code>, <code>PM</code>, <code>PN</code>, <code>PR</code>, <code>PS</code>, <code>PT</code>, <code>PW</code>, <code>PY</code>, <code>QA</code>, <code>RE</code>, <code>RO</code>, <code>RS</code>, <code>RU</code>, <code>RW</code>, <code>SA</code>, <code>SB</code>, <code>SC</code>, <code>SD</code>, <code>SE</code>, <code>SG</code>, <code>SH</code>, <code>SI</code>, <code>SJ</code>, <code>SK</code>, <code>SL</code>, <code>SM</code>, <code>SN</code>, <code>SO</code>, <code>SR</code>, <code>SS</code>, <code>ST</code>, <code>SV</code>, <code>SX</code>, <code>SY</code>, <code>SZ</code>, <code>TC</code>, <code>TD</code>, <code>TF</code>, <code>TG</code>, <code>TH</code>, <code>TJ</code>, <code>TK</code>, <code>TL</code>, <code>TM</code>, <code>TN</code>, <code>TO</code>, <code>TR</code>, <code>TT</code>, <code>TV</code>, <code>TW</code>, <code>TZ</code>, <code>UA</code>, <code>UG</code>, <code>UM</code>, <code>US</code>, <code>UY</code>, <code>UZ</code>, <code>VA</code>, <code>VC</code>, <code>VE</code>, <code>VG</code>, <code>VI</code>, <code>VN</code>, <code>VU</code>, <code>WF</code>, <code>WS</code>, <code>XK</code>, <code>YE</code>, <code>YT</code>, <code>ZA</code>, <code>ZM</code>, <code>ZW</code><td class="long">Country of residence</tr>
-    <tr><td class="col-num">8<td><code>GermanTaxNumber</code><td class="col-req">Optional<td>Text (max 13)<td class="long">Tax number</tr>
-    <tr><td class="col-num">9<td><code>TIN</code><td class="col-req">Optional<td>Text (max 40)<td class="long">Foreign tax identification number</tr>
-    <tr><td class="col-num">10<td><code>AssetManagement</code><td class="col-req">Required<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Is the company exclusively engaged in asset management?</tr>
-  </tbody>
-</table>
-
-<h3 id="sheet-6-transaction-data">6 Transaction Data</h3>
-
-<p><b>Significance.</b> The per-depot transaction ledger required by section 50j German Income Tax Act: opening/closing balance (repeated per transaction row), each transaction's direction, business type, share count, trading day and settlement dates.</p>
-<p><b>Cardinality.</b> 0..n rows per (creditorId, incomeId) pair, grouped by DepotNumber.</p>
-<p><b>When to fill.</b> Only when the corresponding income's Par50jEStG block applies.</p>
-
-<table class="complex data longlastcol dictionary">
-  <colgroup>
-    <col style="width:7%">
-    <col style="width:12%">
-    <col style="width:12%">
-    <col style="width:20%">
-    <col style="width:49%">
-  </colgroup>
-  <thead><tr><th class="col-num">#<th>Field<th class="col-req">Requiredness<th>Type / Allowed values<th>Description</tr></thead>
-  <tbody>
-    <tr><td class="col-num">1<td><code>creditorId</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match an id value on the '1 Creditors Natural' or '2 Creditors Juridical' sheet (whichever this creditor is a natural or juridical person).</tr>
-    <tr><td class="col-num">2<td><code>incomeId</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match an incomeId value on the '4 Income' sheet for this creditorId.</tr>
-    <tr><td class="col-num">3<td><code>TransactionNumber</code><td class="col-req">Required<td>Integer<td class="long">Sequence number of the transaction, starting with 1</tr>
-    <tr><td class="col-num">4<td><code>DepotNumber</code><td class="col-req">Required<td>Text (max 40)<td class="long">Account / deposit number</tr>
-    <tr><td class="col-num">5<td><code>Depot/OpeningBalance</code><td class="col-req">Required<td>Decimal (4 decimals)<td class="long">Opening balance (number of shares)</tr>
-    <tr><td class="col-num">6<td><code>Depot/DateOfOpeningBalance</code><td class="col-req">Required<td>Date (YYYY-MM-DD)<td class="long">Date of the specified opening balance</tr>
-    <tr><td class="col-num">7<td><code>Depot/ClosingBalance</code><td class="col-req">Required<td>Decimal (4 decimals)<td class="long">Closing balance two months after the inflow date (number of shares)</tr>
-    <tr><td class="col-num">8<td><code>Depot/DateOfClosingBalance</code><td class="col-req">Required<td>Date (YYYY-MM-DD)<td class="long">Date of the specified closing balance</tr>
-    <tr><td class="col-num">9<td><code>TransactionDirection</code><td class="col-req">Required<td>Enum (<a href="#enum-transaktionart">TransaktionArt</a>): <code>ZUGANG</code>, <code>ABGANG</code><td class="long">Inflow / Outflow</tr>
-    <tr><td class="col-num">10<td><code>TradingDay</code><td class="col-req">Required<td>Date (YYYY-MM-DD)<td class="long">Trading day</tr>
-    <tr><td class="col-num">11<td><code>TransactionType</code><td class="col-req">Required<td>Enum (<a href="#enum-transaktiongeschaeft">TransaktionGeschaeft</a>): <code>PO</code>, <code>SO</code>, <code>TL</code>, <code>RL</code>, <code>TP</code>, <code>RP</code><td class="long">Transaction</tr>
-    <tr><td class="col-num">12<td><code>NumberOfShares</code><td class="col-req">Required<td>Decimal (4 decimals)<td class="long">Number of shares</tr>
-    <tr><td class="col-num">13<td><code>AgreedSettlementDate</code><td class="col-req">Required<td>Date (YYYY-MM-DD)<td class="long">Agreed settlement date</tr>
-    <tr><td class="col-num">14<td><code>ActualSettlementDate</code><td class="col-req">Required<td>Date (YYYY-MM-DD)<td class="long">Actual settlement date</tr>
-  </tbody>
-</table>
-
-<h3 id="sheet-1-creditors-natural">1 Creditors Natural</h3>
+<h3 id="sheet-1-creditors-natural">Creditors Natural</h3>
 
 <p><b>Significance.</b> One row per creditor who is a natural person: identity, address, German tax office details, the authorised representative and legal representative (if any), the legal basis for the refund claim, bank details, the Switzerland questions, the affirmations, and (if claiming under section 32(6) German Corporate Tax Act) the tax-privileged-purposes block.</p>
 <p><b>Cardinality.</b> Exactly 1 row per creditor (this sheet defines that creditor's id).</p>
@@ -330,7 +158,7 @@
   </tbody>
 </table>
 
-<h3 id="sheet-2-creditors-juridical">2 Creditors Juridical</h3>
+<h3 id="sheet-2-creditors-juridical">Creditors Juridical</h3>
 
 <p><b>Significance.</b> One row per creditor who is a juridical (non-natural) person: legal form, incorporation details, LEI/register/stock-exchange details, the option under section 1a German Corporate Tax Act, investment-fund questions, the authorised representative and legal representative (if any), the legal basis for the refund claim, bank details, and the affirmations.</p>
 <p><b>Cardinality.</b> Exactly 1 row per creditor (this sheet defines that creditor's id).</p>
@@ -496,6 +324,178 @@
 						does it conform to the provisions on the requirements for tax privileges contained in the statutes?</tr>
     <tr><td class="col-num">131<td><code>TaxPrivileges/ConstitutionLoyalty</code><td class="col-req">Required<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Does the person with limited tax liability advance efforts directed against the liberal democratic basic
 						order (freiheitliche demokratische Grundordnung) or against the existence or security of the Federal Republic of Germany or its Länder?</tr>
+  </tbody>
+</table>
+
+<h3 id="sheet-3-certificates-of-residence">Certificates Of Residence</h3>
+
+<p><b>Significance.</b> One row per certificate of residence (Ansässigkeitsbescheinigung): issuing authority, issue date and validity period.</p>
+<p><b>Cardinality.</b> 0..n rows per creditorId.</p>
+<p><b>When to fill.</b> Whenever an income on the Income sheet references it via CertificateOfResidenceId.</p>
+
+<table class="complex data longlastcol dictionary">
+  <colgroup>
+    <col style="width:7%">
+    <col style="width:12%">
+    <col style="width:12%">
+    <col style="width:20%">
+    <col style="width:49%">
+  </colgroup>
+  <thead><tr><th class="col-num">#<th>Field<th class="col-req">Requiredness<th>Type / Allowed values<th>Description</tr></thead>
+  <tbody>
+    <tr><td class="col-num">1<td><code>creditorId</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match an id value on the '1 Creditors Natural' or '2 Creditors Juridical' sheet (whichever this creditor is a natural or juridical person).</tr>
+    <tr><td class="col-num">2<td><code>id</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Identifier for this certificate of residence, defined by you. Referenced by the CertificateOfResidenceId column on the Income sheet.</tr>
+    <tr><td class="col-num">3<td><code>Issuer</code><td class="col-req">Required<td>Text (max 80)<td class="long">Issuing authority</tr>
+    <tr><td class="col-num">4<td><code>IssuedAt</code><td class="col-req">Required<td>Date (YYYY-MM-DD)<td class="long">Date of issue</tr>
+    <tr><td class="col-num">5<td><code>ValidFrom</code><td class="col-req">Required<td>Date (YYYY-MM-DD)<td class="long">Valid from</tr>
+    <tr><td class="col-num">6<td><code>ValidUntil</code><td class="col-req">Required<td>Date (YYYY-MM-DD)<td class="long">Valid until</tr>
+  </tbody>
+</table>
+
+<h3 id="sheet-4-income">Income</h3>
+
+<p><b>Significance.</b> One row per taxed capital income event: type of income, security identification, the debtor, the amount and date of inflow, the tax certificate/other-document details, the beneficial-ownership and residency questions, the indirect-holding and substantial-holding questions, the remittance-base clause, and (where section 50j German Income Tax Act applies) the Par50jEStG holding-period / risk / forwarding / return-obligation block.</p>
+<p><b>Cardinality.</b> 1..n rows per creditorId.</p>
+<p><b>When to fill.</b> Always -- every application needs at least one taxed income.</p>
+
+<table class="complex data longlastcol dictionary">
+  <colgroup>
+    <col style="width:7%">
+    <col style="width:12%">
+    <col style="width:12%">
+    <col style="width:20%">
+    <col style="width:49%">
+  </colgroup>
+  <thead><tr><th class="col-num">#<th>Field<th class="col-req">Requiredness<th>Type / Allowed values<th>Description</tr></thead>
+  <tbody>
+    <tr><td class="col-num">1<td><code>creditorId</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match an id value on the '1 Creditors Natural' or '2 Creditors Juridical' sheet (whichever this creditor is a natural or juridical person).</tr>
+    <tr><td class="col-num">2<td><code>incomeId</code><td class="col-req">Required<td>Integer<td class="long">Sequence number of the income, starting with 1 (KaFE's own ErtragId). Also serves, together with creditorId, as the linking key referenced by the '5 Investment Chain' and '6 Transaction Data' sheets.</tr>
+    <tr><td class="col-num">3<td><code>CertificateOfResidenceId</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match an id value on the '3 Certificates Of Residence' sheet -- identifies which certificate of residence supports this income.</tr>
+    <tr><td class="col-num">4<td><code>CapitalIncome</code><td class="col-req">Required<td>Enum (<a href="#enum-kapitalertragart">KapitalertragArt</a>): <code>DIVIDENDEN</code>, <code>AUSSCH_KAPG</code>, <code>GENUSSR_ML</code>, <code>GENUSSR_OL</code>, <code>WANDELANL</code>, <code>LEBENSVERS</code>, <code>EINN_STILLG</code>, <code>PART_DARL</code>, <code>GEWINNOBL</code>, <code>GRENZKW</code>, <code>SONSTIGE</code><td class="long">Type of capital income</tr>
+    <tr><td class="col-num">5<td><code>Stocks_ConvertibleBonds/ISIN</code><td class="col-req">Optional<td>ISIN (12-digit)<td class="long">ISIN (12-digit)</tr>
+    <tr><td class="col-num">6<td><code>Stocks_ConvertibleBonds/NumberOfShares</code><td class="col-req">Optional<td>Decimal (4 decimals)<td class="long">Number of shares/bonds</tr>
+    <tr><td class="col-num">7<td><code>SubstantialHolding/IsSubstantial</code><td class="col-req">Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Is it a substential holding (at least 10 %)?</tr>
+    <tr><td class="col-num">8<td><code>SubstantialHolding/Ownership</code><td class="col-req">Optional<td>Decimal (4 decimals)<td class="long">Size of the ownership interest (in %)</tr>
+    <tr><td class="col-num">9<td><code>SubstantialHolding/HoldingPeriod18M</code><td class="col-req">Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Has the investment been held for a period of at least 18 months?</tr>
+    <tr><td class="col-num">10<td><code>SubstantialHolding/HoldingPeriod12M</code><td class="col-req">Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Has the investment been held for a period of at least one year?</tr>
+    <tr><td class="col-num">11<td><code>SubstantialHolding/HoldingPeriod6M</code><td class="col-req">Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Has the investment been held for a period of at least 6 months?</tr>
+    <tr><td class="col-num">12<td><code>IndirectHolding/IndirectHolding</code><td class="col-req">Required<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Is it a joint deposit/account or another form of indirect holding?</tr>
+    <tr><td class="col-num">13<td><code>IndirectHolding/CompanyOfSpouses</code><td class="col-req">Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Handelt es sich um eine Gesellschaft von Ehegatten, die jeweils zu 50% beteiligt sind?</tr>
+    <tr><td class="col-num">14<td><code>IndirectHolding/SizeOfIndirectHolding</code><td class="col-req">Required<td>Decimal (4 decimals)<td class="long">Size of the indirect holding (in %)</tr>
+    <tr><td class="col-num">15<td><code>Debtor/Name</code><td class="col-req">Required<td>Text (max 256)<td class="long">Debtor of the capital income / distributing company</tr>
+    <tr><td class="col-num">16<td><code>Debtor/TaxNumber</code><td class="col-req">Optional<td>Text (max 13)<td class="long">Tax number</tr>
+    <tr><td class="col-num">17<td><code>NonResidency_DE</code><td class="col-req">Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Was the person with limited tax liability a resident of the specified country of residence at the time of
+						the inflow and did not have its registered office or place of management in Germany at that time?</tr>
+    <tr><td class="col-num">18<td><code>DateOfReceiptOfCapitalIncome</code><td class="col-req">Required<td>Date (YYYY-MM-DD)<td class="long">Date of receipt of capital income</tr>
+    <tr><td class="col-num">19<td><code>GrossIncomeFromCapitalReceived</code><td class="col-req">Required<td>Decimal (2 decimals)<td class="long">Gross income from capital received (in Euro)</tr>
+    <tr><td class="col-num">20<td><code>Withheld_Taxes</code><td class="col-req">Required<td>Decimal (2 decimals)<td class="long">Withheld German capital income tax (in Euro)</tr>
+    <tr><td class="col-num">21<td><code>Requested_Refund</code><td class="col-req">Optional<td>Decimal<td class="long">The refund amount being claimed for this income (informational; BZSt itself computes the actual refund from the withheld tax and the applicable treaty/statutory rate -- this is not a real KaFE XSD field).</tr>
+    <tr><td class="col-num">22<td><code>DocumentDescription</code><td class="col-req">Required<td>Text (max 120)<td class="long">Short description of the file content (e.g. certificate of residence).</tr>
+    <tr><td class="col-num">23<td><code>DocumentProof/TaxCertificateNumber</code><td class="col-req">Optional<td>UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)<td class="long">Serial number</tr>
+    <tr><td class="col-num">24<td><code>Hidden_ProfitDistribution/ConstructiveDividend</code><td class="col-req">Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Does it concern a constructive dividend?</tr>
+    <tr><td class="col-num">25<td><code>Economic_Ownership/Ownership_and_Right_To_Use</code><td class="col-req">Required<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Did the person with limited tax liability hold the beneficial ownership (right to use the income) at the
+						time of the inflow?</tr>
+    <tr><td class="col-num">26<td><code>TaxExemption</code><td class="col-req">Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Was the person with limited tax liability fully (or partially) exempt from tax in the specified country of
+						residence at the time of the inflow?</tr>
+    <tr><td class="col-num">27<td><code>LifeInsurancePolicyNumber</code><td class="col-req">Optional<td>Text (max 40)<td class="long">Policy number of the life insurance</tr>
+    <tr><td class="col-num">28<td><code>Depositary_Receipts/Is_DR</code><td class="col-req">Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Are they depositary receipts? e.g. American Depositary Receipts (ADR).</tr>
+    <tr><td class="col-num">29<td><code>Depositary_Receipts/ISIN_DR</code><td class="col-req">Optional<td>ISIN (12-digit)<td class="long">ISIN of the underlying (12-digit)</tr>
+    <tr><td class="col-num">30<td><code>RemittanceBase/IsSubject</code><td class="col-req">Required<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Werden die Erträge im angegebenen Ansässigkeitsstaat nur dann der Besteuerung unterworfen, wenn sie dorthin
+						überwiesen oder dort bezogen worden sind (Überweisungsklausel)?</tr>
+    <tr><td class="col-num">31<td><code>RemittanceBase/Amount</code><td class="col-req">Optional<td>Decimal (2 decimals)<td class="long">Betrag, der in den Ansässigkeitsstaat überwiesen oder dort bezogen wurde.</tr>
+    <tr><td class="col-num">32<td><code>Business_Establishment/Business_Establishment_DE</code><td class="col-req">Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Has the capital income distributed to a permanent establishment / fixed entity located in Germany of the
+						person subject to limited taxation?</tr>
+    <tr><td class="col-num">33<td><code>UnlimitedForeignCorporateTaxLiability</code><td class="col-req">Optional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Was the person with limited tax liability subject to unlimited corporate
+						income tax liability or a comparable tax liability in their country of residence without any option to choose?</tr>
+    <tr><td class="col-num">34<td><code>CreditAmount</code><td class="col-req">Optional<td>Decimal (2 decimals)<td class="long">To what extent was the German capital gains tax credited in full or in
+						part against taxation in the country of residence or deducted from the tax base, or is it possible
+						to carry this forward to future tax periods (tax credit carryforward)?</tr>
+    <tr><td class="col-num">35<td><code>Questions_for_50j/HoldingPeriod/HoldingMore45D</code><td class="col-req">Conditional<td>Decimal (4 decimals)<td class="long">Anzahl der Anteile, die innerhalb des Mindesthaltezeitraums an mindestens 45 Tagen ohne Unterbrechung
+						gehalten wurden (§ 50j Absatz 4 Satz 2 EStG).</tr>
+    <tr><td class="col-num">36<td><code>Questions_for_50j/HoldingPeriod/HoldingMore1Y</code><td class="col-req">Conditional<td>Decimal (4 decimals)<td class="long">Davon Anzahl der Anteile, die im Zeitpunkt des Zuflusses mindestens ein Jahr ohne Unterbrechung gehalten
+						wurden (§ 50j Absatz 4 Satz 2 EStG).</tr>
+    <tr><td class="col-num">37<td><code>Questions_for_50j/HoldingPeriod/HoldingLess45D</code><td class="col-req">Conditional<td>Decimal (4 decimals)<td class="long">Anzahl der Anteile, die kürzer 45 Tage gehalten wurden.</tr>
+    <tr><td class="col-num">38<td><code>Questions_for_50j/HoldingPeriod/SharesPar50jEStG</code><td class="col-req">Conditional<td>Decimal (4 decimals)<td class="long">Anzahl der Anteile im Sinne des § 50j EStG.</tr>
+    <tr><td class="col-num">39<td><code>Questions_for_50j/MinValueChangeRisk/OpposingClaims</code><td class="col-req">Conditional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Hatte die beschränkt steuerpflichtige Person oder eine ihr nahestehende Person während der Mindesthaltedauer
+						gegenläufige Ansprüche?</tr>
+    <tr><td class="col-num">40<td><code>Questions_for_50j/MinValueChangeRisk/RiskMin70</code><td class="col-req">Conditional<td>Decimal (4 decimals)<td class="long">Anzahl der Anteile, für die die beschränkt steuerpflichtige Person das Wertänderungsrisiko während der
+						Mindesthaltedauer zu mindestens 70% getragen hat. (Bezogen auf die Anteile im Sinne des § 50j EStG)</tr>
+    <tr><td class="col-num">41<td><code>Questions_for_50j/MinValueChangeRisk/OtherOpposingClaims</code><td class="col-req">Conditional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Waren während der Mindesthaltedauer gegenläufige Ansprüche vorhanden, die nicht vollständig den Anteilen im
+						Sinne des § 50j EStG (Haltedauer mindestens 45 Tage, jedoch kürzer als 1 Jahr) zugeordnet waren? (Die Frage bezieht sich auf den
+						gesamten Bestand der Anteils- oder Genussscheingattung.)</tr>
+    <tr><td class="col-num">42<td><code>Questions_for_50j/ForwardingObligation/ForwardingObligation</code><td class="col-req">Conditional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Lag eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der Kapitalerträge vor?</tr>
+    <tr><td class="col-num">43<td><code>Questions_for_50j/ForwardingObligation/NumberOfShares</code><td class="col-req">Conditional<td>Decimal (4 decimals)<td class="long">Anzahl der Anteile, für die eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der
+						Kapitalerträge vorlag. (Bezogen auf die Anteile im Sinne des § 50j EStG)</tr>
+    <tr><td class="col-num">44<td><code>Questions_for_50j/ForwardingObligation/FurtherForwardingObligation</code><td class="col-req">Conditional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Lag eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der Kapitalerträge vor, die über die
+						Anteile im Sinne des § 50j EStG (Haltedauer mindestens 45 Tage, jedoch kürzer als 1 Jahr) hinausgeht? (Bezogen auf den gesamten Bestand
+						der Anteils- oder Genussscheingattung.)</tr>
+    <tr><td class="col-num">45<td><code>Questions_for_50j/ReturnObligation/ReturnObligation</code><td class="col-req">Conditional<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Lagen Rückgabeverpflichtungen ohne Dividendenberechtigung für mit Dividendenberechtigung erworbene Anteile
+						vor? (Bezogen auf den gesamten Bestand der Anteils- oder Genussscheingattung.)</tr>
+    <tr><td class="col-num">46<td><code>Questions_for_50j/ReturnObligation/NumberOfShares</code><td class="col-req">Conditional<td>Decimal (4 decimals)<td class="long">Anzahl der Anteile, für die eine Rückgabeverpflichtung ohne Dividendenberechtigung für mit
+						Dividendenberechtigung erworbene Anteile vorlag.</tr>
+  </tbody>
+</table>
+
+<h3 id="sheet-5-investment-chain">Investment Chain</h3>
+
+<p><b>Significance.</b> The chain of companies through which an indirect holding (MittelbareBeteiligung) is held: each link's organisation, legal form, ownership percentage, country of residence, tax number/TIN, and whether it is exclusively asset-managing.</p>
+<p><b>Cardinality.</b> 0..n rows per (creditorId, incomeId) pair, ordered by SequenceNumber.</p>
+<p><b>When to fill.</b> Only when the corresponding income's IndirectHolding/IndirectHolding = true.</p>
+
+<table class="complex data longlastcol dictionary">
+  <colgroup>
+    <col style="width:7%">
+    <col style="width:12%">
+    <col style="width:12%">
+    <col style="width:20%">
+    <col style="width:49%">
+  </colgroup>
+  <thead><tr><th class="col-num">#<th>Field<th class="col-req">Requiredness<th>Type / Allowed values<th>Description</tr></thead>
+  <tbody>
+    <tr><td class="col-num">1<td><code>creditorId</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match an id value on the '1 Creditors Natural' or '2 Creditors Juridical' sheet (whichever this creditor is a natural or juridical person).</tr>
+    <tr><td class="col-num">2<td><code>incomeId</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match an incomeId value on the '4 Income' sheet for this creditorId.</tr>
+    <tr><td class="col-num">3<td><code>SequenceNumber</code><td class="col-req">Required<td>Integer<td class="long">Sequence number of the holding. From the person subject of limited taxation to the debtor oft he capital income
+					/ distributing company, starting at 1.</tr>
+    <tr><td class="col-num">4<td><code>OrganizationName</code><td class="col-req">Required<td>Text (max 256)<td class="long">Company name</tr>
+    <tr><td class="col-num">5<td><code>LegalForm</code><td class="col-req">Required<td>Text (max 80)<td class="long">Legal form</tr>
+    <tr><td class="col-num">6<td><code>Ownership</code><td class="col-req">Required<td>Decimal (4 decimals)<td class="long">Size of the ownership in interest (in %)</tr>
+    <tr><td class="col-num">7<td><code>Country</code><td class="col-req">Optional<td>Enum (<a href="#enum-countryisoalpha2">CountryISOAlpha2</a>): <code>AD</code>, <code>AE</code>, <code>AF</code>, <code>AG</code>, <code>AI</code>, <code>AL</code>, <code>AM</code>, <code>AO</code>, <code>AQ</code>, <code>AR</code>, <code>AS</code>, <code>AT</code>, <code>AU</code>, <code>AW</code>, <code>AX</code>, <code>AZ</code>, <code>BA</code>, <code>BB</code>, <code>BD</code>, <code>BE</code>, <code>BF</code>, <code>BG</code>, <code>BH</code>, <code>BI</code>, <code>BJ</code>, <code>BL</code>, <code>BM</code>, <code>BN</code>, <code>BO</code>, <code>BQ</code>, <code>BR</code>, <code>BS</code>, <code>BT</code>, <code>BV</code>, <code>BW</code>, <code>BY</code>, <code>BZ</code>, <code>CA</code>, <code>CC</code>, <code>CD</code>, <code>CF</code>, <code>CG</code>, <code>CH</code>, <code>CI</code>, <code>CK</code>, <code>CL</code>, <code>CM</code>, <code>CN</code>, <code>CO</code>, <code>CP</code>, <code>CR</code>, <code>CU</code>, <code>CV</code>, <code>CW</code>, <code>CX</code>, <code>CY</code>, <code>CZ</code>, <code>DE</code>, <code>DJ</code>, <code>DK</code>, <code>DM</code>, <code>DO</code>, <code>DZ</code>, <code>EC</code>, <code>EE</code>, <code>EG</code>, <code>EH</code>, <code>ER</code>, <code>ES</code>, <code>ET</code>, <code>FI</code>, <code>FJ</code>, <code>FK</code>, <code>FM</code>, <code>FO</code>, <code>FR</code>, <code>GA</code>, <code>GB</code>, <code>GD</code>, <code>GE</code>, <code>GF</code>, <code>GG</code>, <code>GH</code>, <code>GI</code>, <code>GL</code>, <code>GM</code>, <code>GN</code>, <code>GP</code>, <code>GQ</code>, <code>GR</code>, <code>GS</code>, <code>GT</code>, <code>GU</code>, <code>GW</code>, <code>GY</code>, <code>HK</code>, <code>HM</code>, <code>HN</code>, <code>HR</code>, <code>HT</code>, <code>HU</code>, <code>ID</code>, <code>IE</code>, <code>IL</code>, <code>IM</code>, <code>IN</code>, <code>IO</code>, <code>IQ</code>, <code>IR</code>, <code>IS</code>, <code>IT</code>, <code>JE</code>, <code>JM</code>, <code>JO</code>, <code>JP</code>, <code>KE</code>, <code>KG</code>, <code>KH</code>, <code>KI</code>, <code>KM</code>, <code>KN</code>, <code>KP</code>, <code>KR</code>, <code>KW</code>, <code>KY</code>, <code>KZ</code>, <code>LA</code>, <code>LB</code>, <code>LC</code>, <code>LI</code>, <code>LK</code>, <code>LR</code>, <code>LS</code>, <code>LT</code>, <code>LU</code>, <code>LV</code>, <code>LY</code>, <code>MA</code>, <code>MC</code>, <code>MD</code>, <code>ME</code>, <code>MF</code>, <code>MG</code>, <code>MH</code>, <code>MK</code>, <code>ML</code>, <code>MM</code>, <code>MN</code>, <code>MO</code>, <code>MP</code>, <code>MQ</code>, <code>MR</code>, <code>MS</code>, <code>MT</code>, <code>MU</code>, <code>MV</code>, <code>MW</code>, <code>MX</code>, <code>MY</code>, <code>MZ</code>, <code>NA</code>, <code>NC</code>, <code>NE</code>, <code>NF</code>, <code>NG</code>, <code>NI</code>, <code>NL</code>, <code>NO</code>, <code>NP</code>, <code>NR</code>, <code>NU</code>, <code>NZ</code>, <code>OM</code>, <code>PA</code>, <code>PE</code>, <code>PF</code>, <code>PG</code>, <code>PH</code>, <code>PK</code>, <code>PL</code>, <code>PM</code>, <code>PN</code>, <code>PR</code>, <code>PS</code>, <code>PT</code>, <code>PW</code>, <code>PY</code>, <code>QA</code>, <code>RE</code>, <code>RO</code>, <code>RS</code>, <code>RU</code>, <code>RW</code>, <code>SA</code>, <code>SB</code>, <code>SC</code>, <code>SD</code>, <code>SE</code>, <code>SG</code>, <code>SH</code>, <code>SI</code>, <code>SJ</code>, <code>SK</code>, <code>SL</code>, <code>SM</code>, <code>SN</code>, <code>SO</code>, <code>SR</code>, <code>SS</code>, <code>ST</code>, <code>SV</code>, <code>SX</code>, <code>SY</code>, <code>SZ</code>, <code>TC</code>, <code>TD</code>, <code>TF</code>, <code>TG</code>, <code>TH</code>, <code>TJ</code>, <code>TK</code>, <code>TL</code>, <code>TM</code>, <code>TN</code>, <code>TO</code>, <code>TR</code>, <code>TT</code>, <code>TV</code>, <code>TW</code>, <code>TZ</code>, <code>UA</code>, <code>UG</code>, <code>UM</code>, <code>US</code>, <code>UY</code>, <code>UZ</code>, <code>VA</code>, <code>VC</code>, <code>VE</code>, <code>VG</code>, <code>VI</code>, <code>VN</code>, <code>VU</code>, <code>WF</code>, <code>WS</code>, <code>XK</code>, <code>YE</code>, <code>YT</code>, <code>ZA</code>, <code>ZM</code>, <code>ZW</code><td class="long">Country of residence</tr>
+    <tr><td class="col-num">8<td><code>GermanTaxNumber</code><td class="col-req">Optional<td>Text (max 13)<td class="long">Tax number</tr>
+    <tr><td class="col-num">9<td><code>TIN</code><td class="col-req">Optional<td>Text (max 40)<td class="long">Foreign tax identification number</tr>
+    <tr><td class="col-num">10<td><code>AssetManagement</code><td class="col-req">Required<td>Enum (<a href="#enum-boolean">Boolean</a>): <code>true</code>, <code>false</code><td class="long">Is the company exclusively engaged in asset management?</tr>
+  </tbody>
+</table>
+
+<h3 id="sheet-6-transaction-data">Transaction Data</h3>
+
+<p><b>Significance.</b> The per-depot transaction ledger required by section 50j German Income Tax Act: opening/closing balance (repeated per transaction row), each transaction's direction, business type, share count, trading day and settlement dates.</p>
+<p><b>Cardinality.</b> 0..n rows per (creditorId, incomeId) pair, grouped by DepotNumber.</p>
+<p><b>When to fill.</b> Only when the corresponding income's Par50jEStG block applies.</p>
+
+<table class="complex data longlastcol dictionary">
+  <colgroup>
+    <col style="width:7%">
+    <col style="width:12%">
+    <col style="width:12%">
+    <col style="width:20%">
+    <col style="width:49%">
+  </colgroup>
+  <thead><tr><th class="col-num">#<th>Field<th class="col-req">Requiredness<th>Type / Allowed values<th>Description</tr></thead>
+  <tbody>
+    <tr><td class="col-num">1<td><code>creditorId</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match an id value on the '1 Creditors Natural' or '2 Creditors Juridical' sheet (whichever this creditor is a natural or juridical person).</tr>
+    <tr><td class="col-num">2<td><code>incomeId</code><td class="col-req">Required<td>Text (identifier used to link the sheets; any unique value)<td class="long">Foreign key. Must match an incomeId value on the '4 Income' sheet for this creditorId.</tr>
+    <tr><td class="col-num">3<td><code>TransactionNumber</code><td class="col-req">Required<td>Integer<td class="long">Sequence number of the transaction, starting with 1</tr>
+    <tr><td class="col-num">4<td><code>DepotNumber</code><td class="col-req">Required<td>Text (max 40)<td class="long">Account / deposit number</tr>
+    <tr><td class="col-num">5<td><code>Depot/OpeningBalance</code><td class="col-req">Required<td>Decimal (4 decimals)<td class="long">Opening balance (number of shares)</tr>
+    <tr><td class="col-num">6<td><code>Depot/DateOfOpeningBalance</code><td class="col-req">Required<td>Date (YYYY-MM-DD)<td class="long">Date of the specified opening balance</tr>
+    <tr><td class="col-num">7<td><code>Depot/ClosingBalance</code><td class="col-req">Required<td>Decimal (4 decimals)<td class="long">Closing balance two months after the inflow date (number of shares)</tr>
+    <tr><td class="col-num">8<td><code>Depot/DateOfClosingBalance</code><td class="col-req">Required<td>Date (YYYY-MM-DD)<td class="long">Date of the specified closing balance</tr>
+    <tr><td class="col-num">9<td><code>TransactionDirection</code><td class="col-req">Required<td>Enum (<a href="#enum-transaktionart">TransaktionArt</a>): <code>ZUGANG</code>, <code>ABGANG</code><td class="long">Inflow / Outflow</tr>
+    <tr><td class="col-num">10<td><code>TradingDay</code><td class="col-req">Required<td>Date (YYYY-MM-DD)<td class="long">Trading day</tr>
+    <tr><td class="col-num">11<td><code>TransactionType</code><td class="col-req">Required<td>Enum (<a href="#enum-transaktiongeschaeft">TransaktionGeschaeft</a>): <code>PO</code>, <code>SO</code>, <code>TL</code>, <code>RL</code>, <code>TP</code>, <code>RP</code><td class="long">Transaction</tr>
+    <tr><td class="col-num">12<td><code>NumberOfShares</code><td class="col-req">Required<td>Decimal (4 decimals)<td class="long">Number of shares</tr>
+    <tr><td class="col-num">13<td><code>AgreedSettlementDate</code><td class="col-req">Required<td>Date (YYYY-MM-DD)<td class="long">Agreed settlement date</tr>
+    <tr><td class="col-num">14<td><code>ActualSettlementDate</code><td class="col-req">Required<td>Date (YYYY-MM-DD)<td class="long">Actual settlement date</tr>
   </tbody>
 </table>
 

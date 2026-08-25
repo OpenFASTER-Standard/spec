@@ -3,6 +3,7 @@ Title: MiKaDiv Third-Party Disclosure — Response
 Shortname: mikadiv-vib-response
 Level: 1
 Status: DREAM
+Text Macro: LONGSTATUS MiKaDiv Third-Party Disclosure Response -- a module of the OpenFASTER family
 URL: https://openfaster.org/mikadiv-vib/response
 Repository: https://github.com/OpenFASTER-Standard/spec
 Editor: Julian Nalenz, https://github.com/sigalor
@@ -77,7 +78,7 @@ path: generated/response.include.bs
 </pre>
 
 Known gaps in this schema {#response-known-gaps}
-----------------------------------------------------
+====================================================
 
 Worth disclosing rather than silently working around: `ResponseToDisclosureForIncomeType`
 is documented in the XSD itself as "Not for direct use" (a base type,

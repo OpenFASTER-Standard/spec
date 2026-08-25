@@ -21,18 +21,41 @@ SHAPES = {
 }
 
 
+def _html_escape(value: str) -> str:
+    return value.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
 def render_bikeshed_include(model_path: str) -> str:
+    """Render the per-shape field tables as a Bikeshed include.
+
+    Emits real HTML (``<h3>``/``<table>``/``<thead>``/``<tbody>``) rather than
+    Markdown pipe-table syntax: Bikeshed's Markdown-to-HTML pass only runs on
+    the main .bs source document's own body text, not on content spliced in
+    via ``<pre class=include>``, so Markdown syntax placed here would pass
+    through unprocessed into the final HTML. Mirrors the HTML-table approach
+    engine/generator.py's ``_write_bikeshed_include`` uses for kafe/mikadiv-vib.
+    """
     graph = load_shapes(model_path)
+    esc = _html_escape
     lines = ["<!-- Generated from streamld/model/envelope.ttl. Do not edit by hand. -->", ""]
 
     for shape_name, shape_iri in SHAPES.items():
-        lines.append(f"## {shape_name} ## {{#{shape_name.lower()}-fields}}")
+        anchor = f"{shape_name.lower()}-fields"
+        lines.append(f'<h3 id="{anchor}">{esc(shape_name)}</h3>')
         lines.append("")
-        lines.append("| Field | Type | Required |")
-        lines.append("| --- | --- | --- |")
+        lines.append('<table class="complex data longlastcol dictionary">')
+        lines.append("  <thead><tr><th>Field<th>Type<th>Required</tr></thead>")
+        lines.append("  <tbody>")
         for field in fields_for_shape(graph, shape_iri):
             required = "Yes" if field.min_count >= 1 else "No"
-            lines.append(f"| `{field.name}` | {field.datatype or '(node)'} | {required} |")
+            type_col = esc(field.datatype) if field.datatype else "(node)"
+            lines.append(
+                f"    <tr><td><code>{esc(field.name)}</code>"
+                f"<td>{type_col}"
+                f"<td>{required}</tr>"
+            )
+        lines.append("  </tbody>")
+        lines.append("</table>")
         lines.append("")
 
     return "\n".join(lines)

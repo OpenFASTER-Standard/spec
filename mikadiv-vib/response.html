@@ -1492,7 +1492,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version d113b2e81, updated Tue Jun 9 14:57:55 2026 -0700" name="generator">
   <link href="https://openfaster.org/mikadiv-vib/response" rel="canonical">
-  <meta content="00bc0b0980c97b90b18972d83a6bc05bfd6337c2" name="revision">
+  <meta content="0b68626a588588392f264d738ede439a6d923a19" name="revision">
   <meta content="dark light" name="color-scheme">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
@@ -1913,7 +1913,7 @@ dfn > a.self-link::before      { content: "#"; }
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="no-ref p-name" id="title">MiKaDiv Third-Party Disclosure — Response</h1>
-   <h2 class="heading no-num no-ref no-toc settled" id="profile-and-date"><span class="content">A Collection of Interesting Ideas,
+   <h2 class="heading no-num no-ref no-toc settled" id="profile-and-date"><span class="content">MiKaDiv Third-Party Disclosure Response -- a module of the OpenFASTER family,
     <time class="dt-updated" datetime="2026-08-25">25 August 2026</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
@@ -1956,6 +1956,26 @@ to acknowledge, confirm, or reject a submitted
       <th>Summary of changes
     <tbody>
      <tr>
+      <td>1.2.0
+      
+      <td>2026-08-25
+      
+      <td>Added the KaFE Refund Application module (v4.3.2): mirrors the German
+          KaFE (§50c(3) EStG) capital income tax refund schema, covering the
+          request submission data model (with accompanying Excel template and
+          downloadable PDF) and the provisional response/status model.
+    
+     <tr>
+      <td>1.1.0
+      
+      <td>2026-08-24
+      
+      <td>Added the StreamLD module (incubating): a protocol for real-time,
+          resumable Linked Data event streaming, covering the core event
+          envelope and cursor model, subscription semantics, and the SSE and
+          WebSocket binding conformance requirements.
+    
+     <tr>
       <td>1.0.0
       
       <td>2026-07-05
@@ -1994,8 +2014,8 @@ to acknowledge, confirm, or reject a submitted
       <li><a href="#enum-message-level"><span class="secno">3.3</span> <span class="content">Message.Level</span></a>
       <li><a href="#enum-record-recordtype"><span class="secno">3.4</span> <span class="content">Record.RecordType</span></a>
       <li><a href="#enum-document-documenttype"><span class="secno">3.5</span> <span class="content">Document.DocumentType</span></a>
-      <li><a href="#response-known-gaps"><span class="secno">3.6</span> <span class="content">Known gaps in this schema</span></a>
      </ol>
+    <li><a href="#response-known-gaps"><span class="secno">4</span> <span class="content">Known gaps in this schema</span></a>
    </ol>
   </nav>
   <main>
@@ -2110,22 +2130,22 @@ never read off one field alone.</p>
       <td><code>Code</code>
       <td class="col-req">Optional
       <td>Text
-      <td class="long">
+      <td class="long">Machine-readable code identifying this message, for programmatic handling. Optional -- omitted when Text alone is sufficient.
      <tr>
       <td><code>Text</code>
       <td class="col-req">Required
       <td>Text
-      <td class="long">
+      <td class="long">Human-readable text of the message, describing what happened.
      <tr>
       <td><code>Level</code>
       <td class="col-req">Required
       <td>Text
-      <td class="long">
+      <td class="long">Severity of the message -- see the Message.Level enumeration below.
      <tr>
       <td><code>Reference</code>
       <td class="col-req">Optional
       <td>Text
-      <td class="long">
+      <td class="long">Identifier of the record, document, or field this message relates to, if applicable.
    </table>
    <h3 class="heading settled" data-level="2.3" id="records"><span class="secno">2.3. </span><span class="content">Records</span><a class="self-link" href="#records"></a></h3>
    <table class="complex data dictionary longlastcol">
@@ -2145,17 +2165,17 @@ never read off one field alone.</p>
       <td><code>Content</code>
       <td class="col-req">Required
       <td>Text
-      <td class="long">
+      <td class="long">The record’s actual content/value.
      <tr>
       <td><code>RecordType</code>
       <td class="col-req">Required
       <td>Text
-      <td class="long">
+      <td class="long">What kind of record this is -- see the Record.RecordType enumeration below.
      <tr>
       <td><code>RecordTypeInfo</code>
       <td class="col-req">Required
       <td>Text
-      <td class="long">
+      <td class="long">Additional free-text information about this record, complementing RecordType.
    </table>
    <h3 class="heading settled" data-level="2.4" id="documents"><span class="secno">2.4. </span><span class="content">Documents</span><a class="self-link" href="#documents"></a></h3>
    <table class="complex data dictionary longlastcol">
@@ -2175,22 +2195,22 @@ never read off one field alone.</p>
       <td><code>FilePath</code>
       <td class="col-req">Required
       <td>Text
-      <td class="long">
+      <td class="long">Path or filename of the delivered document.
      <tr>
       <td><code>ContentMimeType</code>
       <td class="col-req">Required
       <td>Text
-      <td class="long">
+      <td class="long">MIME type of the document’s content, e.g. application/pdf.
      <tr>
       <td><code>DocumentType</code>
       <td class="col-req">Required
       <td>Text
-      <td class="long">
+      <td class="long">What kind of document this is -- see the Document.DocumentType enumeration below.
      <tr>
       <td><code>Reference</code>
       <td class="col-req">Optional
       <td>Text
-      <td class="long">
+      <td class="long">Identifier of the record or request this document relates to, if applicable.
    </table>
    <h2 class="heading settled" data-level="3" id="response-enumerations"><span class="secno">3. </span><span class="content">Enumerations</span><a class="self-link" href="#response-enumerations"></a></h2>
    <p>Every value that an enum-typed field in the response may carry, with its meaning.</p>
@@ -2206,22 +2226,22 @@ never read off one field alone.</p>
     <tbody>
      <tr>
       <td><code>Receive</code>
-      <td class="long">
+      <td class="long">The response file itself was received by the custodian’s intake; no validation has taken place yet.
      <tr>
       <td><code>StructureValidation</code>
-      <td class="long">
+      <td class="long">The request was checked against the schema’s structural/format rules.
      <tr>
       <td><code>ContentValidation</code>
-      <td class="long">
+      <td class="long">The request’s content was checked against business-rule/content-level validation.
      <tr>
       <td><code>Plausibilization</code>
-      <td class="long">
+      <td class="long">The request’s data was checked for plausibility against other known data.
      <tr>
       <td><code>Reporting</code>
-      <td class="long">
+      <td class="long">The disclosure was reported onward to the relevant tax authority.
      <tr>
       <td><code>TaxCertification</code>
-      <td class="long">
+      <td class="long">The tax certificate was issued as the final step of processing.
    </table>
    <h3 class="heading settled" data-level="3.2" id="enum-processingresult"><span class="secno">3.2. </span><span class="content">ProcessingResult</span><a class="self-link" href="#enum-processingresult"></a></h3>
    <table class="complex data enum-table longlastcol">
@@ -2235,10 +2255,10 @@ never read off one field alone.</p>
     <tbody>
      <tr>
       <td><code>Success</code>
-      <td class="long">
+      <td class="long">This processing stage completed successfully.
      <tr>
       <td><code>Error</code>
-      <td class="long">
+      <td class="long">This processing stage failed; see the accompanying Messages for details.
    </table>
    <h3 class="heading settled" data-level="3.3" id="enum-message-level"><span class="secno">3.3. </span><span class="content">Message.Level</span><a class="self-link" href="#enum-message-level"></a></h3>
    <table class="complex data enum-table longlastcol">
@@ -2252,13 +2272,13 @@ never read off one field alone.</p>
     <tbody>
      <tr>
       <td><code>Information</code>
-      <td class="long">
+      <td class="long">Informational message; no action required.
      <tr>
       <td><code>Warning</code>
-      <td class="long">
+      <td class="long">Warning message, flagging a non-fatal issue worth reviewing.
      <tr>
       <td><code>Error</code>
-      <td class="long">
+      <td class="long">Error message, describing why processing failed at this stage.
    </table>
    <h3 class="heading settled" data-level="3.4" id="enum-record-recordtype"><span class="secno">3.4. </span><span class="content">Record.RecordType</span><a class="self-link" href="#enum-record-recordtype"></a></h3>
    <table class="complex data enum-table longlastcol">
@@ -2272,10 +2292,10 @@ never read off one field alone.</p>
     <tbody>
      <tr>
       <td><code>TaxDocumentIdentifier</code>
-      <td class="long">
+      <td class="long">The tax certificate’s own official reference number (the "Ordnungsnummer"), see the Identifiers section above.
      <tr>
       <td><code>Other</code>
-      <td class="long">
+      <td class="long">A record whose content doesn’t fit any of the schema’s other defined record types.
    </table>
    <h3 class="heading settled" data-level="3.5" id="enum-document-documenttype"><span class="secno">3.5. </span><span class="content">Document.DocumentType</span><a class="self-link" href="#enum-document-documenttype"></a></h3>
    <table class="complex data enum-table longlastcol">
@@ -2289,15 +2309,15 @@ never read off one field alone.</p>
     <tbody>
      <tr>
       <td><code>TaxCertificate</code>
-      <td class="long">
+      <td class="long">The issued tax certificate document itself.
      <tr>
       <td><code>Information</code>
-      <td class="long">
+      <td class="long">A supplementary informational document, not itself the tax certificate.
      <tr>
       <td><code>Other</code>
-      <td class="long">
+      <td class="long">A document that doesn’t fit any of the schema’s other defined document types.
    </table>
-   <h3 class="heading settled" data-level="3.6" id="response-known-gaps"><span class="secno">3.6. </span><span class="content">Known gaps in this schema</span><a class="self-link" href="#response-known-gaps"></a></h3>
+   <h2 class="heading settled" data-level="4" id="response-known-gaps"><span class="secno">4. </span><span class="content">Known gaps in this schema</span><a class="self-link" href="#response-known-gaps"></a></h2>
    <p>Worth disclosing rather than silently working around: <code>ResponseToDisclosureForIncomeType</code>
 is documented in the XSD itself as "Not for direct use" (a base type,
 presumably meant to be subtyped per income category), yet no derived subtype

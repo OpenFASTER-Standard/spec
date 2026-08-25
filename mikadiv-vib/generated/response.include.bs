@@ -35,10 +35,10 @@
   </colgroup>
   <thead><tr><th>Field<th class="col-req">Requiredness<th>Type / Allowed values<th>Description</tr></thead>
   <tbody>
-    <tr><td><code>Code</code><td class="col-req">Optional<td>Text<td class="long"></tr>
-    <tr><td><code>Text</code><td class="col-req">Required<td>Text<td class="long"></tr>
-    <tr><td><code>Level</code><td class="col-req">Required<td>Text<td class="long"></tr>
-    <tr><td><code>Reference</code><td class="col-req">Optional<td>Text<td class="long"></tr>
+    <tr><td><code>Code</code><td class="col-req">Optional<td>Text<td class="long">Machine-readable code identifying this message, for programmatic handling. Optional -- omitted when Text alone is sufficient.</tr>
+    <tr><td><code>Text</code><td class="col-req">Required<td>Text<td class="long">Human-readable text of the message, describing what happened.</tr>
+    <tr><td><code>Level</code><td class="col-req">Required<td>Text<td class="long">Severity of the message -- see the Message.Level enumeration below.</tr>
+    <tr><td><code>Reference</code><td class="col-req">Optional<td>Text<td class="long">Identifier of the record, document, or field this message relates to, if applicable.</tr>
   </tbody>
 </table>
 
@@ -53,9 +53,9 @@
   </colgroup>
   <thead><tr><th>Field<th class="col-req">Requiredness<th>Type / Allowed values<th>Description</tr></thead>
   <tbody>
-    <tr><td><code>Content</code><td class="col-req">Required<td>Text<td class="long"></tr>
-    <tr><td><code>RecordType</code><td class="col-req">Required<td>Text<td class="long"></tr>
-    <tr><td><code>RecordTypeInfo</code><td class="col-req">Required<td>Text<td class="long"></tr>
+    <tr><td><code>Content</code><td class="col-req">Required<td>Text<td class="long">The record's actual content/value.</tr>
+    <tr><td><code>RecordType</code><td class="col-req">Required<td>Text<td class="long">What kind of record this is -- see the Record.RecordType enumeration below.</tr>
+    <tr><td><code>RecordTypeInfo</code><td class="col-req">Required<td>Text<td class="long">Additional free-text information about this record, complementing RecordType.</tr>
   </tbody>
 </table>
 
@@ -70,10 +70,10 @@
   </colgroup>
   <thead><tr><th>Field<th class="col-req">Requiredness<th>Type / Allowed values<th>Description</tr></thead>
   <tbody>
-    <tr><td><code>FilePath</code><td class="col-req">Required<td>Text<td class="long"></tr>
-    <tr><td><code>ContentMimeType</code><td class="col-req">Required<td>Text<td class="long"></tr>
-    <tr><td><code>DocumentType</code><td class="col-req">Required<td>Text<td class="long"></tr>
-    <tr><td><code>Reference</code><td class="col-req">Optional<td>Text<td class="long"></tr>
+    <tr><td><code>FilePath</code><td class="col-req">Required<td>Text<td class="long">Path or filename of the delivered document.</tr>
+    <tr><td><code>ContentMimeType</code><td class="col-req">Required<td>Text<td class="long">MIME type of the document's content, e.g. application/pdf.</tr>
+    <tr><td><code>DocumentType</code><td class="col-req">Required<td>Text<td class="long">What kind of document this is -- see the Document.DocumentType enumeration below.</tr>
+    <tr><td><code>Reference</code><td class="col-req">Optional<td>Text<td class="long">Identifier of the record or request this document relates to, if applicable.</tr>
   </tbody>
 </table>
 
@@ -90,12 +90,12 @@
   </colgroup>
   <thead><tr><th>Value<th>Meaning</tr></thead>
   <tbody>
-    <tr><td><code>Receive</code><td class="long"></tr>
-    <tr><td><code>StructureValidation</code><td class="long"></tr>
-    <tr><td><code>ContentValidation</code><td class="long"></tr>
-    <tr><td><code>Plausibilization</code><td class="long"></tr>
-    <tr><td><code>Reporting</code><td class="long"></tr>
-    <tr><td><code>TaxCertification</code><td class="long"></tr>
+    <tr><td><code>Receive</code><td class="long">The response file itself was received by the custodian's intake; no validation has taken place yet.</tr>
+    <tr><td><code>StructureValidation</code><td class="long">The request was checked against the schema's structural/format rules.</tr>
+    <tr><td><code>ContentValidation</code><td class="long">The request's content was checked against business-rule/content-level validation.</tr>
+    <tr><td><code>Plausibilization</code><td class="long">The request's data was checked for plausibility against other known data.</tr>
+    <tr><td><code>Reporting</code><td class="long">The disclosure was reported onward to the relevant tax authority.</tr>
+    <tr><td><code>TaxCertification</code><td class="long">The tax certificate was issued as the final step of processing.</tr>
   </tbody>
 </table>
 
@@ -108,8 +108,8 @@
   </colgroup>
   <thead><tr><th>Value<th>Meaning</tr></thead>
   <tbody>
-    <tr><td><code>Success</code><td class="long"></tr>
-    <tr><td><code>Error</code><td class="long"></tr>
+    <tr><td><code>Success</code><td class="long">This processing stage completed successfully.</tr>
+    <tr><td><code>Error</code><td class="long">This processing stage failed; see the accompanying Messages for details.</tr>
   </tbody>
 </table>
 
@@ -122,9 +122,9 @@
   </colgroup>
   <thead><tr><th>Value<th>Meaning</tr></thead>
   <tbody>
-    <tr><td><code>Information</code><td class="long"></tr>
-    <tr><td><code>Warning</code><td class="long"></tr>
-    <tr><td><code>Error</code><td class="long"></tr>
+    <tr><td><code>Information</code><td class="long">Informational message; no action required.</tr>
+    <tr><td><code>Warning</code><td class="long">Warning message, flagging a non-fatal issue worth reviewing.</tr>
+    <tr><td><code>Error</code><td class="long">Error message, describing why processing failed at this stage.</tr>
   </tbody>
 </table>
 
@@ -137,8 +137,8 @@
   </colgroup>
   <thead><tr><th>Value<th>Meaning</tr></thead>
   <tbody>
-    <tr><td><code>TaxDocumentIdentifier</code><td class="long"></tr>
-    <tr><td><code>Other</code><td class="long"></tr>
+    <tr><td><code>TaxDocumentIdentifier</code><td class="long">The tax certificate's own official reference number (the "Ordnungsnummer"), see the Identifiers section above.</tr>
+    <tr><td><code>Other</code><td class="long">A record whose content doesn't fit any of the schema's other defined record types.</tr>
   </tbody>
 </table>
 
@@ -151,8 +151,8 @@
   </colgroup>
   <thead><tr><th>Value<th>Meaning</tr></thead>
   <tbody>
-    <tr><td><code>TaxCertificate</code><td class="long"></tr>
-    <tr><td><code>Information</code><td class="long"></tr>
-    <tr><td><code>Other</code><td class="long"></tr>
+    <tr><td><code>TaxCertificate</code><td class="long">The issued tax certificate document itself.</tr>
+    <tr><td><code>Information</code><td class="long">A supplementary informational document, not itself the tax certificate.</tr>
+    <tr><td><code>Other</code><td class="long">A document that doesn't fit any of the schema's other defined document types.</tr>
   </tbody>
 </table>

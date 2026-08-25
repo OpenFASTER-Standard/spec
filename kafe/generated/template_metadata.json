@@ -770,1064 +770,6 @@
   "sheets": [
     {
       "order": 1,
-      "name": "3 Certificates Of Residence",
-      "significance": "One row per certificate of residence (Ansässigkeitsbescheinigung): issuing authority, issue date and validity period.",
-      "cardinality": "0..n rows per creditorId.",
-      "whenToFill": "Whenever an income on the Income sheet references it via CertificateOfResidenceId.",
-      "fieldCount": 6,
-      "fields": [
-        {
-          "position": 1,
-          "name": "creditorId",
-          "description": "Foreign key. Must match an id value on the '1 Creditors Natural' or '2 Creditors Juridical' sheet (whichever this creditor is a natural or juridical person).",
-          "type": "Text (identifier used to link the sheets; any unique value)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 2,
-          "name": "id",
-          "description": "Identifier for this certificate of residence, defined by you. Referenced by the CertificateOfResidenceId column on the Income sheet.",
-          "type": "Text (identifier used to link the sheets; any unique value)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 3,
-          "name": "Issuer",
-          "description": "Issuing authority",
-          "type": "Text (max 80)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 4,
-          "name": "IssuedAt",
-          "description": "Date of issue",
-          "type": "Date (YYYY-MM-DD)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 5,
-          "name": "ValidFrom",
-          "description": "Valid from",
-          "type": "Date (YYYY-MM-DD)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 6,
-          "name": "ValidUntil",
-          "description": "Valid until",
-          "type": "Date (YYYY-MM-DD)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        }
-      ]
-    },
-    {
-      "order": 2,
-      "name": "4 Income",
-      "significance": "One row per taxed capital income event: type of income, security identification, the debtor, the amount and date of inflow, the tax certificate/other-document details, the beneficial-ownership and residency questions, the indirect-holding and substantial-holding questions, the remittance-base clause, and (where section 50j German Income Tax Act applies) the Par50jEStG holding-period / risk / forwarding / return-obligation block.",
-      "cardinality": "1..n rows per creditorId.",
-      "whenToFill": "Always -- every application needs at least one taxed income.",
-      "fieldCount": 46,
-      "fields": [
-        {
-          "position": 1,
-          "name": "creditorId",
-          "description": "Foreign key. Must match an id value on the '1 Creditors Natural' or '2 Creditors Juridical' sheet (whichever this creditor is a natural or juridical person).",
-          "type": "Text (identifier used to link the sheets; any unique value)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 2,
-          "name": "incomeId",
-          "description": "Sequence number of the income, starting with 1 (KaFE's own ErtragId). Also serves, together with creditorId, as the linking key referenced by the '5 Investment Chain' and '6 Transaction Data' sheets.",
-          "type": "Integer",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 3,
-          "name": "CertificateOfResidenceId",
-          "description": "Foreign key. Must match an id value on the '3 Certificates Of Residence' sheet -- identifies which certificate of residence supports this income.",
-          "type": "Text (identifier used to link the sheets; any unique value)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 4,
-          "name": "CapitalIncome",
-          "description": "Type of capital income",
-          "type": "Enum",
-          "requiredness": "Required",
-          "enum": "KapitalertragArt",
-          "allowedValues": [
-            "DIVIDENDEN",
-            "AUSSCH_KAPG",
-            "GENUSSR_ML",
-            "GENUSSR_OL",
-            "WANDELANL",
-            "LEBENSVERS",
-            "EINN_STILLG",
-            "PART_DARL",
-            "GEWINNOBL",
-            "GRENZKW",
-            "SONSTIGE"
-          ]
-        },
-        {
-          "position": 5,
-          "name": "Stocks_ConvertibleBonds/ISIN",
-          "description": "ISIN (12-digit)",
-          "type": "ISIN (12-digit)",
-          "requiredness": "Optional",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 6,
-          "name": "Stocks_ConvertibleBonds/NumberOfShares",
-          "description": "Number of shares/bonds",
-          "type": "Decimal (4 decimals)",
-          "requiredness": "Optional",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 7,
-          "name": "SubstantialHolding/IsSubstantial",
-          "description": "Is it a substential holding (at least 10 %)?",
-          "type": "Boolean (true / false)",
-          "requiredness": "Optional",
-          "enum": "Boolean",
-          "allowedValues": [
-            "true",
-            "false"
-          ]
-        },
-        {
-          "position": 8,
-          "name": "SubstantialHolding/Ownership",
-          "description": "Size of the ownership interest (in %)",
-          "type": "Decimal (4 decimals)",
-          "requiredness": "Optional",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 9,
-          "name": "SubstantialHolding/HoldingPeriod18M",
-          "description": "Has the investment been held for a period of at least 18 months?",
-          "type": "Boolean (true / false)",
-          "requiredness": "Optional",
-          "enum": "Boolean",
-          "allowedValues": [
-            "true",
-            "false"
-          ]
-        },
-        {
-          "position": 10,
-          "name": "SubstantialHolding/HoldingPeriod12M",
-          "description": "Has the investment been held for a period of at least one year?",
-          "type": "Boolean (true / false)",
-          "requiredness": "Optional",
-          "enum": "Boolean",
-          "allowedValues": [
-            "true",
-            "false"
-          ]
-        },
-        {
-          "position": 11,
-          "name": "SubstantialHolding/HoldingPeriod6M",
-          "description": "Has the investment been held for a period of at least 6 months?",
-          "type": "Boolean (true / false)",
-          "requiredness": "Optional",
-          "enum": "Boolean",
-          "allowedValues": [
-            "true",
-            "false"
-          ]
-        },
-        {
-          "position": 12,
-          "name": "IndirectHolding/IndirectHolding",
-          "description": "Is it a joint deposit/account or another form of indirect holding?",
-          "type": "Boolean (true / false)",
-          "requiredness": "Required",
-          "enum": "Boolean",
-          "allowedValues": [
-            "true",
-            "false"
-          ]
-        },
-        {
-          "position": 13,
-          "name": "IndirectHolding/CompanyOfSpouses",
-          "description": "",
-          "type": "Boolean (true / false)",
-          "requiredness": "Optional",
-          "enum": "Boolean",
-          "allowedValues": [
-            "true",
-            "false"
-          ]
-        },
-        {
-          "position": 14,
-          "name": "IndirectHolding/SizeOfIndirectHolding",
-          "description": "Size of the indirect holding (in %)",
-          "type": "Decimal (4 decimals)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 15,
-          "name": "Debtor/Name",
-          "description": "Debtor of the capital income / distributing company",
-          "type": "Text (max 256)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 16,
-          "name": "Debtor/TaxNumber",
-          "description": "Tax number",
-          "type": "Text (max 13)",
-          "requiredness": "Optional",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 17,
-          "name": "NonResidency_DE",
-          "description": "Was the person with limited tax liability a resident of the specified country of residence at the time of\n\t\t\t\t\t\tthe inflow and did not have its registered office or place of management in Germany at that time?",
-          "type": "Boolean (true / false)",
-          "requiredness": "Optional",
-          "enum": "Boolean",
-          "allowedValues": [
-            "true",
-            "false"
-          ]
-        },
-        {
-          "position": 18,
-          "name": "DateOfReceiptOfCapitalIncome",
-          "description": "Date of receipt of capital income",
-          "type": "Date (YYYY-MM-DD)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 19,
-          "name": "GrossIncomeFromCapitalReceived",
-          "description": "Gross income from capital received (in Euro)",
-          "type": "Decimal (2 decimals)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 20,
-          "name": "Withheld_Taxes",
-          "description": "Withheld German capital income tax (in Euro)",
-          "type": "Decimal (2 decimals)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 21,
-          "name": "Requested_Refund",
-          "description": "The refund amount being claimed for this income (informational; BZSt itself computes the actual refund from the withheld tax and the applicable treaty/statutory rate -- this is not a real KaFE XSD field).",
-          "type": "Decimal",
-          "requiredness": "Optional",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 22,
-          "name": "DocumentDescription",
-          "description": "Short description of the file content (e.g. certificate of residence).",
-          "type": "Text (max 120)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 23,
-          "name": "DocumentProof/TaxCertificateNumber",
-          "description": "Serial number",
-          "type": "UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)",
-          "requiredness": "Optional",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 24,
-          "name": "Hidden_ProfitDistribution/ConstructiveDividend",
-          "description": "Does it concern a constructive dividend?",
-          "type": "Boolean (true / false)",
-          "requiredness": "Optional",
-          "enum": "Boolean",
-          "allowedValues": [
-            "true",
-            "false"
-          ]
-        },
-        {
-          "position": 25,
-          "name": "Economic_Ownership/Ownership_and_Right_To_Use",
-          "description": "Did the person with limited tax liability hold the beneficial ownership (right to use the income) at the\n\t\t\t\t\t\ttime of the inflow?",
-          "type": "Boolean (true / false)",
-          "requiredness": "Required",
-          "enum": "Boolean",
-          "allowedValues": [
-            "true",
-            "false"
-          ]
-        },
-        {
-          "position": 26,
-          "name": "TaxExemption",
-          "description": "Was the person with limited tax liability fully (or partially) exempt from tax in the specified country of\n\t\t\t\t\t\tresidence at the time of the inflow?",
-          "type": "Boolean (true / false)",
-          "requiredness": "Optional",
-          "enum": "Boolean",
-          "allowedValues": [
-            "true",
-            "false"
-          ]
-        },
-        {
-          "position": 27,
-          "name": "LifeInsurancePolicyNumber",
-          "description": "Policy number of the life insurance",
-          "type": "Text (max 40)",
-          "requiredness": "Optional",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 28,
-          "name": "Depositary_Receipts/Is_DR",
-          "description": "Are they depositary receipts? e.g. American Depositary Receipts (ADR).",
-          "type": "Boolean (true / false)",
-          "requiredness": "Optional",
-          "enum": "Boolean",
-          "allowedValues": [
-            "true",
-            "false"
-          ]
-        },
-        {
-          "position": 29,
-          "name": "Depositary_Receipts/ISIN_DR",
-          "description": "ISIN of the underlying (12-digit)",
-          "type": "ISIN (12-digit)",
-          "requiredness": "Optional",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 30,
-          "name": "RemittanceBase/IsSubject",
-          "description": "Werden die Erträge im angegebenen Ansässigkeitsstaat nur dann der Besteuerung unterworfen, wenn sie dorthin\n\t\t\t\t\t\tüberwiesen oder dort bezogen worden sind (Überweisungsklausel)?",
-          "type": "Boolean (true / false)",
-          "requiredness": "Required",
-          "enum": "Boolean",
-          "allowedValues": [
-            "true",
-            "false"
-          ]
-        },
-        {
-          "position": 31,
-          "name": "RemittanceBase/Amount",
-          "description": "Betrag, der in den Ansässigkeitsstaat überwiesen oder dort bezogen wurde.",
-          "type": "Decimal (2 decimals)",
-          "requiredness": "Optional",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 32,
-          "name": "Business_Establishment/Business_Establishment_DE",
-          "description": "Has the capital income distributed to a permanent establishment / fixed entity located in Germany of the\n\t\t\t\t\t\tperson subject to limited taxation?",
-          "type": "Boolean (true / false)",
-          "requiredness": "Optional",
-          "enum": "Boolean",
-          "allowedValues": [
-            "true",
-            "false"
-          ]
-        },
-        {
-          "position": 33,
-          "name": "UnlimitedForeignCorporateTaxLiability",
-          "description": "Was the person with limited tax liability subject to unlimited corporate\n\t\t\t\t\t\tincome tax liability or a comparable tax liability in their country of residence without any option to choose?",
-          "type": "Boolean (true / false)",
-          "requiredness": "Optional",
-          "enum": "Boolean",
-          "allowedValues": [
-            "true",
-            "false"
-          ]
-        },
-        {
-          "position": 34,
-          "name": "CreditAmount",
-          "description": "To what extent was the German capital gains tax credited in full or in\n\t\t\t\t\t\tpart against taxation in the country of residence or deducted from the tax base, or is it possible\n\t\t\t\t\t\tto carry this forward to future tax periods (tax credit carryforward)?",
-          "type": "Decimal (2 decimals)",
-          "requiredness": "Optional",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 35,
-          "name": "Questions_for_50j/HoldingPeriod/HoldingMore45D",
-          "description": "Anzahl der Anteile, die innerhalb des Mindesthaltezeitraums an mindestens 45 Tagen ohne Unterbrechung\n\t\t\t\t\t\tgehalten wurden (§ 50j Absatz 4 Satz 2 EStG).",
-          "type": "Decimal (4 decimals)",
-          "requiredness": "Conditional",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 36,
-          "name": "Questions_for_50j/HoldingPeriod/HoldingMore1Y",
-          "description": "Davon Anzahl der Anteile, die im Zeitpunkt des Zuflusses mindestens ein Jahr ohne Unterbrechung gehalten\n\t\t\t\t\t\twurden (§ 50j Absatz 4 Satz 2 EStG).",
-          "type": "Decimal (4 decimals)",
-          "requiredness": "Conditional",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 37,
-          "name": "Questions_for_50j/HoldingPeriod/HoldingLess45D",
-          "description": "Anzahl der Anteile, die kürzer 45 Tage gehalten wurden.",
-          "type": "Decimal (4 decimals)",
-          "requiredness": "Conditional",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 38,
-          "name": "Questions_for_50j/HoldingPeriod/SharesPar50jEStG",
-          "description": "Anzahl der Anteile im Sinne des § 50j EStG.",
-          "type": "Decimal (4 decimals)",
-          "requiredness": "Conditional",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 39,
-          "name": "Questions_for_50j/MinValueChangeRisk/OpposingClaims",
-          "description": "Hatte die beschränkt steuerpflichtige Person oder eine ihr nahestehende Person während der Mindesthaltedauer\n\t\t\t\t\t\tgegenläufige Ansprüche?",
-          "type": "Boolean (true / false)",
-          "requiredness": "Conditional",
-          "enum": "Boolean",
-          "allowedValues": [
-            "true",
-            "false"
-          ]
-        },
-        {
-          "position": 40,
-          "name": "Questions_for_50j/MinValueChangeRisk/RiskMin70",
-          "description": "Anzahl der Anteile, für die die beschränkt steuerpflichtige Person das Wertänderungsrisiko während der\n\t\t\t\t\t\tMindesthaltedauer zu mindestens 70% getragen hat. (Bezogen auf die Anteile im Sinne des § 50j EStG)",
-          "type": "Decimal (4 decimals)",
-          "requiredness": "Conditional",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 41,
-          "name": "Questions_for_50j/MinValueChangeRisk/OtherOpposingClaims",
-          "description": "Waren während der Mindesthaltedauer gegenläufige Ansprüche vorhanden, die nicht vollständig den Anteilen im\n\t\t\t\t\t\tSinne des § 50j EStG (Haltedauer mindestens 45 Tage, jedoch kürzer als 1 Jahr) zugeordnet waren? (Die Frage bezieht sich auf den\n\t\t\t\t\t\tgesamten Bestand der Anteils- oder Genussscheingattung.)",
-          "type": "Boolean (true / false)",
-          "requiredness": "Conditional",
-          "enum": "Boolean",
-          "allowedValues": [
-            "true",
-            "false"
-          ]
-        },
-        {
-          "position": 42,
-          "name": "Questions_for_50j/ForwardingObligation/ForwardingObligation",
-          "description": "Lag eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der Kapitalerträge vor?",
-          "type": "Boolean (true / false)",
-          "requiredness": "Conditional",
-          "enum": "Boolean",
-          "allowedValues": [
-            "true",
-            "false"
-          ]
-        },
-        {
-          "position": 43,
-          "name": "Questions_for_50j/ForwardingObligation/NumberOfShares",
-          "description": "Anzahl der Anteile, für die eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der\n\t\t\t\t\t\tKapitalerträge vorlag. (Bezogen auf die Anteile im Sinne des § 50j EStG)",
-          "type": "Decimal (4 decimals)",
-          "requiredness": "Conditional",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 44,
-          "name": "Questions_for_50j/ForwardingObligation/FurtherForwardingObligation",
-          "description": "Lag eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der Kapitalerträge vor, die über die\n\t\t\t\t\t\tAnteile im Sinne des § 50j EStG (Haltedauer mindestens 45 Tage, jedoch kürzer als 1 Jahr) hinausgeht? (Bezogen auf den gesamten Bestand\n\t\t\t\t\t\tder Anteils- oder Genussscheingattung.)",
-          "type": "Boolean (true / false)",
-          "requiredness": "Conditional",
-          "enum": "Boolean",
-          "allowedValues": [
-            "true",
-            "false"
-          ]
-        },
-        {
-          "position": 45,
-          "name": "Questions_for_50j/ReturnObligation/ReturnObligation",
-          "description": "Lagen Rückgabeverpflichtungen ohne Dividendenberechtigung für mit Dividendenberechtigung erworbene Anteile\n\t\t\t\t\t\tvor? (Bezogen auf den gesamten Bestand der Anteils- oder Genussscheingattung.)",
-          "type": "Boolean (true / false)",
-          "requiredness": "Conditional",
-          "enum": "Boolean",
-          "allowedValues": [
-            "true",
-            "false"
-          ]
-        },
-        {
-          "position": 46,
-          "name": "Questions_for_50j/ReturnObligation/NumberOfShares",
-          "description": "Anzahl der Anteile, für die eine Rückgabeverpflichtung ohne Dividendenberechtigung für mit\n\t\t\t\t\t\tDividendenberechtigung erworbene Anteile vorlag.",
-          "type": "Decimal (4 decimals)",
-          "requiredness": "Conditional",
-          "enum": null,
-          "allowedValues": []
-        }
-      ]
-    },
-    {
-      "order": 3,
-      "name": "5 Investment Chain",
-      "significance": "The chain of companies through which an indirect holding (MittelbareBeteiligung) is held: each link's organisation, legal form, ownership percentage, country of residence, tax number/TIN, and whether it is exclusively asset-managing.",
-      "cardinality": "0..n rows per (creditorId, incomeId) pair, ordered by SequenceNumber.",
-      "whenToFill": "Only when the corresponding income's IndirectHolding/IndirectHolding = true.",
-      "fieldCount": 10,
-      "fields": [
-        {
-          "position": 1,
-          "name": "creditorId",
-          "description": "Foreign key. Must match an id value on the '1 Creditors Natural' or '2 Creditors Juridical' sheet (whichever this creditor is a natural or juridical person).",
-          "type": "Text (identifier used to link the sheets; any unique value)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 2,
-          "name": "incomeId",
-          "description": "Foreign key. Must match an incomeId value on the '4 Income' sheet for this creditorId.",
-          "type": "Text (identifier used to link the sheets; any unique value)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 3,
-          "name": "SequenceNumber",
-          "description": "Sequence number of the holding. From the person subject of limited taxation to the debtor oft he capital income\n\t\t\t\t\t/ distributing company, starting at 1.",
-          "type": "Integer",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 4,
-          "name": "OrganizationName",
-          "description": "Company name",
-          "type": "Text (max 256)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 5,
-          "name": "LegalForm",
-          "description": "Legal form",
-          "type": "Text (max 80)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 6,
-          "name": "Ownership",
-          "description": "Size of the ownership in interest (in %)",
-          "type": "Decimal (4 decimals)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 7,
-          "name": "Country",
-          "description": "Country of residence",
-          "type": "Enum",
-          "requiredness": "Optional",
-          "enum": "CountryISOAlpha2",
-          "allowedValues": [
-            "AD",
-            "AE",
-            "AF",
-            "AG",
-            "AI",
-            "AL",
-            "AM",
-            "AO",
-            "AQ",
-            "AR",
-            "AS",
-            "AT",
-            "AU",
-            "AW",
-            "AX",
-            "AZ",
-            "BA",
-            "BB",
-            "BD",
-            "BE",
-            "BF",
-            "BG",
-            "BH",
-            "BI",
-            "BJ",
-            "BL",
-            "BM",
-            "BN",
-            "BO",
-            "BQ",
-            "BR",
-            "BS",
-            "BT",
-            "BV",
-            "BW",
-            "BY",
-            "BZ",
-            "CA",
-            "CC",
-            "CD",
-            "CF",
-            "CG",
-            "CH",
-            "CI",
-            "CK",
-            "CL",
-            "CM",
-            "CN",
-            "CO",
-            "CP",
-            "CR",
-            "CU",
-            "CV",
-            "CW",
-            "CX",
-            "CY",
-            "CZ",
-            "DE",
-            "DJ",
-            "DK",
-            "DM",
-            "DO",
-            "DZ",
-            "EC",
-            "EE",
-            "EG",
-            "EH",
-            "ER",
-            "ES",
-            "ET",
-            "FI",
-            "FJ",
-            "FK",
-            "FM",
-            "FO",
-            "FR",
-            "GA",
-            "GB",
-            "GD",
-            "GE",
-            "GF",
-            "GG",
-            "GH",
-            "GI",
-            "GL",
-            "GM",
-            "GN",
-            "GP",
-            "GQ",
-            "GR",
-            "GS",
-            "GT",
-            "GU",
-            "GW",
-            "GY",
-            "HK",
-            "HM",
-            "HN",
-            "HR",
-            "HT",
-            "HU",
-            "ID",
-            "IE",
-            "IL",
-            "IM",
-            "IN",
-            "IO",
-            "IQ",
-            "IR",
-            "IS",
-            "IT",
-            "JE",
-            "JM",
-            "JO",
-            "JP",
-            "KE",
-            "KG",
-            "KH",
-            "KI",
-            "KM",
-            "KN",
-            "KP",
-            "KR",
-            "KW",
-            "KY",
-            "KZ",
-            "LA",
-            "LB",
-            "LC",
-            "LI",
-            "LK",
-            "LR",
-            "LS",
-            "LT",
-            "LU",
-            "LV",
-            "LY",
-            "MA",
-            "MC",
-            "MD",
-            "ME",
-            "MF",
-            "MG",
-            "MH",
-            "MK",
-            "ML",
-            "MM",
-            "MN",
-            "MO",
-            "MP",
-            "MQ",
-            "MR",
-            "MS",
-            "MT",
-            "MU",
-            "MV",
-            "MW",
-            "MX",
-            "MY",
-            "MZ",
-            "NA",
-            "NC",
-            "NE",
-            "NF",
-            "NG",
-            "NI",
-            "NL",
-            "NO",
-            "NP",
-            "NR",
-            "NU",
-            "NZ",
-            "OM",
-            "PA",
-            "PE",
-            "PF",
-            "PG",
-            "PH",
-            "PK",
-            "PL",
-            "PM",
-            "PN",
-            "PR",
-            "PS",
-            "PT",
-            "PW",
-            "PY",
-            "QA",
-            "RE",
-            "RO",
-            "RS",
-            "RU",
-            "RW",
-            "SA",
-            "SB",
-            "SC",
-            "SD",
-            "SE",
-            "SG",
-            "SH",
-            "SI",
-            "SJ",
-            "SK",
-            "SL",
-            "SM",
-            "SN",
-            "SO",
-            "SR",
-            "SS",
-            "ST",
-            "SV",
-            "SX",
-            "SY",
-            "SZ",
-            "TC",
-            "TD",
-            "TF",
-            "TG",
-            "TH",
-            "TJ",
-            "TK",
-            "TL",
-            "TM",
-            "TN",
-            "TO",
-            "TR",
-            "TT",
-            "TV",
-            "TW",
-            "TZ",
-            "UA",
-            "UG",
-            "UM",
-            "US",
-            "UY",
-            "UZ",
-            "VA",
-            "VC",
-            "VE",
-            "VG",
-            "VI",
-            "VN",
-            "VU",
-            "WF",
-            "WS",
-            "XK",
-            "YE",
-            "YT",
-            "ZA",
-            "ZM",
-            "ZW"
-          ]
-        },
-        {
-          "position": 8,
-          "name": "GermanTaxNumber",
-          "description": "Tax number",
-          "type": "Text (max 13)",
-          "requiredness": "Optional",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 9,
-          "name": "TIN",
-          "description": "Foreign tax identification number",
-          "type": "Text (max 40)",
-          "requiredness": "Optional",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 10,
-          "name": "AssetManagement",
-          "description": "Is the company exclusively engaged in asset management?",
-          "type": "Boolean (true / false)",
-          "requiredness": "Required",
-          "enum": "Boolean",
-          "allowedValues": [
-            "true",
-            "false"
-          ]
-        }
-      ]
-    },
-    {
-      "order": 4,
-      "name": "6 Transaction Data",
-      "significance": "The per-depot transaction ledger required by section 50j German Income Tax Act: opening/closing balance (repeated per transaction row), each transaction's direction, business type, share count, trading day and settlement dates.",
-      "cardinality": "0..n rows per (creditorId, incomeId) pair, grouped by DepotNumber.",
-      "whenToFill": "Only when the corresponding income's Par50jEStG block applies.",
-      "fieldCount": 14,
-      "fields": [
-        {
-          "position": 1,
-          "name": "creditorId",
-          "description": "Foreign key. Must match an id value on the '1 Creditors Natural' or '2 Creditors Juridical' sheet (whichever this creditor is a natural or juridical person).",
-          "type": "Text (identifier used to link the sheets; any unique value)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 2,
-          "name": "incomeId",
-          "description": "Foreign key. Must match an incomeId value on the '4 Income' sheet for this creditorId.",
-          "type": "Text (identifier used to link the sheets; any unique value)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 3,
-          "name": "TransactionNumber",
-          "description": "Sequence number of the transaction, starting with 1",
-          "type": "Integer",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 4,
-          "name": "DepotNumber",
-          "description": "Account / deposit number",
-          "type": "Text (max 40)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 5,
-          "name": "Depot/OpeningBalance",
-          "description": "Opening balance (number of shares)",
-          "type": "Decimal (4 decimals)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 6,
-          "name": "Depot/DateOfOpeningBalance",
-          "description": "Date of the specified opening balance",
-          "type": "Date (YYYY-MM-DD)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 7,
-          "name": "Depot/ClosingBalance",
-          "description": "Closing balance two months after the inflow date (number of shares)",
-          "type": "Decimal (4 decimals)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 8,
-          "name": "Depot/DateOfClosingBalance",
-          "description": "Date of the specified closing balance",
-          "type": "Date (YYYY-MM-DD)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 9,
-          "name": "TransactionDirection",
-          "description": "Inflow / Outflow",
-          "type": "Enum",
-          "requiredness": "Required",
-          "enum": "TransaktionArt",
-          "allowedValues": [
-            "ZUGANG",
-            "ABGANG"
-          ]
-        },
-        {
-          "position": 10,
-          "name": "TradingDay",
-          "description": "Trading day",
-          "type": "Date (YYYY-MM-DD)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 11,
-          "name": "TransactionType",
-          "description": "Transaction",
-          "type": "Enum",
-          "requiredness": "Required",
-          "enum": "TransaktionGeschaeft",
-          "allowedValues": [
-            "PO",
-            "SO",
-            "TL",
-            "RL",
-            "TP",
-            "RP"
-          ]
-        },
-        {
-          "position": 12,
-          "name": "NumberOfShares",
-          "description": "Number of shares",
-          "type": "Decimal (4 decimals)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 13,
-          "name": "AgreedSettlementDate",
-          "description": "Agreed settlement date",
-          "type": "Date (YYYY-MM-DD)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        },
-        {
-          "position": 14,
-          "name": "ActualSettlementDate",
-          "description": "Actual settlement date",
-          "type": "Date (YYYY-MM-DD)",
-          "requiredness": "Required",
-          "enum": null,
-          "allowedValues": []
-        }
-      ]
-    },
-    {
-      "order": 5,
       "name": "1 Creditors Natural",
       "significance": "One row per creditor who is a natural person: identity, address, German tax office details, the authorised representative and legal representative (if any), the legal basis for the refund claim, bank details, the Switzerland questions, the affirmations, and (if claiming under section 32(6) German Corporate Tax Act) the tax-privileged-purposes block.",
       "cardinality": "Exactly 1 row per creditor (this sheet defines that creditor's id).",
@@ -3241,7 +2183,7 @@
       ]
     },
     {
-      "order": 6,
+      "order": 2,
       "name": "2 Creditors Juridical",
       "significance": "One row per creditor who is a juridical (non-natural) person: legal form, incorporation details, LEI/register/stock-exchange details, the option under section 1a German Corporate Tax Act, investment-fund questions, the authorised representative and legal representative (if any), the legal basis for the refund claim, bank details, and the affirmations.",
       "cardinality": "Exactly 1 row per creditor (this sheet defines that creditor's id).",
@@ -5067,6 +4009,1064 @@
             "true",
             "false"
           ]
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "name": "3 Certificates Of Residence",
+      "significance": "One row per certificate of residence (Ansässigkeitsbescheinigung): issuing authority, issue date and validity period.",
+      "cardinality": "0..n rows per creditorId.",
+      "whenToFill": "Whenever an income on the Income sheet references it via CertificateOfResidenceId.",
+      "fieldCount": 6,
+      "fields": [
+        {
+          "position": 1,
+          "name": "creditorId",
+          "description": "Foreign key. Must match an id value on the '1 Creditors Natural' or '2 Creditors Juridical' sheet (whichever this creditor is a natural or juridical person).",
+          "type": "Text (identifier used to link the sheets; any unique value)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 2,
+          "name": "id",
+          "description": "Identifier for this certificate of residence, defined by you. Referenced by the CertificateOfResidenceId column on the Income sheet.",
+          "type": "Text (identifier used to link the sheets; any unique value)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 3,
+          "name": "Issuer",
+          "description": "Issuing authority",
+          "type": "Text (max 80)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 4,
+          "name": "IssuedAt",
+          "description": "Date of issue",
+          "type": "Date (YYYY-MM-DD)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 5,
+          "name": "ValidFrom",
+          "description": "Valid from",
+          "type": "Date (YYYY-MM-DD)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 6,
+          "name": "ValidUntil",
+          "description": "Valid until",
+          "type": "Date (YYYY-MM-DD)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "name": "4 Income",
+      "significance": "One row per taxed capital income event: type of income, security identification, the debtor, the amount and date of inflow, the tax certificate/other-document details, the beneficial-ownership and residency questions, the indirect-holding and substantial-holding questions, the remittance-base clause, and (where section 50j German Income Tax Act applies) the Par50jEStG holding-period / risk / forwarding / return-obligation block.",
+      "cardinality": "1..n rows per creditorId.",
+      "whenToFill": "Always -- every application needs at least one taxed income.",
+      "fieldCount": 46,
+      "fields": [
+        {
+          "position": 1,
+          "name": "creditorId",
+          "description": "Foreign key. Must match an id value on the '1 Creditors Natural' or '2 Creditors Juridical' sheet (whichever this creditor is a natural or juridical person).",
+          "type": "Text (identifier used to link the sheets; any unique value)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 2,
+          "name": "incomeId",
+          "description": "Sequence number of the income, starting with 1 (KaFE's own ErtragId). Also serves, together with creditorId, as the linking key referenced by the '5 Investment Chain' and '6 Transaction Data' sheets.",
+          "type": "Integer",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 3,
+          "name": "CertificateOfResidenceId",
+          "description": "Foreign key. Must match an id value on the '3 Certificates Of Residence' sheet -- identifies which certificate of residence supports this income.",
+          "type": "Text (identifier used to link the sheets; any unique value)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 4,
+          "name": "CapitalIncome",
+          "description": "Type of capital income",
+          "type": "Enum",
+          "requiredness": "Required",
+          "enum": "KapitalertragArt",
+          "allowedValues": [
+            "DIVIDENDEN",
+            "AUSSCH_KAPG",
+            "GENUSSR_ML",
+            "GENUSSR_OL",
+            "WANDELANL",
+            "LEBENSVERS",
+            "EINN_STILLG",
+            "PART_DARL",
+            "GEWINNOBL",
+            "GRENZKW",
+            "SONSTIGE"
+          ]
+        },
+        {
+          "position": 5,
+          "name": "Stocks_ConvertibleBonds/ISIN",
+          "description": "ISIN (12-digit)",
+          "type": "ISIN (12-digit)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 6,
+          "name": "Stocks_ConvertibleBonds/NumberOfShares",
+          "description": "Number of shares/bonds",
+          "type": "Decimal (4 decimals)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 7,
+          "name": "SubstantialHolding/IsSubstantial",
+          "description": "Is it a substential holding (at least 10 %)?",
+          "type": "Boolean (true / false)",
+          "requiredness": "Optional",
+          "enum": "Boolean",
+          "allowedValues": [
+            "true",
+            "false"
+          ]
+        },
+        {
+          "position": 8,
+          "name": "SubstantialHolding/Ownership",
+          "description": "Size of the ownership interest (in %)",
+          "type": "Decimal (4 decimals)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 9,
+          "name": "SubstantialHolding/HoldingPeriod18M",
+          "description": "Has the investment been held for a period of at least 18 months?",
+          "type": "Boolean (true / false)",
+          "requiredness": "Optional",
+          "enum": "Boolean",
+          "allowedValues": [
+            "true",
+            "false"
+          ]
+        },
+        {
+          "position": 10,
+          "name": "SubstantialHolding/HoldingPeriod12M",
+          "description": "Has the investment been held for a period of at least one year?",
+          "type": "Boolean (true / false)",
+          "requiredness": "Optional",
+          "enum": "Boolean",
+          "allowedValues": [
+            "true",
+            "false"
+          ]
+        },
+        {
+          "position": 11,
+          "name": "SubstantialHolding/HoldingPeriod6M",
+          "description": "Has the investment been held for a period of at least 6 months?",
+          "type": "Boolean (true / false)",
+          "requiredness": "Optional",
+          "enum": "Boolean",
+          "allowedValues": [
+            "true",
+            "false"
+          ]
+        },
+        {
+          "position": 12,
+          "name": "IndirectHolding/IndirectHolding",
+          "description": "Is it a joint deposit/account or another form of indirect holding?",
+          "type": "Boolean (true / false)",
+          "requiredness": "Required",
+          "enum": "Boolean",
+          "allowedValues": [
+            "true",
+            "false"
+          ]
+        },
+        {
+          "position": 13,
+          "name": "IndirectHolding/CompanyOfSpouses",
+          "description": "Handelt es sich um eine Gesellschaft von Ehegatten, die jeweils zu 50% beteiligt sind?",
+          "type": "Boolean (true / false)",
+          "requiredness": "Optional",
+          "enum": "Boolean",
+          "allowedValues": [
+            "true",
+            "false"
+          ]
+        },
+        {
+          "position": 14,
+          "name": "IndirectHolding/SizeOfIndirectHolding",
+          "description": "Size of the indirect holding (in %)",
+          "type": "Decimal (4 decimals)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 15,
+          "name": "Debtor/Name",
+          "description": "Debtor of the capital income / distributing company",
+          "type": "Text (max 256)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 16,
+          "name": "Debtor/TaxNumber",
+          "description": "Tax number",
+          "type": "Text (max 13)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 17,
+          "name": "NonResidency_DE",
+          "description": "Was the person with limited tax liability a resident of the specified country of residence at the time of\n\t\t\t\t\t\tthe inflow and did not have its registered office or place of management in Germany at that time?",
+          "type": "Boolean (true / false)",
+          "requiredness": "Optional",
+          "enum": "Boolean",
+          "allowedValues": [
+            "true",
+            "false"
+          ]
+        },
+        {
+          "position": 18,
+          "name": "DateOfReceiptOfCapitalIncome",
+          "description": "Date of receipt of capital income",
+          "type": "Date (YYYY-MM-DD)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 19,
+          "name": "GrossIncomeFromCapitalReceived",
+          "description": "Gross income from capital received (in Euro)",
+          "type": "Decimal (2 decimals)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 20,
+          "name": "Withheld_Taxes",
+          "description": "Withheld German capital income tax (in Euro)",
+          "type": "Decimal (2 decimals)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 21,
+          "name": "Requested_Refund",
+          "description": "The refund amount being claimed for this income (informational; BZSt itself computes the actual refund from the withheld tax and the applicable treaty/statutory rate -- this is not a real KaFE XSD field).",
+          "type": "Decimal",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 22,
+          "name": "DocumentDescription",
+          "description": "Short description of the file content (e.g. certificate of residence).",
+          "type": "Text (max 120)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 23,
+          "name": "DocumentProof/TaxCertificateNumber",
+          "description": "Serial number",
+          "type": "UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 24,
+          "name": "Hidden_ProfitDistribution/ConstructiveDividend",
+          "description": "Does it concern a constructive dividend?",
+          "type": "Boolean (true / false)",
+          "requiredness": "Optional",
+          "enum": "Boolean",
+          "allowedValues": [
+            "true",
+            "false"
+          ]
+        },
+        {
+          "position": 25,
+          "name": "Economic_Ownership/Ownership_and_Right_To_Use",
+          "description": "Did the person with limited tax liability hold the beneficial ownership (right to use the income) at the\n\t\t\t\t\t\ttime of the inflow?",
+          "type": "Boolean (true / false)",
+          "requiredness": "Required",
+          "enum": "Boolean",
+          "allowedValues": [
+            "true",
+            "false"
+          ]
+        },
+        {
+          "position": 26,
+          "name": "TaxExemption",
+          "description": "Was the person with limited tax liability fully (or partially) exempt from tax in the specified country of\n\t\t\t\t\t\tresidence at the time of the inflow?",
+          "type": "Boolean (true / false)",
+          "requiredness": "Optional",
+          "enum": "Boolean",
+          "allowedValues": [
+            "true",
+            "false"
+          ]
+        },
+        {
+          "position": 27,
+          "name": "LifeInsurancePolicyNumber",
+          "description": "Policy number of the life insurance",
+          "type": "Text (max 40)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 28,
+          "name": "Depositary_Receipts/Is_DR",
+          "description": "Are they depositary receipts? e.g. American Depositary Receipts (ADR).",
+          "type": "Boolean (true / false)",
+          "requiredness": "Optional",
+          "enum": "Boolean",
+          "allowedValues": [
+            "true",
+            "false"
+          ]
+        },
+        {
+          "position": 29,
+          "name": "Depositary_Receipts/ISIN_DR",
+          "description": "ISIN of the underlying (12-digit)",
+          "type": "ISIN (12-digit)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 30,
+          "name": "RemittanceBase/IsSubject",
+          "description": "Werden die Erträge im angegebenen Ansässigkeitsstaat nur dann der Besteuerung unterworfen, wenn sie dorthin\n\t\t\t\t\t\tüberwiesen oder dort bezogen worden sind (Überweisungsklausel)?",
+          "type": "Boolean (true / false)",
+          "requiredness": "Required",
+          "enum": "Boolean",
+          "allowedValues": [
+            "true",
+            "false"
+          ]
+        },
+        {
+          "position": 31,
+          "name": "RemittanceBase/Amount",
+          "description": "Betrag, der in den Ansässigkeitsstaat überwiesen oder dort bezogen wurde.",
+          "type": "Decimal (2 decimals)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 32,
+          "name": "Business_Establishment/Business_Establishment_DE",
+          "description": "Has the capital income distributed to a permanent establishment / fixed entity located in Germany of the\n\t\t\t\t\t\tperson subject to limited taxation?",
+          "type": "Boolean (true / false)",
+          "requiredness": "Optional",
+          "enum": "Boolean",
+          "allowedValues": [
+            "true",
+            "false"
+          ]
+        },
+        {
+          "position": 33,
+          "name": "UnlimitedForeignCorporateTaxLiability",
+          "description": "Was the person with limited tax liability subject to unlimited corporate\n\t\t\t\t\t\tincome tax liability or a comparable tax liability in their country of residence without any option to choose?",
+          "type": "Boolean (true / false)",
+          "requiredness": "Optional",
+          "enum": "Boolean",
+          "allowedValues": [
+            "true",
+            "false"
+          ]
+        },
+        {
+          "position": 34,
+          "name": "CreditAmount",
+          "description": "To what extent was the German capital gains tax credited in full or in\n\t\t\t\t\t\tpart against taxation in the country of residence or deducted from the tax base, or is it possible\n\t\t\t\t\t\tto carry this forward to future tax periods (tax credit carryforward)?",
+          "type": "Decimal (2 decimals)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 35,
+          "name": "Questions_for_50j/HoldingPeriod/HoldingMore45D",
+          "description": "Anzahl der Anteile, die innerhalb des Mindesthaltezeitraums an mindestens 45 Tagen ohne Unterbrechung\n\t\t\t\t\t\tgehalten wurden (§ 50j Absatz 4 Satz 2 EStG).",
+          "type": "Decimal (4 decimals)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 36,
+          "name": "Questions_for_50j/HoldingPeriod/HoldingMore1Y",
+          "description": "Davon Anzahl der Anteile, die im Zeitpunkt des Zuflusses mindestens ein Jahr ohne Unterbrechung gehalten\n\t\t\t\t\t\twurden (§ 50j Absatz 4 Satz 2 EStG).",
+          "type": "Decimal (4 decimals)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 37,
+          "name": "Questions_for_50j/HoldingPeriod/HoldingLess45D",
+          "description": "Anzahl der Anteile, die kürzer 45 Tage gehalten wurden.",
+          "type": "Decimal (4 decimals)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 38,
+          "name": "Questions_for_50j/HoldingPeriod/SharesPar50jEStG",
+          "description": "Anzahl der Anteile im Sinne des § 50j EStG.",
+          "type": "Decimal (4 decimals)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 39,
+          "name": "Questions_for_50j/MinValueChangeRisk/OpposingClaims",
+          "description": "Hatte die beschränkt steuerpflichtige Person oder eine ihr nahestehende Person während der Mindesthaltedauer\n\t\t\t\t\t\tgegenläufige Ansprüche?",
+          "type": "Boolean (true / false)",
+          "requiredness": "Conditional",
+          "enum": "Boolean",
+          "allowedValues": [
+            "true",
+            "false"
+          ]
+        },
+        {
+          "position": 40,
+          "name": "Questions_for_50j/MinValueChangeRisk/RiskMin70",
+          "description": "Anzahl der Anteile, für die die beschränkt steuerpflichtige Person das Wertänderungsrisiko während der\n\t\t\t\t\t\tMindesthaltedauer zu mindestens 70% getragen hat. (Bezogen auf die Anteile im Sinne des § 50j EStG)",
+          "type": "Decimal (4 decimals)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 41,
+          "name": "Questions_for_50j/MinValueChangeRisk/OtherOpposingClaims",
+          "description": "Waren während der Mindesthaltedauer gegenläufige Ansprüche vorhanden, die nicht vollständig den Anteilen im\n\t\t\t\t\t\tSinne des § 50j EStG (Haltedauer mindestens 45 Tage, jedoch kürzer als 1 Jahr) zugeordnet waren? (Die Frage bezieht sich auf den\n\t\t\t\t\t\tgesamten Bestand der Anteils- oder Genussscheingattung.)",
+          "type": "Boolean (true / false)",
+          "requiredness": "Conditional",
+          "enum": "Boolean",
+          "allowedValues": [
+            "true",
+            "false"
+          ]
+        },
+        {
+          "position": 42,
+          "name": "Questions_for_50j/ForwardingObligation/ForwardingObligation",
+          "description": "Lag eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der Kapitalerträge vor?",
+          "type": "Boolean (true / false)",
+          "requiredness": "Conditional",
+          "enum": "Boolean",
+          "allowedValues": [
+            "true",
+            "false"
+          ]
+        },
+        {
+          "position": 43,
+          "name": "Questions_for_50j/ForwardingObligation/NumberOfShares",
+          "description": "Anzahl der Anteile, für die eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der\n\t\t\t\t\t\tKapitalerträge vorlag. (Bezogen auf die Anteile im Sinne des § 50j EStG)",
+          "type": "Decimal (4 decimals)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 44,
+          "name": "Questions_for_50j/ForwardingObligation/FurtherForwardingObligation",
+          "description": "Lag eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der Kapitalerträge vor, die über die\n\t\t\t\t\t\tAnteile im Sinne des § 50j EStG (Haltedauer mindestens 45 Tage, jedoch kürzer als 1 Jahr) hinausgeht? (Bezogen auf den gesamten Bestand\n\t\t\t\t\t\tder Anteils- oder Genussscheingattung.)",
+          "type": "Boolean (true / false)",
+          "requiredness": "Conditional",
+          "enum": "Boolean",
+          "allowedValues": [
+            "true",
+            "false"
+          ]
+        },
+        {
+          "position": 45,
+          "name": "Questions_for_50j/ReturnObligation/ReturnObligation",
+          "description": "Lagen Rückgabeverpflichtungen ohne Dividendenberechtigung für mit Dividendenberechtigung erworbene Anteile\n\t\t\t\t\t\tvor? (Bezogen auf den gesamten Bestand der Anteils- oder Genussscheingattung.)",
+          "type": "Boolean (true / false)",
+          "requiredness": "Conditional",
+          "enum": "Boolean",
+          "allowedValues": [
+            "true",
+            "false"
+          ]
+        },
+        {
+          "position": 46,
+          "name": "Questions_for_50j/ReturnObligation/NumberOfShares",
+          "description": "Anzahl der Anteile, für die eine Rückgabeverpflichtung ohne Dividendenberechtigung für mit\n\t\t\t\t\t\tDividendenberechtigung erworbene Anteile vorlag.",
+          "type": "Decimal (4 decimals)",
+          "requiredness": "Conditional",
+          "enum": null,
+          "allowedValues": []
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "name": "5 Investment Chain",
+      "significance": "The chain of companies through which an indirect holding (MittelbareBeteiligung) is held: each link's organisation, legal form, ownership percentage, country of residence, tax number/TIN, and whether it is exclusively asset-managing.",
+      "cardinality": "0..n rows per (creditorId, incomeId) pair, ordered by SequenceNumber.",
+      "whenToFill": "Only when the corresponding income's IndirectHolding/IndirectHolding = true.",
+      "fieldCount": 10,
+      "fields": [
+        {
+          "position": 1,
+          "name": "creditorId",
+          "description": "Foreign key. Must match an id value on the '1 Creditors Natural' or '2 Creditors Juridical' sheet (whichever this creditor is a natural or juridical person).",
+          "type": "Text (identifier used to link the sheets; any unique value)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 2,
+          "name": "incomeId",
+          "description": "Foreign key. Must match an incomeId value on the '4 Income' sheet for this creditorId.",
+          "type": "Text (identifier used to link the sheets; any unique value)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 3,
+          "name": "SequenceNumber",
+          "description": "Sequence number of the holding. From the person subject of limited taxation to the debtor oft he capital income\n\t\t\t\t\t/ distributing company, starting at 1.",
+          "type": "Integer",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 4,
+          "name": "OrganizationName",
+          "description": "Company name",
+          "type": "Text (max 256)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 5,
+          "name": "LegalForm",
+          "description": "Legal form",
+          "type": "Text (max 80)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 6,
+          "name": "Ownership",
+          "description": "Size of the ownership in interest (in %)",
+          "type": "Decimal (4 decimals)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 7,
+          "name": "Country",
+          "description": "Country of residence",
+          "type": "Enum",
+          "requiredness": "Optional",
+          "enum": "CountryISOAlpha2",
+          "allowedValues": [
+            "AD",
+            "AE",
+            "AF",
+            "AG",
+            "AI",
+            "AL",
+            "AM",
+            "AO",
+            "AQ",
+            "AR",
+            "AS",
+            "AT",
+            "AU",
+            "AW",
+            "AX",
+            "AZ",
+            "BA",
+            "BB",
+            "BD",
+            "BE",
+            "BF",
+            "BG",
+            "BH",
+            "BI",
+            "BJ",
+            "BL",
+            "BM",
+            "BN",
+            "BO",
+            "BQ",
+            "BR",
+            "BS",
+            "BT",
+            "BV",
+            "BW",
+            "BY",
+            "BZ",
+            "CA",
+            "CC",
+            "CD",
+            "CF",
+            "CG",
+            "CH",
+            "CI",
+            "CK",
+            "CL",
+            "CM",
+            "CN",
+            "CO",
+            "CP",
+            "CR",
+            "CU",
+            "CV",
+            "CW",
+            "CX",
+            "CY",
+            "CZ",
+            "DE",
+            "DJ",
+            "DK",
+            "DM",
+            "DO",
+            "DZ",
+            "EC",
+            "EE",
+            "EG",
+            "EH",
+            "ER",
+            "ES",
+            "ET",
+            "FI",
+            "FJ",
+            "FK",
+            "FM",
+            "FO",
+            "FR",
+            "GA",
+            "GB",
+            "GD",
+            "GE",
+            "GF",
+            "GG",
+            "GH",
+            "GI",
+            "GL",
+            "GM",
+            "GN",
+            "GP",
+            "GQ",
+            "GR",
+            "GS",
+            "GT",
+            "GU",
+            "GW",
+            "GY",
+            "HK",
+            "HM",
+            "HN",
+            "HR",
+            "HT",
+            "HU",
+            "ID",
+            "IE",
+            "IL",
+            "IM",
+            "IN",
+            "IO",
+            "IQ",
+            "IR",
+            "IS",
+            "IT",
+            "JE",
+            "JM",
+            "JO",
+            "JP",
+            "KE",
+            "KG",
+            "KH",
+            "KI",
+            "KM",
+            "KN",
+            "KP",
+            "KR",
+            "KW",
+            "KY",
+            "KZ",
+            "LA",
+            "LB",
+            "LC",
+            "LI",
+            "LK",
+            "LR",
+            "LS",
+            "LT",
+            "LU",
+            "LV",
+            "LY",
+            "MA",
+            "MC",
+            "MD",
+            "ME",
+            "MF",
+            "MG",
+            "MH",
+            "MK",
+            "ML",
+            "MM",
+            "MN",
+            "MO",
+            "MP",
+            "MQ",
+            "MR",
+            "MS",
+            "MT",
+            "MU",
+            "MV",
+            "MW",
+            "MX",
+            "MY",
+            "MZ",
+            "NA",
+            "NC",
+            "NE",
+            "NF",
+            "NG",
+            "NI",
+            "NL",
+            "NO",
+            "NP",
+            "NR",
+            "NU",
+            "NZ",
+            "OM",
+            "PA",
+            "PE",
+            "PF",
+            "PG",
+            "PH",
+            "PK",
+            "PL",
+            "PM",
+            "PN",
+            "PR",
+            "PS",
+            "PT",
+            "PW",
+            "PY",
+            "QA",
+            "RE",
+            "RO",
+            "RS",
+            "RU",
+            "RW",
+            "SA",
+            "SB",
+            "SC",
+            "SD",
+            "SE",
+            "SG",
+            "SH",
+            "SI",
+            "SJ",
+            "SK",
+            "SL",
+            "SM",
+            "SN",
+            "SO",
+            "SR",
+            "SS",
+            "ST",
+            "SV",
+            "SX",
+            "SY",
+            "SZ",
+            "TC",
+            "TD",
+            "TF",
+            "TG",
+            "TH",
+            "TJ",
+            "TK",
+            "TL",
+            "TM",
+            "TN",
+            "TO",
+            "TR",
+            "TT",
+            "TV",
+            "TW",
+            "TZ",
+            "UA",
+            "UG",
+            "UM",
+            "US",
+            "UY",
+            "UZ",
+            "VA",
+            "VC",
+            "VE",
+            "VG",
+            "VI",
+            "VN",
+            "VU",
+            "WF",
+            "WS",
+            "XK",
+            "YE",
+            "YT",
+            "ZA",
+            "ZM",
+            "ZW"
+          ]
+        },
+        {
+          "position": 8,
+          "name": "GermanTaxNumber",
+          "description": "Tax number",
+          "type": "Text (max 13)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 9,
+          "name": "TIN",
+          "description": "Foreign tax identification number",
+          "type": "Text (max 40)",
+          "requiredness": "Optional",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 10,
+          "name": "AssetManagement",
+          "description": "Is the company exclusively engaged in asset management?",
+          "type": "Boolean (true / false)",
+          "requiredness": "Required",
+          "enum": "Boolean",
+          "allowedValues": [
+            "true",
+            "false"
+          ]
+        }
+      ]
+    },
+    {
+      "order": 6,
+      "name": "6 Transaction Data",
+      "significance": "The per-depot transaction ledger required by section 50j German Income Tax Act: opening/closing balance (repeated per transaction row), each transaction's direction, business type, share count, trading day and settlement dates.",
+      "cardinality": "0..n rows per (creditorId, incomeId) pair, grouped by DepotNumber.",
+      "whenToFill": "Only when the corresponding income's Par50jEStG block applies.",
+      "fieldCount": 14,
+      "fields": [
+        {
+          "position": 1,
+          "name": "creditorId",
+          "description": "Foreign key. Must match an id value on the '1 Creditors Natural' or '2 Creditors Juridical' sheet (whichever this creditor is a natural or juridical person).",
+          "type": "Text (identifier used to link the sheets; any unique value)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 2,
+          "name": "incomeId",
+          "description": "Foreign key. Must match an incomeId value on the '4 Income' sheet for this creditorId.",
+          "type": "Text (identifier used to link the sheets; any unique value)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 3,
+          "name": "TransactionNumber",
+          "description": "Sequence number of the transaction, starting with 1",
+          "type": "Integer",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 4,
+          "name": "DepotNumber",
+          "description": "Account / deposit number",
+          "type": "Text (max 40)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 5,
+          "name": "Depot/OpeningBalance",
+          "description": "Opening balance (number of shares)",
+          "type": "Decimal (4 decimals)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 6,
+          "name": "Depot/DateOfOpeningBalance",
+          "description": "Date of the specified opening balance",
+          "type": "Date (YYYY-MM-DD)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 7,
+          "name": "Depot/ClosingBalance",
+          "description": "Closing balance two months after the inflow date (number of shares)",
+          "type": "Decimal (4 decimals)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 8,
+          "name": "Depot/DateOfClosingBalance",
+          "description": "Date of the specified closing balance",
+          "type": "Date (YYYY-MM-DD)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 9,
+          "name": "TransactionDirection",
+          "description": "Inflow / Outflow",
+          "type": "Enum",
+          "requiredness": "Required",
+          "enum": "TransaktionArt",
+          "allowedValues": [
+            "ZUGANG",
+            "ABGANG"
+          ]
+        },
+        {
+          "position": 10,
+          "name": "TradingDay",
+          "description": "Trading day",
+          "type": "Date (YYYY-MM-DD)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 11,
+          "name": "TransactionType",
+          "description": "Transaction",
+          "type": "Enum",
+          "requiredness": "Required",
+          "enum": "TransaktionGeschaeft",
+          "allowedValues": [
+            "PO",
+            "SO",
+            "TL",
+            "RL",
+            "TP",
+            "RP"
+          ]
+        },
+        {
+          "position": 12,
+          "name": "NumberOfShares",
+          "description": "Number of shares",
+          "type": "Decimal (4 decimals)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 13,
+          "name": "AgreedSettlementDate",
+          "description": "Agreed settlement date",
+          "type": "Date (YYYY-MM-DD)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
+        },
+        {
+          "position": 14,
+          "name": "ActualSettlementDate",
+          "description": "Actual settlement date",
+          "type": "Date (YYYY-MM-DD)",
+          "requiredness": "Required",
+          "enum": null,
+          "allowedValues": []
         }
       ]
     }

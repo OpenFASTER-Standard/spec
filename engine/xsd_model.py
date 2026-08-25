@@ -71,13 +71,29 @@ class XsdModel:
     # ------------------------------------------------------------------ #
     @staticmethod
     def _docs_en(documentation) -> str:
-        """English text from a list of xs:documentation elements (else first)."""
+        """English text from a list of xs:documentation elements.
+
+        Falls back to the German (``xml:lang="de"``) text, else the first
+        documentation element present, when there is no non-empty English
+        text -- whether because no ``xml:lang="en"`` node exists at all, or
+        because one exists but its text content is empty (a real defect
+        seen in BZSt's own kafe.xsd, e.g. the ``EhegattenGbR`` element:
+        an empty ``<xs:documentation xml:lang="en"/>`` tag alongside a
+        populated German one). Both cases should behave the same way, since
+        an empty English node conveys exactly as little as a missing one.
+        """
+        de_text = ""
+        first_text = None
         for doc in documentation:
-            if doc.get(XML_LANG) == "en":
-                return (doc.text or "").strip()
-        for doc in documentation:
-            return (doc.text or "").strip()
-        return ""
+            text = (doc.text or "").strip()
+            lang = doc.get(XML_LANG)
+            if first_text is None:
+                first_text = text
+            if lang == "en" and text:
+                return text
+            if lang == "de" and not de_text:
+                de_text = text
+        return de_text or first_text or ""
 
     @classmethod
     def _annotation_doc(cls, component) -> str:
