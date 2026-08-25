@@ -4222,7 +4222,7 @@
         {
           "position": 13,
           "name": "IndirectHolding/CompanyOfSpouses",
-          "description": "",
+          "description": "Handelt es sich um eine Gesellschaft von Ehegatten, die jeweils zu 50% beteiligt sind?",
           "type": "Boolean (true / false)",
           "requiredness": "Optional",
           "enum": "Boolean",

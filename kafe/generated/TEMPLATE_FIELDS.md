@@ -389,7 +389,7 @@ Every data sheet has four header rows; data entry begins on row 5.
 | 10 | `SubstantialHolding/HoldingPeriod12M` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Has the investment been held for a period of at least one year? |
 | 11 | `SubstantialHolding/HoldingPeriod6M` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Has the investment been held for a period of at least 6 months? |
 | 12 | `IndirectHolding/IndirectHolding` | Required | Enum [`Boolean`](#boolean): `true`, `false` | Is it a joint deposit/account or another form of indirect holding? |
-| 13 | `IndirectHolding/CompanyOfSpouses` | Optional | Enum [`Boolean`](#boolean): `true`, `false` |  |
+| 13 | `IndirectHolding/CompanyOfSpouses` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Handelt es sich um eine Gesellschaft von Ehegatten, die jeweils zu 50% beteiligt sind? |
 | 14 | `IndirectHolding/SizeOfIndirectHolding` | Required | Decimal (4 decimals) | Size of the indirect holding (in %) |
 | 15 | `Debtor/Name` | Required | Text (max 256) | Debtor of the capital income / distributing company |
 | 16 | `Debtor/TaxNumber` | Optional | Text (max 13) | Tax number |
