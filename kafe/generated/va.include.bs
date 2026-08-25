@@ -17,7 +17,7 @@
   <tbody>
     <tr><td><code>BescheidId</code><td class="col-req">Optional<td>UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)<td class="long">UUID, die den Bescheid eindeutig kennzeichnet.</tr>
     <tr><td><code>BescheidArt</code><td class="col-req">Required<td>Text<td class="long">Kennzeichnung, ob es sich um einen erstmaligen oder korrigierten Bescheid handelt.</tr>
-    <tr><td><code>SummeAbrechnung</code><td class="col-req">Required<td>Decimal (None digits total, 2 decimals)<td class="long">Abrechnungsbetrag. Negativer Betrag bei Zahllast (Rückforderung).</tr>
+    <tr><td><code>SummeAbrechnung</code><td class="col-req">Required<td>Decimal (2 decimals)<td class="long">Abrechnungsbetrag. Negativer Betrag bei Zahllast (Rückforderung).</tr>
     <tr><td><code>Faelligkeit</code><td class="col-req">Optional<td>Date (YYYY-MM-DD)<td class="long">Fälligkeit der Forderung (nur bei Rückforderung)</tr>
     <tr><td><code>Hinweise</code><td class="col-req">Required<td>Boolean (true / false)<td class="long">Kennzeichnung, ob der Bescheid Hinweise enthält.</tr>
   </tbody>
@@ -53,8 +53,8 @@
   <thead><tr><th>Field<th class="col-req">Requiredness<th>Type / Allowed values<th>Description</tr></thead>
   <tbody>
     <tr><td><code>ErtragId</code><td class="col-req">Required<td>Integer<td class="long">Im Bezugsantrag angegebene ErtragId (laufende Nummer des Ertrags).</tr>
-    <tr><td><code>ErstattungKapESt</code><td class="col-req">Required<td>Decimal (None digits total, 2 decimals)<td class="long">Erstattungsbetrag Kapitalertragsteuer</tr>
-    <tr><td><code>ErstattungSolZ</code><td class="col-req">Required<td>Decimal (None digits total, 2 decimals)<td class="long">Erstattungsbetrag Solidaritätszuschlag</tr>
+    <tr><td><code>ErstattungKapESt</code><td class="col-req">Required<td>Decimal (2 decimals)<td class="long">Erstattungsbetrag Kapitalertragsteuer</tr>
+    <tr><td><code>ErstattungSolZ</code><td class="col-req">Required<td>Decimal (2 decimals)<td class="long">Erstattungsbetrag Solidaritätszuschlag</tr>
   </tbody>
 </table>
 
