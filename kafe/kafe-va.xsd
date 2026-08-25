@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mit XMLSpy v2022 rel. 2 (x64) (http://www.altova.com) von Informationstechnikzentrum Bund (Informationstechnikzentrum Bund) bearbeitet -->
+<xs:schema xmlns:kafe="urn:bzst:kafe:ozg:v1" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:bzst:kafe:ozg:v1" elementFormDefault="qualified"
+		   attributeFormDefault="unqualified" version="1.0.0">
+	<!--
+		Version	Datum		Änderung
+		===============================================================================================
+		1.0.0	20.11.2023	Initiale Erstellung
+	-->
+	<xs:include schemaLocation="kafe-standardtypes.xsd"/>
+	<xs:element name="KAFE-VA" type="kafe:KAFE-VA_CType">
+		<xs:unique name="unique-BescheidId">
+			<xs:selector xpath="kafe:Bescheid"/>
+			<xs:field xpath="@BescheidId"/>
+		</xs:unique>
+	</xs:element>
+	<xs:complexType name="Bescheid_CType">
+		<xs:sequence>
+			<xs:element name="Bezugsantrag" type="kafe:Bezugsantrag_CType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Antrag auf den sich der Bescheid bezieht.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BescheidArt" type="kafe:BescheidArt_ENUM">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Kennzeichnung, ob es sich um einen erstmaligen oder korrigierten Bescheid handelt.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SummeAbrechnung" type="kafe:BetragAbrechnung_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Abrechnungsbetrag. Negativer Betrag bei Zahllast (Rückforderung).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Faelligkeit" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Fälligkeit der Forderung (nur bei Rückforderung)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BescheidPdf" type="xs:base64Binary">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Steuerbescheid im PDF-Format</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Hinweise" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Kennzeichnung, ob der Bescheid Hinweise enthält.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Ertraege" type="kafe:BescheidErtraege_CType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Erträge, über die mit dem Bescheid entschieden wird (Buchungszeilen).</xs:documentation>
+				</xs:annotation>
+				<xs:unique name="unique-ErtragId">
+					<xs:selector xpath="kafe:Ertrag"/>
+					<xs:field xpath="@ErtragId"/>
+				</xs:unique>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="BescheidId" type="kafe:UUID_Type">
+			<xs:annotation>
+				<xs:documentation xml:lang="de">UUID, die den Bescheid eindeutig kennzeichnet.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="BescheidErtrag_CType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Ertrag</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ErstattungKapESt" type="kafe:BetragErstattung_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Erstattungsbetrag Kapitalertragsteuer</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ErstattungSolZ" type="kafe:BetragErstattung_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Erstattungsbetrag Solidaritätszuschlag</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="ErtragId" type="xs:integer" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="de">Im Bezugsantrag angegebene ErtragId (laufende Nummer des Ertrags).</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="BescheidErtraege_CType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Erträge, über die mit dem Bescheid entschieden wird (Buchungszeilen).</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Ertrag" type="kafe:BescheidErtrag_CType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ertrag</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Bezugsantrag_CType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Antrag auf den sich der Bescheid bezieht.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TransferticketId" type="kafe:TransferticketId_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">TransferticketId der Lieferung, in der der Antrag enthalten war.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AntragId" type="kafe:UUID_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">In der Lieferung angegebene UUID des Antrages.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RegistrierNr" type="kafe:RegistrierNr_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Aktenzeichen unter der der Antrag beim BZSt registriert wurde (Registriernummer).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="KennNr" type="kafe:KennNr_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Kenn-Nummer des BZSt</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="KAFE-VA_CType">
+		<xs:sequence>
+			<xs:element name="BescheidDatum" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Datum der Bescheide</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Steuerbescheid" type="kafe:Bescheid_CType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Steuerbescheide</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="schemaVersion" use="required" fixed="1.0.0">
+			<xs:annotation>
+				<xs:documentation xml:lang="de">Version des verfahrensspezifischen XML-Schemas für KaFE-VA.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:simpleType name="BescheidArt_ENUM">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ERSTBESCHEID"/>
+			<xs:enumeration value="KORREKTUR"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BetragErstattung_Type">
+		<xs:restriction base="xs:decimal">
+			<xs:minInclusive value="0.00"/>
+			<xs:maxInclusive value="999999999999999.99"/>
+			<xs:fractionDigits value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BetragAbrechnung_Type">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="2"/>
+			<xs:minInclusive value="-999999999999999.99"/>
+			<xs:maxInclusive value="999999999999999.99"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

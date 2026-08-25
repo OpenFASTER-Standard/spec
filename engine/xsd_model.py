@@ -41,6 +41,13 @@ FRIENDLY_TYPES: dict[str, str] = {
     "DateOfBirthType": "Date (YYYY-MM-DD; partial 0000 allowed)",
     "COAFType": "Text (Corporate Action Event Reference, max 16)",
     "Number5Type": "Integer (0 - 99999)",
+    # KaFE-scoped entries (kafe-standardtypes.xsd), keyed by local_name so
+    # there's no collision risk with the MiKaDiv entries above.
+    "UUID_Type": "UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)",
+    "RegistrierNr_Type": "Text (9 characters, BZSt-assigned)",
+    "TransferticketId_Type": "Text (1-170 characters)",
+    "KennNr_Type": "Numeric string (8-digit BZSt withholding-tax number)",
+    "ISIN_Type": "ISIN (12-digit)",
 }
 
 

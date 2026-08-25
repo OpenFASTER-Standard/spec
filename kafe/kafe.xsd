@@ -1,0 +1,758 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mit XMLSpy v2022 rel. 2 (x64) (http://www.altova.com) von Informationstechnikzentrum Bund (Informationstechnikzentrum Bund) bearbeitet -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		   xmlns:kafe="urn:bzst:kafe:ozg:v1"
+		   targetNamespace="urn:bzst:kafe:ozg:v1"
+		   elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.4.0">
+	<!--
+		Version	Datum		Änderung
+		===============================================================================================
+		1.4.0	04.12.2025	Überarbeitung:
+							- Neue Elemente UnbeschraenktAuslaendKoerperschaftstpfl, Anrechnungsbetrag,
+							tinVorhanden
+		===============================================================================================
+		1.3.0	30.10.2024	Überarbeitung:
+							- Anspruch: Par32Abs6KStG sowie SteuerbeguenstigteZwecke wurdenn neu 
+							  aufgenommen.
+							- StaatsangehoerigkeitDE wurde neu aufgenommen.
+							- Angaben zu wesentlichen Beteiligungen wurden neu strukturiert und
+							  erweitert.
+							- Angaben zur unbeschränkten Steuerpflicht (SteuerpflichtDE) wurden
+							  erweitert. Gleiche Fragen im Bereich SchweizFragen sind dadurch
+							  entfallen.
+		===============================================================================================
+		1.1.0	29.02.2024	Überarbeitung:
+							- Anspruch: Art63AEUV sowie BegruendungArt63AEUV wurden neu aufgenommen.
+							- Registereintragung: Angaben zur Registereintragung sind bedingt 
+							  verpflichtend.
+							- Statusbescheinigung: Die Statusbescheinigung ist nicht mehr beizufügen.
+							- BeteiligungHoehe ist entfallen.
+							- Kapitalertragsteuer und Solidaritätszuschlag sind entfallen. Stattdessen 
+							  wurde das Element "Abzugssteuer" eingefügt.
+							- RemittanceBase wurde neu aufgenommen.
+							- Par50jEStG wurde vollständig überarbeitet. Daher wurden die complexTypes 
+							  Haltedauer, MinWertAendRisiko, WeiterlVerpflichtung und 
+							  RueckgabeVerpflichtung neu eingefügt.
+		===============================================================================================
+		1.0.2	20.11.2023	Überarbeitung:
+							- Legal Entity Identifier (LEI): Wurde neu aufgenommen.
+							- Ort der Geschäftsleitung: Neue Elemente wurde eingefügt, um einen 
+							  abweichenden Ort der Geschäftsleitung eingeben zu können.
+		===============================================================================================
+		1.0.1	31.07.2023	Überarbeitung:
+							- Attribut "schemaVersion": Wurde vom DIP-Header in das KAFE-Schema 
+							  verschoben. 
+							- Vollmacht: Diese ist nun Bestandteil des einzelnen Erstattungsantrages, 
+							  nicht mehr des Bevollmächtigten. Das beim Bevollmächtigten enthaltene 
+							  Element wurde umbenannt.
+							- Börsenhandel: Die Elemente sind nur noch bei bestimmten Rechtsformen 
+							  anzugeben.
+							- Ansässigkeitsbescheinigung: Die Angabe des Gültigkeitszeitraums ist nun 
+							  verpflichtend.
+							- Mittelbare Beteiligungen: Für Gemeinschaftsdepots von Ehegatten wurde 
+							  eine Vereinfachung eingeführt, so dass Angaben zur Beteiligungskette 
+							  entbehrlich werden. Hierzu wurde ein neues Element eingefügt. Die 
+							  Bedingungen wurden entsprechend geändert.
+							- Mittelbare Beteiligungen: Die Ansässigkeitsbescheinigung der Beteiligung 
+							  ist entfallen.
+							- Verwendungszweck: Die Länge darf 35 Zeichen nicht übersteigen.
+		===============================================================================================
+		1.0.0	30.06.2023	Initiale Erstellung
+	-->
+	<xs:include schemaLocation="kafe-standardtypes.xsd"/>
+
+	<xs:element name="KAFE" type="kafe:KAFE_CType"/>
+
+	<xs:complexType name="AllgAngaben_CType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Allgemeine Angaben</xs:documentation>
+			<xs:documentation xml:lang="en">General information</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Vollmacht" type="kafe:Anhang_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Vollmacht ist beigefügt</xs:documentation>
+					<xs:documentation xml:lang="en">power of attorney is enclosed</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SteuerpflichtigePerson" type="kafe:StpflPerson_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Angaben zur beschränkt steuerpflichtigen Person</xs:documentation>
+					<xs:documentation xml:lang="en">Details of the person subject to limited tax liability</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GesetzlicheVertretung" type="kafe:GesetzlicheVertretung_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Gesetzliche Vertretung</xs:documentation>
+					<xs:documentation xml:lang="en">Legal representative</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Ansprechperson" type="kafe:Ansprechperson_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ansprechperson für Rückfragen</xs:documentation>
+					<xs:documentation xml:lang="en">Contact for queries</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Anliegen_CType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Auswahl des Anliegens</xs:documentation>
+			<xs:documentation xml:lang="en">Selection of the matter at hand</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Anspruch" type="kafe:Anspruch_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Anspruchsgrundlage für die Erstattung</xs:documentation>
+					<xs:documentation xml:lang="en">Legal basis of claim for refund</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Ansaessigkeitsstaat" type="kafe:CountryISOAlpha2_ENUM" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ansässigkeitsstaat</xs:documentation>
+					<xs:documentation xml:lang="en">Country of residence</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Rechtsform" type="kafe:Rechtsformen_ENUM" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Rechtsform</xs:documentation>
+					<xs:documentation xml:lang="en">Legal form</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GewinnePG_CH" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Stehen mindestens drei Viertel der Gewinne der Personengesellschaft Personen zu, die als natürliche oder
+						juristische Personen in der Schweiz im Sinne von Art. 4 DBA-CH ansässig sind?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">At least three quarters of the profits of the partnership attributable to persons who are resident in
+						Switzerland as natural persons or legal entities within the meaning of art. 4 DTA-CH?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Antraege_CType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Anträge</xs:documentation>
+			<xs:documentation xml:lang="en">Applications</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Erstattungsantrag" type="kafe:Erstattungsantrag_CType" maxOccurs="500">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Antrag auf Erstattung der Abzugsteuer auf Kapitalerträge gemäß § 50c Absatz 3 EStG</xs:documentation>
+					<xs:documentation xml:lang="en">Application for a refund of capital income tax pursuant to section 50c (3) of the German Income Tax Act
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BevollmaechtigtePerson_CType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Bevollmächtigte Person</xs:documentation>
+			<xs:documentation xml:lang="en">Authorised representative</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="NatuerlichePerson" type="kafe:NatP_Struct">
+					<xs:annotation>
+						<xs:documentation xml:lang="de">Natürliche Person</xs:documentation>
+						<xs:documentation xml:lang="en">Natural person</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="NichtNatuerlichePerson" type="kafe:NichtNatP_Struct">
+					<xs:annotation>
+						<xs:documentation xml:lang="de">Nicht natürliche Person</xs:documentation>
+						<xs:documentation xml:lang="en">Non-natural person</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="BevAdresse" type="kafe:Adresse_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Adresse der bevollmächtigten Person</xs:documentation>
+					<xs:documentation xml:lang="en">Address of the authorised representative</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Befugnis" type="kafe:Befugnis_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Sie stellen diesen Antrag in Vertretung für eine andere Person oder Organisation. Gemäß § 80 Abgabenordnung
+						(AO) muss Ihnen eine entsprechende Vollmacht vorliegen.
+					</xs:documentation>
+					<xs:documentation xml:lang="en">You are making this application on behalf of another person or organisation. According to section 80 German
+						Fiscal Code, you must have a corresponding power of attorney.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Erklaerungen_CType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Erklärungen</xs:documentation>
+			<xs:documentation xml:lang="en">Affirmation</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ZusaetzlicheAngaben" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Zusätzliche Angaben zum Antrag</xs:documentation>
+					<xs:documentation xml:lang="en">Additional information on the application</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="10"/>
+						<xs:maxLength value="5000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="BegruendungArt63AEUV" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Begründung für den behaupteten Anspruch nach Art. 63 AEUV.</xs:documentation>
+					<xs:documentation xml:lang="en">Justification for the asserted claim under Article 63 TFEU.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="50"/>
+						<xs:maxLength value="15000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Antrag" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ich beantrage die Erstattung der Abzugsteuer auf die zuvor genannten Erträge.</xs:documentation>
+					<xs:documentation xml:lang="en">I request a refund of the withholding tax on the aforementioned capital income.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AntragPar50c" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Eine Erstattung nach § 50c Absatz 3 EStG in Verbindung mit einem Abkommen zur Vermeidung der
+						Doppelbesteuerung oder anderen bilateralen Abkommen wurde bislang weder beantragt noch vorgenommen.
+					</xs:documentation>
+					<xs:documentation xml:lang="en">A refund according to section 50c (3) German Income Tax Act in connection with an agreement for the
+						avoidance of double taxation (DTA) or other bilateral agreements has neither been applied for nor made to date.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AntragIntOrg" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Eine Erstattung nach einem Abkommen bzw. Übereinkommen für internationale Organisationen oder
+						zwischenstaatliche Einrichtungen wurde bislang weder beantragt noch vorgenommen.
+					</xs:documentation>
+					<xs:documentation xml:lang="en">A refund under an agreement or convention for international organisations or intergovernmental organisations
+						has not been applied for or made to date.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AntragPar11InvStG" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Eine Erstattung nach § 11 InvStG beim BZSt oder einer anderen Finanzbehörde wurde weder beantragt noch
+						vorgenommen.
+					</xs:documentation>
+					<xs:documentation xml:lang="en">A refund in accordance with section 11 Investment Tax Act was neither applied for nor made to the Federal
+						Central Tax Office or another tax authority.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AntragFA" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Die Anrechnung oder Erstattung der hier geltend gemachten Abzugsteuer wurde nicht bei einer anderen
+						deutschen Finanzbehörde geltend gemacht.
+					</xs:documentation>
+					<xs:documentation xml:lang="en">The credit or refund of the withholding tax claimed here was not claimed from another German tax
+						authority.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Versicherung" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ich versichere, dass ich die Angaben nach bestem Wissen und Gewissen vollständig und richtig gemacht habe.
+					</xs:documentation>
+					<xs:documentation xml:lang="en">I certify that the information provided is complete and correct to the best of my knowledge.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Erstattungsantrag_CType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Antrag auf Erstattung der Abzugsteuer auf Kapitalerträge gemäß § 50c Absatz 3 EStG</xs:documentation>
+			<xs:documentation xml:lang="en">Application for a refund of capital income tax pursuant to section 50c (3) of the German Income Tax Act
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Anliegen" type="kafe:Anliegen_CType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Auswahl des Anliegens</xs:documentation>
+					<xs:documentation xml:lang="en">Selection of the matter at hand</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AllgAngaben" type="kafe:AllgAngaben_CType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Allgemeine Angaben</xs:documentation>
+					<xs:documentation xml:lang="en">General information</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SteuerlicheBehandlung" type="kafe:SteuerlicheBehandlung_CType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Steuerliche Behandlung</xs:documentation>
+					<xs:documentation xml:lang="en">Tax treatment</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Zahlungsweg" type="kafe:Zahlungsweg_CType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Zahlungsweg</xs:documentation>
+					<xs:documentation xml:lang="en">Payment method</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BesteuerteErtraege" type="kafe:Ertraege_CType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Besteuerte Erträge</xs:documentation>
+					<xs:documentation xml:lang="en">Taxed capital income</xs:documentation>
+				</xs:annotation>
+				<xs:unique name="unique-ErtragId">
+					<xs:selector xpath="kafe:Ertrag"/>
+					<xs:field xpath="@ErtragId"/>
+				</xs:unique>
+			</xs:element>
+			<xs:element name="Erklaerungen" type="kafe:Erklaerungen_CType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Erklärungen</xs:documentation>
+					<xs:documentation xml:lang="en">Affirmation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="AntragId" type="kafe:UUID_Type" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="de">UUID, mit der der Antrag eindeutig gekennzeichnet ist</xs:documentation>
+				<xs:documentation xml:lang="en">UUID that uniquely distinguishes the application</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="Ertraege_CType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Besteuerte Erträge</xs:documentation>
+			<xs:documentation xml:lang="en">Taxed capital income</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Ertrag" type="kafe:Ertrag_CType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ertrag</xs:documentation>
+					<xs:documentation xml:lang="en">Capital income</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Ertrag_CType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Ertrag</xs:documentation>
+			<xs:documentation xml:lang="en">Capital income</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ErtragAllg" type="kafe:ErtragAllg_CType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Allgemeine Angaben zum Ertrag</xs:documentation>
+					<xs:documentation xml:lang="en">General information on the capital income</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RemittanceBase" type="kafe:RemittanceBaseType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Remittance-base-Klausel</xs:documentation>
+					<xs:documentation xml:lang="en">Remittance base clause</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MittelbareBeteiligung" type="kafe:MittelbBeteiligung_CType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Mittelbare Beteiligung</xs:documentation>
+					<xs:documentation xml:lang="en">Indirect holding</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Nachweis" type="kafe:Nachweis_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Angaben zur Steuerbescheinigung / zum sonstigen Beleg</xs:documentation>
+					<xs:documentation xml:lang="en">Details of the tax certificate or other document</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Par50jEStG" type="kafe:Par50jEStG_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Zusatzangaben nach § 50j EStG</xs:documentation>
+					<xs:documentation xml:lang="en">Additional information according to section 50j German Income Tax Act</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="ErtragId" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="de">Laufende Nummer des Ertrages, beginnend bei 1</xs:documentation>
+				<xs:documentation xml:lang="en">Sequence number of the income, starting with 1</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:integer">
+					<xs:minInclusive value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ErtragAllg_CType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Allgemeine Angaben zum Ertrag</xs:documentation>
+			<xs:documentation xml:lang="en">General information on the capital income</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="KapArt" type="kafe:KapitalertragArt_ENUM">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Art des Kapitalertrags</xs:documentation>
+					<xs:documentation xml:lang="en">Type of capital income</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Hinterlegungsscheine" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Handelt es sich um Hinterlegungsscheine (Depositary Receipts)? Z. B. American Depositary Receipts (ADR).
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Are they depositary receipts? e.g. American Depositary Receipts (ADR).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ISIN" type="kafe:ISIN_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">ISIN (12-stellig)</xs:documentation>
+					<xs:documentation xml:lang="en">ISIN (12-digit)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Underlying" type="kafe:ISIN_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">ISIN des Underlyings (12-stellig)</xs:documentation>
+					<xs:documentation xml:lang="en">ISIN of the underlying (12-digit)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Schuldnerin" type="kafe:OrganisationName_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Schuldnerin / ausschüttende Gesellschaft</xs:documentation>
+					<xs:documentation xml:lang="en">Debtor of the capital income / distributing company</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Stnr" type="kafe:Stnr_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Steuernummer</xs:documentation>
+					<xs:documentation xml:lang="en">Tax number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="VersicherungsNr" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Versicherungsnummer</xs:documentation>
+					<xs:documentation xml:lang="en">Policy number of the life insurance</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="40"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Zuflussdatum" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Tag des Zuflusses</xs:documentation>
+					<xs:documentation xml:lang="en">Date of receipt of capital income</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Bruttozufluss" type="kafe:Betrag_Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Bruttozufluss (in Euro)</xs:documentation>
+					<xs:documentation xml:lang="en">Gross income from capital received (in Euro)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AnzahlAnteile" type="kafe:Stueckzahl_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Anzahl der Anteile</xs:documentation>
+					<xs:documentation xml:lang="en">Number of shares/bonds</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="WesentlicheBeteiligung" type="kafe:WesentlicheBeteiligung_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Angaben zur wesentlichen Beteiligung</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="vGA" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Handelt es sich um eine verdeckte Gewinnausschüttung (vGA)?</xs:documentation>
+					<xs:documentation xml:lang="en">Does it concern a constructive dividend?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="WirtschaftlEigentum" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Bei Dividenden, Ausschüttungen nicht börsennotierter Kapitalgesellschaften (z. B. GmbH) oder Genussrechten
+						mit Beteiligung am Liquidationserlös:
+						Hatte eine andere Person als die beschränkt steuerpflichtige Person im Zeitpunkt des Gewinnverteilungsbeschlusses das wirtschaftliche
+						Eigentum im Sinne von § 39 Absatz 2 Abgabenordnung inne?
+
+						Bei allen anderen Kapitalertragsarten:
+						Hatte eine andere Person als die beschränkt steuerpflichtige Person im Zeitpunkt des Zuflusses das wirtschaftliche Eigentum im Sinne von
+						§ 39 Absatz 2 Abgabenordnung inne?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Did the person with limited tax liability hold the beneficial ownership (right to use the income) at the
+						time of the inflow?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SitzNichtDE" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">War die beschränkt steuerpflichtige Person im Zeitpunkt des Zuflusses im angegebenen Ansässigkeitsstaat
+						ansässig und hatte zu diesem Zeitpunkt weder ihren Sitz noch den Ort der Geschäftsleitung in Deutschland?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Was the person with limited tax liability a resident of the specified country of residence at the time of
+						the inflow and did not have its registered office or place of management in Germany at that time?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="WohnsitzDE" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Hatte die beschränkt steuerpflichtige Person im Zeitpunkt des Zuflusses einen ständigen Wohnsitz oder
+						gewöhnlichen Aufenthalt in Deutschland?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Did the person subject to limited tax liability have a permanent residence or habitual abode in Germany at
+						the time of the inflow?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Steuerbefreiung" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">War die beschränkt steuerpflichtige Person im Zeitpunkt des Zuflusses im angegebenen Ansässigkeitsstaat ganz
+						oder teilweise von der Steuer befreit?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Was the person with limited tax liability fully (or partially) exempt from tax in the specified country of
+						residence at the time of the inflow?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BetriebsstaetteDE" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Sind die Erträge einer in Deutschland gelegenen Betriebsstätte / festen Einrichtung der beschränkt
+						steuerpflichtigen Person zugeflossen?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Has the capital income distributed to a permanent establishment / fixed entity located in Germany of the
+						person subject to limited taxation?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UnbeschraenktAuslaendKoerperschaftstpfl" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Unterlag die beschränkt steuerpflichtige Person im Ansässigkeitsstaat ohne Wahlmöglichkeit der unbeschränkten
+						Körperschaftsteuerpflicht oder einer vergleichbaren Steuerpflicht?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Was the person with limited tax liability subject to unlimited corporate
+						income tax liability or a comparable tax liability in their country of residence without any option to choose?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Anrechnungsbetrag" type="kafe:Anrechnungsbetrag_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">In welcher Höhe wurde die deutsche Kapitalertragsteuer ganz oder teilweise
+						bei der Besteuerung im Ansässigkeitsstaat angerechnet oder von der Steuerbemessungsgrundlage abgezogen
+						bzw. besteht die Möglichkeit, diese in künftige Besteuerungszeiträume vorzutragen (Anrechnungsvortrag)?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">To what extent was the German capital gains tax credited in full or in
+						part against taxation in the country of residence or deducted from the tax base, or is it possible
+						to carry this forward to future tax periods (tax credit carryforward)?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="KAFE_CType">
+		<xs:sequence>
+			<xs:element name="BevollmaechtigtePerson" type="kafe:BevollmaechtigtePerson_CType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Bevollmächtigte Person</xs:documentation>
+					<xs:documentation xml:lang="en">Authorised representative</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Antraege" type="kafe:Antraege_CType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Anträge</xs:documentation>
+					<xs:documentation xml:lang="en">Applications</xs:documentation>
+				</xs:annotation>
+				<xs:unique name="unique-AntragId">
+					<xs:selector xpath="kafe:Erstattungsantrag"/>
+					<xs:field xpath="@AntragId"/>
+				</xs:unique>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="schemaVersion" use="required" fixed="1.4.0">
+			<xs:annotation>
+				<xs:documentation xml:lang="de">Version des verfahrensspezifischen XML-Schemas für KaFE.</xs:documentation>
+				<xs:documentation xml:lang="en">Version of the procedure-specific XML scheme for KaFE</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="MittelbBeteiligung_CType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Mittelbare Beteiligung</xs:documentation>
+			<xs:documentation xml:lang="en">Indirect holding</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="MittelbBeteiligung" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Handelt es sich um ein Gemeinschaftsdepot/-konto oder eine andere Form der mittelbaren Beteiligung?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Is it a joint deposit/account or another form of indirect holding?</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EhegattenGbR" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Handelt es sich um eine Gesellschaft von Ehegatten, die jeweils zu 50% beteiligt sind?</xs:documentation>
+					<xs:documentation xml:lang="en"/>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Beteiligungskette" type="kafe:Beteiligungskette_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Beteiligungskette</xs:documentation>
+					<xs:documentation xml:lang="en">Is it a company of spouses, each with a 50% share?</xs:documentation>
+				</xs:annotation>
+				<xs:unique name="unique-BeteiligungId">
+					<xs:selector xpath="kafe:Beteiligung"/>
+					<xs:field xpath="@BeteiligungsId"/>
+				</xs:unique>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RemittanceBaseType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Remittance-base-Klausel</xs:documentation>
+			<xs:documentation xml:lang="en">Remittance base clause</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="RemBaseBesteuerung" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Werden die Erträge im angegebenen Ansässigkeitsstaat nur dann der Besteuerung unterworfen, wenn sie dorthin
+						überwiesen oder dort bezogen worden sind (Überweisungsklausel)?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RemBaseBescheid" type="kafe:Anhang_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Der von der Steuerbehörde des Ansässigkeitsstaates für das Zuflussjahr erteilte Steuerbescheid oder ein
+						vergleichbarer Nachweis ist beigefügt.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RemBaseUeberweisung" type="kafe:BetragNull_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Betrag, der in den Ansässigkeitsstaat überwiesen oder dort bezogen wurde.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RemBaseNachweis" type="kafe:Anhang_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ein Nachweis für die Überweisung in den Ansässigkeitsstaat oder den dortigen Bezug ist beigefügt.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SteuerlicheBehandlung_CType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Steuerliche Behandlung</xs:documentation>
+			<xs:documentation xml:lang="en">Tax treatment</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="IdNr" type="kafe:IdNr_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Steuer-Identifikationsnummer (IdNr.) (11-stellig)</xs:documentation>
+					<xs:documentation xml:lang="en">German tax identification number (IdNo) (11-digit)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="W-IdNr" type="kafe:WIdNr_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Wirtschafts-Identifikationsnummer (W-IdNr.)</xs:documentation>
+					<xs:documentation xml:lang="en">Business identification number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TinVorhanden" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Besitzt die beschränkt steuerpflichtige Person eine ausländische
+						Steueridentifikationsnummer?</xs:documentation>
+					<xs:documentation xml:lang="en">Does the person with limited tax liability have a foreign tax identification number?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TIN" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ausländische Steueridentifikationsnummer</xs:documentation>
+					<xs:documentation xml:lang="en">Foreign tax identification number</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="40"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="KennNr" type="kafe:KennNr_Type" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Kenn-Nummer des BZSt</xs:documentation>
+					<xs:documentation xml:lang="en">Withholding tax number for refund</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TranspGebilde" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Wird die beschränkt steuerpflichtige Person von der Finanzbehörde des Ansässigkeitsstaates als transparentes
+						Gebilde behandelt?
+					</xs:documentation>
+					<xs:documentation xml:lang="en">Is the person with limited tax liability treated as a transparent entity by the tax authority of the country
+						of residence?
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OptionKStG" type="kafe:OptionKStG_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Option gemäß § 1a KStG</xs:documentation>
+					<xs:documentation xml:lang="en">Option pursuant to section 1a German Corporate Tax Act</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Investmentfonds" type="kafe:InvStG_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Investmentfondsbezogene Fragen</xs:documentation>
+					<xs:documentation xml:lang="en">Investment fund related issues</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SchweizFragen" type="kafe:SchweizFragen_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Fragen für in der Schweiz ansässige Personen</xs:documentation>
+					<xs:documentation xml:lang="en">Questions for Swiss residents (questions according to DTA Switzerland)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SteuerpflichtDE" type="kafe:FinanzamtDE_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Angaben zum deutschen Finanzamt</xs:documentation>
+					<xs:documentation xml:lang="en">Details oft he German tax office</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Ansaessigkeitsbescheinigung" type="kafe:AnsaessBescheinigung_Struct" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ansässigkeitsbescheinigung</xs:documentation>
+					<xs:documentation xml:lang="en">Certificate of residence</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SteuerbeguenstigteZwecke" type="kafe:SteuerbeguenstigteZwecke_Struct" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Zahlungsweg_CType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Zahlungsweg</xs:documentation>
+			<xs:documentation xml:lang="en">Payment method</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Bankverbindung" type="kafe:Bankverbindung_Struct">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Bankverbindung</xs:documentation>
+					<xs:documentation xml:lang="en">Bank account details</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Verwendungszweck" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Verwendungszweck/Referenz</xs:documentation>
+					<xs:documentation xml:lang="en">Reason for payment/reference</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="35"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

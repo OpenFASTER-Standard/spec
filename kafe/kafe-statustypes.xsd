@@ -1,0 +1,1327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:kafe="urn:bzst:kafe:ozg:v1" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:bzst:kafe:ozg:v1" elementFormDefault="qualified"
+           attributeFormDefault="unqualified" version="1.0.0">
+    <!--		Version	Datum		Änderung
+        ===============================================================================================
+        1.0.0	04.12.2025	Initiale Erstellung - Statuscodes von kafe-rm.xsd in eigener xsd extrahiert
+-->
+    <xs:simpleType name="StatusCode_ENUM">
+        <xs:restriction base="xs:string">
+            <xs:length value="4"/>
+            <xs:enumeration value="0000">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">OK</xs:documentation>
+                    <xs:documentation xml:lang="en">OK</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="1000">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die XML-Datei entspricht nicht dem vorgegebenen Schema.</xs:documentation>
+                    <xs:documentation xml:lang="en">The XML file does not correspond to the specified schema.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="1001">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die AntragId wurde bereits verwendet.</xs:documentation>
+                    <xs:documentation xml:lang="en">The AntragId has already been used.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="1002">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die Anzahl der maximal zulässigen Anträge je Datei wurde überschritten.</xs:documentation>
+                    <xs:documentation xml:lang="en">The maximum number of authorised applications per file has been exceeded.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="1100">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die AnhangId wurde bereits verwendet.</xs:documentation>
+                    <xs:documentation xml:lang="en">The AnhangId has already been used.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="1101">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Der Anhang (PDF-Datei) fehlt.</xs:documentation>
+                    <xs:documentation xml:lang="en">The annex (PDF file) is missing.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="1102">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Der Anhang (Datei) konnte nicht zugeordnet werden.</xs:documentation>
+                    <xs:documentation xml:lang="en">The annex (file) could not be assigned.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="1103">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Der Anhang ist keine PDF-Datei.</xs:documentation>
+                    <xs:documentation xml:lang="en">The annex is not a PDF file.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2100">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Es muss mindestens eine Anspruchsgrundlage gewählt werden.</xs:documentation>
+                    <xs:documentation xml:lang="en">At least one legal basis must be selected.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2101">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die Kombination der Anspruchsgrundlagen ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">It is not permitted to combine the legal bases.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2200">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Ansaessigkeitsstaat fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Ansaessigkeitsstaat element (country of residence) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2300">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Rechtsform fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Rechtsform element (legal form) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2400">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element GewinnePG_CH fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The GewinnePG_CH element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2401">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element GewinnePG_CH ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The GewinnePG_CH element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2500">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element BegruendungArt63AEUV fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The BegruendungArt63AEUV element (justification article 63 TFEU) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2501">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element BegruendungArt63AEUV ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The BegruendungArt63AEUV element (justification article 63 TFEU) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2600">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Der Antrag wurde nicht wirksam gestellt.</xs:documentation>
+                    <xs:documentation xml:lang="en">The application was not effectively filed.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2700">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element AntragIntOrg fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The AntragIntOrg element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2701">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element AntragIntOrg ist bei dieser Anspruchsgrundlage unzulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The AntragIntOrg element is not permitted for this claim basis.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2800">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element AntragPar11InvStG fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The AntragPar11InvStG element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2801">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element AntragPar11InvStG ist bei dieser Rechtsform unzulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The AntragPar11InvStG element is not per-mitted for this legal form.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2900">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Der Antragsteller hat nicht versichert, die Angaben nach bestem Wissen und Gewissen gemacht zu haben.</xs:documentation>
+                    <xs:documentation xml:lang="en">The applicant has not assured that the information provided is true to the best of his knowledge and belief.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3000">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Vollmacht fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Vollmacht element (authorisation) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3010">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Bei der Rechtsform NATP ist das Element NatuerlichePerson erforderlich (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">In the legal form NATP the NichtNatuerlichePerson element is required (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3020">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Bei dieser Rechtsform ist das Element NichtNatuerlichePerson erforderlich (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">In this legal form the NichtNatuerlichePerson element is required (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3100">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Geburtsdatum darf nicht in der Zukunft liegen.</xs:documentation>
+                    <xs:documentation xml:lang="en">The date of birth must not be in the future.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3101">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element StaatsangehoerigkeitKW fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The StaatsangehoerigkeitKW element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3102">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element StaatsangehoerigkeitCH fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The StaatsangehoerigkeitCH element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3103">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element StaatsangehoerigkeitDE fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The StaatsangehoerigkeitDE element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3200">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Gründungsdatum darf nicht in der Zukunft liegen.</xs:documentation>
+                    <xs:documentation xml:lang="en">The incorporation date must not be in the future.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3300">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element GeschaeftsleitungOrt fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The GeschaeftsleitungOrt element (effecitve management location) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3301">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element GeschaeftsleitungOrt ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The GeschaeftsleitungOrt element (effecitve management location) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3302">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die Adresse der beschränkt steuerpflichtigen Person stimmt mit dem abweichenden Ort der tatsächlichen Geschäftsleitung überein.</xs:documentation>
+                    <xs:documentation xml:lang="en">The address of the person with limited tax liability is the same as the different place of effecitve management.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3400">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Der angegebene Legal Entity Identifier (LEI) ist ungültig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The specified Legal Entity Identifier (LEI) is invalid.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3500">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Register fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Register element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3501">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Registerbehoerde ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Registerbehoerde element (Register authority) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3502">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Registernummer fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Registernummer element (register number) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3503">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Registernummer ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Registernummer element (register number) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3504">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Registerauszug fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Registerauszug element (register excerpt) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3505">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Registerauszug ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Registerauszug element (register excerpt) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3600">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Boerse fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Boerse element (stock exchange) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3601">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Boerse ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Boerse element (stock exchange) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3602">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element ISIN fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The ISIN element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3603">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element ISIN ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The ISIN element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3604">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die angegebene ISIN ist ungültig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The ISIN indicated is invalid.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3605">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Boersenplatz ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Boersenplatz element (stock exchange on which the stocks are traded) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3700">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element GesetzlicheVertretung fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The GesetzlicheVertretung element (legal representative) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3800">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Gruendungsstaat fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Gruendungsstaat element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3801">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Gruendungsstaat ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Gruendungsstaat element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4001">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element IdNr ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The IdNr element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4002">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die angegebene IdNr ist ungültig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The specified IdNr is invalid.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4003">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element W-IdNr ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The W-IdNr element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4004">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die angegebene W-IdNr ist ungültig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The specified W-IdNr is invalid.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4005">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element TIN fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The TIN element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4006">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die angegebene KennNr ist ungültig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The KennNr (identification number of the Federal Central Tax Office) is invalid.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4100">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element TranspGebilde fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The TranspGebilde element (transparent entity) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4101">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element TranspGebilde ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The TranspGebilde element (transparent entity) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4200">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element OptionKStG fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The OptionKStG element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4201">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element OptionKStG ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The OptionKStG element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4202">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Steuerbehoerde fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Steuerbehoerde element (tax authority) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4203">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Steuerbehoerde ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Steuerbehoerde element (tax authority) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4204">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Aktenzeichen fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Aktenzeichen element (file number) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4205">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Aktenzeichen ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Aktenzeichen element (file number) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4206">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das angegebene Aktenzeichen ist ungültig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The file number given is invalid.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4300">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Investmentfonds fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Investmentfonds element (investment fund) element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4301">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Investmentfonds ist bei dieser Rechtsform nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Investmentfonds element (investment fund) is not permitted for this legal form.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4302">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Steuerbehoerde fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Steuerbehoerde element (tax authority) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4303">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Steuerbehoerde ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Steuerbehoerde element (tax authority) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4304">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Aktenzeichen ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Aktenzeichen element (file number) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4305">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das angegebene Aktenzeichen ist ungültig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The file number given is invalid.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4306">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element GueltigVon ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The GueltigVon element (valid from) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4307">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element GueltigBis ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The GueltigBis element (valid until) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4308">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Der angegebene Gültigkeitszeitraum der Statusbescheinigung ist ungültig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The specified validity period of the status certificate is invalid.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4310">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Transparenzoption fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Transparenzoption element (transparency option) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4311">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Transparenzoption ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Transparenzoption element (transparency option) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4400">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element SchweizFragen fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The SchweizFragen element (SwitzerlandQuestions) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4401">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element SchweizFragen ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The SchweizFragen element (Switzerland-Questions) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4402">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element SteuerpflichtDE fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The SteuerpflichtDE element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4403">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element StpflDE5Jahre fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The StpflDE5Jahre element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4404">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element StpflDE5Jahre ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The StpflDE5Jahre element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4410">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element UnselbstArbeit fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The UnselbstArbeit element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4411">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element UnselbstArbeit ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The UnselbstArbeit element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4420">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Arbeitgeber fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Arbeitsgeber element (employer) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4421">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Arbeitgeber ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Arbeitsgeber element (employer) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4422">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Arbeitgeberbescheinigung fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Arbeitgeberbescheinigung element (employer's certificate) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4423">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Arbeitgeberbescheinigung ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Arbeitgeberbescheinigung element (employer attestation) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4424">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element InteresseArbeitgeber fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The InteresseArbeitgeber element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4425">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element InteresseArbeitgeber ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The InteresseArbeitgeber element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4426">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element InteresseBeschreibung fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The InteresseBeschreibung element is missind (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4427">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element InteresseBeschreibung ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The InteresseBeschreibung element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4430">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Zuzugsdatum fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Zuzugsdatum element (move-in date) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4431">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Zuzugsdatum ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Zuzugsdatum element (move-in date) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4432">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Zuzugsdatum ist ungültig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Zuzugsdatum element (move-in date) is invalid.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4433">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Zuzugsgruende fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Zuzugsgruende element (reasons for moving) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4434">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Zuzugsgruende ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Zuzugsgruende element (reasons for moving) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4500">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element FinanzamtDE fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The FinanzamtDE element (german tax office) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4501">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Stnr fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Stnr element (tax number) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4502">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Stnr ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Stnr element (tax number) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4503">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die angegebene Stnr ist ungültig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Stnr element (tax number) is invalid.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4510">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element SteuerpflichtDE fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The SteuerpflichtDE element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4511">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element SteuerpflichtDE ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The SteuerpflichtDE element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4520">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element SteuerpflichtDE5J fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The SteuerpflichtDE5J element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4521">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element SteuerpflichtDE5J ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The SteuerpflichtDE5J element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4530">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element StpflDEEndeJahr fehlt (Bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The StpflDEEndeJahr element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4531">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element StpflDEEndeJahr ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The StpflDEEndeJahr element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4532">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das angegebene Jahr ist ungültig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The specified year is invalid.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4600">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Ansaessigkeitsbescheinigung fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Ansaessigkeitsbescheinigung element (Certificate of Residence) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4601">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das angegebene Ausstellungsdatum ist ungültig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The specified issue date is invalid.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4602">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Der angegebene Zeitraum ist ungültig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The specified period is invalid.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4700">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element SteuerbeguenstigteZwecke fehlt (Bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The SteuerbeguenstigteZweck element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4701">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element SteuerbeguenstigteZwecke ist nur zulässig, wenn die Anspruchsgrundlage "§ 32 Absatz 6 KStG" gewählt wurde.</xs:documentation>
+                    <xs:documentation xml:lang="en">The SteuerbeguenstigteZwecke element is only permitted if the basis for the claim was section 32 (6) German Corporation Tax Act.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4710">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element ZER fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The ZER element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4712">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Referenznummer fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Referenznummer element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4725">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element GemeinnuetzigeZwecke fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The GemeinnuetzigeZwecke element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4743">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element VerwirklichungDE fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The VerwirklichungDE element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4745">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element AnsehenDE fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The AnsehenDE element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="5001">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die angegebene IBAN ist ungültig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The specified IBAN is invalid.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="5002">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die angegebene BIC ist ungültig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The specified BIC is invalid.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6000">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die ErtragId ist nicht fortlaufend.</xs:documentation>
+                    <xs:documentation xml:lang="en">The ErtragId is not consecutive.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6100">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die Kapitalertragsart ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The capital income type is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6110">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Hinterlegungsscheine fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Hinterlegungsscheine element (depository receipts) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6111">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Hinterlegungsscheine ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Hinterlegungsscheine element (depository receipts) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6112">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element ISIN fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The ISIN element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6113">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element ISIN ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The ISIN element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6114">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die angegebene ISIN ist ungültig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The specified ISIN is invalid.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6115">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Underlying ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Underlying element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6116">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die angegebene ISIN ist ungültig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The specified ISIN is invalid.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6120">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Stnr ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Stnr element (tax number) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6121">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die angegebene Stnr ist ungültig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The specified tax number is invalid.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6122">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element VersicherungsNr fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The VersicherungsNr element (insurance number) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6123">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element VersicherungsNr ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The VersicherungsNr element (insurance number) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6130">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das angegebene Zuflussdatum ist ungültig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The date of inflow of capital income is invalid.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6131">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element AnzahlAnteile fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The AnzahlAnteile element (number of shares/bonds) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6132">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element AnzahlAnteile ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The AnzahlAnteile element (number of shares/bonds) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6150">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element vGA fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The vGA element (constructive dividend) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6151">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element vGA ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The vGA element (constructive dividend) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6160">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element SitzNichtDE fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The SitzNichtDE element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6161">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element SitzNichtDE ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The SitzNichtDE element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6162">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element WohnsitzDE fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The WohnsitzDE element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6163">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element WohnsitzDE ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The WohnsitzDE element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6170">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Steuerbefreiung fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Steuerbefreiung element (tax exemption) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6171">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Steuerbefreiung ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Steuerbefreiung element (tax exemption) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6180">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element BetriebsstaetteDE fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The BetriebsstaetteDE element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6181">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element BetriebsstaetteDE ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The BetriebsstaetteDE element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6200">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element RemittanceBase fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The RemittanceBase element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6201">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element RemittanceBase ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The RemittanceBase element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6210">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element RemBaseUeberweisung fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The RemBaseUeberweisung element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6211">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element RemBaseUeberweisung ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The RemBaseUeberweisung element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6220">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element RemBaseBescheid fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The RemBaseBescheid element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6230">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element RemBaseNachweis fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The RemBaseNachweis element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6300">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element MittelbareBeteiligung fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The MittelbareBeteiligung element (indirect holding) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6301">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element MittelbareBeteiligung ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The MittelbareBeteiligung element (indirect holding) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6302">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element EhegattenGbR fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The EhegattenGbR element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6303">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element EhegattenGbR ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The EhegattenGbR element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6310">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Beteiligungskette fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Beteiligungskette element (chain of companies) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6311">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Beteiligungskette ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Beteiligungskette element (chain of companies) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6320">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die BeteiligungsId ist nicht fortlaufend.</xs:documentation>
+                    <xs:documentation xml:lang="en">The BeteiligungsId is not consecutive.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6330">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die angegebene Stnr ist ungültig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The specified tax number is invalid.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6340">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Ansaessigkeitsstaat fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Ansaessigkeitsstaat element (country of residence) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6341">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Ansaessigkeitsstaat ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Ansaessigkeitsstaat element (country of residence) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6350">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element TIN ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The TIN element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6360">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die Höhe der mittelbaren Beteiligung entspricht nicht dem Produkt der einzelnen Beteiligungshöhen.</xs:documentation>
+                    <xs:documentation xml:lang="en">The amount of the indirect investment does not correspond to the product of the individual investment amounts.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6400">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Ordnungsnummer fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Ordnungsnummer element (serial number) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6401">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Ordnungsnummer ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Ordnungsnummer element (serial number) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6402">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die Ordnungsnummer ist ungültig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The specified Ordnungsnummer (serial number) ist invalid.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6410">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die Höhe der Abzugssteuer ist unplausibel.</xs:documentation>
+                    <xs:documentation xml:lang="en">The amount of withholding tax is implausible.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6420">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element BPBericht fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The BPBericht element (tax audit report) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6421">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element BPBericht ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The BPBericht element (tax audit report) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6430">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element WPProspekt_Vertrag fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The WPProspekt_Vertrag element (securities prospectus or contract) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6431">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element WPProspekt_Vertrag ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The WPProspekt_Vertrag element (securities prospectus or contract) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6440">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element ZahlungsnachweisFA fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The ZahlungsnachweisFA element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6441">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element ZahlungsnachweisFA ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The ZahlungsnachweisFA element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6500">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element WesentlicheBeteiligung fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The WesentlicheBeteiligung element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6501">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element WesentlicheBeteiligung ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The WesentlicheBeteiligung element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6510">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element WesentlBeteiligung fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The WesentlBeteiligung element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6511">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element WesentlBeteiligung ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The WesentlBeteiligung element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6520">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element WesentlBeteiligungHoehe fehlt (Bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The WesentlBeteiligungHoehe element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6521">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element WesentlBeteiligungHoehe ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The WesentlBeteiligungHoehe element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6530">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Beteiligungsdauer12M fehlt (Bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Beteiligungsdauer12M element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6531">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Beteiligungsdauer12M ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Beteiligungsdauer12M element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6532">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Beteiligungsdauer18M fehlt (Bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Beteiligungsdauer18M element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6533">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Beteiligungsdauer18M ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Beteiligungsdauer18M element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6534">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Beteiligungsdauer6M fehlt (Bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Beteiligungsdauer6M element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6535">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Beteiligungsdauer6M ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Beteiligungsdauer6M element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6600">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element UnbeschraenktAuslaendKoerperschaftstpfl fehlt (Bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The UnbeschraenktAuslaendKoerperschaftstpfl element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6601">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element UnbeschraenktAuslaendKoerperschaftstpfl ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The UnbeschraenktAuslaendKoerperschaftstpfl element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6602">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Anrechnungsbetrag fehlt (Bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Anrechnungsbetrag element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6603">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Anrechnungsbetrag ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Anrechnungsbetrag element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6604">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Anrechnungsnachweis fehlt (Bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Anrechnungsnachweis element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6605">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Anrechnungsnachweis ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Anrechnungsnachweis element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7000">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Par50jEStG fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The Par50jEStG element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7001">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Par50jEStG ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Par50jEStG element is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7100">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die Anzahl der Anteile ist unplausibel.</xs:documentation>
+                    <xs:documentation xml:lang="en">The number of shares is implausible.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7101">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element HaltedauerMin1J fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The element HaltedauerMin1J (Holding period min. one year) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7102">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die Anzahl der Anteile ist unplausibel.</xs:documentation>
+                    <xs:documentation xml:lang="en">The number of shares is implausible.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7103">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die Anzahl der Anteile ist unplausibel.</xs:documentation>
+                    <xs:documentation xml:lang="en">The number of shares is implausible.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7104">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die Anzahl der Anteile ist unplausibel.</xs:documentation>
+                    <xs:documentation xml:lang="en">The number of shares is implausible.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7200">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element MinWertAendRisiko fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The MinWertAendRisiko element (Minimum risk of change in value) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7201">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element MinWertAendRisiko ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The MinWertAendRisiko element (Minimum risk of change in value) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7210">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element RisikoMin70 fehlt (bedingtes Pflichtfeld)</xs:documentation>
+                    <xs:documentation xml:lang="en">The element RisikoMin70 is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7211">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die Anzahl der Anteile ist unplausibel.</xs:documentation>
+                    <xs:documentation xml:lang="en">The number of shares is implausible.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7300">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element WeiterlVerpflichtung fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The WeiterlVerpflichtung element (obligation to forward) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7301">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element WeiterlVerpflichtung ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The WeiterlVerpflichtung element (obligation to forward) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7310">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element WeiterlVerpflAnteile fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The WeiterlVerpflAnteile element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7311">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die Anzahl der Anteile ist unplausibel.</xs:documentation>
+                    <xs:documentation xml:lang="en">The number of shares is implausible.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7400">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element RueckgabeVerpflichtung fehlt (bedingtes Pflichtfeld).</xs:documentation>
+                    <xs:documentation xml:lang="en">The RueckgabeVerpflichtung element (obligation to return) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7401">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element RueckgabeVerpflichtung ist nicht zulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The RueckgabeVerpflichtung element (obligation to return) is not permitted.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7410">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element RueckgabeVerpflAnteile fehlt (bedingtes Pflichtfeld)</xs:documentation>
+                    <xs:documentation xml:lang="en">The RueckgabeVerpflAnteile element is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7500">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die Depotnummer ist mehrfach vorhanden.</xs:documentation>
+                    <xs:documentation xml:lang="en">The Depotnummer element (Account / deposit number) exists several times.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7501">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Datum des Anfangsbestands ist unplausibel.</xs:documentation>
+                    <xs:documentation xml:lang="en">The date of the opening balance is implausible.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7502">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Datum des Endbestands ist unplausibel.</xs:documentation>
+                    <xs:documentation xml:lang="en">The date of the closing balance is implausible.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7503">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Der Endbestand ist unplausibel.</xs:documentation>
+                    <xs:documentation xml:lang="en">The closing balance is implausible.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7600">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das Element Transaktionen fehlt (bedingtes Pflichtfeld)</xs:documentation>
+                    <xs:documentation xml:lang="en">The Transaktionen element (transactions) is missing (conditional mandatory field).</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7601">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die TransaktionId ist nicht fortlaufend.</xs:documentation>
+                    <xs:documentation xml:lang="en">The TransactionId is not consecutive.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7610">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Der angegebene Handelstag ist unplausibel.</xs:documentation>
+                    <xs:documentation xml:lang="en">The specified trading day is implausible.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7620">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Das angegebene Geschäft ist bei dieser Transaktionsart unzulässig.</xs:documentation>
+                    <xs:documentation xml:lang="en">The specified transaction is not authorised for this transaction type.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7630">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Die Anzahl der Anteile ist unplausibel.</xs:documentation>
+                    <xs:documentation xml:lang="en">The number of shares is implausible.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7640">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Der vereinbarte Abwicklungstag ist unplausibel.</xs:documentation>
+                    <xs:documentation xml:lang="en">The agreed settlement date is implausible.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7650">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Der tatsächliche Abwicklungstag ist unplausibel.</xs:documentation>
+                    <xs:documentation xml:lang="en">The actual settlement date is implausible.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
