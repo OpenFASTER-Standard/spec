@@ -1492,7 +1492,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version d113b2e81, updated Tue Jun 9 14:57:55 2026 -0700" name="generator">
   <link href="https://openfaster.org/kafe/request" rel="canonical">
-  <meta content="5ac6b388fefbc1c8fb1be1cbf8d9fa2691aa1771" name="revision">
+  <meta content="00bc0b0980c97b90b18972d83a6bc05bfd6337c2" name="revision">
   <meta content="dark light" name="color-scheme">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
@@ -3338,7 +3338,7 @@ set.</p>
       <td class="col-num">6
       <td><code>Stocks_ConvertibleBonds/NumberOfShares</code>
       <td class="col-req">Optional
-      <td>Decimal (None digits total, 4 decimals)
+      <td>Decimal (4 decimals)
       <td class="long">Number of shares/bonds
      <tr>
       <td class="col-num">7
@@ -3350,7 +3350,7 @@ set.</p>
       <td class="col-num">8
       <td><code>SubstantialHolding/Ownership</code>
       <td class="col-req">Optional
-      <td>Decimal (None digits total, 4 decimals)
+      <td>Decimal (4 decimals)
       <td class="long">Size of the ownership interest (in %)
      <tr>
       <td class="col-num">9
@@ -3386,7 +3386,7 @@ set.</p>
       <td class="col-num">14
       <td><code>IndirectHolding/SizeOfIndirectHolding</code>
       <td class="col-req">Required
-      <td>Decimal (None digits total, 4 decimals)
+      <td>Decimal (4 decimals)
       <td class="long">Size of the indirect holding (in %)
      <tr>
       <td class="col-num">15
@@ -3417,13 +3417,13 @@ set.</p>
       <td class="col-num">19
       <td><code>GrossIncomeFromCapitalReceived</code>
       <td class="col-req">Required
-      <td>Decimal (None digits total, 2 decimals)
+      <td>Decimal (2 decimals)
       <td class="long">Gross income from capital received (in Euro)
      <tr>
       <td class="col-num">20
       <td><code>Withheld_Taxes</code>
       <td class="col-req">Required
-      <td>Decimal (None digits total, 2 decimals)
+      <td>Decimal (2 decimals)
       <td class="long">Withheld German capital income tax (in Euro)
      <tr>
       <td class="col-num">21
@@ -3492,7 +3492,7 @@ set.</p>
       <td class="col-num">31
       <td><code>RemittanceBase/Amount</code>
       <td class="col-req">Optional
-      <td>Decimal (None digits total, 2 decimals)
+      <td>Decimal (2 decimals)
       <td class="long">Betrag, der in den Ansässigkeitsstaat überwiesen oder dort bezogen wurde.
      <tr>
       <td class="col-num">32
@@ -3512,7 +3512,7 @@ set.</p>
       <td class="col-num">34
       <td><code>CreditAmount</code>
       <td class="col-req">Optional
-      <td>Decimal (None digits total, 2 decimals)
+      <td>Decimal (2 decimals)
       <td class="long">To what extent was the German capital gains tax credited in full or in
 						part against taxation in the country of residence or deducted from the tax base, or is it possible
 						to carry this forward to future tax periods (tax credit carryforward)?
@@ -3520,27 +3520,27 @@ set.</p>
       <td class="col-num">35
       <td><code>Questions_for_50j/HoldingPeriod/HoldingMore45D</code>
       <td class="col-req">Conditional
-      <td>Decimal (None digits total, 4 decimals)
+      <td>Decimal (4 decimals)
       <td class="long">Anzahl der Anteile, die innerhalb des Mindesthaltezeitraums an mindestens 45 Tagen ohne Unterbrechung
 						gehalten wurden (§ 50j Absatz 4 Satz 2 EStG).
      <tr>
       <td class="col-num">36
       <td><code>Questions_for_50j/HoldingPeriod/HoldingMore1Y</code>
       <td class="col-req">Conditional
-      <td>Decimal (None digits total, 4 decimals)
+      <td>Decimal (4 decimals)
       <td class="long">Davon Anzahl der Anteile, die im Zeitpunkt des Zuflusses mindestens ein Jahr ohne Unterbrechung gehalten
 						wurden (§ 50j Absatz 4 Satz 2 EStG).
      <tr>
       <td class="col-num">37
       <td><code>Questions_for_50j/HoldingPeriod/HoldingLess45D</code>
       <td class="col-req">Conditional
-      <td>Decimal (None digits total, 4 decimals)
+      <td>Decimal (4 decimals)
       <td class="long">Anzahl der Anteile, die kürzer 45 Tage gehalten wurden.
      <tr>
       <td class="col-num">38
       <td><code>Questions_for_50j/HoldingPeriod/SharesPar50jEStG</code>
       <td class="col-req">Conditional
-      <td>Decimal (None digits total, 4 decimals)
+      <td>Decimal (4 decimals)
       <td class="long">Anzahl der Anteile im Sinne des § 50j EStG.
      <tr>
       <td class="col-num">39
@@ -3553,7 +3553,7 @@ set.</p>
       <td class="col-num">40
       <td><code>Questions_for_50j/MinValueChangeRisk/RiskMin70</code>
       <td class="col-req">Conditional
-      <td>Decimal (None digits total, 4 decimals)
+      <td>Decimal (4 decimals)
       <td class="long">Anzahl der Anteile, für die die beschränkt steuerpflichtige Person das Wertänderungsrisiko während der
 						Mindesthaltedauer zu mindestens 70% getragen hat. (Bezogen auf die Anteile im Sinne des § 50j EStG)
      <tr>
@@ -3574,7 +3574,7 @@ set.</p>
       <td class="col-num">43
       <td><code>Questions_for_50j/ForwardingObligation/NumberOfShares</code>
       <td class="col-req">Conditional
-      <td>Decimal (None digits total, 4 decimals)
+      <td>Decimal (4 decimals)
       <td class="long">Anzahl der Anteile, für die eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der
 						Kapitalerträge vorlag. (Bezogen auf die Anteile im Sinne des § 50j EStG)
      <tr>
@@ -3596,7 +3596,7 @@ set.</p>
       <td class="col-num">46
       <td><code>Questions_for_50j/ReturnObligation/NumberOfShares</code>
       <td class="col-req">Conditional
-      <td>Decimal (None digits total, 4 decimals)
+      <td>Decimal (4 decimals)
       <td class="long">Anzahl der Anteile, für die eine Rückgabeverpflichtung ohne Dividendenberechtigung für mit
 						Dividendenberechtigung erworbene Anteile vorlag.
    </table>
@@ -3654,7 +3654,7 @@ set.</p>
       <td class="col-num">6
       <td><code>Ownership</code>
       <td class="col-req">Required
-      <td>Decimal (None digits total, 4 decimals)
+      <td>Decimal (4 decimals)
       <td class="long">Size of the ownership in interest (in %)
      <tr>
       <td class="col-num">7
@@ -3728,7 +3728,7 @@ set.</p>
       <td class="col-num">5
       <td><code>Depot/OpeningBalance</code>
       <td class="col-req">Required
-      <td>Decimal (None digits total, 4 decimals)
+      <td>Decimal (4 decimals)
       <td class="long">Opening balance (number of shares)
      <tr>
       <td class="col-num">6
@@ -3740,7 +3740,7 @@ set.</p>
       <td class="col-num">7
       <td><code>Depot/ClosingBalance</code>
       <td class="col-req">Required
-      <td>Decimal (None digits total, 4 decimals)
+      <td>Decimal (4 decimals)
       <td class="long">Closing balance two months after the inflow date (number of shares)
      <tr>
       <td class="col-num">8
@@ -3770,7 +3770,7 @@ set.</p>
       <td class="col-num">12
       <td><code>NumberOfShares</code>
       <td class="col-req">Required
-      <td>Decimal (None digits total, 4 decimals)
+      <td>Decimal (4 decimals)
       <td class="long">Number of shares
      <tr>
       <td class="col-num">13
