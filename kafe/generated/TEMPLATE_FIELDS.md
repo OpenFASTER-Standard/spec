@@ -75,22 +75,22 @@ Every data sheet has four header rows; data entry begins on row 5.
 | 3 | `CertificateOfResidenceId` | Required | Text (identifier used to link the sheets; any unique value) | Foreign key. Must match an id value on the '3 Certificates Of Residence' sheet -- identifies which certificate of residence supports this income. |
 | 4 | `CapitalIncome` | Required | Enum [`KapitalertragArt`](#kapitalertragart): `DIVIDENDEN`, `AUSSCH_KAPG`, `GENUSSR_ML`, `GENUSSR_OL`, `WANDELANL`, `LEBENSVERS`, `EINN_STILLG`, `PART_DARL`, `GEWINNOBL`, `GRENZKW`, `SONSTIGE` | Type of capital income |
 | 5 | `Stocks_ConvertibleBonds/ISIN` | Optional | ISIN (12-digit) | ISIN (12-digit) |
-| 6 | `Stocks_ConvertibleBonds/NumberOfShares` | Optional | Decimal (None digits total, 4 decimals) | Number of shares/bonds |
+| 6 | `Stocks_ConvertibleBonds/NumberOfShares` | Optional | Decimal (4 decimals) | Number of shares/bonds |
 | 7 | `SubstantialHolding/IsSubstantial` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Is it a substential holding (at least 10 %)? |
-| 8 | `SubstantialHolding/Ownership` | Optional | Decimal (None digits total, 4 decimals) | Size of the ownership interest (in %) |
+| 8 | `SubstantialHolding/Ownership` | Optional | Decimal (4 decimals) | Size of the ownership interest (in %) |
 | 9 | `SubstantialHolding/HoldingPeriod18M` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Has the investment been held for a period of at least 18 months? |
 | 10 | `SubstantialHolding/HoldingPeriod12M` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Has the investment been held for a period of at least one year? |
 | 11 | `SubstantialHolding/HoldingPeriod6M` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Has the investment been held for a period of at least 6 months? |
 | 12 | `IndirectHolding/IndirectHolding` | Required | Enum [`Boolean`](#boolean): `true`, `false` | Is it a joint deposit/account or another form of indirect holding? |
 | 13 | `IndirectHolding/CompanyOfSpouses` | Optional | Enum [`Boolean`](#boolean): `true`, `false` |  |
-| 14 | `IndirectHolding/SizeOfIndirectHolding` | Required | Decimal (None digits total, 4 decimals) | Size of the indirect holding (in %) |
+| 14 | `IndirectHolding/SizeOfIndirectHolding` | Required | Decimal (4 decimals) | Size of the indirect holding (in %) |
 | 15 | `Debtor/Name` | Required | Text (max 256) | Debtor of the capital income / distributing company |
 | 16 | `Debtor/TaxNumber` | Optional | Text (max 13) | Tax number |
 | 17 | `NonResidency_DE` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Was the person with limited tax liability a resident of the specified country of residence at the time of
 						the inflow and did not have its registered office or place of management in Germany at that time? |
 | 18 | `DateOfReceiptOfCapitalIncome` | Required | Date (YYYY-MM-DD) | Date of receipt of capital income |
-| 19 | `GrossIncomeFromCapitalReceived` | Required | Decimal (None digits total, 2 decimals) | Gross income from capital received (in Euro) |
-| 20 | `Withheld_Taxes` | Required | Decimal (None digits total, 2 decimals) | Withheld German capital income tax (in Euro) |
+| 19 | `GrossIncomeFromCapitalReceived` | Required | Decimal (2 decimals) | Gross income from capital received (in Euro) |
+| 20 | `Withheld_Taxes` | Required | Decimal (2 decimals) | Withheld German capital income tax (in Euro) |
 | 21 | `Requested_Refund` | Optional | Decimal | The refund amount being claimed for this income (informational; BZSt itself computes the actual refund from the withheld tax and the applicable treaty/statutory rate -- this is not a real KaFE XSD field). |
 | 22 | `DocumentDescription` | Required | Text (max 120) | Short description of the file content (e.g. certificate of residence). |
 | 23 | `DocumentProof/TaxCertificateNumber` | Optional | UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx) | Serial number |
@@ -104,36 +104,36 @@ Every data sheet has four header rows; data entry begins on row 5.
 | 29 | `Depositary_Receipts/ISIN_DR` | Optional | ISIN (12-digit) | ISIN of the underlying (12-digit) |
 | 30 | `RemittanceBase/IsSubject` | Required | Enum [`Boolean`](#boolean): `true`, `false` | Werden die Erträge im angegebenen Ansässigkeitsstaat nur dann der Besteuerung unterworfen, wenn sie dorthin
 						überwiesen oder dort bezogen worden sind (Überweisungsklausel)? |
-| 31 | `RemittanceBase/Amount` | Optional | Decimal (None digits total, 2 decimals) | Betrag, der in den Ansässigkeitsstaat überwiesen oder dort bezogen wurde. |
+| 31 | `RemittanceBase/Amount` | Optional | Decimal (2 decimals) | Betrag, der in den Ansässigkeitsstaat überwiesen oder dort bezogen wurde. |
 | 32 | `Business_Establishment/Business_Establishment_DE` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Has the capital income distributed to a permanent establishment / fixed entity located in Germany of the
 						person subject to limited taxation? |
 | 33 | `UnlimitedForeignCorporateTaxLiability` | Optional | Enum [`Boolean`](#boolean): `true`, `false` | Was the person with limited tax liability subject to unlimited corporate
 						income tax liability or a comparable tax liability in their country of residence without any option to choose? |
-| 34 | `CreditAmount` | Optional | Decimal (None digits total, 2 decimals) | To what extent was the German capital gains tax credited in full or in
+| 34 | `CreditAmount` | Optional | Decimal (2 decimals) | To what extent was the German capital gains tax credited in full or in
 						part against taxation in the country of residence or deducted from the tax base, or is it possible
 						to carry this forward to future tax periods (tax credit carryforward)? |
-| 35 | `Questions_for_50j/HoldingPeriod/HoldingMore45D` | Conditional | Decimal (None digits total, 4 decimals) | Anzahl der Anteile, die innerhalb des Mindesthaltezeitraums an mindestens 45 Tagen ohne Unterbrechung
+| 35 | `Questions_for_50j/HoldingPeriod/HoldingMore45D` | Conditional | Decimal (4 decimals) | Anzahl der Anteile, die innerhalb des Mindesthaltezeitraums an mindestens 45 Tagen ohne Unterbrechung
 						gehalten wurden (§ 50j Absatz 4 Satz 2 EStG). |
-| 36 | `Questions_for_50j/HoldingPeriod/HoldingMore1Y` | Conditional | Decimal (None digits total, 4 decimals) | Davon Anzahl der Anteile, die im Zeitpunkt des Zuflusses mindestens ein Jahr ohne Unterbrechung gehalten
+| 36 | `Questions_for_50j/HoldingPeriod/HoldingMore1Y` | Conditional | Decimal (4 decimals) | Davon Anzahl der Anteile, die im Zeitpunkt des Zuflusses mindestens ein Jahr ohne Unterbrechung gehalten
 						wurden (§ 50j Absatz 4 Satz 2 EStG). |
-| 37 | `Questions_for_50j/HoldingPeriod/HoldingLess45D` | Conditional | Decimal (None digits total, 4 decimals) | Anzahl der Anteile, die kürzer 45 Tage gehalten wurden. |
-| 38 | `Questions_for_50j/HoldingPeriod/SharesPar50jEStG` | Conditional | Decimal (None digits total, 4 decimals) | Anzahl der Anteile im Sinne des § 50j EStG. |
+| 37 | `Questions_for_50j/HoldingPeriod/HoldingLess45D` | Conditional | Decimal (4 decimals) | Anzahl der Anteile, die kürzer 45 Tage gehalten wurden. |
+| 38 | `Questions_for_50j/HoldingPeriod/SharesPar50jEStG` | Conditional | Decimal (4 decimals) | Anzahl der Anteile im Sinne des § 50j EStG. |
 | 39 | `Questions_for_50j/MinValueChangeRisk/OpposingClaims` | Conditional | Enum [`Boolean`](#boolean): `true`, `false` | Hatte die beschränkt steuerpflichtige Person oder eine ihr nahestehende Person während der Mindesthaltedauer
 						gegenläufige Ansprüche? |
-| 40 | `Questions_for_50j/MinValueChangeRisk/RiskMin70` | Conditional | Decimal (None digits total, 4 decimals) | Anzahl der Anteile, für die die beschränkt steuerpflichtige Person das Wertänderungsrisiko während der
+| 40 | `Questions_for_50j/MinValueChangeRisk/RiskMin70` | Conditional | Decimal (4 decimals) | Anzahl der Anteile, für die die beschränkt steuerpflichtige Person das Wertänderungsrisiko während der
 						Mindesthaltedauer zu mindestens 70% getragen hat. (Bezogen auf die Anteile im Sinne des § 50j EStG) |
 | 41 | `Questions_for_50j/MinValueChangeRisk/OtherOpposingClaims` | Conditional | Enum [`Boolean`](#boolean): `true`, `false` | Waren während der Mindesthaltedauer gegenläufige Ansprüche vorhanden, die nicht vollständig den Anteilen im
 						Sinne des § 50j EStG (Haltedauer mindestens 45 Tage, jedoch kürzer als 1 Jahr) zugeordnet waren? (Die Frage bezieht sich auf den
 						gesamten Bestand der Anteils- oder Genussscheingattung.) |
 | 42 | `Questions_for_50j/ForwardingObligation/ForwardingObligation` | Conditional | Enum [`Boolean`](#boolean): `true`, `false` | Lag eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der Kapitalerträge vor? |
-| 43 | `Questions_for_50j/ForwardingObligation/NumberOfShares` | Conditional | Decimal (None digits total, 4 decimals) | Anzahl der Anteile, für die eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der
+| 43 | `Questions_for_50j/ForwardingObligation/NumberOfShares` | Conditional | Decimal (4 decimals) | Anzahl der Anteile, für die eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der
 						Kapitalerträge vorlag. (Bezogen auf die Anteile im Sinne des § 50j EStG) |
 | 44 | `Questions_for_50j/ForwardingObligation/FurtherForwardingObligation` | Conditional | Enum [`Boolean`](#boolean): `true`, `false` | Lag eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der Kapitalerträge vor, die über die
 						Anteile im Sinne des § 50j EStG (Haltedauer mindestens 45 Tage, jedoch kürzer als 1 Jahr) hinausgeht? (Bezogen auf den gesamten Bestand
 						der Anteils- oder Genussscheingattung.) |
 | 45 | `Questions_for_50j/ReturnObligation/ReturnObligation` | Conditional | Enum [`Boolean`](#boolean): `true`, `false` | Lagen Rückgabeverpflichtungen ohne Dividendenberechtigung für mit Dividendenberechtigung erworbene Anteile
 						vor? (Bezogen auf den gesamten Bestand der Anteils- oder Genussscheingattung.) |
-| 46 | `Questions_for_50j/ReturnObligation/NumberOfShares` | Conditional | Decimal (None digits total, 4 decimals) | Anzahl der Anteile, für die eine Rückgabeverpflichtung ohne Dividendenberechtigung für mit
+| 46 | `Questions_for_50j/ReturnObligation/NumberOfShares` | Conditional | Decimal (4 decimals) | Anzahl der Anteile, für die eine Rückgabeverpflichtung ohne Dividendenberechtigung für mit
 						Dividendenberechtigung erworbene Anteile vorlag. |
 
 ### 5 Investment Chain
@@ -152,7 +152,7 @@ Every data sheet has four header rows; data entry begins on row 5.
 					/ distributing company, starting at 1. |
 | 4 | `OrganizationName` | Required | Text (max 256) | Company name |
 | 5 | `LegalForm` | Required | Text (max 80) | Legal form |
-| 6 | `Ownership` | Required | Decimal (None digits total, 4 decimals) | Size of the ownership in interest (in %) |
+| 6 | `Ownership` | Required | Decimal (4 decimals) | Size of the ownership in interest (in %) |
 | 7 | `Country` | Optional | Enum [`CountryISOAlpha2`](#countryisoalpha2): `AD`, `AE`, `AF`, `AG`, `AI`, `AL`, `AM`, `AO`, `AQ`, `AR`, `AS`, `AT`, `AU`, `AW`, `AX`, `AZ`, `BA`, `BB`, `BD`, `BE`, `BF`, `BG`, `BH`, `BI`, `BJ`, `BL`, `BM`, `BN`, `BO`, `BQ`, `BR`, `BS`, `BT`, `BV`, `BW`, `BY`, `BZ`, `CA`, `CC`, `CD`, `CF`, `CG`, `CH`, `CI`, `CK`, `CL`, `CM`, `CN`, `CO`, `CP`, `CR`, `CU`, `CV`, `CW`, `CX`, `CY`, `CZ`, `DE`, `DJ`, `DK`, `DM`, `DO`, `DZ`, `EC`, `EE`, `EG`, `EH`, `ER`, `ES`, `ET`, `FI`, `FJ`, `FK`, `FM`, `FO`, `FR`, `GA`, `GB`, `GD`, `GE`, `GF`, `GG`, `GH`, `GI`, `GL`, `GM`, `GN`, `GP`, `GQ`, `GR`, `GS`, `GT`, `GU`, `GW`, `GY`, `HK`, `HM`, `HN`, `HR`, `HT`, `HU`, `ID`, `IE`, `IL`, `IM`, `IN`, `IO`, `IQ`, `IR`, `IS`, `IT`, `JE`, `JM`, `JO`, `JP`, `KE`, `KG`, `KH`, `KI`, `KM`, `KN`, `KP`, `KR`, `KW`, `KY`, `KZ`, `LA`, `LB`, `LC`, `LI`, `LK`, `LR`, `LS`, `LT`, `LU`, `LV`, `LY`, `MA`, `MC`, `MD`, `ME`, `MF`, `MG`, `MH`, `MK`, `ML`, `MM`, `MN`, `MO`, `MP`, `MQ`, `MR`, `MS`, `MT`, `MU`, `MV`, `MW`, `MX`, `MY`, `MZ`, `NA`, `NC`, `NE`, `NF`, `NG`, `NI`, `NL`, `NO`, `NP`, `NR`, `NU`, `NZ`, `OM`, `PA`, `PE`, `PF`, `PG`, `PH`, `PK`, `PL`, `PM`, `PN`, `PR`, `PS`, `PT`, `PW`, `PY`, `QA`, `RE`, `RO`, `RS`, `RU`, `RW`, `SA`, `SB`, `SC`, `SD`, `SE`, `SG`, `SH`, `SI`, `SJ`, `SK`, `SL`, `SM`, `SN`, `SO`, `SR`, `SS`, `ST`, `SV`, `SX`, `SY`, `SZ`, `TC`, `TD`, `TF`, `TG`, `TH`, `TJ`, `TK`, `TL`, `TM`, `TN`, `TO`, `TR`, `TT`, `TV`, `TW`, `TZ`, `UA`, `UG`, `UM`, `US`, `UY`, `UZ`, `VA`, `VC`, `VE`, `VG`, `VI`, `VN`, `VU`, `WF`, `WS`, `XK`, `YE`, `YT`, `ZA`, `ZM`, `ZW` | Country of residence |
 | 8 | `GermanTaxNumber` | Optional | Text (max 13) | Tax number |
 | 9 | `TIN` | Optional | Text (max 40) | Foreign tax identification number |
@@ -172,14 +172,14 @@ Every data sheet has four header rows; data entry begins on row 5.
 | 2 | `incomeId` | Required | Text (identifier used to link the sheets; any unique value) | Foreign key. Must match an incomeId value on the '4 Income' sheet for this creditorId. |
 | 3 | `TransactionNumber` | Required | Integer | Sequence number of the transaction, starting with 1 |
 | 4 | `DepotNumber` | Required | Text (max 40) | Account / deposit number |
-| 5 | `Depot/OpeningBalance` | Required | Decimal (None digits total, 4 decimals) | Opening balance (number of shares) |
+| 5 | `Depot/OpeningBalance` | Required | Decimal (4 decimals) | Opening balance (number of shares) |
 | 6 | `Depot/DateOfOpeningBalance` | Required | Date (YYYY-MM-DD) | Date of the specified opening balance |
-| 7 | `Depot/ClosingBalance` | Required | Decimal (None digits total, 4 decimals) | Closing balance two months after the inflow date (number of shares) |
+| 7 | `Depot/ClosingBalance` | Required | Decimal (4 decimals) | Closing balance two months after the inflow date (number of shares) |
 | 8 | `Depot/DateOfClosingBalance` | Required | Date (YYYY-MM-DD) | Date of the specified closing balance |
 | 9 | `TransactionDirection` | Required | Enum [`TransaktionArt`](#transaktionart): `ZUGANG`, `ABGANG` | Inflow / Outflow |
 | 10 | `TradingDay` | Required | Date (YYYY-MM-DD) | Trading day |
 | 11 | `TransactionType` | Required | Enum [`TransaktionGeschaeft`](#transaktiongeschaeft): `PO`, `SO`, `TL`, `RL`, `TP`, `RP` | Transaction |
-| 12 | `NumberOfShares` | Required | Decimal (None digits total, 4 decimals) | Number of shares |
+| 12 | `NumberOfShares` | Required | Decimal (4 decimals) | Number of shares |
 | 13 | `AgreedSettlementDate` | Required | Date (YYYY-MM-DD) | Agreed settlement date |
 | 14 | `ActualSettlementDate` | Required | Date (YYYY-MM-DD) | Actual settlement date |
 

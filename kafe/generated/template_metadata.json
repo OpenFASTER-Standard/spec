@@ -901,7 +901,7 @@
           "position": 6,
           "name": "Stocks_ConvertibleBonds/NumberOfShares",
           "description": "Number of shares/bonds",
-          "type": "Decimal (None digits total, 4 decimals)",
+          "type": "Decimal (4 decimals)",
           "requiredness": "Optional",
           "enum": null,
           "allowedValues": []
@@ -922,7 +922,7 @@
           "position": 8,
           "name": "SubstantialHolding/Ownership",
           "description": "Size of the ownership interest (in %)",
-          "type": "Decimal (None digits total, 4 decimals)",
+          "type": "Decimal (4 decimals)",
           "requiredness": "Optional",
           "enum": null,
           "allowedValues": []
@@ -991,7 +991,7 @@
           "position": 14,
           "name": "IndirectHolding/SizeOfIndirectHolding",
           "description": "Size of the indirect holding (in %)",
-          "type": "Decimal (None digits total, 4 decimals)",
+          "type": "Decimal (4 decimals)",
           "requiredness": "Required",
           "enum": null,
           "allowedValues": []
@@ -1039,7 +1039,7 @@
           "position": 19,
           "name": "GrossIncomeFromCapitalReceived",
           "description": "Gross income from capital received (in Euro)",
-          "type": "Decimal (None digits total, 2 decimals)",
+          "type": "Decimal (2 decimals)",
           "requiredness": "Required",
           "enum": null,
           "allowedValues": []
@@ -1048,7 +1048,7 @@
           "position": 20,
           "name": "Withheld_Taxes",
           "description": "Withheld German capital income tax (in Euro)",
-          "type": "Decimal (None digits total, 2 decimals)",
+          "type": "Decimal (2 decimals)",
           "requiredness": "Required",
           "enum": null,
           "allowedValues": []
@@ -1162,7 +1162,7 @@
           "position": 31,
           "name": "RemittanceBase/Amount",
           "description": "Betrag, der in den Ansässigkeitsstaat überwiesen oder dort bezogen wurde.",
-          "type": "Decimal (None digits total, 2 decimals)",
+          "type": "Decimal (2 decimals)",
           "requiredness": "Optional",
           "enum": null,
           "allowedValues": []
@@ -1195,7 +1195,7 @@
           "position": 34,
           "name": "CreditAmount",
           "description": "To what extent was the German capital gains tax credited in full or in\n\t\t\t\t\t\tpart against taxation in the country of residence or deducted from the tax base, or is it possible\n\t\t\t\t\t\tto carry this forward to future tax periods (tax credit carryforward)?",
-          "type": "Decimal (None digits total, 2 decimals)",
+          "type": "Decimal (2 decimals)",
           "requiredness": "Optional",
           "enum": null,
           "allowedValues": []
@@ -1204,7 +1204,7 @@
           "position": 35,
           "name": "Questions_for_50j/HoldingPeriod/HoldingMore45D",
           "description": "Anzahl der Anteile, die innerhalb des Mindesthaltezeitraums an mindestens 45 Tagen ohne Unterbrechung\n\t\t\t\t\t\tgehalten wurden (§ 50j Absatz 4 Satz 2 EStG).",
-          "type": "Decimal (None digits total, 4 decimals)",
+          "type": "Decimal (4 decimals)",
           "requiredness": "Conditional",
           "enum": null,
           "allowedValues": []
@@ -1213,7 +1213,7 @@
           "position": 36,
           "name": "Questions_for_50j/HoldingPeriod/HoldingMore1Y",
           "description": "Davon Anzahl der Anteile, die im Zeitpunkt des Zuflusses mindestens ein Jahr ohne Unterbrechung gehalten\n\t\t\t\t\t\twurden (§ 50j Absatz 4 Satz 2 EStG).",
-          "type": "Decimal (None digits total, 4 decimals)",
+          "type": "Decimal (4 decimals)",
           "requiredness": "Conditional",
           "enum": null,
           "allowedValues": []
@@ -1222,7 +1222,7 @@
           "position": 37,
           "name": "Questions_for_50j/HoldingPeriod/HoldingLess45D",
           "description": "Anzahl der Anteile, die kürzer 45 Tage gehalten wurden.",
-          "type": "Decimal (None digits total, 4 decimals)",
+          "type": "Decimal (4 decimals)",
           "requiredness": "Conditional",
           "enum": null,
           "allowedValues": []
@@ -1231,7 +1231,7 @@
           "position": 38,
           "name": "Questions_for_50j/HoldingPeriod/SharesPar50jEStG",
           "description": "Anzahl der Anteile im Sinne des § 50j EStG.",
-          "type": "Decimal (None digits total, 4 decimals)",
+          "type": "Decimal (4 decimals)",
           "requiredness": "Conditional",
           "enum": null,
           "allowedValues": []
@@ -1252,7 +1252,7 @@
           "position": 40,
           "name": "Questions_for_50j/MinValueChangeRisk/RiskMin70",
           "description": "Anzahl der Anteile, für die die beschränkt steuerpflichtige Person das Wertänderungsrisiko während der\n\t\t\t\t\t\tMindesthaltedauer zu mindestens 70% getragen hat. (Bezogen auf die Anteile im Sinne des § 50j EStG)",
-          "type": "Decimal (None digits total, 4 decimals)",
+          "type": "Decimal (4 decimals)",
           "requiredness": "Conditional",
           "enum": null,
           "allowedValues": []
@@ -1285,7 +1285,7 @@
           "position": 43,
           "name": "Questions_for_50j/ForwardingObligation/NumberOfShares",
           "description": "Anzahl der Anteile, für die eine Verpflichtung zur unmittelbaren oder mittelbaren Weiterleitung der\n\t\t\t\t\t\tKapitalerträge vorlag. (Bezogen auf die Anteile im Sinne des § 50j EStG)",
-          "type": "Decimal (None digits total, 4 decimals)",
+          "type": "Decimal (4 decimals)",
           "requiredness": "Conditional",
           "enum": null,
           "allowedValues": []
@@ -1318,7 +1318,7 @@
           "position": 46,
           "name": "Questions_for_50j/ReturnObligation/NumberOfShares",
           "description": "Anzahl der Anteile, für die eine Rückgabeverpflichtung ohne Dividendenberechtigung für mit\n\t\t\t\t\t\tDividendenberechtigung erworbene Anteile vorlag.",
-          "type": "Decimal (None digits total, 4 decimals)",
+          "type": "Decimal (4 decimals)",
           "requiredness": "Conditional",
           "enum": null,
           "allowedValues": []
@@ -1382,7 +1382,7 @@
           "position": 6,
           "name": "Ownership",
           "description": "Size of the ownership in interest (in %)",
-          "type": "Decimal (None digits total, 4 decimals)",
+          "type": "Decimal (4 decimals)",
           "requiredness": "Required",
           "enum": null,
           "allowedValues": []
@@ -1728,7 +1728,7 @@
           "position": 5,
           "name": "Depot/OpeningBalance",
           "description": "Opening balance (number of shares)",
-          "type": "Decimal (None digits total, 4 decimals)",
+          "type": "Decimal (4 decimals)",
           "requiredness": "Required",
           "enum": null,
           "allowedValues": []
@@ -1746,7 +1746,7 @@
           "position": 7,
           "name": "Depot/ClosingBalance",
           "description": "Closing balance two months after the inflow date (number of shares)",
-          "type": "Decimal (None digits total, 4 decimals)",
+          "type": "Decimal (4 decimals)",
           "requiredness": "Required",
           "enum": null,
           "allowedValues": []
@@ -1801,7 +1801,7 @@
           "position": 12,
           "name": "NumberOfShares",
           "description": "Number of shares",
-          "type": "Decimal (None digits total, 4 decimals)",
+          "type": "Decimal (4 decimals)",
           "requiredness": "Required",
           "enum": null,
           "allowedValues": []

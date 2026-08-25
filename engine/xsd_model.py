@@ -132,7 +132,9 @@ class XsdModel:
             fraction = self._facet_value(xsd_type, f"{XS}fractionDigits")
             total = self._facet_value(xsd_type, f"{XS}totalDigits")
             if fraction:  # decimals with a fractional part
-                return f"Decimal ({total} digits total, {fraction} decimals)"
+                if total:
+                    return f"Decimal ({total} digits total, {fraction} decimals)"
+                return f"Decimal ({fraction} decimals)"
             return "Integer"
         return "Text"
 

@@ -29,6 +29,16 @@ def test_kafe_va_xsd_loads_and_resolves_bescheidart():
     assert field.name == "BescheidArt"
 
 
+def test_decimal_without_totaldigits_omits_digits_total_clause():
+    # Stueckzahl_Type (kafe-standardtypes.xsd) declares fractionDigits but no
+    # totalDigits - _type_display must not render the literal "None" that a
+    # missing totalDigits facet produces when interpolated unguarded.
+    model = XsdModel(str(ROOT / "kafe.xsd"))
+    field = model.elem("ErtragAllg_CType", "AnzahlAnteile")
+    assert field.type_display == "Decimal (4 decimals)"
+    assert "None" not in field.type_display
+
+
 def test_kap_art_enum_has_eleven_values():
     # NOTE: the task-1 brief expected 10 values; the actual vendored v1.4.0
     # kafe.xsd has 11 (includes SONSTIGE / "Other income" in addition to the
