@@ -38,6 +38,18 @@ jobs:
       - name: Build MiKaDiv-VIB Response (XSD -> generated include)
         run: PYTHONPATH=. python mikadiv-vib/generate_response_docs.py
 
+      - name: Build KaFE Excel template (XSD + status codes -> generated include -> Excel template)
+        run: python generate_template.py
+
+      - name: Build KaFE RM receipt docs
+        run: python -m kafe.generate_rm_docs
+
+      - name: Build KaFE status-code appendix
+        run: python -m kafe.generate_status_codes_docs
+
+      - name: Build KaFE VA docs
+        run: python -m kafe.generate_va_docs
+
       - name: Build StreamLD (SHACL -> generated include + JSON Schema)
         run: PYTHONPATH=streamld python -m generator.generate_streamld_docs
 
@@ -46,6 +58,21 @@ jobs:
 
       - name: Build documentation/about.html
         run: bikeshed --allow-nonlocal-files --die-on=link-error spec documentation/about.bs documentation/about.html
+
+      - name: Read KaFE version
+        id: kafe_version
+        run: echo "version=$(python -m engine.version kafe/request.bs)" >> "$GITHUB_OUTPUT"
+
+      - name: Build kafe/index.html
+        run: bikeshed --allow-nonlocal-files --die-on=link-error spec kafe/index.bs kafe/index.html
+
+      - name: Build kafe/request.html + PDF
+        run: |
+          bikeshed --allow-nonlocal-files --die-on=link-error spec kafe/request.bs kafe/request.html
+          weasyprint --stylesheet documentation/print.css kafe/request.html kafe/generated/kafe-v${{ steps.kafe_version.outputs.version }}.pdf
+
+      - name: Build kafe/response.html
+        run: bikeshed --allow-nonlocal-files --die-on=link-error spec kafe/response.bs kafe/response.html
 
       - name: Read MiKaDiv-VIB version
         id: mikadiv_vib_version
@@ -82,7 +109,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.html 404.html mikadiv-vib/index.html mikadiv-vib/request.html mikadiv-vib/response.html mikadiv-vib/generated/ documentation/about.html documentation/header.include mikadiv-vib/header.include streamld/header.include streamld/index.html streamld/core.html streamld/subscription.html streamld/binding-sse.html streamld/binding-websocket.html streamld/generated/
+          git add index.html 404.html mikadiv-vib/index.html mikadiv-vib/request.html mikadiv-vib/response.html mikadiv-vib/generated/ documentation/about.html documentation/header.include mikadiv-vib/header.include streamld/header.include streamld/index.html streamld/core.html streamld/subscription.html streamld/binding-sse.html streamld/binding-websocket.html streamld/generated/ kafe/index.html kafe/request.html kafe/response.html kafe/generated/ kafe/header.include
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else

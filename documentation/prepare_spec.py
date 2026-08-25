@@ -5,9 +5,9 @@ contents in both the HTML site and the PDF.
 
 Bikeshed's `Local Boilerplate: header yes` resolves relative to each `.bs`
 source file's own directory, so this shared shell needs a byte-identical copy
-in each of the three directories that reference it (documentation/, mikadiv-vib/,
-streamld/) or Bikeshed silently falls back to stock boilerplate. All three
-copies are regenerated here from the same merged content.
+in each of the four directories that reference it (documentation/, mikadiv-vib/,
+streamld/, kafe/) or Bikeshed silently falls back to stock boilerplate. All
+four copies are regenerated here from the same merged content.
 """
 
 from __future__ import annotations
@@ -21,6 +21,7 @@ OUTPUTS = (
     ROOT / "header.include",
     ROOT.parent / "mikadiv-vib" / "header.include",
     ROOT.parent / "streamld" / "header.include",
+    ROOT.parent / "kafe" / "header.include",
 )
 
 
