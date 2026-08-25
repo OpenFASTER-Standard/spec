@@ -63,9 +63,9 @@
     <tr><td><code>3102</code><td class="long">The StaatsangehoerigkeitCH element is missing (conditional mandatory field).</tr>
     <tr><td><code>3103</code><td class="long">The StaatsangehoerigkeitDE element is missing (conditional mandatory field).</tr>
     <tr><td><code>3200</code><td class="long">The incorporation date must not be in the future.</tr>
-    <tr><td><code>3300</code><td class="long">The GeschaeftsleitungOrt element (effecitve management location) is missing (conditional mandatory field).</tr>
-    <tr><td><code>3301</code><td class="long">The GeschaeftsleitungOrt element (effecitve management location) is not permitted.</tr>
-    <tr><td><code>3302</code><td class="long">The address of the person with limited tax liability is the same as the different place of effecitve management.</tr>
+    <tr><td><code>3300</code><td class="long">The GeschaeftsleitungOrt element (effective management location) is missing (conditional mandatory field).</tr>
+    <tr><td><code>3301</code><td class="long">The GeschaeftsleitungOrt element (effective management location) is not permitted.</tr>
+    <tr><td><code>3302</code><td class="long">The address of the person with limited tax liability is the same as the different place of effective management.</tr>
     <tr><td><code>3400</code><td class="long">The specified Legal Entity Identifier (LEI) is invalid.</tr>
     <tr><td><code>3500</code><td class="long">The Register element is missing (conditional mandatory field).</tr>
     <tr><td><code>3501</code><td class="long">The Registerbehoerde element (Register authority) is not permitted.</tr>
@@ -129,7 +129,7 @@
     <tr><td><code>4423</code><td class="long">The Arbeitgeberbescheinigung element (employer attestation) is not permitted.</tr>
     <tr><td><code>4424</code><td class="long">The InteresseArbeitgeber element is missing (conditional mandatory field).</tr>
     <tr><td><code>4425</code><td class="long">The InteresseArbeitgeber element is not permitted.</tr>
-    <tr><td><code>4426</code><td class="long">The InteresseBeschreibung element is missind (conditional mandatory field).</tr>
+    <tr><td><code>4426</code><td class="long">The InteresseBeschreibung element is missing (conditional mandatory field).</tr>
     <tr><td><code>4427</code><td class="long">The InteresseBeschreibung element is not permitted.</tr>
     <tr><td><code>4430</code><td class="long">The Zuzugsdatum element (move-in date) is missing (conditional mandatory field).</tr>
     <tr><td><code>4431</code><td class="long">The Zuzugsdatum element (move-in date) is not permitted.</tr>
@@ -221,7 +221,7 @@
     <tr><td><code>6360</code><td class="long">The amount of the indirect investment does not correspond to the product of the individual investment amounts.</tr>
     <tr><td><code>6400</code><td class="long">The Ordnungsnummer element (serial number) is missing (conditional mandatory field).</tr>
     <tr><td><code>6401</code><td class="long">The Ordnungsnummer element (serial number) is not permitted.</tr>
-    <tr><td><code>6402</code><td class="long">The specified Ordnungsnummer (serial number) ist invalid.</tr>
+    <tr><td><code>6402</code><td class="long">The specified Ordnungsnummer (serial number) is invalid.</tr>
     <tr><td><code>6410</code><td class="long">The amount of withholding tax is implausible.</tr>
     <tr><td><code>6420</code><td class="long">The BPBericht element (tax audit report) is missing (conditional mandatory field).</tr>
     <tr><td><code>6421</code><td class="long">The BPBericht element (tax audit report) is not permitted.</tr>

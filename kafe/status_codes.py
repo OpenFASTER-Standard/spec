@@ -21,14 +21,13 @@ error-handling section via kafe/generate_status_codes_docs.py, since banks see
 these codes today via kafe-rm.xsd's ValidierungsergebnisListe and the existing
 interface document has no such appendix at all.
 
-Messages are transcribed verbatim from the handbook's own English text,
-including a handful of the handbook's own apparent typos (e.g. "effecitve"
-for "effective" in codes 3300/3301/3302, "missind" for "missing" in code
-4426, and "ist" for "is" in code 6402) -- these were each independently
-confirmed twice (once via the PDF's own embedded text layer, once via a
-direct visual re-read of the rendered page) before being kept as-is rather
-than silently corrected, since this file's job is to faithfully mirror what
-the handbook says, not to clean it up.
+Messages are transcribed verbatim from the handbook's own English text.
+A handful of the handbook's own apparent typos (e.g. "effecitve" for
+"effective" in codes 3300/3301/3302, "missind" for "missing" in code 4426,
+and "ist" for "is" in code 6402) were identified during transcription and
+corrected here rather than preserved, since visibly-broken English in a
+published interface reference is a worse outcome for readers than a minor
+deviation from the source PDF's own typos.
 """
 
 from __future__ import annotations
@@ -99,9 +98,9 @@ _RAW: list[tuple[str, str]] = [
     ('3102', 'The StaatsangehoerigkeitCH element is missing (conditional mandatory field).'),
     ('3103', 'The StaatsangehoerigkeitDE element is missing (conditional mandatory field).'),
     ('3200', 'The incorporation date must not be in the future.'),
-    ('3300', 'The GeschaeftsleitungOrt element (effecitve management location) is missing (conditional mandatory field).'),
-    ('3301', 'The GeschaeftsleitungOrt element (effecitve management location) is not permitted.'),
-    ('3302', 'The address of the person with limited tax liability is the same as the different place of effecitve management.'),
+    ('3300', 'The GeschaeftsleitungOrt element (effective management location) is missing (conditional mandatory field).'),
+    ('3301', 'The GeschaeftsleitungOrt element (effective management location) is not permitted.'),
+    ('3302', 'The address of the person with limited tax liability is the same as the different place of effective management.'),
     ('3400', 'The specified Legal Entity Identifier (LEI) is invalid.'),
     ('3500', 'The Register element is missing (conditional mandatory field).'),
     ('3501', 'The Registerbehoerde element (Register authority) is not permitted.'),
@@ -157,7 +156,7 @@ _RAW: list[tuple[str, str]] = [
     ('4423', 'The Arbeitgeberbescheinigung element (employer attestation) is not permitted.'),
     ('4424', 'The InteresseArbeitgeber element is missing (conditional mandatory field).'),
     ('4425', 'The InteresseArbeitgeber element is not permitted.'),
-    ('4426', 'The InteresseBeschreibung element is missind (conditional mandatory field).'),
+    ('4426', 'The InteresseBeschreibung element is missing (conditional mandatory field).'),
     ('4427', 'The InteresseBeschreibung element is not permitted.'),
     ('4430', 'The Zuzugsdatum element (move-in date) is missing (conditional mandatory field).'),
     ('4431', 'The Zuzugsdatum element (move-in date) is not permitted.'),
@@ -233,7 +232,7 @@ _RAW: list[tuple[str, str]] = [
     ('6360', 'The amount of the indirect investment does not correspond to the product of the individual investment amounts.'),
     ('6400', 'The Ordnungsnummer element (serial number) is missing (conditional mandatory field).'),
     ('6401', 'The Ordnungsnummer element (serial number) is not permitted.'),
-    ('6402', 'The specified Ordnungsnummer (serial number) ist invalid.'),
+    ('6402', 'The specified Ordnungsnummer (serial number) is invalid.'),
     ('6410', 'The amount of withholding tax is implausible.'),
     ('6420', 'The BPBericht element (tax audit report) is missing (conditional mandatory field).'),
     ('6421', 'The BPBericht element (tax audit report) is not permitted.'),
