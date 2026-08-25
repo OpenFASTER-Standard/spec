@@ -37,9 +37,14 @@
 
 ```python
 #!/usr/bin/env python3
-"""Strip openpyxl's per-run created/modified timestamps from an xlsx's
-docProps/core.xml so two builds of otherwise-identical content compare
-equal. Mutates each given file in place.
+"""Strip openpyxl's per-run timestamps from an xlsx so two builds of
+otherwise-identical content produce byte-identical files. Two separate
+non-determinism sources, both handled: (1) docProps/core.xml's own
+dcterms:created/modified XML content, and (2) the ZIP container's
+per-entry date_time field, which openpyxl also stamps with "now" for
+every entry it writes, not just docProps/core.xml -- both must be
+normalized or the rewritten files still differ byte-for-byte even after
+the XML-level fix. Mutates each given file in place.
 """
 from __future__ import annotations
 
@@ -52,6 +57,7 @@ TIMESTAMP_RE = re.compile(
     rb"<dcterms:(created|modified)([^>]*)>[^<]*</dcterms:\1>"
 )
 PLACEHOLDER = rb"<dcterms:\1\2>1970-01-01T00:00:00Z</dcterms:\1>"
+FIXED_DATE_TIME = (1980, 1, 1, 0, 0, 0)  # ZIP format's own minimum representable date
 
 
 def normalize(path: Path) -> None:
@@ -61,6 +67,7 @@ def normalize(path: Path) -> None:
             data = zin.read(item.filename)
             if item.filename == "docProps/core.xml":
                 data = TIMESTAMP_RE.sub(PLACEHOLDER, data)
+            item.date_time = FIXED_DATE_TIME
             zout.writestr(item, data)
     tmp.replace(path)
 
@@ -97,20 +104,24 @@ def _write_xlsx(path: Path) -> None:
 
 
 def test_normalize_makes_two_runs_identical(tmp_path):
+    # This must assert full raw-byte equality of the whole rewritten file,
+    # not just docProps/core.xml's own XML content -- that's what
+    # ci/check-generated-up-to-date.sh's `git diff` actually checks (git
+    # diffs binary files byte-for-byte), and openpyxl stamps a "now"
+    # date_time on EVERY zip entry it writes, not just docProps/core.xml,
+    # so a docProps-only check can pass while the two files still differ.
     path_a = tmp_path / "a.xlsx"
     path_b = tmp_path / "b.xlsx"
     _write_xlsx(path_a)
     time.sleep(1.1)  # openpyxl's embedded timestamp has 1-second resolution
     _write_xlsx(path_b)
 
-    with zipfile.ZipFile(path_a) as za, zipfile.ZipFile(path_b) as zb:
-        assert za.read("docProps/core.xml") != zb.read("docProps/core.xml")
+    assert path_a.read_bytes() != path_b.read_bytes()
 
     normalize(path_a)
     normalize(path_b)
 
-    with zipfile.ZipFile(path_a) as za, zipfile.ZipFile(path_b) as zb:
-        assert za.read("docProps/core.xml") == zb.read("docProps/core.xml")
+    assert path_a.read_bytes() == path_b.read_bytes()
 
 
 def test_normalize_preserves_non_timestamp_content(tmp_path):
@@ -224,6 +235,17 @@ BS_FILES=(
 
 COMMIT_DATE=$(git log -1 --format=%cd --date=short HEAD)
 
+# Back up each file's real current content (whether committed or not --
+# NEVER assume "revert to git's index/HEAD" is correct here, since a
+# caller may legitimately have real uncommitted edits to one of these
+# files, e.g. mid-development. A blanket `git checkout -- ...` would
+# silently destroy that work. Restore from this backup instead.
+BACKUP_DIR=$(mktemp -d)
+for f in "${BS_FILES[@]}"; do
+  mkdir -p "$BACKUP_DIR/$(dirname "$f")"
+  cp "$f" "$BACKUP_DIR/$f"
+done
+
 inject_date() {
   local f="$1"
   if grep -q '^Date:' "$f"; then
@@ -236,7 +258,10 @@ inject_date() {
 }
 
 revert_bs_files() {
-  git checkout -- "${BS_FILES[@]}"
+  for f in "${BS_FILES[@]}"; do
+    cp "$BACKUP_DIR/$f" "$f"
+  done
+  rm -rf "$BACKUP_DIR"
 }
 trap revert_bs_files EXIT
 
