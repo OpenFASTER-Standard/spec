@@ -5,15 +5,464 @@ Level: 1
 Status: DREAM
 URL: https://openfaster.org/kafe/request
 Repository: https://github.com/OpenFASTER-Standard/spec
+Text Macro: LONGSTATUS KaFE Refund Application Request -- a module of the OpenFASTER family
 Text Macro: DOCVERSION 4.3.2
+Metadata Order: This version, Issue Tracking, Editor, *
+!This version: <p class="spec-version">Version <strong>[DOCVERSION]</strong></p>
 Editor: Julian Nalenz, https://github.com/sigalor
-Abstract: placeholder, replaced in full by Task 5.
+Abstract: This document is for banks and other reporting institutes
+    submitting KaFE (Kapitalertragsteuer-Erstattung, capital income tax
+    refund) applications under section 50c(3) of the German Income Tax
+    Act. The KaFE Refund Application Request format is a module of the
+    <a href="/about">OpenFASTER</a> family: a self-documenting data model
+    (with an accompanying Excel template) that mirrors the official BZSt
+    KaFE v1.4.0 schema. See <a href="/kafe/response">the Response
+    document</a> for the (currently provisional) decision-notice channel.
 Markup Shorthands: markdown yes, dfn yes, css no
 Boilerplate: omit conformance
 Local Boilerplate: header yes
+Complain About: accidental-2119 yes, missing-example-ids yes
 </pre>
 
-Placeholder {#placeholder}
-===========================
+Downloads {#downloads}
+=======================
 
-Replaced in full by Task 5.
+<a href="https://raw.githubusercontent.com/OpenFASTER-Standard/spec/main/kafe/generated/kafe-v[DOCVERSION].pdf">Specification PDF</a> ·
+<a href="https://raw.githubusercontent.com/OpenFASTER-Standard/spec/main/kafe/generated/kafe-v[DOCVERSION].xlsx">Excel template</a>
+
+The KaFE Refund Application Request module {#kafe-request-module}
+====================================================================
+
+The KaFE (Kapitalertragsteuer-Erstattung) **refund application** format
+defines the data required to apply, under section 50c(3) of the German
+Income Tax Act (EStG), for a refund of German withholding tax on capital
+income. A single application (`Erstattungsantrag`) covers the applicant's
+identity and legal basis of claim, tax treatment, payment details, and
+every taxed income event (`Ertrag`) the application concerns, including
+the section 50j EStG securities-lending/holding-period block where
+applicable. An accompanying self-documenting Excel template is published
+alongside this specification (see [[#downloads|Downloads]] above); each
+sheet mirrors one logical group below, with every field's English
+description, type constraints, and requiredness in the header rows.
+
+Source schema {#source-schema}
+------------------------------
+
+The data model of this module is derived from the XML Schema Definition
+(XSD) published by the BZSt (Bundeszentralamt für Steuern), the German
+Federal Central Tax Office, as part of its DIP (Digitale Poststelle)
+mass-data interface for the KaFE procedure.
+
+OpenFASTER treats the BZSt XSD as the machine source of truth: the field
+definitions, requiredness, enumerations, the [[#data-dictionary|data
+dictionary]] in this document, and the accompanying Excel template are all
+generated directly from it. As the BZSt schema evolves, regenerating from
+the updated XSD keeps this specification and the template in lock-step
+with the BZSt source.
+
+Data model {#data-model}
+------------------------
+
+An application is decomposed into several logical groups (rendered as
+separate sheets in the Excel template). Groups are linked by two keys used
+together, not one — see [[#linking-model|Linking model]] below.
+
+<table class="data">
+  <thead>
+    <tr><th>Group<th>Rows per creditor<th>Purpose
+  <tbody>
+    <tr><td>Creditors Natural / Juridical<td>1 per creditor<td>The applicant's identity, legal basis of claim, tax treatment, and payment details.
+    <tr><td>Certificates Of Residence<td>0..n<td>Certificate-of-residence validity windows, referenced by income events.
+    <tr><td>Income<td>0..n<td>Each taxed capital-income event (Ertrag): type, security, amounts, and the section 50j EStG block where it applies.
+    <tr><td>Investment Chain<td>0..n<td>The chain of indirect holdings for an income event, when applicable.
+    <tr><td>Transaction Data<td>0..n<td>The per-depot transaction ledger supporting the section 50j EStG holding-period test.
+</table>
+
+Linking model {#linking-model}
+------------------------------
+
+Unlike MiKaDiv's own single `RequestId` key, a KaFE application is linked
+across sheets by two keys used together: `creditorId` (the key on the
+Creditors Natural / Juridical sheets and the first column on every other
+sheet) identifies which applicant a row belongs to, and `incomeId`
+(present on Income, Investment Chain, and Transaction Data) identifies
+which specific taxed income event within that applicant's application a
+row belongs to. `creditorId` alone links Certificates Of Residence back to
+a creditor; `creditorId` and `incomeId` together link Investment Chain and
+Transaction Data rows back to one specific Income row.
+
+Legal basis and income type {#legal-basis-and-income-type}
+-------------------------------------------------------------
+
+KaFE has no request-type taxonomy analogous to MiKaDiv's New
+Report/Correction/Cancellation distinction — every application is the same
+`Erstattungsantrag` type. Differentiation instead happens on two
+independent axes:
+
+`Anspruch` (legal basis of claim) is a set of seven independent booleans,
+not an enum: `Abkommen` (double-taxation agreement), `Par43bEStG`,
+`Par44aEStG`, `Par50gEStG`, `Par32Abs6KStG`, `Art63AEUV` (Article 63 TFEU),
+and `IntOrg` (international organisation). Any combination of the first
+six may be true together; `IntOrg` is mutually exclusive with all of them
+— a real cross-field rule enforced by BZSt's own validation (status code
+`2101`), not expressible as a plain XSD constraint, so it is stated here
+rather than left implicit.
+
+`KapArt` (type of capital income) is an 11-value enum on each individual
+`Ertrag`, describing what kind of capital income that specific line
+concerns (dividends, distributions from non-listed corporations, various
+profit-participation-right forms, convertible bonds, life insurance, and
+others — see [[#enumerations|Enumerations]] for the full list and
+meanings). This is a per-income-line classification, not a
+submission-level type.
+
+<b>Note on `AntragPar11InvStG`.</b> A conforming producer will notice a
+boolean field named `AntragPar11InvStG` on the Creditors Juridical sheet.
+Its presence does not mean section 11 InvStG (Investment Tax Act) refund
+claims can be submitted through KaFE — per the official BZSt communication
+handbook (section 2.1), such claims cannot be submitted through this
+interface at all. `AntragPar11InvStG` only lets a submitter affirmatively
+confirm that a refund under section 11 InvStG has neither been applied for
+nor made to the BZSt or another tax authority; it is not itself a channel
+for making such a claim. Earlier revisions of this document documented the
+field as if it were, which was a self-contradiction relative to this
+section — corrected in version 4.3.2 (see [[#version-history|Version
+history]] below).
+
+Resubmission {#resubmission}
+--------------------------------
+
+KaFE has no formal typed lifecycle on the submission side. Per the
+official BZSt communication handbook: <q>Files that contain non-valid data
+are rejected. Violations of conditional mandatory field specifications in
+individual applications thus lead to the rejection of the entire file.
+After correcting the errors, an error-free file can be resubmitted.
+Alternatively, a file containing only the error-free records can be
+transmitted.</q> There is no correction/cancellation message type, no
+typed reference from a new application back to a previous one, and no
+partial-amendment format — resubmission means submitting a fresh, complete
+`Erstattungsantrag` with a new `AntragId`. (BZSt's own decision-notice
+schema does have a typed correction concept — `BescheidArt` = `KORREKTUR`
+— but that is on the response side; see the [Response
+document](/kafe/response#approval-and-clawback).)
+
+Submission receipt (KAFE-RM) {#submission-receipt}
+-------------------------------------------------------
+
+After a delivery is submitted, BZSt returns a synchronous KAFE-RM receipt:
+a file-level result plus, per `Erstattungsantrag` (correlated by the
+submitter's own `AntragId`), either a `RegistrierNr` (a 9-character
+BZSt-assigned case number, present only when that application was
+accepted) or a `ValidierungsergebnisListe` (present only when it was
+rejected — one or more `StatusCode`/`Hinweis` pairs identifying exactly
+what failed; see [[#status-codes-section|Status and error codes]] below
+for the full catalog). This receipt is documented here, in the Request
+document, rather than in the Response document — it is the synchronous
+half of what a bank directly experiences submitting data, unlike the
+asynchronous KAFE-VA decision notice.
+
+<pre class=include>
+path: generated/rm.include.bs
+</pre>
+
+Status and error codes {#status-codes-section}
+---------------------------------------------------
+
+Every code BZSt's `ValidierungsergebnisListe` may report, grouped by the
+same numeric ranges the official handbook itself uses. A submitter's own
+validation logic (and any troubleshooting of a rejected delivery) should
+treat this table as the authoritative reference — it is the complete
+catalog, not a curated subset.
+
+<pre class=include>
+path: generated/status-codes.include.bs
+</pre>
+
+Version history {#version-history}
+--------------------------------------
+
+Divizend has published and maintained this interface specification since
+2023; the following table is the complete version history, carried
+forward from the specification's prior, hand-maintained form.
+
+<table class="data changelog">
+  <thead>
+    <tr><th>Version<th>Date<th>Summary of changes</tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1.0.0
+      <td>2023-08-29
+      <td>Initial release.
+    </tr>
+    <tr>
+      <td>1.1.0
+      <td>2023-09-25
+      <td>Minor formatting improvements.
+    </tr>
+    <tr>
+      <td>2.0.0
+      <td>2024-01-30
+      <td>Added three new "TaxTreatment" properties within "creditorsNatural" (only
+          for Swiss beneficiaries). Added four new "Questions_for_50j" properties
+          within "creditorsJuridical" (only for beneficiaries with a country/legal
+          form combination from the section 50j country/legal-form matrix). Updated
+          possible values for "CapitalIncome" within "income" according to BZSt
+          updates (removed HINTERLEGUNGSSCHEINE, added GRENZKRAFTWERK_RHEIN,
+          GENUSSRECHTE_MIT_LIQUIDATIONSERLOES and
+          GENUSSRECHTE_OHNE_LIQUIDATIONSERLOES). Corrected
+          "Business_Establishment/Business_Establishment_DE" within "income" to now
+          be required (technically only needed for juridical entities). Fixed typo
+          in column name "Economic_Ownership/Ownership_and_Right_To_Use" within
+          "income". Removed section "Divizend's approach to bulk processing"
+          because it is deprecated and will be moved to a new bulk processing
+          manual. Updated section "Input file structure" according to recent
+          developments.
+    </tr>
+    <tr>
+      <td>2.1.0
+      <td>2024-02-10
+      <td>Added instructions on how to use the bulk processing within the Divizend
+          platform (new section 7). Fixed heading of section 5.2 to be "Required
+          files".
+    </tr>
+    <tr>
+      <td>3.0.0
+      <td>2024-05-22
+      <td><b>MAJOR changes (action required):</b> Use version 3 in the "meta"
+          sheet. Make sure to use the updated templates. Removed the field
+          "CreditorNat/General_Data/Nationality" from the "creditorsNatural" sheet
+          and this documentation, because it is not needed by the BOP anymore.
+          <b>MAJOR changes (incompatibilities with version 2):</b> Added a section
+          on character set limitations. Added BOP-defined length restrictions to
+          most fields with type "String". Marked "generalData/LegalForm" in
+          "creditorsJuridical" as required. Marked "Bank/Account/BIC" and
+          "Bank/Account/IBAN" in both sheets "creditorsNatural" and
+          "creditorsJuridical" as required. Marked the fields relating to a
+          beneficiary's TIN as required, i.e. "CreditorNat/General_Data/
+          IDNumber_CountryOfResidence" (in "creditorsNatural") and
+          "CreditorJur/General_Data/IDNumber_CountryOfResidence" (in
+          "creditorsJuridical"). <b>MINOR changes:</b> Added a section on semantic
+          versioning. Added a section on terminology and roles, explaining the
+          terms "Creditor", "Authorized representative" and "Authorized
+          recipient". Added note that XLSX must be provided, not CSV. Added a link
+          to demo data. Added a section on data types, explaining the types
+          "String", "Number" and "Boolean". Added a section on tax certificates,
+          explaining the format and legal basis for tax certificates. <b>PATCH
+          changes:</b> Various formatting improvements.
+    </tr>
+    <tr>
+      <td>3.1.0
+      <td>2024-07-01
+      <td><b>MINOR changes:</b> Marked "CreditorNat/German_TaxOffice/
+          Inquiry_TaxReturn" in "creditorsNatural" as required. Marked
+          "CreditorJur/German_TaxOffice/Inquiry_TaxReturn" in "creditorsJuridical"
+          as required. Marked "AuthorizedRep/General_Data/LegalForm" in
+          "creditorsNatural" and "creditorsJuridical" as required. Marked
+          "Economic_Ownership/Ownership_and_Right_To_Use" in "income" as required.
+          Added a section on required, optional and semi-required fields,
+          including input data cluster constraint details. Made the "Required"
+          column contents more precise.
+    </tr>
+    <tr>
+      <td>3.2.0
+      <td>2024-07-03
+      <td><b>MINOR changes:</b> Marked "TaxTreatment/Taxation_Treatment" in
+          "creditorsJuridical" as required. Marked "Business_Establishment/
+          Business_Establishment_DE" in "income" as required. Clarified
+          "Required" column contents for "InvTaxAct/StatusCertificateDetails/..."
+          fields in "creditorsJuridical". Clarified "Description" and "Required"
+          column contents for "Depositary_Receipts/..." fields in "income".
+    </tr>
+    <tr>
+      <td>3.2.1
+      <td>2024-08-07
+      <td><b>PATCH changes:</b> Fixed "Required" column contents for
+          "CreditorNat/German_TaxOffice/TaxNumber/State" and
+          "CreditorNat/German_TaxOffice/TaxNumber/Number" from "creditorsNatural".
+    </tr>
+    <tr>
+      <td>4.0.0
+      <td>2024-09-16
+      <td><b>MAJOR changes (incompatibilities with version 3):</b> Use version 4
+          in the "meta" sheet. Make sure to use the updated templates. Moved to
+          the new DIP (Digital inbox) implementation of electronic submission.
+          Changed submission flow so that transferring the claims directly
+          submits them to the BZSt instead of waiting for Divizend employees to
+          validate the submission. Added three new worksheets that need to be
+          present in the "data.xlsx" file: certificatesOfResidence,
+          investmentChain and transactionData. Added, removed and updated
+          multiple fields concerning the creditorsNatural, creditorsJuridical and
+          income worksheets. Changed the claim grouping to no longer separate
+          claims containing depositary receipts but rather split claims by
+          certificate of residence validity. Introduced new documents to upload.
+          <b>MINOR changes:</b> Removed the section on Robotic Process Automation
+          and renamed a section to "Divizend's DIP implementation". Updated the
+          limitations concerning file sizing.
+    </tr>
+    <tr>
+      <td>4.0.1
+      <td>2025-01-17
+      <td><b>PATCH changes:</b> Added a note about section 11 InvStG to the
+          introduction. Fixed typos in the requirement conditions for fields
+          "CreditorNat/German_TaxOffice/TaxNumber", "CreditorJur/German_TaxOffice/
+          TaxNumber", "CreditorJur/OptingUnderCorpTaxAct/TaxAuthority" and
+          "CreditorJur/OptingUnderCorpTaxAct/FileNumber". Minor formatting fixes.
+    </tr>
+    <tr>
+      <td>4.1.0
+      <td>2025-02-07
+      <td><b>MINOR changes:</b> Added a new legal basis for reclaim applications,
+          "LegalBasis/Par32Abs6KStG", with the associated new data requirements.
+          Added a requirement for Italian residents to specify if they are German
+          citizens in "CreditorNat/General_Data/NationalityIsDE" — if so, these
+          creditors must provide information about their tax liability in
+          Germany. Renamed the "TaxTreatment/SwitzerlandQuestions/LiabilityEnded"
+          field to "CreditorNat/German_TaxOffice/LiabilityEnded" as the
+          requirement to include it has changed. Restructured the information on
+          holding periods for substantial holdings to accommodate the DTA
+          requirements from Japan and Australia. The tax certificate serial
+          number in "DocumentProof/TaxCertificateNumber" is now required for
+          dividends after 2026-12-31 instead of 2024-12-31. Applicants from
+          Singapore wishing to submit applications for inflows that happened
+          before 2021-12-31 no longer have to provide section 50j EStG data.
+          <b>PATCH changes:</b> Removed a document-attachment note that was no
+          longer relevant. Added unrequired address fields that were previously
+          missing.
+    </tr>
+    <tr>
+      <td>4.2.0
+      <td>2025-10-08
+      <td><b>MINOR changes:</b> Fixed spelling mistakes in field
+          "TaxPrivileges/StructuralConnectionToGermany/TaxPriviligedPurposesDE".
+          Fixed spelling mistakes for "AuthorizedRep" (previously
+          "AuthroizedRep") and "District" (previously "Distrcti"). Changed the
+          condition for the "ISIN" field. Changed the conditions for providing a
+          confirmation of tax payment. Replaced prose attachment-requirement
+          sections with a table. Changed legal representative
+          "LegalRep/NatPerson/Name" to "LegalRep/NatPerson/LastName" to match the
+          template content.
+    </tr>
+    <tr>
+      <td>4.3.0
+      <td>2026-03-23
+      <td><b>MINOR changes:</b> Added "UnlimitedForeignCorporateTaxLiability" and
+          "CreditAmount" to the income sheet. Changed the conditions for
+          including "TaxExemption". Added fields "CreditorNat/General_Data/
+          TinAvailable" and "CreditorJur/General_Data/TinAvailable" and changed
+          the conditions for including "CreditorNat/General_Data/
+          IDNumber_CountryOfResidence" and "CreditorJur/General_Data/
+          IDNumber_CountryOfResidence". Added a "Proof of tax credit" document
+          attachment. Upgraded to KaFE schema version 1.4.0.
+    </tr>
+    <tr>
+      <td>4.3.1
+      <td>2026-06
+      <td>Changed various field lengths to match the required values from the
+          German Tax Authorities. Corrected the format of "TaxTreatment/W-IdNr".
+    </tr>
+    <tr>
+      <td>4.3.2
+      <td>2026-08-25
+      <td><b>MINOR changes:</b> Restructured into the OpenFASTER family's
+          schema-driven documentation format — this document is now generated
+          directly from BZSt's own published KaFE v1.4.0 XSD family rather than
+          hand-maintained prose. Added a provisional Response document covering
+          the KAFE-VA decision-notice schema, not previously documented at all.
+          Added a full status/error code reference (previously undocumented).
+          <b>Fixed:</b> the section 11 InvStG self-contradiction (previous
+          versions documented "AntragPar11InvStG" as if section 11 InvStG claims
+          were submittable via this interface, contradicting this document's own
+          statement that they are not); the Par32Abs6KStG requiredness-column
+          format inconsistency (a free-text conditional value where every other
+          entry used a fixed Required/Optional/Conditional vocabulary); ambiguity
+          in TransaktionId sequencing scope (now stated explicitly: sequential
+          and non-gapped per depot, not globally).
+    </tr>
+  </tbody>
+</table>
+
+Section 50j EStG {#section-50j}
+-----------------------------------
+
+Section 50j EStG (a German anti-cum-ex/securities-lending abuse rule)
+requires additional data for capital income falling within its scope,
+captured on each `Ertrag` via the optional `Par50jEStG` block and, for the
+transaction ledger specifically, on the [[#data-dictionary|Transaction
+Data]] sheet. Almost every field in this block is `minOccurs="0"` in the
+raw XSD — real conditional-mandatory logic (country- and legal-form
+dependent) lives entirely in the [[#status-codes-section|status-code
+catalog]] above, not in the schema's structure, so this specification
+marks these fields `Conditional` rather than `Optional` even though the
+XSD alone would suggest otherwise.
+
+<b>Holding period (`Haltedauer`).</b> The minimum holding period is 45
+days, measured within a window beginning 45 days before and ending 45
+days after the income's due date, using FIFO. `HaltedauerMin45T` counts
+shares held at least 45 days uninterrupted within that window;
+`HaltedauerMin1J` (conditional on `HaltedauerMin45T` &gt; 0, and never
+exceeding it) counts, of those, shares also held at least one year;
+`HaltedauerKuerzer45T` counts shares held less than 45 days;
+`AnteilePar50jEStG` is `HaltedauerMin45T` minus `HaltedauerMin1J`.
+
+<b>Minimum value-change-risk retention (`MinWertAendRisiko`).</b> Only
+relevant for shares that meet the minimum holding-period requirement
+under section 50j(1) but are not already covered by section 50j(4)
+sentence 2. `GegenlAnsprueche` records whether there were offsetting
+claims during the minimum holding period; when true, `RisikoMin70`
+(conditional) records the number of shares for which the applicant bore
+at least 70% of the value-change risk during that period.
+`GegenlAnspruecheAndere` asks the same offsetting-claims question at the
+level of the entire share class, not just the section-50j-scoped shares.
+
+<b>Forwarding obligation (`WeiterlVerpflichtung`).</b> `WeiterlVerpfl`
+records whether there was a direct or indirect obligation to pass on the
+capital income; when true, `WeiterlVerpflAnteile` (conditional) gives the
+affected share count. `WeiterlVerpflAndere` asks the same question beyond
+the section-50j-scoped shares.
+
+<b>Return obligation (`RueckgabeVerpflichtung`).</b> Applies when capital
+income derives from shares transferred under civil law on or before the
+dividend date — securities loans, repurchase agreements (repos), and
+comparable spot contracts must be specified. `RueckgabeVerpfl` records
+whether such an obligation existed; when true, `RueckgabeVerpflAnteile`
+(conditional) gives the affected share count.
+
+<b>Per-depot transaction ledger (`Transaktionsdaten`).</b> For every depot
+holding shares of the security, the full development of the holding —
+including all position changes and loan transactions — must be reported
+for the period from one year before the income's inflow date to two
+months after it: `Anfangsbestand`/`AnfangsbestandDatum` (opening balance,
+dated exactly one year before the inflow date), every `Transaktion` in
+between (each carrying `Handelstag` [trade date], `Transaktionsart`
+[`ZUGANG`/inflow or `ABGANG`/outflow], `Geschaeft` [transaction type —
+`PO` purchase, `SO` sale, `TL` transfer due to securities lending, `RL`
+retransfer due to securities lending, `TP` transfer due to repo, `RP`
+retransfer due to repo], `Stueckzahl` [share count], and both an agreed
+and an actual settlement date), and `Endbestand`/`EndbestandDatum`
+(closing balance, dated exactly two months after the inflow date — BZSt's
+own worked example: an inflow date of 2023-04-25 requires an
+`EndbestandDatum` of exactly 2023-06-25). `TransaktionId` must be
+sequential and non-gapped starting at 1 within each depot — not globally
+across depots or across the whole application — per BZSt's own validation
+rule (status code `7601`); if no transactions occurred for a depot in the
+reporting window, a single "shell" transaction carrying only depot
+information, and none of the trade-specific fields, is required instead
+of an empty transaction list.
+
+Conformance requirements {#module-conformance}
+----------------------------------------------
+
+A conforming producer MUST populate every field marked `Required` for
+each group it emits. Fields marked `Conditional` MUST be populated when
+the condition stated in their description holds, and MUST otherwise be
+omitted or left empty. Fields marked `Optional` MAY be omitted.
+
+Enum-typed fields MUST carry one of the values enumerated for that field
+in [[#enumerations|Enumerations]]. A conforming consumer MUST reject an
+application whose enum-typed field carries a value outside the enumerated
+set.
+
+<pre class=include>
+path: generated/fields.include.bs
+</pre>
