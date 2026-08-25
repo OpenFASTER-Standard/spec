@@ -1493,7 +1493,7 @@ Possible extra rowspan handling
   <meta content="Bikeshed version d113b2e81, updated Tue Jun 9 14:57:55 2026 -0700" name="generator">
   <link href="https://openfaster.org/streamld/core" rel="canonical">
   <link href="https://www.w3.org/2008/site/images/favicon.ico" rel="icon">
-  <meta content="dc3bebd653e04350f4a18cafabb12fce4c10c331" name="revision">
+  <meta content="1b2d7b8256be4c223129f08dc03a000fb9edd6ea" name="revision">
   <meta content="dark light" name="color-scheme">
 <style>/* Boilerplate: style-autolinks */
 .css.css, .property.property, .descriptor.descriptor {
@@ -1939,54 +1939,12 @@ dfn > a.self-link::before      { content: "#"; }
    <p>StreamLD is a protocol for real-time, resumable Linked Data event streaming. This document defines the core event envelope and cursor model that every StreamLD transport binding builds on. Part of the <a href="/streamld">StreamLD module</a>.</p>
   </div>
   <div data-fill-with="at-risk"></div>
-  <section class="changelog-top" id="changelog">
-   <h2 class="heading no-num no-ref no-toc settled" id="changelog-heading"><span class="content">Changelog</span></h2>
-   <table class="changelog data">
-    <thead>
-     <tr>
-      <th>Version
-      <th>Date
-      <th>Summary of changes
-    <tbody>
-     <tr>
-      <td>1.2.0
-      
-      <td>2026-08-25
-      
-      <td>Added the KaFE Refund Application module (v4.3.2): mirrors the German
-          KaFE (§50c(3) EStG) capital income tax refund schema, covering the
-          request submission data model (with accompanying Excel template and
-          downloadable PDF) and the provisional response/status model.
-    
-     <tr>
-      <td>1.1.0
-      
-      <td>2026-08-24
-      
-      <td>Added the StreamLD module (incubating): a protocol for real-time,
-          resumable Linked Data event streaming, covering the core event
-          envelope and cursor model, subscription semantics, and the SSE and
-          WebSocket binding conformance requirements.
-    
-     <tr>
-      <td>1.0.0
-      
-      <td>2026-07-05
-      
-      <td>Initial version. Defines the OpenFASTER family and specifies the
-          MiKaDiv Third-Party Disclosure module: data model, linking model,
-          conformance requirements, and the full data dictionary and
-          enumerations generated from the VIB MiKaDiv XSD, with an accompanying
-          self-documenting Excel template.
-    
-   </table>
-  </section>
   <nav data-fill-with="table-of-contents" id="toc">
    <h2 class="no-num no-ref no-toc" id="contents">Table of Contents</h2>
    <ol class="toc">
-    <li><a href="#intro"><span class="secno">1</span> <span class="content">Introduction {#intro}</span></a>
+    <li><a href="#intro"><span class="secno">1</span> <span class="content">Introduction</span></a>
     <li>
-     <a href="#envelope"><span class="secno">2</span> <span class="content">The Event Envelope {#envelope}</span></a>
+     <a href="#envelope"><span class="secno">2</span> <span class="content">The Event Envelope</span></a>
      <ol class="toc">
       <li><a href="#eventenvelope-fields"><span class="secno">2.1</span> <span class="content">EventEnvelope</span></a>
       <li><a href="#replicationframe-fields"><span class="secno">2.2</span> <span class="content">ReplicationFrame</span></a>
@@ -1994,11 +1952,11 @@ dfn > a.self-link::before      { content: "#"; }
       <li><a href="#gapsignal-fields"><span class="secno">2.4</span> <span class="content">GapSignal</span></a>
      </ol>
     <li>
-     <a href="#cursor"><span class="secno">3</span> <span class="content">The Cursor {#cursor}</span></a>
+     <a href="#cursor"><span class="secno">3</span> <span class="content">The Cursor</span></a>
      <ol class="toc">
-      <li><a href="#gap-handling"><span class="secno">3.1</span> <span class="content">Gap handling {#gap-handling}</span></a>
+      <li><a href="#gap-handling"><span class="secno">3.1</span> <span class="content">Gap handling</span></a>
      </ol>
-    <li><a href="#conformance"><span class="secno">4</span> <span class="content">Conformance {#conformance}</span></a>
+    <li><a href="#conformance"><span class="secno">4</span> <span class="content">Conformance</span></a>
     <li>
      <a href="#w3c-conformance"><span class="secno"></span> <span class="content">Conformance</span></a>
      <ol class="toc">
@@ -2013,12 +1971,12 @@ dfn > a.self-link::before      { content: "#"; }
   </nav>
   <main>
    <p><a href="/streamld">← Back to the StreamLD module index</a></p>
-   <h2 class="heading settled" data-level="1" id="intro"><span class="secno">1. </span><span class="content">Introduction {#intro}</span><a class="self-link" href="#intro"></a></h2>
+   <h2 class="heading settled" data-level="1" id="intro"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#intro"></a></h2>
    <p>StreamLD defines an append-only, per-stream event log. Each event is assigned a
 *sequence number* by the server at write time: a strictly increasing, per-stream
 integer starting at 1. Sequence numbers are the sole ordering primitive — StreamLD
 defines no timestamp-based ordering.</p>
-   <h2 class="heading settled" data-level="2" id="envelope"><span class="secno">2. </span><span class="content">The Event Envelope {#envelope}</span><a class="self-link" href="#envelope"></a></h2>
+   <h2 class="heading settled" data-level="2" id="envelope"><span class="secno">2. </span><span class="content">The Event Envelope</span><a class="self-link" href="#envelope"></a></h2>
    <p>Every StreamLD event is a `streamld:EventEnvelope`. Its normative field list is
 defined by the SHACL shape at `streamld/model/envelope.ttl` and summarized below.</p>
    <div class="note" role="note">
@@ -2098,18 +2056,18 @@ the SHACL shape and regenerate.
       <td>integer
       <td>No
    </table>
-   <h2 class="heading settled" data-level="3" id="cursor"><span class="secno">3. </span><span class="content">The Cursor {#cursor}</span><a class="self-link" href="#cursor"></a></h2>
+   <h2 class="heading settled" data-level="3" id="cursor"><span class="secno">3. </span><span class="content">The Cursor</span><a class="self-link" href="#cursor"></a></h2>
    <p>A StreamLD *cursor* is a sequence number: the position of the last event a
 subscriber has already received. A subscription request of the form "everything
 after cursor C" MUST be interpreted as "all events with sequence number greater
 than C, in ascending sequence order."</p>
-   <h3 class="heading settled" data-level="3.1" id="gap-handling"><span class="secno">3.1. </span><span class="content">Gap handling {#gap-handling}</span><a class="self-link" href="#gap-handling"></a></h3>
+   <h3 class="heading settled" data-level="3.1" id="gap-handling"><span class="secno">3.1. </span><span class="content">Gap handling</span><a class="self-link" href="#gap-handling"></a></h3>
    <p>If a server can no longer satisfy a subscription request because the requested
 cursor has aged out of the stream’s retention window, it MUST respond with a
 `streamld:GapSignal` rather than silently resuming from an incorrect position. A
 client that receives a `streamld:GapSignal` MUST perform a full historical read
 of the stream before re-subscribing live.</p>
-   <h2 class="heading settled" data-level="4" id="conformance"><span class="secno">4. </span><span class="content">Conformance {#conformance}</span><a class="self-link" href="#conformance"></a></h2>
+   <h2 class="heading settled" data-level="4" id="conformance"><span class="secno">4. </span><span class="content">Conformance</span><a class="self-link" href="#conformance"></a></h2>
    <p>A StreamLD-conformant server MUST:</p>
    <ul>
     <li data-md>
