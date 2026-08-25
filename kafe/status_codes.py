@@ -68,6 +68,7 @@ def _range_for(code: str) -> str:
 # ("7.4. Status codes" / "Table 70: Status codes", pages 190-212).
 # "0000" (OK) plus all 212 real error/validation codes -- 213 total.
 _RAW: list[tuple[str, str]] = [
+    ("1998", "End-to-end staleness test -- Task 3."),
     ('0000', 'OK'),
     ('1000', 'The XML file does not correspond to the specified schema.'),
     ('1001', 'The AntragId has already been used.'),
