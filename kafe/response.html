@@ -1,7 +1,7 @@
 <!doctype html><html lang="en">
  <head>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-  <title>MiKaDiv Third-Party Disclosure</title>
+  <title>KaFE Refund Application -- Response</title>
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <link href="/documentation/site.css" rel="stylesheet">
   <link href="/documentation/shell.css" rel="stylesheet">
@@ -1491,7 +1491,7 @@ Possible extra rowspan handling
 	}
 </style>
   <meta content="Bikeshed version d113b2e81, updated Tue Jun 9 14:57:55 2026 -0700" name="generator">
-  <link href="https://openfaster.org/mikadiv-vib" rel="canonical">
+  <link href="https://openfaster.org/kafe/response" rel="canonical">
   <meta content="5ac6b388fefbc1c8fb1be1cbf8d9fa2691aa1771" name="revision">
   <meta content="dark light" name="color-scheme">
 <style>/* Boilerplate: style-autolinks */
@@ -1912,13 +1912,13 @@ dfn > a.self-link::before      { content: "#"; }
   </header>
   <div class="head">
    <p data-fill-with="logo"></p>
-   <h1 class="no-ref p-name" id="title">MiKaDiv Third-Party Disclosure</h1>
+   <h1 class="no-ref p-name" id="title">KaFE Refund Application -- Response</h1>
    <h2 class="heading no-num no-ref no-toc settled" id="profile-and-date"><span class="content">A Collection of Interesting Ideas,
     <time class="dt-updated" datetime="2026-08-25">25 August 2026</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
-     <dd><a class="u-url" href="https://openfaster.org/mikadiv-vib">https://openfaster.org/mikadiv-vib</a>
+     <dd><a class="u-url" href="https://openfaster.org/kafe/response">https://openfaster.org/kafe/response</a>
      <dt>Issue Tracking:
      <dd><a href="https://github.com/OpenFASTER-Standard/spec/issues/">GitHub</a>
      <dt class="editor">Editor:
@@ -1939,10 +1939,13 @@ Parts of this work may be from another specification document.  If so, those par
   </div>
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="heading no-num no-ref no-toc settled" id="abstract"><span class="content">Abstract</span></h2>
-   <p>MiKaDiv Third-Party Disclosure is a module of the
-<a href="/about">OpenFASTER</a> family, mirroring the German MiKaDiv
-(§45b EStG) capital-income disclosure schema. This page indexes its two
-documents.</p>
+   <p>This document is for developers implementing a KaFE integration
+against this platform -- banks never see this raw decision notice
+directly. It documents kafe-va.xsd, the payload BZSt uses to
+communicate the actual tax-assessment decision (approval or clawback)
+on a submitted <a href="/kafe/request">KaFE refund application</a>.
+<b>This document describes payload shape only, not a working
+retrieval flow</b> -- see the disclosure below.</p>
   </div>
   <div data-fill-with="at-risk"></div>
   <section class="changelog-top" id="changelog">
@@ -1970,23 +1973,202 @@ documents.</p>
   <nav data-fill-with="table-of-contents" id="toc">
    <h2 class="no-num no-ref no-toc" id="contents">Table of Contents</h2>
    <ol class="toc">
-    <li><a href="#mikadiv-vib-module"><span class="secno">1</span> <span class="content">MiKaDiv Third-Party Disclosure</span></a>
+    <li><a href="#not-yet-retrievable"><span class="secno">1</span> <span class="content">Not yet retrievable: a disclosure</span></a>
+    <li>
+     <a href="#kafe-response-module"><span class="secno">2</span> <span class="content">The KaFE Refund Application Response format</span></a>
+     <ol class="toc">
+      <li><a href="#source-schema"><span class="secno">2.1</span> <span class="content">Source schema</span></a>
+      <li><a href="#approval-and-clawback"><span class="secno">2.2</span> <span class="content">Approval and clawback semantics</span></a>
+     </ol>
+    <li>
+     <a href="#va-fields"><span class="secno">3</span> <span class="content">Decision notice fields</span></a>
+     <ol class="toc">
+      <li><a href="#decision-notice-envelope"><span class="secno">3.1</span> <span class="content">Decision notice envelope</span></a>
+      <li><a href="#reference-back-to-the-original-application"><span class="secno">3.2</span> <span class="content">Reference back to the original application</span></a>
+      <li><a href="#per-income-refund-breakdown"><span class="secno">3.3</span> <span class="content">Per-income refund breakdown</span></a>
+     </ol>
+    <li>
+     <a href="#va-enumerations"><span class="secno">4</span> <span class="content">Enumerations</span></a>
+     <ol class="toc">
+      <li><a href="#enum-bescheidart"><span class="secno">4.1</span> <span class="content">BescheidArt</span></a>
+      <li><a href="#response-known-gaps"><span class="secno">4.2</span> <span class="content">Known gaps in this schema</span></a>
+     </ol>
    </ol>
   </nav>
   <main>
-   <h2 class="heading settled" data-level="1" id="mikadiv-vib-module"><span class="secno">1. </span><span class="content">MiKaDiv Third-Party Disclosure</span><a class="self-link" href="#mikadiv-vib-module"></a></h2>
-   <p>MiKaDiv Third-Party Disclosure is split into two documents:</p>
-   <ul>
-    <li data-md>
-     <p><a href="/mikadiv-vib/request">Request</a> — the data model a bank or reporting
-institute submits, with an accompanying Excel template and downloadable
-PDF.</p>
-    <li data-md>
-     <p><a href="/mikadiv-vib/response">Response</a> — what the platform receives back from
-the German paying agent after processing a submission, for implementers
-building a MiKaDiv integration.</p>
-   </ul>
-   <p><a href="/">← Back to the OpenFASTER portal</a></p>
+   <h2 class="heading settled" data-level="1" id="not-yet-retrievable"><span class="secno">1. </span><span class="content">Not yet retrievable: a disclosure</span><a class="self-link" href="#not-yet-retrievable"></a></h2>
+   <p><b>BZSt has not yet published the transport for this payload.</b> Per
+the official DIP-KAFE v1.4.0 communication handbook, section 6.2: <q>The
+DIP envelope scheme for the notification of administrative files is not available yet.</q>
+Only <code>kafe-va.xsd</code>’s payload shape is
+published (schemaVersion 1.0.0, unrevised since its 2023-11-20 creation,
+even as the request-side schema has gone through five revisions). This
+document describes that payload shape so implementers know what to expect
+once retrieval becomes possible -- it is not a working integration
+today.</p>
+   <h2 class="heading settled" data-level="2" id="kafe-response-module"><span class="secno">2. </span><span class="content">The KaFE Refund Application Response format</span><a class="self-link" href="#kafe-response-module"></a></h2>
+   <p>One KAFE-VA delivery batches one or more <code>Steuerbescheid</code> (decision
+notice) entries; each answers exactly one prior <a href="/kafe/request">Erstattungsantrag</a>, correlated via the
+<code>Bezugsantrag</code> back-reference block — four distinct fields
+(<code>TransferticketId</code>, <code>AntragId</code>, <code>RegistrierNr</code>, <code>KennNr</code>), a richer
+correlation than KAFE-RM’s own single-<code>AntragId</code> correlation documented
+in the Request document.</p>
+   <h3 class="heading settled" data-level="2.1" id="source-schema"><span class="secno">2.1. </span><span class="content">Source schema</span><a class="self-link" href="#source-schema"></a></h3>
+   <p>This document’s field definitions and enumerations are generated directly
+from BZSt’s published <code>kafe-va.xsd</code> — regenerating from an updated XSD
+keeps this document in lock-step with the BZSt source, the same way <a href="/kafe/request#source-schema">the Request document</a> is generated
+from <code>kafe.xsd</code>.</p>
+   <h3 class="heading settled" data-level="2.2" id="approval-and-clawback"><span class="secno">2.2. </span><span class="content">Approval and clawback semantics</span><a class="self-link" href="#approval-and-clawback"></a></h3>
+   <p><code>SummeAbrechnung</code>’s sign carries the decision: a positive amount is a
+refund in the applicant’s favour; a negative amount is a payment debit
+(clawback). <code>Faelligkeit</code> (a due date) is only present when the amount is
+negative — BZSt’s own documentation warns that late-payment penalties
+apply if the debit isn’t settled by that date. <code>BescheidArt</code> distinguishes
+a first decision (<code>ERSTBESCHEID</code>) from a corrected one (<code>KORREKTUR</code>) for
+the same application, but is not chained to the specific earlier notice it
+corrects — only back to the original <code>Erstattungsantrag</code>, via
+<code>Bezugsantrag</code>. <code>Hinweise</code> is only a boolean flag recording whether the
+notice carries additional remarks; the substantive legal reasoning for any
+decision, in every case, exists only inside <code>BescheidPdf</code> (a
+base64-encoded PDF) — never as structured XML.</p>
+   <h2 class="heading settled" data-level="3" id="va-fields"><span class="secno">3. </span><span class="content">Decision notice fields</span><a class="self-link" href="#va-fields"></a></h2>
+   <p>One KAFE-VA delivery batches one or more <code>Steuerbescheid</code> (decision notice) entries; each answers exactly one prior <code>Erstattungsantrag</code>, correlated via the <code>Bezugsantrag</code> back-reference block. Fields below are grouped by where they appear in that structure.</p>
+   <h3 class="heading settled" data-level="3.1" id="decision-notice-envelope"><span class="secno">3.1. </span><span class="content">Decision notice envelope</span><a class="self-link" href="#decision-notice-envelope"></a></h3>
+   <table class="complex data dictionary longlastcol">
+    <colgroup>
+     <col style="width:18%">
+     <col style="width:12%">
+     <col style="width:20%">
+     <col style="width:50%">
+    <thead>
+     <tr>
+      <th>Field
+      <th class="col-req">Requiredness
+      <th>Type / Allowed values
+      <th>Description
+    <tbody>
+     <tr>
+      <td><code>BescheidId</code>
+      <td class="col-req">Optional
+      <td>UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
+      <td class="long">UUID, die den Bescheid eindeutig kennzeichnet.
+     <tr>
+      <td><code>BescheidArt</code>
+      <td class="col-req">Required
+      <td>Text
+      <td class="long">Kennzeichnung, ob es sich um einen erstmaligen oder korrigierten Bescheid handelt.
+     <tr>
+      <td><code>SummeAbrechnung</code>
+      <td class="col-req">Required
+      <td>Decimal (None digits total, 2 decimals)
+      <td class="long">Abrechnungsbetrag. Negativer Betrag bei Zahllast (Rückforderung).
+     <tr>
+      <td><code>Faelligkeit</code>
+      <td class="col-req">Optional
+      <td>Date (YYYY-MM-DD)
+      <td class="long">Fälligkeit der Forderung (nur bei Rückforderung)
+     <tr>
+      <td><code>Hinweise</code>
+      <td class="col-req">Required
+      <td>Boolean (true / false)
+      <td class="long">Kennzeichnung, ob der Bescheid Hinweise enthält.
+   </table>
+   <h3 class="heading settled" data-level="3.2" id="reference-back-to-the-original-application"><span class="secno">3.2. </span><span class="content">Reference back to the original application</span><a class="self-link" href="#reference-back-to-the-original-application"></a></h3>
+   <table class="complex data dictionary longlastcol">
+    <colgroup>
+     <col style="width:18%">
+     <col style="width:12%">
+     <col style="width:20%">
+     <col style="width:50%">
+    <thead>
+     <tr>
+      <th>Field
+      <th class="col-req">Requiredness
+      <th>Type / Allowed values
+      <th>Description
+    <tbody>
+     <tr>
+      <td><code>TransferticketId</code>
+      <td class="col-req">Required
+      <td>Text (1-170 characters)
+      <td class="long">TransferticketId der Lieferung, in der der Antrag enthalten war.
+     <tr>
+      <td><code>AntragId</code>
+      <td class="col-req">Required
+      <td>UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
+      <td class="long">In der Lieferung angegebene UUID des Antrages.
+     <tr>
+      <td><code>RegistrierNr</code>
+      <td class="col-req">Required
+      <td>Text (9 characters, BZSt-assigned)
+      <td class="long">Aktenzeichen unter der der Antrag beim BZSt registriert wurde (Registriernummer).
+     <tr>
+      <td><code>KennNr</code>
+      <td class="col-req">Required
+      <td>Numeric string (8-digit BZSt withholding-tax number)
+      <td class="long">Kenn-Nummer des BZSt
+   </table>
+   <h3 class="heading settled" data-level="3.3" id="per-income-refund-breakdown"><span class="secno">3.3. </span><span class="content">Per-income refund breakdown</span><a class="self-link" href="#per-income-refund-breakdown"></a></h3>
+   <table class="complex data dictionary longlastcol">
+    <colgroup>
+     <col style="width:18%">
+     <col style="width:12%">
+     <col style="width:20%">
+     <col style="width:50%">
+    <thead>
+     <tr>
+      <th>Field
+      <th class="col-req">Requiredness
+      <th>Type / Allowed values
+      <th>Description
+    <tbody>
+     <tr>
+      <td><code>ErtragId</code>
+      <td class="col-req">Required
+      <td>Integer
+      <td class="long">Im Bezugsantrag angegebene ErtragId (laufende Nummer des Ertrags).
+     <tr>
+      <td><code>ErstattungKapESt</code>
+      <td class="col-req">Required
+      <td>Decimal (None digits total, 2 decimals)
+      <td class="long">Erstattungsbetrag Kapitalertragsteuer
+     <tr>
+      <td><code>ErstattungSolZ</code>
+      <td class="col-req">Required
+      <td>Decimal (None digits total, 2 decimals)
+      <td class="long">Erstattungsbetrag Solidaritätszuschlag
+   </table>
+   <h2 class="heading settled" data-level="4" id="va-enumerations"><span class="secno">4. </span><span class="content">Enumerations</span><a class="self-link" href="#va-enumerations"></a></h2>
+   <p>Every value that an enum-typed field in the decision notice may carry, with its meaning.</p>
+   <h3 class="heading settled" data-level="4.1" id="enum-bescheidart"><span class="secno">4.1. </span><span class="content">BescheidArt</span><a class="self-link" href="#enum-bescheidart"></a></h3>
+   <table class="complex data enum-table longlastcol">
+    <colgroup>
+     <col style="width:18%">
+     <col style="width:82%">
+    <thead>
+     <tr>
+      <th>Value
+      <th>Meaning
+    <tbody>
+     <tr>
+      <td><code>ERSTBESCHEID</code>
+      <td class="long">First (initial) decision notice for a given Erstattungsantrag.
+     <tr>
+      <td><code>KORREKTUR</code>
+      <td class="long">Corrected decision notice superseding an earlier one for the same Erstattungsantrag -- not chained to which specific earlier notice it corrects (only back to the original application, via Bezugsantrag).
+   </table>
+   <h3 class="heading settled" data-level="4.2" id="response-known-gaps"><span class="secno">4.2. </span><span class="content">Known gaps in this schema</span><a class="self-link" href="#response-known-gaps"></a></h3>
+   <p>Worth disclosing rather than silently working around: <code>kafe-va.xsd</code>’s own
+<code>schemaVersion</code> has been fixed at <code>1.0.0</code> since its creation on
+2023-11-20, unrevised even as the request-side <code>kafe.xsd</code> has gone through
+five revisions (through 1.4.0). There is no <code>PreviousBescheidId</code>-style
+field chaining a <code>KORREKTUR</code> notice to the specific earlier <code>Bescheid</code> it
+corrects — only <code>Bezugsantrag</code>’s reference back to the original
+application. And unlike <a href="/mikadiv-vib/response#response-known-gaps">MiKaDiv’s own Response
+document</a>, which at least had one real sample XML to verify against, no
+real <code>BescheidPdf</code>/<code>Steuerbescheid</code> sample has been examined during this
+module’s research — this document’s coverage is derived entirely from the
+schema’s own structure, not confirmed against a real example.</p>
   </main>
 <script>
 (function() {
