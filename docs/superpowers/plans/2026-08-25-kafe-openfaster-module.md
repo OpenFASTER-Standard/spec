@@ -371,6 +371,33 @@ def test_transaction_geschaeft_enum_has_six_values():
     assert set(enums["TransaktionGeschaeft"]) == {"PO", "SO", "TL", "RL", "TP", "RP"}
 
 
+def test_liability_ended_type_is_text_not_number():
+    """Regression test for a confirmed, still-live column-defs.json bug (app repo
+    MR !808): that JSON says type="number" for this field, but it's really a
+    4-digit year expressed as text. This test only passes if mapping.py resolved
+    the type from the real XSD (as this task requires) rather than copying
+    column-defs.json's own (wrong) type column. Field name is column-defs.json's
+    own real nameEn value, verbatim, per this task's column-naming convention."""
+    model = _model()
+    sheets = mapping.build_sheets(model)
+    master = sheets[mapping.S_MASTER]
+    field = next(f for f in master if f[0] == "CreditorNat/German_TaxOffice/LiabilityEnded")
+    assert "Text" in field[2] or "String" in field[2]  # type_display, not "Integer"/"Number"
+
+
+def test_economic_interest_description_type_is_text_not_boolean():
+    """Same class of regression as above, for the other confirmed column-defs.json
+    bug: that JSON says type="boolean", but it's really a free-text description."""
+    model = _model()
+    sheets = mapping.build_sheets(model)
+    master = sheets[mapping.S_MASTER]
+    field = next(
+        f for f in master
+        if f[0] == "TaxTreatment/SwitzerlandQuestions/DependantPersonalServices/EconomicInterestDescription"
+    )
+    assert "Text" in field[2] or "String" in field[2]  # type_display, not "Boolean"
+
+
 def test_legend_rows_mention_no_record_type_narrowing():
     """KaFE has no request-type taxonomy at all (confirmed during research) so
     there must be no MiKaDiv-style Excel-narrowing/RecordType legend entry."""
@@ -404,6 +431,9 @@ S_TRANSACTION_DATA = "6 Transaction Data"  # column-defs.json: transactionData
 
 SHEET_ORDER = [S_MASTER, S_JURIDICAL, S_COR, S_INCOME, S_INVESTMENT_CHAIN, S_TRANSACTION_DATA]
 ```
+
+**Column naming convention — read this before writing any field mapping below.**
+`kafe.xsd`'s raw element names are German (`SteuerpflichtDEEndeJahr`, `Zuflussdatum`, ...), unlike MiKaDiv's own already-English VIB schema — so `mikadiv-vib/mapping.py`'s convention of using the raw XSD element name as the Excel column header (`field.name`, sourced from `component.local_name`) does **not** carry over here; doing so would produce German technical column headers, which would not be "content-wise identical to what exists" (the user's own explicit requirement — the existing document and every real KaFE spreadsheet on this box uses English `nameEn`-style paths as headers). Production already solved this: `column-defs.json`'s own `nameEn` field (e.g. `"CreditorNat/German_TaxOffice/LiabilityEnded"`, `"generalData/Country"`) is the real, already-shipped English column-header convention, confirmed directly against the real demo `data.xlsx` files during this plan's research. It is **not** internally consistent in its own prefixing (some paths keep a `CreditorNat/`/`CreditorJur/` prefix, others don't) — do not try to "clean it up" or invent a more consistent scheme; use each field's `nameEn` value **verbatim** as the `name=` override argument to `E()`/`A()`/`P()`/`SYN()` (all four helpers already support this per `mikadiv-vib/mapping.py:185-198`'s own signatures), so the Excel column headers match production's real, already-shipped headers exactly, prefix inconsistencies included.
 
 **3b. `certificatesOfResidence` (`S_COR`) — the smallest sheet, do this one first to establish the pattern.** Its 6 real columns (all required, confirmed during research): `creditorId`, `id`, `Ausstellungsbehoerde`/Issuer, `Ausstellungsdatum`/IssuedAt, `GueltigVon`/ValidFrom, `GueltigBis`/ValidUntil. There is no single KaFE XSD attribute/element named literally `creditorId` or `id` (those are Divizend's own cross-sheet linking keys, analogous to MiKaDiv's `RequestId` — a presentation-layer concept, not an XSD field) — use `SYN()` for both, the same way `mikadiv-vib/mapping.py`'s `fk()` helper (line 197-198) synthesizes its own linking-key column. The remaining 4 real fields correspond to KaFE's certificate-of-residence concept inside `SteuerlicheBehandlung_CType.Ansaessigkeitsbescheinigung` (type `AnsaessBescheinigung_Struct`, defined in `kafe-standardtypes.xsd` — read that file directly, e.g. `grep -A20 'name="AnsaessBescheinigung_Struct"' kafe/kafe-standardtypes.xsd`, to get the exact element names for issuer/issued-date/valid-from/valid-to and use `model.elem("AnsaessBescheinigung_Struct", "<real element name>")` for each).
 
@@ -474,9 +504,15 @@ Use `_par50j_requiredness()` (passed as the explicit `req=` override argument to
 
 **3f. `creditorsNatural`/`creditorsJuridical` (`S_MASTER`/`S_JURIDICAL`) — the two largest sheets (113-133 columns in production).** These correspond to `Erstattungsantrag_CType`'s `Anliegen`, `AllgAngaben`, `SteuerlicheBehandlung`, `Zahlungsweg`, and `Erklaerungen` sub-trees (all fully reproduced from the real XSD below), plus `Anspruch_Struct` (the 7-boolean legal-basis block, in `kafe-standardtypes.xsd`) and address/bank/person sub-structures also in `kafe-standardtypes.xsd`. Given the sheer column count, do **not** attempt to hand-write and verify every single column from scratch in one pass — instead:
 
-1. Read `column-defs.json`'s `creditorsNatural` and `creditorsJuridical` arrays directly (they're JSON, each entry has `{id, name, nameEn, type, required, format}` — the real, production field list you must match column-for-column).
+1. Read `column-defs.json`'s `creditorsNatural` and `creditorsJuridical` arrays directly (they're JSON, each entry has `{id, name, nameEn, type, required, format}` — the real, production field list you must match column-for-column **by presence and name**).
 2. For each entry, resolve its real XSD source using `kafe.xsd`'s structure reproduced below plus direct reads of `kafe-standardtypes.xsd` for the nested structs (`Adresse_Struct`, `NatP_Struct`/`NichtNatP_Struct`, `Bankverbindung_Struct`, `Anspruch_Struct`, `GesetzlicheVertretung_Struct`, `Ansprechperson_Struct`, `Befugnis_Struct`, `OptionKStG_Struct`, `InvStG_Struct`, `SchweizFragen_Struct`, `FinanzamtDE_Struct`, `SteuerbeguenstigteZwecke_Struct`) using `model.elem()`/`model.attr()`/`model.path()` (the `.path()` helper disambiguates fields that share a name across different branches, exactly as `mikadiv-vib/mapping.py` uses it at lines 286-289 for `MoreThan1000Available`).
 3. Where `column-defs.json`'s field genuinely has no XSD counterpart (a presentation-only helper column, analogous to MiKaDiv's `PersonTaxCategory`), use `SYN()` with hand-authored description text, flagged the same way `mikadiv-vib/mapping.py`'s own `DESC_*` constants are (lines 48-76).
+
+**Do not trust `column-defs.json`'s own `type`/`required` columns as a type/requiredness source — use them only to confirm which fields exist and their names.** This is not a theoretical caution: `column-defs.json` has two confirmed, still-live bugs in its own `type` column, found and documented during the sibling `data-requirement-checklists` module's own review (internal GitLab MR !808 on the `app` repo, comment thread dated 2026-08-21 through 2026-08-25) and worked around there via an override table (`apps/backend/src/bulk-processing/data-requirement-checklists/kafe-field-metadata.ts:34-37`) rather than a fix to `column-defs.json` itself:
+   - `CreditorNat/German_TaxOffice/LiabilityEnded` (`column-defs.json` id `CN33`) — the JSON says `"type": "number"`; the real field is a 4-digit year expressed as text (`String`), confirmed against BZSt's own KAfE documentation.
+   - `TaxTreatment/SwitzerlandQuestions/DependantPersonalServices/EconomicInterestDescription` (`column-defs.json` id `CN91`) — the JSON says `"type": "boolean"`; the real field is a free-text description (`String`, max 500 characters per the handbook), confirmed the same way.
+
+   Both fields belong to `creditorsNatural`/`creditorsJuridical` (this step) — resolve their real type from `kafe.xsd`/`kafe-standardtypes.xsd` via `XsdModel`, the same as every other field, and they'll come out correct automatically (this plan's own architecture never reads `column-defs.json`'s `type` column into `mapping.py` at all). **Critically, the override comment that found these two also states the audit was scoped only to `creditorsNatural`/`creditorsJuridical`** — the other four sheets (`certificatesOfResidence`, `income`, `investmentChain`, `transactionData`, covered in Steps 3b-3e above) have never been checked for the same class of bug. Since this task already resolves every field's type from the real XSD rather than `column-defs.json`, this is not a blocking risk — but it's worth extra care (i.e., don't shortcut by copying a `type` value straight out of `column-defs.json` "just this once" for a field that looks obviously simple) precisely in those four sheets, where no one has yet independently verified `column-defs.json`'s own claims.
 
 `kafe.xsd`'s real top-level structure feeding both creditor sheets (`Erstattungsantrag_CType`, fully confirmed by direct read):
 
@@ -545,7 +581,7 @@ Mirror `mikadiv-vib/mapping.py:139-396`'s exact structure: `build_enums()` assem
 - [ ] **Step 6: Run test to verify it passes**
 
 Run: `cd /work/openfaster-spec && python -m pytest kafe/tests/test_mapping.py -v`
-Expected: PASS, all 5 tests.
+Expected: PASS, all 7 tests.
 
 - [ ] **Step 7: Commit**
 
