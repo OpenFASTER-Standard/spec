@@ -25,25 +25,31 @@ def test_sheet_order_has_seven_real_sheets():
 
 
 def test_certificates_of_residence_sheet_has_six_columns():
+    """Column names are column-defs.json's real nameEn values, verbatim, per
+    this task's own column-naming convention -- NOT the raw German XSD element
+    names (Ausstellungsbehoerde/Ausstellungsdatum/GueltigVon/GueltigBis), since
+    the whole point of that convention is matching production's real, already-
+    shipped English headers."""
     model = _model()
     sheets = mapping.build_sheets(model)
     cor = sheets[mapping.S_COR]
     assert len(cor) == 6
     names = [f[0] for f in cor]
     assert names == [
-        "creditorId", "id", "Ausstellungsbehoerde", "Ausstellungsdatum",
-        "GueltigVon", "GueltigBis",
+        "creditorId", "id", "Issuer", "IssuedAt", "ValidFrom", "ValidUntil",
     ]
 
 
 def test_par50j_field_is_conditional_not_optional():
     """HaltedauerMin45T is minOccurs=0 in the raw XSD (Optional by default),
     but status_codes.py's conditional-mandatory logic must override it to
-    Conditional -- the whole point of the status-code chaining layer."""
+    Conditional -- the whole point of the status-code chaining layer. Looked
+    up by column-defs.json's real nameEn value (Questions_for_50j/HoldingPeriod/
+    HoldingMore45D), not the raw XSD name, per this task's naming convention."""
     model = _model()
     sheets = mapping.build_sheets(model)
     income = sheets[mapping.S_INCOME]
-    field = next(f for f in income if f[0] == "HaltedauerMin45T")
+    field = next(f for f in income if f[0] == "Questions_for_50j/HoldingPeriod/HoldingMore45D")
     assert field[3] == "Conditional"  # requiredness, not "Optional"
 
 

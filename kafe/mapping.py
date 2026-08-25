@@ -20,19 +20,14 @@ Two things are different from MiKaDiv here, both load-bearing:
    header, and that convention is **not** internally consistent in its own
    prefixing (some paths keep a ``CreditorNat/``/``CreditorJur/`` prefix,
    others don't). This file uses each field's real ``nameEn`` value verbatim
-   as the ``name=`` override on ``E()``/``A()``/``P()``/``SYN()``, prefix
-   inconsistencies included, rather than "cleaning it up" -- except on the
-   Certificates Of Residence sheet, where the resolved-and-committed test
-   suite (``kafe/tests/test_mapping.py``, Task 3's own Step 1) instead
-   asserts the *raw XSD* element names for that sheet's four real fields
-   (``Ausstellungsbehoerde``/``Ausstellungsdatum``/``GueltigVon``/
-   ``GueltigBis``) rather than their ``nameEn`` counterparts
-   (``Issuer``/``IssuedAt``/``ValidFrom``/``ValidUntil``). That is a real
-   inconsistency between this task's own two authoritative sources (the test
-   file vs. the "always use nameEn" convention described above); it is
-   resolved here in the test's favour (see the task 3 report for the concern
-   flagged to reviewers) since making the given test suite pass is this
-   task's hard constraint.
+   as the ``name=`` override on ``E()``/``A()``/``P()``/``SYN()`` for every
+   field, including the Certificates Of Residence sheet's four real fields
+   (``Issuer``/``IssuedAt``/``ValidFrom``/``ValidUntil``) and the Income
+   sheet's twelve Par50jEStG fields (``Questions_for_50j/...``). An earlier
+   version of this file's own test suite (task 3 brief's own Step 1) briefly
+   asserted the *raw XSD* element names for those two spots instead -- an
+   authoring mistake in the brief itself, now fixed there and here, per the
+   task 3 report's fix-round-1 addendum.
 
 2. **Requiredness.** ``column-defs.json``'s own ``type``/``required`` columns
    are never trusted as a source of truth -- only used (during this file's
@@ -390,17 +385,18 @@ def build_sheets(model: XsdModel) -> dict[str, list[tuple]]:
 
     # ----------------------------------------------------------------- #
     # 3 Certificates Of Residence -- the smallest sheet, establishes the
-    # SYN()-for-linking-keys / E()-for-real-fields pattern. Per the given
-    # test suite, the 4 real fields keep their raw XSD element names as
-    # column headers here (see this module's own docstring, point 1).
+    # SYN()-for-linking-keys / E()-for-real-fields pattern. The 4 real fields
+    # use column-defs.json's real nameEn values verbatim as column headers
+    # (Issuer/IssuedAt/ValidFrom/ValidUntil), per this module's own "Column
+    # naming convention" -- not the raw German XSD element names.
     # ----------------------------------------------------------------- #
     sheets[S_COR] = [
         creditor_fk(),
         SYN("id", DESC_COR_PK, LINK_ID, "Required"),
-        E("AnsaessBescheinigung_Struct", "Ausstellungsbehoerde"),
-        E("AnsaessBescheinigung_Struct", "Ausstellungsdatum"),
-        E("AnsaessBescheinigung_Struct", "GueltigVon"),
-        E("AnsaessBescheinigung_Struct", "GueltigBis"),
+        E("AnsaessBescheinigung_Struct", "Ausstellungsbehoerde", name="Issuer"),
+        E("AnsaessBescheinigung_Struct", "Ausstellungsdatum", name="IssuedAt"),
+        E("AnsaessBescheinigung_Struct", "GueltigVon", name="ValidFrom"),
+        E("AnsaessBescheinigung_Struct", "GueltigBis", name="ValidUntil"),
     ]
 
     # ----------------------------------------------------------------- #
@@ -410,19 +406,11 @@ def build_sheets(model: XsdModel) -> dict[str, list[tuple]]:
     # RueckgabeVerpflichtung blocks (Transaktionsdaten lives on its own sheet, 3e).
     # ----------------------------------------------------------------- #
     def par50j(field_name, name_en, path):
-        # Column header is deliberately the raw XSD element name here, not
-        # column-defs.json's nameEn (kept only in the description for
-        # traceability) -- kafe/tests/test_mapping.py's own
-        # test_par50j_field_is_conditional_not_optional locates this field by
-        # its raw name ("HaltedauerMin45T"), matching how the Certificates Of
-        # Residence sheet (see build_sheets()'s S_COR block above) also keeps
-        # raw XSD names rather than nameEn. See this module's own docstring,
-        # point 1, for the resulting (real) inconsistency with every other
-        # sheet's nameEn convention, flagged to reviewers in the task 3 report.
-        base = model.path("Par50jEStG_Struct", path)
-        req = _par50j_requiredness(field_name, base.required)
-        desc = f"{base.description} (production's own column-defs.json field path: {name_en})"
-        return P("Par50jEStG_Struct", path, req=req, desc=desc)
+        # Column header is column-defs.json's real nameEn value, verbatim,
+        # matching every other sheet's convention (see this module's own
+        # docstring, point 1).
+        req = _par50j_requiredness(field_name, model.path("Par50jEStG_Struct", path).required)
+        return P("Par50jEStG_Struct", path, req=req, name=name_en)
 
     sheets[S_INCOME] = [
         creditor_fk(),
