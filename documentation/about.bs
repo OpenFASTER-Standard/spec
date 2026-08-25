@@ -11,8 +11,8 @@ Abstract: OpenFASTER is a vendor-independent family of open standards for the
     exchange of EU withholding-tax and dividend-reporting data under MiKaDiv
     and FASTER. This document defines the family: its scope, shared
     terminology, versioning policy, and planned direction. The family's
-    concrete modules -- currently MiKaDiv Third-Party Disclosure and StreamLD
-    -- are each specified in their own document; see
+    concrete modules -- currently MiKaDiv Third-Party Disclosure, KaFE Refund
+    Application, and StreamLD -- are each specified in their own document; see
     <a href="/">the OpenFASTER portal</a> for the full, current list.
 Markup Shorthands: markdown yes, dfn yes, css no
 Boilerplate: omit conformance
@@ -101,7 +101,7 @@ Each OpenFASTER module is versioned independently using
 * <b>PATCH</b> — editorial or documentation-only corrections.
 
 A module's own changelog is published at the top of its document. Every module
-publishes at a single, stable "latest" URL (e.g. `/mikadiv-vib`, `/streamld`),
-updated in place as new versions are released — dated snapshot URLs for
+publishes at a single, stable "latest" URL (e.g. `/mikadiv-vib`, `/kafe`,
+`/streamld`), updated in place as new versions are released — dated snapshot URLs for
 citing a frozen historical version are minted only once a module actually
 reaches a second version.
