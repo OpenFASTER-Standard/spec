@@ -3,6 +3,7 @@ Title: KaFE Refund Application
 Shortname: kafe
 Level: 1
 Status: DREAM
+Text Macro: LONGSTATUS KaFE Refund Application -- a module of the OpenFASTER family
 URL: https://openfaster.org/kafe
 Repository: https://github.com/OpenFASTER-Standard/spec
 Local Boilerplate: header yes
