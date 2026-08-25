@@ -48,7 +48,7 @@ confirmed independently across the XSD, the handbook, and production code:
   two orthogonal axes instead: `Anspruch` (legal basis of claim — 7
   independent booleans: `Abkommen`/DTA, `Par43bEStG`, `Par44aEStG`,
   `Par50gEStG`, `Par32Abs6KStG`, `Art63AEUV`, `IntOrg`, combinable except
-  `IntOrg` which is exclusive) and `KapArt` (a 10-value capital-income-type
+  `IntOrg` which is exclusive) and `KapArt` (an 11-value capital-income-type
   enum per income line, not a submission-level type).
 - **No correction/cancellation typing on the submission side, confirmed
   three independent ways.** Grepping the real XSD family for

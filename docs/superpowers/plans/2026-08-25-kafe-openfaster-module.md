@@ -1043,7 +1043,7 @@ six may be true together; `IntOrg` is mutually exclusive with all of them
 `2101`), not expressible as a plain XSD constraint, so it is stated here
 rather than left implicit.
 
-`KapArt` (type of capital income) is a 10-value enum on each individual
+`KapArt` (type of capital income) is an 11-value enum on each individual
 `Ertrag`, describing what kind of capital income that specific line
 concerns (dividends, distributions from non-listed corporations, various
 profit-participation-right forms, convertible bonds, life insurance, and
