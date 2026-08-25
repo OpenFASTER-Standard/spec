@@ -15,7 +15,7 @@ Abstract: This document is for developers implementing a KaFE integration
     <b>This document describes payload shape only, not a working
     retrieval flow</b> -- see the disclosure below.
 Markup Shorthands: markdown yes, dfn yes, css no
-Boilerplate: omit conformance
+Boilerplate: omit conformance, omit document-revision
 Local Boilerplate: header yes
 Complain About: accidental-2119 yes, missing-example-ids yes
 </pre>

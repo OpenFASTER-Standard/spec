@@ -13,7 +13,7 @@ Abstract: MiKaDiv Third-Party Disclosure is a module of the
     (§45b EStG) capital-income disclosure schema. This page indexes its two
     documents.
 Markup Shorthands: markdown yes, dfn yes, css no
-Boilerplate: omit conformance
+Boilerplate: omit conformance, omit document-revision
 </pre>
 
 MiKaDiv Third-Party Disclosure {#mikadiv-vib-module}

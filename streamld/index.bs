@@ -12,7 +12,7 @@ Abstract: StreamLD is a protocol for real-time, resumable Linked Data event
     <a href="https://github.com/OpenFASTER-Standard/riptide">Riptide</a>
     (Elixir/Phoenix).
 Markup Shorthands: markdown yes, dfn yes, css no
-Boilerplate: omit conformance
+Boilerplate: omit conformance, omit document-revision
 </pre>
 
 StreamLD {#streamld-module}

@@ -5,6 +5,7 @@ Level: 1
 Status: w3c/CG-DRAFT
 URL: https://openfaster.org/streamld/binding-sse
 Local Boilerplate: header yes
+Boilerplate: omit document-revision
 Editor: OpenFASTER Editors
 Abstract: Defines how StreamLD's cursor-based subscription model (see <a href="core">StreamLD Core</a>) is carried over Server-Sent Events, for server-to-client delivery. Part of the <a href="/streamld">StreamLD module</a>.
 </pre>

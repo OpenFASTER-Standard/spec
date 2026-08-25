@@ -13,7 +13,7 @@ Abstract: This document is for developers implementing a MiKaDiv integration
     to acknowledge, confirm, or reject a submitted
     <a href="/mikadiv-vib/request">MiKaDiv disclosure request</a>.
 Markup Shorthands: markdown yes, dfn yes, css no
-Boilerplate: omit conformance
+Boilerplate: omit conformance, omit document-revision
 Local Boilerplate: header yes
 Complain About: accidental-2119 yes, missing-example-ids yes
 </pre>
