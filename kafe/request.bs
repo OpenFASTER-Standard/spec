@@ -19,7 +19,7 @@ Abstract: This document is for banks and other reporting institutes
     KaFE v1.4.0 schema. See <a href="/kafe/response">the Response
     document</a> for the (currently provisional) decision-notice channel.
 Markup Shorthands: markdown yes, dfn yes, css no
-Boilerplate: omit conformance
+Boilerplate: omit conformance, omit document-revision
 Local Boilerplate: header yes
 Complain About: accidental-2119 yes, missing-example-ids yes
 </pre>

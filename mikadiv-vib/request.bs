@@ -18,7 +18,7 @@ Abstract: This document is for banks and other reporting institutes
     schema. See <a href="/mikadiv-vib/response">the Response document</a> for
     what a submission receives back.
 Markup Shorthands: markdown yes, dfn yes, css no
-Boilerplate: omit conformance
+Boilerplate: omit conformance, omit document-revision
 Local Boilerplate: header yes
 Complain About: accidental-2119 yes, missing-example-ids yes
 </pre>

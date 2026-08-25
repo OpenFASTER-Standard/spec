@@ -13,7 +13,7 @@ Abstract: KaFE Refund Application is a module of the
     (section 50c(3) EStG) capital income tax refund schema. This page
     indexes its two documents.
 Markup Shorthands: markdown yes, dfn yes, css no
-Boilerplate: omit conformance
+Boilerplate: omit conformance, omit document-revision
 </pre>
 
 KaFE Refund Application {#kafe-module}

@@ -15,7 +15,7 @@ Abstract: OpenFASTER is a vendor-independent family of open standards for the
     Application, and StreamLD -- are each specified in their own document; see
     <a href="/">the OpenFASTER portal</a> for the full, current list.
 Markup Shorthands: markdown yes, dfn yes, css no
-Boilerplate: omit conformance
+Boilerplate: omit conformance, omit document-revision
 Local Boilerplate: header yes
 Complain About: accidental-2119 yes, missing-example-ids yes
 </pre>

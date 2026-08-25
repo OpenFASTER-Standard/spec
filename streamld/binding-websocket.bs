@@ -5,6 +5,7 @@ Level: 1
 Status: w3c/CG-DRAFT
 URL: https://openfaster.org/streamld/binding-websocket
 Local Boilerplate: header yes
+Boilerplate: omit document-revision
 Editor: OpenFASTER Editors
 Abstract: Defines StreamLD's server-to-server replication binding over WebSockets — the transport a downstream server uses to mirror an upstream stream in full, in order, with explicit resumption. Part of the <a href="/streamld">StreamLD module</a>.
 </pre>
