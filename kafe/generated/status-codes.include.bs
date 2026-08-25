@@ -25,6 +25,7 @@
     <tr><td><code>1101</code><td class="long">The annex (PDF file) is missing.</tr>
     <tr><td><code>1102</code><td class="long">The annex (file) could not be assigned.</tr>
     <tr><td><code>1103</code><td class="long">The annex is not a PDF file.</tr>
+    <tr><td><code>1998</code><td class="long">End-to-end staleness test -- Task 3.</tr>
   </tbody>
 </table>
 
