@@ -26,6 +26,17 @@ BS_FILES=(
 
 COMMIT_DATE=$(git log -1 --format=%cd --date=short HEAD)
 
+# Back up each file's real current content (whether committed or not --
+# NEVER assume "revert to git's index/HEAD" is correct here, since a
+# caller may legitimately have real uncommitted edits to one of these
+# files, e.g. mid-development. A blanket `git checkout -- ...` would
+# silently destroy that work. Restore from this backup instead.
+BACKUP_DIR=$(mktemp -d)
+for f in "${BS_FILES[@]}"; do
+  mkdir -p "$BACKUP_DIR/$(dirname "$f")"
+  cp "$f" "$BACKUP_DIR/$f"
+done
+
 inject_date() {
   local f="$1"
   if grep -q '^Date:' "$f"; then
@@ -38,7 +49,10 @@ inject_date() {
 }
 
 revert_bs_files() {
-  git checkout -- "${BS_FILES[@]}"
+  for f in "${BS_FILES[@]}"; do
+    cp "$BACKUP_DIR/$f" "$f"
+  done
+  rm -rf "$BACKUP_DIR"
 }
 trap revert_bs_files EXIT
 
