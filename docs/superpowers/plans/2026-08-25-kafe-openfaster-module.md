@@ -787,7 +787,15 @@ def test_status_codes_include_has_all_seven_ranges():
     content = (ROOT / "kafe" / "generated" / "status-codes.include.bs").read_text()
     for range_label in ["1xxx", "2xxx", "3xxx", "4xxx", "5xxx", "6xxx", "7xxx"]:
         assert range_label in content
-    assert content.count("<tr>") >= 219  # one row per status code, at minimum
+    # Real total (Task 2, verified via two independent extraction passes) is 213
+    # codes across the 7 ranges, plus code "0000" (OK) which lives outside
+    # RANGE_ORDER entirely -- 214 real codes total. Data-row <tr> count should be
+    # 214 (213 + the "0000" row); allow for a handful of header/structural <tr>s
+    # on top, so assert generously rather than exactly.
+    assert content.count("<tr>") >= 214
+    assert "0000" in content  # confirm the "OK" code isn't silently dropped just
+    # because it lives outside RANGE_ORDER's 7 buckets -- see this task's own
+    # Step 5 instruction on rendering it as its own section.
 
 
 def test_request_bs_has_full_changelog_and_docversion_4_3_2():
@@ -831,7 +839,7 @@ Output path: `kafe/generated/rm.include.bs`.
 A new, small script (no direct `mikadiv-vib` precedent — this is the one genuinely new generation pattern this plan introduces) that renders `kafe.status_codes.STATUS_CODES` into a Bikeshed include, grouped by `RANGE_ORDER`:
 
 ```python
-"""Renders kafe/status_codes.py's full 219-code catalog into a Bikeshed include,
+"""Renders kafe/status_codes.py's full 213-code catalog (plus code "0000") into a Bikeshed include,
 consumed by kafe/request.bs's error-handling section. Unlike every other
 generator in this repo, this one's source is a hand-transcribed Python data
 file, not an XSD -- see kafe/status_codes.py's own module docstring for why.
@@ -844,7 +852,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from kafe.status_codes import RANGE_ORDER, codes_in_range
+from kafe.status_codes import RANGE_ORDER, STATUS_CODES, codes_in_range
 
 ROOT = Path(__file__).resolve().parent
 OUTPUT_PATH = ROOT / "generated" / "status-codes.include.bs"
@@ -870,6 +878,25 @@ def main() -> None:
         "uses.</p>",
         "",
     ]
+
+    # "0000" (OK) lives outside RANGE_ORDER's 7 numeric ranges entirely (Task 2's
+    # own ruling) -- render it as its own leading section rather than silently
+    # dropping it, since the loop below only ever reaches codes inside the 7
+    # named ranges.
+    ok_code = STATUS_CODES["0000"]
+    lines.append('<h3 id="status-0000-ok">0000 - OK</h3>')
+    lines.append("")
+    lines.append('<table class="complex data longlastcol dictionary">')
+    lines.append("  <thead><tr><th>Code<th>Message</tr></thead>")
+    lines.append("  <tbody>")
+    lines.append(
+        f"    <tr><td><code>{_esc(ok_code.code)}</code>"
+        f'<td class="long">{_esc(ok_code.message)}</tr>'
+    )
+    lines.append("  </tbody>")
+    lines.append("</table>")
+    lines.append("")
+
     for range_label in RANGE_ORDER:
         anchor = f"status-{_slug(range_label)}"
         lines.append(f'<h3 id="{anchor}">{_esc(range_label)}</h3>')
@@ -1850,7 +1877,7 @@ Expected: any diffs limited to Bikeshed's own embedded revision-SHA/timestamp me
 
 - [ ] **Step 2: Spot-check the transcribed status codes against the handbook directly**
 
-This is a genuine correctness-risk check, not just confirming the build passes — Task 2's own tests only verify a handful of known codes, not all 219. Pick 15 codes spread across all 7 ranges (at least 2 per range) that Task 2's own tests do *not* already cover, and manually re-read the corresponding handbook page(s) to confirm the transcribed `code`/`message` in `kafe/status_codes.py` match exactly. Document which 15 you checked and the result in your task report — if any mismatch is found, fix `kafe/status_codes.py` directly and re-run Task 2's full test suite plus this spot-check before proceeding.
+This is a genuine correctness-risk check, not just confirming the build passes — Task 2's own tests only verify a handful of known codes, not all 213 (the real, verified total — corrected from the plan's original 219 estimate during Task 2's own execution; see the ledger). Pick 15 codes spread across all 7 ranges (at least 2 per range) that Task 2's own tests do *not* already cover, and manually re-read the corresponding handbook page(s) to confirm the transcribed `code`/`message` in `kafe/status_codes.py` match exactly. Task 2's own report also flags 3 real handbook typos it deliberately preserved verbatim ("effecitve" at codes 3300/3301/3302, "missind" at 4426, "ist" at 6402) — these are expected, not transcription errors; don't flag them as mismatches. Document which 15 you checked and the result in your task report — if any mismatch is found, fix `kafe/status_codes.py` directly and re-run Task 2's full test suite plus this spot-check before proceeding.
 
 - [ ] **Step 3: STOP — this step requires the operator's explicit go-ahead**
 

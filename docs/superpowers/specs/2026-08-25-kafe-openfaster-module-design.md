@@ -97,7 +97,10 @@ confirmed independently across the XSD, the handbook, and production code:
   §50j block is `minOccurs="0"` at the raw XSD level. Its real
   conditional-mandatory logic (e.g. "required only when country/legal-form
   is in the §8.1 matrix," "required only when `HaltedauerMin45T > 0`")
-  lives entirely in a separate, ~219-entry status-code catalog
+  lives entirely in a separate, 213-entry status-code catalog (plus
+  code `0000`/OK, outside the numbered ranges) — corrected from an
+  initial ~219 research-phase estimate once fully transcribed and
+  verified against the handbook
   (`kafe-statustypes.xsd`'s `StatusCode_ENUM`, documented in the
   handbook's appendix), not in the XSD's own cardinalities. Unlike
   MiKaDiv, where the real VIB XSD's own documentation/facets were the
@@ -144,10 +147,11 @@ status-code catalog fills the gaps XSD alone can't determine):
   field descriptions, types, base cardinality, all sourced from the XSD's
   own `xs:documentation` and facets, never hand-typed.
 - **New `engine/status_codes.py`** (or a KaFE-local equivalent) — a small,
-  hand-transcribed but structured table of all ~219 status codes from the
-  handbook's appendix (code → section/range → message), since the codes
-  exist only inside a 212-page PDF with no machine-readable source.
-  Complete coverage of all 219 codes, per operator decision — not just
+  hand-transcribed but structured table of all 213 status codes (plus
+  code `0000`/OK) from the handbook's appendix (code → section/range →
+  message), since the codes exist only inside a 212-page PDF with no
+  machine-readable source.
+  Complete coverage of every real code, per operator decision — not just
   the subset that drives requiredness — because the same transcription
   effort serves two purposes at once: (a) real conditional-mandatory
   logic for the ~40 fields (mostly §50j) where the XSD alone says
